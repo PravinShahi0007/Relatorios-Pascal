@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2016/08/05 12:21:26.000.512,=C:\Users\380256\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2016/08/05 14:01:27.000.943,=C:\Users\380256\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2016/08/05 14:06:46.000.796,=C:\Users\380256\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2016/08/05 14:17:42.000.645,=C:\Users\380256\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2016/08/05 15:48:58.000.346,=C:\Users\380256\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2016/09/22 16:17:52.000.444,=C:\Users\380256\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2016/10/18 11:33:10.000.857,=C:\Users\380256\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2016/10/18 11:33:23.000.647,=C:\Users\380256\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2017/03/02 14:53:16.000.783,=C:\Users\380256\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2017/05/15 17:12:58.000.749,=C:\Users\380256\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2018/01/19 11:43:35.000.504,=C:\Users\380256\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2018/05/09 16:31:47.000.217,=C:\Users\380256\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2018/08/17 15:57:09.000.688,=C:\Users\380256\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2018/11/20 14:35:24.000.181,=C:\Users\380256\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2018/11/20 14:36:53.000.600,C:\Users\380256\Documents\Embarcadero\Studio\Projects\Unit2.dfm=C:\Users\380256\Desktop\Rel_Venda_Dia_Email\uRel_Venda_Dia_Email.dfm</Transaction>
+    <Transaction>2018/11/20 14:36:53.000.600,C:\Users\380256\Documents\Embarcadero\Studio\Projects\Unit2.pas=C:\Users\380256\Desktop\Rel_Venda_Dia_Email\uRel_Venda_Dia_Email.pas</Transaction>
+    <Transaction>2018/11/20 14:37:08.000.232,C:\Users\380256\Documents\Embarcadero\Studio\Projects\Project2.dproj=C:\Users\380256\Desktop\Rel_Venda_Dia_Email\pRel_Venda_Dia_Email.dproj</Transaction>
+    <Transaction>2018/11/20 15:05:07.000.277,=C:\Users\380256\Desktop\Rel_Venda_Dia_Email\ufuncoes.pas</Transaction>
+    <Transaction>2018/11/20 15:05:07.000.255,=C:\Users\380256\Desktop\Rel_Venda_Dia_Email\uFunc.pas</Transaction>
+    <Transaction>2020/01/17 09:38:24.000.674,C:\Users\386552\Desktop\fontes_jaisson\pRel_Venda_Dia_Email_RegioesNovas.dproj=C:\Users\386552\Desktop\fontes_jaisson\pRel_Venda_Dia_Email.dproj</Transaction>
+    <Transaction>2020/03/25 14:09:37.000.898,C:\Users\386552\Desktop\Rel_Venda_Dia_Email_RegioesNovas\pRel_Clientes_APP.dproj=C:\Users\386552\Desktop\Rel_Venda_Dia_Email_RegioesNovas\pRel_Venda_Dia_Email_RegioesNovas.dproj</Transaction>
+    <Transaction>2020/03/30 15:07:34.000.457,C:\Users\386552\Desktop\Rel_Clientes_APP\uRel_Clientes_APP.pas=C:\Users\386552\Desktop\Rel_Clientes_APP\uRel_Venda_Dia_Email.pas</Transaction>
+    <Transaction>2020/03/30 15:07:34.000.457,C:\Users\386552\Desktop\Rel_Clientes_APP\uRel_Clientes_APP.dfm=C:\Users\386552\Desktop\Rel_Clientes_APP\uRel_Venda_Dia_Email.dfm</Transaction>
+    <Transaction>2020/09/17 11:16:01.000.548,C:\Users\386552\Desktop\Projetos\Relatorios Email\Rel_Clientes_APP - Copia\pRel_Envia_Numero_Sorte.dproj=C:\Users\386552\Desktop\Projetos\Relatorios Email\Rel_Clientes_APP - Copia\pRel_Clientes_APP.dproj</Transaction>
+    <Transaction>2020/09/17 11:18:24.000.523,C:\Users\386552\Desktop\Projetos\Relatorios Email\Rel_Envia_Email_Num_Sorte\uRel_Clientes_APP.pas=C:\Users\386552\Desktop\Projetos\Relatorios Email\Rel_Envia_Email_Num_Sorte\uRel_Envia_Email_Num_Sorte.pas</Transaction>
+    <Transaction>2020/09/17 11:18:24.000.523,C:\Users\386552\Desktop\Projetos\Relatorios Email\Rel_Envia_Email_Num_Sorte\uRel_Clientes_APP.dfm=C:\Users\386552\Desktop\Projetos\Relatorios Email\Rel_Envia_Email_Num_Sorte\uRel_Envia_Email_Num_Sorte.dfm</Transaction>
+  </Transactions>
+	<ProjectSortOrder AutoSort="0" SortType="0">
+    <File Path="uFunc.pas"/>
+    <File Path="ufuncoes.pas"/>
+    <File Path="uRel_Envia_Email_Num_Sorte.pas"/>
+    <File Path="uRel_Envia_Email_Num_Sorte.dfm"/>
+  </ProjectSortOrder>
+</BorlandProject>

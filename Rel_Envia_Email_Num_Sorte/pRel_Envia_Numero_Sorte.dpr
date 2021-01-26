@@ -1,0 +1,18 @@
+program pRel_Envia_Numero_Sorte;
+
+uses
+  Vcl.Forms,
+  uRel_Envia_Email_Num_Sorte in 'uRel_Envia_Email_Num_Sorte.pas' {frmRel_Numero_Sorte},
+  uFunc in 'uFunc.pas',
+  ufuncoes in 'ufuncoes.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.ShowMainForm := False;
+  Application.CreateForm(TfrmRel_Numero_Sorte, frmRel_Numero_Sorte);
+  // Application.Run;
+  Application.Terminate;
+end.
