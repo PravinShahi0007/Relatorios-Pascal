@@ -1,0 +1,30 @@
+[TIME]
+timer=30/12/1899 11:54:00
+
+[DATE]
+date=19/5/2007
+
+[REDES]
+Grazziotin=1
+Arrazo=1
+PorMenos=1
+FrancoGiorgi=1
+Tottal=1
+
+[EMAIL]
+Grazziotin=ismaile@grazziotin.com.br
+Arrazo=ismaile@grazziotin.com.br
+PorMenos=ismaile@grazziotin.com.br
+FrancoGiorgi=ismaile@grazziotin.com.br
+Tottal=ismaile@grazziotin.com.br
+
+[EMAIL FROM]
+Assunto=Itens Novos
+Endereco=ti@grazziotin.com.br
+UserName=373729
+Password=123456
+Nome=Grazziotin S.A - TI
+
+
+
+

@@ -1,0 +1,90 @@
+---->28/08/2014 11:30:18:604:Rede: 910
+---->28/08/2014 11:30:18:605:Enviando Email Para: ti@grazziotin.com.br
+---->28/08/2014 11:31:47:695:Rede: 910
+---->28/08/2014 11:31:47:697:Enviando Email Para: ti@grazziotin.com.br
+---->28/08/2014 14:35:09:180:Rede: 910
+---->28/08/2014 14:35:09:182:Enviando Email Para: ti@grazziotin.com.br
+---->29/01/2018 11:49:33:180:Rede: 910
+---->29/01/2018 11:49:33:210:Enviando Email Para: ti@grazziotin.com.br
+---->29/01/2018 11:51:59:335:Rede: 910
+---->29/01/2018 11:51:59:365:Enviando Email Para: jaisson@grazziotin.com.br
+---->29/01/2018 12:03:09:748:Rede: 910
+---->29/01/2018 12:03:09:778:Enviando Email Para: jaisson@grazziotin.com.br
+---->29/01/2018 12:03:20:582:EIdProtocolReplyError - 5.7.57 SMTP; Client was not authenticated to send anonymous mail during MAIL FROM [SC1PR80CA0072.lamprd80.prod.outlook.com]
+
+---->29/01/2018 12:06:57:667:Rede: 910
+---->29/01/2018 12:06:57:697:Enviando Email Para: jaisson@grazziotin.com.br
+---->29/01/2018 12:07:08:227:EIdProtocolReplyError - 5.7.57 SMTP; Client was not authenticated to send anonymous mail during MAIL FROM [SC1P215CA0051.LAMP215.PROD.OUTLOOK.COM]
+
+---->29/01/2018 12:08:09:755:Rede: 910
+---->29/01/2018 12:08:09:784:Enviando Email Para: 377199@grazziotin.com.br
+---->29/01/2018 12:08:20:345:EIdProtocolReplyError - 5.7.57 SMTP; Client was not authenticated to send anonymous mail during MAIL FROM [SC1PR80CA0074.lamprd80.prod.outlook.com]
+
+---->29/01/2018 12:11:29:474:Rede: 910
+---->29/01/2018 12:11:29:524:Enviando Email Para: 377199@grazziotin.com.br
+---->29/01/2018 12:16:47:695:Rede: 910
+---->29/01/2018 12:16:47:725:Enviando Email Para: 377199@grazziotin.com.br
+---->29/01/2018 12:18:32:281:Rede: 910
+---->29/01/2018 12:18:32:311:Enviando Email Para: 377199@grazziotin.com.br
+---->29/01/2018 12:21:59:155:Rede: 910
+---->29/01/2018 12:21:59:185:Enviando Email Para: 377199@grazziotin.com.br
+---->29/01/2018 12:21:59:255:EIdProtocolReplyError - 4.7.1 <jaissont@gmail.com>: Relay access denied
+
+---->29/01/2018 13:46:41:404:Rede: 910
+---->29/01/2018 13:46:41:424:Enviando Email Para: 377199@grazziotin.com.br
+---->29/01/2018 13:46:41:664:EIdProtocolReplyError - 4.7.1 <jaissont@gmail.com>: Relay access denied
+
+---->29/01/2018 13:50:47:653:Rede: 910
+---->29/01/2018 13:50:47:753:Enviando Email Para: ti@grazziotin.com.br
+---->29/01/2018 13:50:47:858:EIdProtocolReplyError - 4.7.1 <jaissont@gmail.com>: Relay access denied
+
+---->12/09/2018 14:26:14:875:Exception - SMTP Error: Unable to send CC list.
+---->12/09/2018 14:28:29:518:Rede: 910
+---->12/09/2018 14:28:30:279:Enviando Email Para: atendimentoti@grazziotin.com.br
+---->12/09/2018 15:03:11:725:Rede: 910
+---->12/09/2018 15:03:11:734:Enviando Email Para: atendimentoti@grazziotin.com.br
+---->12/09/2018 17:14:22:021:Vai enviar a mensagem.
+---->12/09/2018 17:14:30:748:Rede: 910
+---->12/09/2018 17:14:30:758:Enviando Email Para: atendimentoti@grazziotin.com.br
+---->13/09/2018 09:38:13:733:Vai enviar a mensagem.
+---->13/09/2018 09:38:21:353:Rede: 910
+---->13/09/2018 09:38:21:362:Enviando Email Para: atendimentoti@grazziotin.com.br
+---->13/09/2018 09:46:25:458:Vai enviar a mensagem.
+---->13/09/2018 09:46:31:047:Rede: 910
+---->13/09/2018 09:46:31:056:Enviando Email Para: atendimentoti@grazziotin.com.br
+---->13/09/2018 09:55:23:079:Vai enviar a mensagem.
+---->13/09/2018 09:55:32:810:Rede: 910
+---->13/09/2018 09:55:32:819:Enviando Email Para: atendimentoti@grazziotin.com.br
+---->13/09/2018 10:01:37:743:Executa
+---->13/09/2018 10:01:37:747:entrou no gera email
+---->13/09/2018 10:10:15:442:entrou no gera email
+---->13/09/2018 10:10:46:350:Vai enviar a mensagem.
+---->13/09/2018 10:10:53:241:Rede: 910
+---->13/09/2018 10:10:53:250:Enviando Email Para: atendimentoti@grazziotin.com.br
+---->13/09/2018 10:12:58:487:entrou no gera email
+---->13/09/2018 10:13:26:869:Vai enviar a mensagem.
+---->13/09/2018 10:13:33:610:Rede: 910
+---->13/09/2018 10:13:33:619:Enviando Email Para: atendimentoti@grazziotin.com.br
+---->13/09/2018 10:25:34:988:entrou no gera email
+---->13/09/2018 10:26:21:170:Vai enviar a mensagem.
+---->13/09/2018 10:26:29:859:Rede: 910
+---->13/09/2018 10:26:29:870:Enviando Email Para: atendimentoti@grazziotin.com.br
+---->13/09/2018 10:26:29:898:entrou no gera email
+---->13/09/2018 10:27:11:309:Vai enviar a mensagem.
+---->13/09/2018 10:27:19:518:Rede: 910
+---->13/09/2018 10:27:19:527:Enviando Email Para: atendimentoti@grazziotin.com.br
+---->13/09/2018 10:35:16:822:entrou no gera email
+---->13/09/2018 10:38:21:119:entrou no gera email
+---->13/09/2018 10:38:45:194:entrou no gera email
+---->13/09/2018 10:39:25:446:Vai enviar a mensagem.
+---->13/09/2018 10:39:33:664:Rede: 910
+---->13/09/2018 10:39:33:674:Enviando Email Para: atendimentoti@grazziotin.com.br
+---->13/09/2018 10:48:38:244:entrou no gera email
+---->13/09/2018 10:49:19:344:Vai enviar a mensagem.
+---->13/09/2018 10:49:25:006:Rede: 910
+---->13/09/2018 10:49:25:015:Enviando Email Para: atendimentoti@grazziotin.com.br
+---->13/09/2018 10:54:54:784:Entrou no executa
+---->13/09/2018 10:54:54:793:entrou no gera email
+---->13/09/2018 10:55:34:762:Vai enviar a mensagem.
+---->13/09/2018 10:55:39:888:Rede: 910
+---->13/09/2018 10:55:39:896:Enviando Email Para: atendimentoti@grazziotin.com.br

@@ -1,0 +1,30 @@
+[TIME]
+timer=30/12/1899 11:54:00
+
+[DATE]
+date=14/04/2012
+
+[REDES]
+Grazziotin=1
+PorMenos=1
+FrancoGiorgi=1
+Tottal=1
+
+[EMAIL]
+Grazziotin=sheila@grazziotin.com.br;
+PorMenos=ani@pormenos.com.br; 
+FrancoGiorgi=claudiocampos@francogiorgi.com.br; 
+Tottal=brum@tottal.com.br;
+
+[EMAIL FROM]
+Assunto=Cupons VP c/ Bônus X Leitura de Cartões
+Endereco=ti@grazziotin.com.br
+UserName=373729
+Password=123456
+Nome=Grazziotin S.A - TI
+
+[EMAIL_CC]
+Grazziotin=jaisson@grazziotin.com.br;knob@grazziotin.com.br;
+PorMenos=jaisson@grazziotin.com.br;knob@grazziotin.com.br; 
+FrancoGiorgi=jaisson@grazziotin.com.br;knob@grazziotin.com.br;
+Tottal=jaisson@grazziotin.com.br;knob@grazziotin.com.br;
