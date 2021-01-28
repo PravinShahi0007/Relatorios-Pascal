@@ -83,4 +83,14 @@ object frmRel_Numero_Sorte: TfrmRel_Numero_Sorte
     Left = 72
     Top = 128
   end
+  object FDQuery2: TFDQuery
+    Connection = FDConnection1
+    Left = 136
+    Top = 128
+  end
+  object FDQuery3: TFDQuery
+    Connection = FDConnection1
+    Left = 184
+    Top = 112
+  end
 end
