@@ -396,21 +396,21 @@ object frmRelatorioVendas: TfrmRelatorioVendas
           OnClick = lblMostrarGraficoClick
         end
         object lblTipoGrafico: TLabel
-          Left = 306
+          Left = 295
           Top = 9
           Width = 24
           Height = 13
           Caption = 'Tipo:'
         end
         object lblTipoBarra: TLabel
-          Left = 399
+          Left = 388
           Top = 9
           Width = 30
           Height = 13
           Caption = 'Barra:'
         end
         object chb3D: TCheckBox
-          Left = 586
+          Left = 575
           Top = 8
           Width = 35
           Height = 17
@@ -441,7 +441,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
             'Quantidade/Valor Pagamento Parcelas APP')
         end
         object cbxTipoGrafico: TComboBox
-          Left = 337
+          Left = 326
           Top = 6
           Width = 56
           Height = 21
@@ -457,7 +457,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
             #193'rea')
         end
         object cbxTipoBarra: TComboBox
-          Left = 436
+          Left = 425
           Top = 6
           Width = 144
           Height = 21
@@ -484,7 +484,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
             'Cubo')
         end
         object chbMarcas: TCheckBox
-          Left = 625
+          Left = 614
           Top = 8
           Width = 59
           Height = 17
@@ -1023,6 +1023,67 @@ object frmRelatorioVendas: TfrmRelatorioVendas
           PercentFormat = '##0 %'
           SeriesColor = clOlive
           Title = 'Valor Pago CIA'
+          ValueFormat = '###,###,###,##0.00'
+          VertAxis = aRightAxis
+          AreaChartBrush.Color = clGray
+          AreaChartBrush.BackColor = clDefault
+          DrawArea = True
+          Pointer.InflateMargins = True
+          Pointer.Style = psRectangle
+          Pointer.Visible = False
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Y'
+          YValues.Order = loNone
+        end
+        object srsArea_Parcelas_Pagas_APP: TAreaSeries
+          Active = False
+          Marks.Brush.Gradient.Direction = gdTopBottom
+          Marks.Brush.Gradient.EndColor = clGray
+          Marks.Brush.Gradient.MidColor = clWhite
+          Marks.Font.Color = 335544320
+          Marks.Font.Height = -9
+          Marks.Font.Name = 'Tahoma'
+          Marks.Font.Style = [fsBold]
+          Marks.RoundSize = 14
+          Marks.Style = smsValue
+          Marks.Angle = 90
+          Marks.BackColor = 16646143
+          Marks.Callout.Length = 20
+          Marks.Color = 16646143
+          PercentFormat = '##0 %'
+          SeriesColor = clAqua
+          Title = 'Parcelas Pagas APP'
+          ValueFormat = '###,###,###,##0'
+          AreaChartBrush.Color = clGray
+          AreaChartBrush.BackColor = clDefault
+          DrawArea = True
+          Pointer.InflateMargins = True
+          Pointer.Style = psRectangle
+          Pointer.Visible = False
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Y'
+          YValues.Order = loNone
+        end
+        object srsArea_Valor_Pago_APP: TAreaSeries
+          Active = False
+          Marks.Brush.Gradient.Direction = gdTopBottom
+          Marks.Brush.Gradient.EndColor = clGray
+          Marks.Brush.Gradient.MidColor = clWhite
+          Marks.Font.Color = 335544320
+          Marks.Font.Height = -9
+          Marks.Font.Name = 'Tahoma'
+          Marks.Font.Style = [fsBold]
+          Marks.RoundSize = 14
+          Marks.Style = smsValue
+          Marks.Angle = 90
+          Marks.BackColor = 16646143
+          Marks.Callout.Length = 20
+          Marks.Color = 16646143
+          PercentFormat = '##0 %'
+          SeriesColor = clSilver
+          Title = 'Valor Pago APP'
           ValueFormat = '###,###,###,##0.00'
           VertAxis = aRightAxis
           AreaChartBrush.Color = clGray

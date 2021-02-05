@@ -189,6 +189,8 @@ type
     ppDBText17: TppDBText;
     ppDBText18: TppDBText;
     ppLine2: TppLine;
+    srsArea_Parcelas_Pagas_APP: TAreaSeries;
+    srsArea_Valor_Pago_APP: TAreaSeries;
     procedure Mostra_Dados(Sender: TObject);
     procedure Preenche_Vetores_Grafico(Sender: TObject);
     procedure btnSairClick(Sender: TObject);
@@ -352,6 +354,8 @@ begin
      srsArea_Total_Pagamentos_APP.Clear;
      srsArea_Parcelas_Pagas_CIA.Clear;
      srsArea_Valor_Pago_CIA.Clear;
+     srsArea_Parcelas_Pagas_APP.Clear;
+     srsArea_Valor_Pago_APP.Clear;
 
      for iInd := 0 to High(aQtd_Tot_Cli_APP) do
      begin
@@ -389,6 +393,8 @@ begin
           srsArea_Total_Pagamentos_APP.Add(aTot_Cli_Pgto_APP[iInd],aLabels[iInd],clLaranja);
           srsArea_Parcelas_Pagas_CIA.Add(aQtd_Parcelas_Pgto_CIA[iInd],aLabels[iInd],clFuchsia);
           srsArea_Valor_Pago_CIA.Add(aQtd_Parcelas_Pgto_CIA[iInd],aLabels[iInd],clOlive);
+          srsArea_Parcelas_Pagas_APP.Add(aQtd_Parcelas_Pgto_APP[iInd],aLabels[iInd],clFuchsia);
+          srsArea_Valor_Pago_APP.Add(aQtd_Parcelas_Pgto_APP[iInd],aLabels[iInd],clOlive);
 
      end;
 
@@ -505,6 +511,8 @@ begin
      srsArea_Total_Pagamentos_APP.Visible := (cbxMostrarGrafico.ItemIndex = 4);
      srsArea_Parcelas_Pagas_CIA.Visible := (cbxMostrarGrafico.ItemIndex = 5);
      srsArea_Valor_Pago_CIA.Visible := (cbxMostrarGrafico.ItemIndex = 5);
+     srsArea_Parcelas_Pagas_APP.Visible := (cbxMostrarGrafico.ItemIndex = 6);
+     srsArea_Valor_Pago_APP.Visible := (cbxMostrarGrafico.ItemIndex = 6);
 
      chtGrafico.Title.Text.Clear;
      case cbxMostrarGrafico.ItemIndex of
@@ -733,6 +741,8 @@ begin
      srsArea_Total_Pagamentos_APP.Visible := (cbxMostrarGrafico.ItemIndex = 4) and (cbxTipoGrafico.ItemIndex = 2);
      srsArea_Parcelas_Pagas_CIA.Visible := (cbxMostrarGrafico.ItemIndex = 5) and (cbxTipoGrafico.ItemIndex = 2);
      srsArea_Valor_Pago_CIA.Visible := (cbxMostrarGrafico.ItemIndex = 5) and (cbxTipoGrafico.ItemIndex = 2);
+     srsArea_Parcelas_Pagas_APP.Visible := (cbxMostrarGrafico.ItemIndex = 6) and (cbxTipoGrafico.ItemIndex = 2);
+     srsArea_Valor_Pago_APP.Visible := (cbxMostrarGrafico.ItemIndex = 6) and (cbxTipoGrafico.ItemIndex = 2);
 
      cbxTipoBarraChange(Sender);
 end;
@@ -789,6 +799,8 @@ begin
      srsArea_Total_Pagamentos_APP.Marks.Visible := (chbMarcas.Checked);
      srsArea_Parcelas_Pagas_CIA.Marks.Visible := (chbMarcas.Checked);
      srsArea_Valor_Pago_CIA.Marks.Visible := (chbMarcas.Checked);
+     srsArea_Parcelas_Pagas_APP.Marks.Visible := (chbMarcas.Checked);
+     srsArea_Valor_Pago_APP.Marks.Visible := (chbMarcas.Checked);
 end;
 
 procedure TfrmRelatorioVendas.edtFinalExit(Sender: TObject);
@@ -903,6 +915,8 @@ begin
      srsArea_Total_Pagamentos_APP.Visible := (cbxTipoGrafico.ItemIndex = 2);
      srsArea_Parcelas_Pagas_CIA.Visible := (cbxTipoGrafico.ItemIndex = 2);
      srsArea_Valor_Pago_CIA.Visible := (cbxTipoGrafico.ItemIndex = 2);
+     srsArea_Parcelas_Pagas_APP.Visible := (cbxTipoGrafico.ItemIndex = 2);
+     srsArea_Valor_Pago_APP.Visible := (cbxTipoGrafico.ItemIndex = 2);
 end;
 
 end.
