@@ -153,7 +153,7 @@ where cr_historicos.cod_pessoa = cr_titulos.cod_pessoa and
       cr_historicos.num_titulo = cr_titulos.num_titulo and
       cr_historicos.cod_compl = cr_titulos.cod_compl and
       cr_historicos.num_parcela = cr_titulos.num_parcela and
-      cr_historicos.cod_lancamento in (100,101,20,65,103) and 
+      cr_historicos.cod_lancamento in (100,101,20,65,103,75) and 
       (cr_historicos.dta_pagamento between to_date(:inicial,'dd/mm/yyyy') and
                                            to_date(:final,'dd/mm/yyyy'))
 
@@ -261,7 +261,7 @@ where "type" in ('Boleto') and
 
 --------------------------------------------------------------------------------------------------
 
-/* débito e crédito loja 
+OK - /* débito e crédito loja 
 neste vai precisar de cursor... 
 vai trazer valor em ind_deb_cred = 1 é debito
 = 2 é credito... 
@@ -301,12 +301,130 @@ atualmente não tem na loja mas se tiver já estará pronto */
                           and l.num_nsusitef    = r.num_nsusitef)
           group by l.ind_deb_cred
 
+
+
+
+
+
+select grz_tef_transacao_lojas.ind_deb_cred, 
+       count(1) qtd_loja, 
+       sum(nvl(grz_tef_transacao_servidor.vlr_lcto,0)) vlr_loja
+from grz_tef_transacao_servidor, grz_tef_transacao_lojas
+where grz_tef_transacao_lojas.cod_emp       = grz_tef_transacao_servidor.cod_emp and 
+      grz_tef_transacao_lojas.cod_unidade   = grz_tef_transacao_servidor.cod_unidade and 
+      grz_tef_transacao_lojas.dta_movimento = grz_tef_transacao_servidor.dta_movimento and 
+      to_number(grz_tef_transacao_servidor.num_nsusitef) =
+                to_number(grz_tef_transacao_lojas.num_nsusitef) and 
+      grz_tef_transacao_lojas.ind_cancelado = 0 and 
+      grz_tef_transacao_lojas.tip_origem    = 4 and 
+      grz_tef_transacao_servidor.dta_movimento = grz_tef_transacao_lojas.dta_movimento and 
+      grz_tef_transacao_servidor.cod_resposta  = '00' and 
+      grz_tef_transacao_servidor.ind_cancelado = 0 and 
+      grz_tef_transacao_servidor.des_operacao not like '%CANC%' and 
+      grz_tef_transacao_servidor.dta_movimento between 
+              to_date(:inicial,'dd/mm/yyyy') and to_date(:final,'dd/mm/yyyy') and 
+      not exists (select 1 
+                  from grz_tef_transacao_servidor c
+                  where grz_tef_transacao_servidor.cod_emp = c.cod_emp and 
+                        grz_tef_transacao_servidor.cod_unidade = c.cod_unidade and 
+                        grz_tef_transacao_servidor.dta_movimento = c.dta_movimento and 
+                        to_number(grz_tef_transacao_servidor.num_nsuhost) = 
+                                  to_number(c.nsu_host_cancel) and 
+                        grz_tef_transacao_servidor.des_rede = c.des_rede and 
+                        c.cod_resposta  = '00') and 
+      exists (select 1
+              from grz_lojas_recebimentos
+              where grz_tef_transacao_lojas.cod_unidade     = grz_lojas_recebimentos.cod_unidade and 
+                    grz_tef_transacao_lojas.num_equipamento = grz_lojas_recebimentos.num_equipamento and 
+                    grz_tef_transacao_lojas.dta_movimento   = grz_lojas_recebimentos.dta_mvto and 
+                    grz_tef_transacao_lojas.num_nsusitef    = grz_lojas_recebimentos.num_nsusitef)
+group by grz_tef_transacao_lojas.ind_deb_cred
 -------------------------------------------------------------------------------------
+/* Quantidade e valor pagamento na loja */
+
+select count(1) qtd_pagamentos_lojas
+      ,sum(nvl(b.vlr_lancamento,0) + nvl(b.vlr_juro_cobr,0) + nvl(b.vlr_desp_cobr,0)) vlr_tot_lojas
+  from cr_titulos a 
+      ,cr_historicos b  
+      ,ge_grupos_unidades ge
+  where b.cod_pessoa = a.cod_pessoa
+  and b.cod_emp = a.cod_emp
+  and b.cod_unidade = a.cod_unidade 
+  and b.num_titulo = a.num_titulo 
+  and b.cod_compl = a.cod_compl 
+  and b.num_parcela = a.num_parcela 
+  and a.ind_pago = 1
+  and b.dta_pagamento >= '01/03/2020'
+  and b.dta_pagamento <= '31/03/2020'
+  and b.ind_dc   = 2
+  and b.cod_lancamento in (100,20,75) 
+  and a.cod_unidade = ge.cod_unidade
+  and ge.cod_grupo in (71010,71030,71040,71050,71070)
+  and b.cod_unidade_pgto not in (701,702,703)
+  and ge.cod_emp = 1;
 
 
+select count(1) qtd_pagamentos_lojas,
+       sum(nvl(cr_historicos.vlr_lancamento,0) + 
+           nvl(cr_historicos.vlr_juro_cobr,0) + 
+           nvl(cr_historicos.vlr_desp_cobr,0)) vlr_tot_lojas
+from cr_titulos, cr_historicos, ge_grupos_unidades
+where cr_historicos.cod_pessoa = cr_titulos.cod_pessoa and 
+      cr_historicos.cod_emp = cr_titulos.cod_emp and 
+      cr_historicos.cod_unidade = cr_titulos.cod_unidade and 
+      cr_historicos.num_titulo = cr_titulos.num_titulo and 
+      cr_historicos.cod_compl = cr_titulos.cod_compl and 
+      cr_historicos.num_parcela = cr_titulos.num_parcela and 
+      cr_titulos.ind_pago = 1 and  
+      cr_historicos.ind_dc   = 2 and 
+      cr_historicos.cod_lancamento in (100,20,75) and 
+      cr_titulos.cod_unidade = ge_grupos_unidades.cod_unidade and 
+      ge_grupos_unidades.cod_grupo in (71010,71030,71040,71050,71070) and 
+      cr_historicos.cod_unidade_pgto not in (701,702,703) and 
+      ge_grupos_unidades.cod_emp = 1 and  
+      cr_historicos.dta_pagamento between to_date(:inicial,'dd/mm/yyyy') and to_date(:final,'dd/mm/yyyy')
 
 
+----------------------------------------------------------------------------------------
 
+/* Total de clientes que pagaram na CIA */
+select count(distinct f.num_cpf) qtd_clientes_pagaram_cia
+  from ps_fisicas f
+      ,cr_titulos a 
+      ,cr_historicos b  
+      ,ge_grupos_unidades ge
+  where a.cod_pessoa = f.cod_pessoa
+  and b.cod_pessoa = a.cod_pessoa
+  and b.cod_emp = a.cod_emp
+  and b.cod_unidade = a.cod_unidade 
+  and b.num_titulo = a.num_titulo 
+  and b.cod_compl = a.cod_compl 
+  and b.num_parcela = a.num_parcela 
+  and a.ind_pago = 1
+  and b.dta_pagamento >= '01/03/2020'
+  and b.dta_pagamento <= '31/03/2020'
+  and b.ind_dc   = 2
+  and b.cod_lancamento in (100,101,20,65,103,75) 
+  and a.cod_unidade = ge.cod_unidade
+  and ge.cod_grupo in (71010,71030,71040,71050,71070)
+  and ge.cod_emp = 1 ;
+
+select count(distinct ps_fisicas.num_cpf) qtd_clientes_pagaram_cia
+from ps_fisicas, cr_titulos, cr_historicos, ge_grupos_unidades
+where cr_titulos.cod_pessoa = ps_fisicas.cod_pessoa and 
+      cr_historicos.cod_pessoa = cr_titulos.cod_pessoa and 
+      cr_historicos.cod_emp = cr_titulos.cod_emp and 
+      cr_historicos.cod_unidade = cr_titulos.cod_unidade and 
+      cr_historicos.num_titulo = cr_titulos.num_titulo and 
+      cr_historicos.cod_compl = cr_titulos.cod_compl and 
+      cr_historicos.num_parcela = cr_titulos.num_parcela and 
+      cr_titulos.ind_pago = 1 and 
+      cr_historicos.ind_dc   = 2 and 
+      cr_historicos.cod_lancamento in (100,101,20,65,103,75) and 
+      cr_titulos.cod_unidade = ge_grupos_unidades.cod_unidade and 
+      ge_grupos_unidades.cod_grupo in (71010,71030,71040,71050,71070) and 
+      ge_grupos_unidades.cod_emp = 1 and 
+      cr_historicos.dta_pagamento between to_date(:inicial,'dd/mm/yyyy') and to_date(:final,'dd/mm/yyyy')
 
 
 

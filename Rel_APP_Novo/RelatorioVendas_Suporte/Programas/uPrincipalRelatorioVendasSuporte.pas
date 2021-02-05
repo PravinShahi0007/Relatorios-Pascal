@@ -13,7 +13,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons,
-  Vcl.ExtCtrls, Vcl.Menus, Vcl.WinHelpViewer;
+  Vcl.ExtCtrls, Vcl.Menus, Vcl.WinHelpViewer, Vcl.AppEvnts;
 
 type
   TfrmPrincipalRelatorioVendas = class(TForm)
@@ -46,7 +46,8 @@ implementation
 
 {$R *.dfm}
 
-uses uAparencia, uConfiguracaoINI, uRelatorioVendas, uDtmRelatorioVendas;
+uses uAparencia, uConfiguracaoINI, uRelatorioVendas, uDtmRelatorioVendas,
+  uFuncoes;
 
 procedure TfrmPrincipalRelatorioVendas.btnUsuarioClick(Sender: TObject);
 var

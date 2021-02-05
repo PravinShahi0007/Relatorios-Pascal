@@ -87,6 +87,7 @@
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <DCC_ExeOutput>C:\GitHub\Relatorios\trunk\Rel_APP_Novo\RelatorioVendas_Suporte\</DCC_ExeOutput>
+        <Icon_MainIcon>pRelatorioVendasSuporte_Icon.ico</Icon_MainIcon>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -150,7 +151,7 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
-                <DeployFile LocalName="C:\Sistemas\trunk\AtualizaVendaAVista\pRelatorioVendasSuporte.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="..\pRelatorioVendasSuporte.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>pRelatorioVendasSuporte.exe</RemoteName>
                         <Overwrite>true</Overwrite>

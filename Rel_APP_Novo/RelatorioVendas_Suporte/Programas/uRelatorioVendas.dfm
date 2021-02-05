@@ -83,31 +83,6 @@ object frmRelatorioVendas: TfrmRelatorioVendas
       TabOrder = 0
       OnClick = btnSairClick
     end
-    object btnRelatorio: TBitBtn
-      Left = 2
-      Top = 2
-      Width = 87
-      Height = 24
-      Align = alLeft
-      Caption = 'Relat'#243'rio'
-      Glyph.Data = {
-        76010000424D7601000000000000760000002800000020000000100000000100
-        04000000000000010000120B0000120B00001000000000000000000000000000
-        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
-        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00300000000000
-        0003377777777777777308888888888888807F33333333333337088888888888
-        88807FFFFFFFFFFFFFF7000000000000000077777777777777770F8F8F8F8F8F
-        8F807F333333333333F708F8F8F8F8F8F9F07F333333333337370F8F8F8F8F8F
-        8F807FFFFFFFFFFFFFF7000000000000000077777777777777773330FFFFFFFF
-        03333337F3FFFF3F7F333330F0000F0F03333337F77773737F333330FFFFFFFF
-        03333337F3FF3FFF7F333330F00F000003333337F773777773333330FFFF0FF0
-        33333337F3F37F3733333330F08F0F0333333337F7337F7333333330FFFF0033
-        33333337FFFF7733333333300000033333333337777773333333}
-      NumGlyphs = 2
-      TabOrder = 1
-      Visible = False
-      OnClick = btnRelatorioClick
-    end
   end
   object pnlCabecalho: TPanel
     Left = 0
@@ -378,6 +353,30 @@ object frmRelatorioVendas: TfrmRelatorioVendas
             FieldName = 'VLR_PARCELAS_PGTO_CIA'
             Title.Caption = 'Valor Pago na CIA'
             Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'QTD_PARCELAS_PGTO_APP'
+            Title.Caption = 'Parcelas Pagas no APP'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'VLR_PARCELAS_PGTO_APP'
+            Title.Caption = 'Valor Pago no APP'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'QTD_PARCELAS_PGTO_DECRE'
+            Title.Caption = 'Parcelas DECRE'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'VLR_PARCELAS_PGTO_DECRE'
+            Title.Caption = 'Valor Parcelas DECRE'
+            Visible = True
           end>
       end
       object pnlCabOpcoesGrafico: TPanel
@@ -397,23 +396,23 @@ object frmRelatorioVendas: TfrmRelatorioVendas
           OnClick = lblMostrarGraficoClick
         end
         object lblTipoGrafico: TLabel
-          Left = 237
+          Left = 306
           Top = 9
           Width = 24
           Height = 13
           Caption = 'Tipo:'
         end
         object lblTipoBarra: TLabel
-          Left = 331
+          Left = 399
           Top = 9
           Width = 30
           Height = 13
           Caption = 'Barra:'
         end
         object chb3D: TCheckBox
-          Left = 518
+          Left = 586
           Top = 8
-          Width = 34
+          Width = 35
           Height = 17
           Caption = '3D'
           Checked = True
@@ -424,7 +423,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         object cbxMostrarGrafico: TComboBox
           Left = 56
           Top = 6
-          Width = 175
+          Width = 233
           Height = 21
           Style = csDropDownList
           ItemIndex = 0
@@ -438,13 +437,13 @@ object frmRelatorioVendas: TfrmRelatorioVendas
             'Clientes GRAZZIOTIN'
             'Novos Clientes Aprovados APP'
             'Pagamento pelo APP'
-            'Parcelas Pagas na CIA'
-            'Valor Pago na CIA')
+            'Parcelas/Valor Pago na CIA'
+            'Quantidade/Valor Pagamento Parcelas APP')
         end
         object cbxTipoGrafico: TComboBox
-          Left = 267
+          Left = 337
           Top = 6
-          Width = 58
+          Width = 56
           Height = 21
           Style = csDropDownList
           ItemIndex = 0
@@ -458,9 +457,9 @@ object frmRelatorioVendas: TfrmRelatorioVendas
             #193'rea')
         end
         object cbxTipoBarra: TComboBox
-          Left = 367
+          Left = 436
           Top = 6
-          Width = 145
+          Width = 144
           Height = 21
           Style = csDropDownList
           ItemIndex = 10
@@ -485,13 +484,37 @@ object frmRelatorioVendas: TfrmRelatorioVendas
             'Cubo')
         end
         object chbMarcas: TCheckBox
-          Left = 557
+          Left = 625
           Top = 8
-          Width = 58
+          Width = 59
           Height = 17
           Caption = 'Marcas'
           TabOrder = 4
           OnClick = chbMarcasClick
+        end
+        object btnRelatorio: TBitBtn
+          Left = 695
+          Top = 2
+          Width = 91
+          Height = 29
+          Align = alRight
+          Caption = 'Relat'#243'rio'
+          Glyph.Data = {
+            76010000424D7601000000000000760000002800000020000000100000000100
+            04000000000000010000120B0000120B00001000000000000000000000000000
+            800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+            FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00300000000000
+            0003377777777777777308888888888888807F33333333333337088888888888
+            88807FFFFFFFFFFFFFF7000000000000000077777777777777770F8F8F8F8F8F
+            8F807F333333333333F708F8F8F8F8F8F9F07F333333333337370F8F8F8F8F8F
+            8F807FFFFFFFFFFFFFF7000000000000000077777777777777773330FFFFFFFF
+            03333337F3FFFF3F7F333330F0000F0F03333337F77773737F333330FFFFFFFF
+            03333337F3FF3FFF7F333330F00F000003333337F773777773333330FFFF0FF0
+            33333337F3F37F3733333330F08F0F0333333337F7337F7333333330FFFF0033
+            33333337FFFF7733333333300000033333333337777773333333}
+          NumGlyphs = 2
+          TabOrder = 5
+          OnClick = btnRelatorioClick
         end
       end
       object chtGrafico: TChart
@@ -499,6 +522,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Top = 274
         Width = 788
         Height = 337
+        Legend.Alignment = laBottom
         Legend.Visible = False
         Title.Font.Color = clBlack
         Title.Font.Style = [fsBold]
@@ -507,6 +531,8 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         BottomAxis.LabelsAngle = 90
         LeftAxis.Automatic = False
         LeftAxis.AutomaticMinimum = False
+        RightAxis.Automatic = False
+        RightAxis.AutomaticMinimum = False
         Align = alClient
         TabOrder = 3
         DefaultCanvas = 'TGDIPlusCanvas'
@@ -612,8 +638,82 @@ object frmRelatorioVendas: TfrmRelatorioVendas
           Marks.Color = 16646143
           PercentFormat = '##0 %'
           SeriesColor = clFuchsia
-          Title = 'Barra_Parcelas_Pagas_CIA'
+          Title = 'Parcelas Pagas CIA'
           ValueFormat = '#,###,###,#00'
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+        object srsBarra_Valor_Pago_CIA: TBarSeries
+          Active = False
+          Marks.Brush.Gradient.Direction = gdTopBottom
+          Marks.Brush.Gradient.EndColor = clGray
+          Marks.Brush.Gradient.MidColor = clWhite
+          Marks.Font.Color = 335544320
+          Marks.Font.Height = -8
+          Marks.Font.Name = 'Tahoma'
+          Marks.Font.Style = [fsBold]
+          Marks.RoundSize = 14
+          Marks.Visible = False
+          Marks.Style = smsValue
+          Marks.Angle = 90
+          Marks.BackColor = 16646143
+          Marks.Color = 16646143
+          PercentFormat = '##0 %'
+          SeriesColor = clOlive
+          Title = 'Valor Pago CIA'
+          ValueFormat = '###,###,###,##0.00'
+          VertAxis = aRightAxis
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+        object srsBarra_Parcelas_Pagas_APP: TBarSeries
+          Active = False
+          Marks.Brush.Gradient.Direction = gdTopBottom
+          Marks.Brush.Gradient.EndColor = clGray
+          Marks.Brush.Gradient.MidColor = clWhite
+          Marks.Font.Color = 335544320
+          Marks.Font.Height = -9
+          Marks.Font.Name = 'Tahoma'
+          Marks.Font.Style = [fsBold]
+          Marks.RoundSize = 14
+          Marks.Visible = False
+          Marks.Style = smsValue
+          Marks.Angle = 90
+          Marks.BackColor = 16646143
+          Marks.Color = 16646143
+          PercentFormat = '##0 %'
+          SeriesColor = clAqua
+          Title = 'Parcelas Pagas APP'
+          ValueFormat = '###,###,###,##0'
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+        object srsBarra_Valor_Pago_APP: TBarSeries
+          Active = False
+          Marks.Brush.Gradient.Direction = gdTopBottom
+          Marks.Brush.Gradient.EndColor = clGray
+          Marks.Brush.Gradient.MidColor = clWhite
+          Marks.Font.Color = 335544320
+          Marks.Font.Height = -9
+          Marks.Font.Name = 'Tahoma'
+          Marks.Font.Style = [fsBold]
+          Marks.RoundSize = 14
+          Marks.Visible = False
+          Marks.Style = smsValue
+          Marks.Angle = 90
+          Marks.BackColor = 16646143
+          Marks.Color = 16646143
+          PercentFormat = '##0 %'
+          SeriesColor = clSilver
+          Title = 'Valor Pago APP'
+          ValueFormat = '###,###,###,##0.00'
+          VertAxis = aRightAxis
           XValues.Name = 'X'
           XValues.Order = loAscending
           YValues.Name = 'Bar'
@@ -712,9 +812,81 @@ object frmRelatorioVendas: TfrmRelatorioVendas
           Marks.Angle = 90
           PercentFormat = '##0 %'
           SeriesColor = clFuchsia
-          Title = 'Linha_Parcelas_Pagas_CIA'
+          Title = 'Parcelas Pagas CIA'
           ValueFormat = '#,###,###,#00'
           Brush.BackColor = clDefault
+          Pointer.InflateMargins = True
+          Pointer.Style = psRectangle
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Y'
+          YValues.Order = loNone
+        end
+        object srsLinha_Valor_Pago_CIA: TLineSeries
+          Active = False
+          Marks.Font.Height = -8
+          Marks.Font.Style = [fsBold]
+          Marks.Style = smsValue
+          Marks.Angle = 90
+          PercentFormat = '##0 %'
+          SeriesColor = clOlive
+          Title = 'Valor Pago CIA'
+          ValueFormat = '###,###,###,##0,00'
+          VertAxis = aRightAxis
+          Brush.BackColor = clDefault
+          Pointer.InflateMargins = True
+          Pointer.Style = psRectangle
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Y'
+          YValues.Order = loNone
+        end
+        object srsLinha_Parcelas_Pagas_APP: TLineSeries
+          Active = False
+          Marks.Brush.Gradient.Direction = gdTopBottom
+          Marks.Brush.Gradient.EndColor = clGray
+          Marks.Brush.Gradient.MidColor = clWhite
+          Marks.Font.Color = 335544320
+          Marks.Font.Height = -9
+          Marks.Font.Name = 'Tahoma'
+          Marks.Font.Style = [fsBold]
+          Marks.RoundSize = 14
+          Marks.Style = smsValue
+          Marks.Angle = 90
+          Marks.BackColor = 16646143
+          Marks.Callout.Length = 20
+          Marks.Color = 16646143
+          PercentFormat = '##0 %'
+          SeriesColor = clAqua
+          Title = 'Parcelas Pagas APP'
+          ValueFormat = '###,###,###,##0'
+          Pointer.InflateMargins = True
+          Pointer.Style = psRectangle
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Y'
+          YValues.Order = loNone
+        end
+        object srsLinha_Valor_Pago_APP: TLineSeries
+          Active = False
+          Marks.Brush.Gradient.Direction = gdTopBottom
+          Marks.Brush.Gradient.EndColor = clGray
+          Marks.Brush.Gradient.MidColor = clWhite
+          Marks.Font.Color = 335544320
+          Marks.Font.Height = -9
+          Marks.Font.Name = 'Tahoma'
+          Marks.Font.Style = [fsBold]
+          Marks.RoundSize = 14
+          Marks.Style = smsValue
+          Marks.Angle = 90
+          Marks.BackColor = 16646143
+          Marks.Callout.Length = 20
+          Marks.Color = 16646143
+          PercentFormat = '##0 %'
+          SeriesColor = clSilver
+          Title = 'Valor Pago APP'
+          ValueFormat = '###,###,###,##0.00'
+          VertAxis = aRightAxis
           Pointer.InflateMargins = True
           Pointer.Style = psRectangle
           XValues.Name = 'X'
@@ -830,8 +1002,29 @@ object frmRelatorioVendas: TfrmRelatorioVendas
           Marks.Angle = 90
           PercentFormat = '##0 %'
           SeriesColor = clFuchsia
-          Title = 'Area_Parcelas_Pagas_CIA'
-          ValueFormat = '#,###,###,#00'
+          Title = 'Parcelas Pagas CIA'
+          ValueFormat = '#,###,###,##0'
+          AreaChartBrush.Color = clGray
+          AreaChartBrush.BackColor = clDefault
+          DrawArea = True
+          Pointer.InflateMargins = True
+          Pointer.Style = psRectangle
+          Pointer.Visible = False
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Y'
+          YValues.Order = loNone
+        end
+        object srsArea_Valor_Pago_CIA: TAreaSeries
+          Active = False
+          Marks.Font.Style = [fsBold]
+          Marks.Style = smsValue
+          Marks.Angle = 90
+          PercentFormat = '##0 %'
+          SeriesColor = clOlive
+          Title = 'Valor Pago CIA'
+          ValueFormat = '###,###,###,##0.00'
+          VertAxis = aRightAxis
           AreaChartBrush.Color = clGray
           AreaChartBrush.BackColor = clDefault
           DrawArea = True
@@ -846,20 +1039,68 @@ object frmRelatorioVendas: TfrmRelatorioVendas
       end
     end
   end
+  object pnlAguarde: TPanel
+    Left = 197
+    Top = 208
+    Width = 206
+    Height = 57
+    Alignment = taLeftJustify
+    BevelInner = bvLowered
+    BevelWidth = 5
+    Caption = '    Aguarde.....'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -19
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 3
+    Visible = False
+  end
   object qryRelatorioVendas: TFDQuery
-    Active = True
+    OnCalcFields = qryRelatorioVendasCalcFields
     Connection = dtmRelatorioVendas.fdcRelatorioVendas
     Transaction = dtmRelatorioVendas.trsRelatorioVendas
     SQL.Strings = (
       
         'SELECT extract(MONTH FROM dta_mes)||'#39'/'#39'||extract(YEAR FROM dta_m' +
         'es) AS anomes,'
-      
-        '       QTD_TOT_CLI_APP,QTD_NEW_CLI_APP,QTD_CLI_GRAZZIOTIN,QTD_NE' +
-        'W_CLI_APP_APROV,'
-      
-        '       tot_cli_pgto_app,qtd_parcelas_pgto_cia,vlr_parcelas_pgto_' +
-        'cia'
+      '       dta_mes,'
+      '       extract(YEAR FROM dta_mes) AS Ano,'
+      '       qtd_tot_cli_app,'
+      '       qtd_new_cli_app,'
+      '       qtd_cli_grazziotin,'
+      '       qtd_new_cli_app_aprov,'
+      '       tot_cli_pgto_cia,'
+      '       tot_cli_pgto_app,'
+      '       qtd_parcelas_pgto_cia,'
+      '       qtd_parcelas_pgto_app,'
+      '       vlr_parcelas_pgto_cia,'
+      '       vlr_parcelas_pgto_app,'
+      '       qtd_parcelas_pgto_decre,'
+      '       vlr_parcelas_pgto_decre,'
+      '       qtd_parcelas_pgto_0800,'
+      '       vlr_parcelas_pgto_0800,'
+      '       qtd_pgto_boleto_app,'
+      '       vlr_pgto_boleto_app,'
+      '       qtd_pgto_debito_app,'
+      '       vlr_pgto_debito_app,'
+      '       qtd_pgto_credito_app,'
+      '       vlr_pgto_credito_app,'
+      '       qtd_pgto_pix_app,'
+      '       vlr_pgto_pix_app,'
+      '       qtd_pgto_boleto_decre,'
+      '       vlr_pgto_boleto_decre,'
+      '       qtd_pgto_pix_decre,'
+      '       vlr_pgto_pix_decre,'
+      '       qtd_pgto_loja,'
+      '       vlr_pgto_loja,'
+      '       qtd_pgto_debito_loja,'
+      '       vlr_pgto_debito_loja,'
+      '       qtd_pgto_credito_loja,'
+      '       vlr_pgto_credito_loja,'
+      '       qtd_pgto_pix_loja,'
+      '       vlr_pgto_pix_loja'
       'FROM GRZW_REL_PGTOS_APPXLOJA'
       'WHERE (extract(YEAR FROM dta_mes) = :ano)'
       'ORDER BY DTA_MES')
@@ -926,6 +1167,211 @@ object frmRelatorioVendas: TfrmRelatorioVendas
       Precision = 18
       Size = 2
     end
+    object qryRelatorioVendasTOT_CLI_PGTO_CIA: TFMTBCDField
+      FieldName = 'TOT_CLI_PGTO_CIA'
+      Origin = 'TOT_CLI_PGTO_CIA'
+      Precision = 18
+      Size = 2
+    end
+    object qryRelatorioVendasQTD_PARCELAS_PGTO_APP: TBCDField
+      FieldName = 'QTD_PARCELAS_PGTO_APP'
+      Origin = 'QTD_PARCELAS_PGTO_APP'
+      DisplayFormat = '###,###,###,##0'
+      Precision = 8
+      Size = 0
+    end
+    object qryRelatorioVendasVLR_PARCELAS_PGTO_APP: TFMTBCDField
+      FieldName = 'VLR_PARCELAS_PGTO_APP'
+      Origin = 'VLR_PARCELAS_PGTO_APP'
+      DisplayFormat = '###,###,###,##0.00'
+      Precision = 18
+      Size = 2
+    end
+    object qryRelatorioVendasQTD_PARCELAS_PGTO_DECRE: TBCDField
+      FieldName = 'QTD_PARCELAS_PGTO_DECRE'
+      Origin = 'QTD_PARCELAS_PGTO_DECRE'
+      DisplayFormat = '###,###,###,##0'
+      Precision = 8
+      Size = 0
+    end
+    object qryRelatorioVendasVLR_PARCELAS_PGTO_DECRE: TFMTBCDField
+      FieldName = 'VLR_PARCELAS_PGTO_DECRE'
+      Origin = 'VLR_PARCELAS_PGTO_DECRE'
+      DisplayFormat = '###,###,###,##0.00'
+      Precision = 18
+      Size = 2
+    end
+    object qryRelatorioVendasQTD_PARCELAS_PGTO_0800: TBCDField
+      FieldName = 'QTD_PARCELAS_PGTO_0800'
+      Origin = 'QTD_PARCELAS_PGTO_0800'
+      DisplayFormat = '###,###,###,##0'
+      Precision = 8
+      Size = 0
+    end
+    object qryRelatorioVendasVLR_PARCELAS_PGTO_0800: TFMTBCDField
+      FieldName = 'VLR_PARCELAS_PGTO_0800'
+      Origin = 'VLR_PARCELAS_PGTO_0800'
+      DisplayFormat = '###,###,###,##0.00'
+      Precision = 18
+      Size = 2
+    end
+    object qryRelatorioVendasQTD_PGTO_BOLETO_APP: TBCDField
+      FieldName = 'QTD_PGTO_BOLETO_APP'
+      Origin = 'QTD_PGTO_BOLETO_APP'
+      DisplayFormat = '###,###,###,##0'
+      Precision = 8
+      Size = 0
+    end
+    object qryRelatorioVendasVLR_PGTO_BOLETO_APP: TFMTBCDField
+      FieldName = 'VLR_PGTO_BOLETO_APP'
+      Origin = 'VLR_PGTO_BOLETO_APP'
+      DisplayFormat = '###,###,###,##0.00'
+      Precision = 18
+      Size = 2
+    end
+    object qryRelatorioVendasQTD_PGTO_DEBITO_APP: TBCDField
+      FieldName = 'QTD_PGTO_DEBITO_APP'
+      Origin = 'QTD_PGTO_DEBITO_APP'
+      DisplayFormat = '###,###,###,##0'
+      Precision = 8
+      Size = 0
+    end
+    object qryRelatorioVendasVLR_PGTO_DEBITO_APP: TFMTBCDField
+      FieldName = 'VLR_PGTO_DEBITO_APP'
+      Origin = 'VLR_PGTO_DEBITO_APP'
+      DisplayFormat = '###,###,###,##0.00'
+      Precision = 18
+      Size = 2
+    end
+    object qryRelatorioVendasQTD_PGTO_CREDITO_APP: TBCDField
+      FieldName = 'QTD_PGTO_CREDITO_APP'
+      Origin = 'QTD_PGTO_CREDITO_APP'
+      DisplayFormat = '###,###,###,##0'
+      Precision = 8
+      Size = 0
+    end
+    object qryRelatorioVendasVLR_PGTO_CREDITO_APP: TFMTBCDField
+      FieldName = 'VLR_PGTO_CREDITO_APP'
+      Origin = 'VLR_PGTO_CREDITO_APP'
+      DisplayFormat = '###,###,###,##0.00'
+      Precision = 18
+      Size = 2
+    end
+    object qryRelatorioVendasQTD_PGTO_PIX_APP: TBCDField
+      FieldName = 'QTD_PGTO_PIX_APP'
+      Origin = 'QTD_PGTO_PIX_APP'
+      DisplayFormat = '###,###,###,##0'
+      Precision = 8
+      Size = 0
+    end
+    object qryRelatorioVendasVLR_PGTO_PIX_APP: TFMTBCDField
+      FieldName = 'VLR_PGTO_PIX_APP'
+      Origin = 'VLR_PGTO_PIX_APP'
+      DisplayFormat = '###,###,###,##0.00'
+      Precision = 18
+      Size = 2
+    end
+    object qryRelatorioVendasQTD_PGTO_BOLETO_DECRE: TBCDField
+      FieldName = 'QTD_PGTO_BOLETO_DECRE'
+      Origin = 'QTD_PGTO_BOLETO_DECRE'
+      DisplayFormat = '###,###,###,##0'
+      Precision = 8
+      Size = 0
+    end
+    object qryRelatorioVendasVLR_PGTO_BOLETO_DECRE: TFMTBCDField
+      FieldName = 'VLR_PGTO_BOLETO_DECRE'
+      Origin = 'VLR_PGTO_BOLETO_DECRE'
+      DisplayFormat = '###,###,###,##0.00'
+      Precision = 18
+      Size = 2
+    end
+    object qryRelatorioVendasQTD_PGTO_PIX_DECRE: TBCDField
+      FieldName = 'QTD_PGTO_PIX_DECRE'
+      Origin = 'QTD_PGTO_PIX_DECRE'
+      DisplayFormat = '###,###,###,##0'
+      Precision = 8
+      Size = 0
+    end
+    object qryRelatorioVendasVLR_PGTO_PIX_DECRE: TFMTBCDField
+      FieldName = 'VLR_PGTO_PIX_DECRE'
+      Origin = 'VLR_PGTO_PIX_DECRE'
+      DisplayFormat = '###,###,###,##0.00'
+      Precision = 18
+      Size = 2
+    end
+    object qryRelatorioVendasQTD_PGTO_LOJA: TBCDField
+      FieldName = 'QTD_PGTO_LOJA'
+      Origin = 'QTD_PGTO_LOJA'
+      DisplayFormat = '###,###,###,##0'
+      Precision = 8
+      Size = 0
+    end
+    object qryRelatorioVendasVLR_PGTO_LOJA: TFMTBCDField
+      FieldName = 'VLR_PGTO_LOJA'
+      Origin = 'VLR_PGTO_LOJA'
+      Precision = 18
+      Size = 2
+    end
+    object qryRelatorioVendasQTD_PGTO_DEBITO_LOJA: TBCDField
+      FieldName = 'QTD_PGTO_DEBITO_LOJA'
+      Origin = 'QTD_PGTO_DEBITO_LOJA'
+      DisplayFormat = '###,###,###,##0'
+      Precision = 8
+      Size = 0
+    end
+    object qryRelatorioVendasVLR_PGTO_DEBITO_LOJA: TFMTBCDField
+      FieldName = 'VLR_PGTO_DEBITO_LOJA'
+      Origin = 'VLR_PGTO_DEBITO_LOJA'
+      DisplayFormat = '###,###,###,##0.00'
+      Precision = 18
+      Size = 2
+    end
+    object qryRelatorioVendasQTD_PGTO_CREDITO_LOJA: TBCDField
+      FieldName = 'QTD_PGTO_CREDITO_LOJA'
+      Origin = 'QTD_PGTO_CREDITO_LOJA'
+      DisplayFormat = '###,###,###,##0'
+      Precision = 8
+      Size = 0
+    end
+    object qryRelatorioVendasVLR_PGTO_CREDITO_LOJA: TFMTBCDField
+      FieldName = 'VLR_PGTO_CREDITO_LOJA'
+      Origin = 'VLR_PGTO_CREDITO_LOJA'
+      DisplayFormat = '###,###,###,##0.00'
+      Precision = 18
+      Size = 2
+    end
+    object qryRelatorioVendasQTD_PGTO_PIX_LOJA: TBCDField
+      FieldName = 'QTD_PGTO_PIX_LOJA'
+      Origin = 'QTD_PGTO_PIX_LOJA'
+      DisplayFormat = '###,###,###,##0'
+      Precision = 8
+      Size = 0
+    end
+    object qryRelatorioVendasVLR_PGTO_PIX_LOJA: TFMTBCDField
+      FieldName = 'VLR_PGTO_PIX_LOJA'
+      Origin = 'VLR_PGTO_PIX_LOJA'
+      DisplayFormat = '###,###,###,##0.00'
+      Precision = 18
+      Size = 2
+    end
+    object qryRelatorioVendasMes: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'Mes'
+      Size = 3
+      Calculated = True
+    end
+    object qryRelatorioVendasDTA_MES: TDateTimeField
+      FieldName = 'DTA_MES'
+      Origin = 'DTA_MES'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryRelatorioVendasANO: TFMTBCDField
+      FieldName = 'ANO'
+      Origin = 'ANO'
+      Precision = 38
+      Size = 38
+    end
   end
   object dtsAtualiza: TDataSource
     DataSet = qryRelatorioVendas
@@ -938,7 +1384,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
     PrinterSetup.BinName = 'Default'
     PrinterSetup.DocumentName = 'Report'
     PrinterSetup.Orientation = poLandscape
-    PrinterSetup.PaperName = 'A4 (210 x 297 mm)'
+    PrinterSetup.PaperName = 'A4'
     PrinterSetup.PrinterName = 'Default'
     PrinterSetup.SaveDeviceSettings = False
     PrinterSetup.mmMarginBottom = 6350
@@ -1000,7 +1446,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
       Background.Brush.Style = bsClear
       Border.mmPadding = 0
       mmBottomOffset = 0
-      mmHeight = 24606
+      mmHeight = 37571
       mmPrintPosition = 0
       object lblRelEmissao: TppLabel
         DesignLayer = ppDesignLayer1
@@ -1066,19 +1512,19 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         DesignLayer = ppDesignLayer1
         UserName = 'lblRelCabMesAno'
         Border.mmPadding = 0
-        Caption = 'M'#234's/Ano'
+        Caption = 'M'#234's'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 9
+        Font.Size = 7
         Font.Style = []
         FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
         FormFieldSettings.FormFieldType = fftNone
         Transparent = True
-        mmHeight = 3969
-        mmLeft = 245
-        mmTop = 20638
-        mmWidth = 12436
+        mmHeight = 3175
+        mmLeft = 265
+        mmTop = 26723
+        mmWidth = 4498
         BandType = 0
         LayerName = Foreground
       end
@@ -1090,15 +1536,16 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 9
+        Font.Size = 7
         Font.Style = []
         FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
         FormFieldSettings.FormFieldType = fftNone
+        TextAlignment = taRightJustified
         Transparent = True
-        mmHeight = 3969
-        mmLeft = 41540
-        mmTop = 20638
-        mmWidth = 25400
+        mmHeight = 3175
+        mmLeft = 27781
+        mmTop = 26723
+        mmWidth = 19580
         BandType = 0
         LayerName = Foreground
       end
@@ -1110,15 +1557,16 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 9
+        Font.Size = 7
         Font.Style = []
         FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
         FormFieldSettings.FormFieldType = fftNone
+        TextAlignment = taRightJustified
         Transparent = True
-        mmHeight = 3969
-        mmLeft = 14284
-        mmTop = 20638
-        mmWidth = 25929
+        mmHeight = 3175
+        mmLeft = 6879
+        mmTop = 26723
+        mmWidth = 19579
         BandType = 0
         LayerName = Foreground
       end
@@ -1130,15 +1578,16 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 9
+        Font.Size = 7
         Font.Style = []
         FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
         FormFieldSettings.FormFieldType = fftNone
+        TextAlignment = taRightJustified
         Transparent = True
-        mmHeight = 3968
-        mmLeft = 68243
-        mmTop = 20638
-        mmWidth = 26987
+        mmHeight = 3175
+        mmLeft = 48419
+        mmTop = 26723
+        mmWidth = 20373
         BandType = 0
         LayerName = Foreground
       end
@@ -1151,16 +1600,16 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 9
+        Font.Size = 7
         Font.Style = []
         FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
         FormFieldSettings.FormFieldType = fftNone
         TextAlignment = taRightJustified
         Transparent = True
-        mmHeight = 3969
-        mmLeft = 193142
-        mmTop = 20638
-        mmWidth = 24081
+        mmHeight = 3175
+        mmLeft = 143845
+        mmTop = 26733
+        mmWidth = 18788
         BandType = 0
         LayerName = Foreground
       end
@@ -1172,15 +1621,16 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 9
+        Font.Size = 7
         Font.Style = []
         FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
         FormFieldSettings.FormFieldType = fftNone
+        TextAlignment = taRightJustified
         Transparent = True
-        mmHeight = 3968
-        mmLeft = 96803
-        mmTop = 20638
-        mmWidth = 28311
+        mmHeight = 3175
+        mmLeft = 70115
+        mmTop = 26723
+        mmWidth = 21696
         BandType = 0
         LayerName = Foreground
       end
@@ -1188,19 +1638,20 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         DesignLayer = ppDesignLayer1
         UserName = 'lblRelCabParcelasPagasCIA'
         Border.mmPadding = 0
-        Caption = 'Parcelas Pagas CIA'
+        Caption = 'Parcelas pagas CIA'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 9
+        Font.Size = 7
         Font.Style = []
         FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
         FormFieldSettings.FormFieldType = fftNone
+        TextAlignment = taRightJustified
         Transparent = True
-        mmHeight = 3969
-        mmLeft = 162711
-        mmTop = 20638
-        mmWidth = 29104
+        mmHeight = 3175
+        mmLeft = 120385
+        mmTop = 26723
+        mmWidth = 22226
         BandType = 0
         LayerName = Foreground
       end
@@ -1212,15 +1663,16 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 9
+        Font.Size = 7
         Font.Style = []
         FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
         FormFieldSettings.FormFieldType = fftNone
+        TextAlignment = taRightJustified
         Transparent = True
-        mmHeight = 3969
-        mmLeft = 126471
-        mmTop = 20638
-        mmWidth = 34925
+        mmHeight = 3175
+        mmLeft = 93134
+        mmTop = 26723
+        mmWidth = 26193
         BandType = 0
         LayerName = Foreground
       end
@@ -1585,19 +2037,51 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         BandType = 0
         LayerName = Foreground
       end
-    end
-    object ppDetailBand1: TppDetailBand
-      Background1.Brush.Style = bsClear
-      Background2.Brush.Style = bsClear
-      Border.mmPadding = 0
-      mmBottomOffset = 0
-      mmHeight = 4498
-      mmPrintPosition = 0
-      object lblRelMesAno: TppDBText
+      object lblTituloRelatorioVendas: TppLabel
         DesignLayer = ppDesignLayer1
-        UserName = 'lblRelMesAno'
+        UserName = 'lblTituloRelatorioVendas'
         Border.mmPadding = 0
-        DataField = 'ANOMES'
+        Caption = 'Relat'#243'rio de Vendas'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 12
+        Font.Style = [fsBold]
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
+        Transparent = True
+        mmHeight = 5027
+        mmLeft = 39158
+        mmTop = 529
+        mmWidth = 40746
+        BandType = 0
+        LayerName = Foreground
+      end
+      object lblTituloAno: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'lblTituloAno'
+        Border.mmPadding = 0
+        Caption = 'Ano:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = []
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
+        Transparent = True
+        mmHeight = 3968
+        mmLeft = 265
+        mmTop = 20638
+        mmWidth = 6350
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppDBText1: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText1'
+        Border.mmPadding = 0
+        DataField = 'ANO'
         DataPipeline = pplRelatorio
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -1607,16 +2091,517 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         TextAlignment = taRightJustified
         Transparent = True
         DataPipelineName = 'pplRelatorio'
-        mmHeight = 4498
-        mmLeft = 260
-        mmTop = -7
-        mmWidth = 11898
+        mmHeight = 3968
+        mmLeft = 7937
+        mmTop = 20638
+        mmWidth = 10581
+        BandType = 0
+        LayerName = Foreground
+      end
+      object lblRelCabValorPagoAPP: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'lblRelCabValorPagoAPP'
+        Border.mmPadding = 0
+        Caption = 'Valor pago APP'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 188119
+        mmTop = 26723
+        mmWidth = 17198
+        BandType = 0
+        LayerName = Foreground
+      end
+      object lblRelCabParcelasPagasAPP: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'lblRelCabParcelasPagasAPP'
+        Border.mmPadding = 0
+        Caption = 'Parcelas pagas APP'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 164042
+        mmTop = 26723
+        mmWidth = 22490
+        BandType = 0
+        LayerName = Foreground
+      end
+      object lblRelCabParcelasPagasDECRE: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'lblRelCabParcelasPagasDECRE'
+        Border.mmPadding = 0
+        Caption = 'Parcelas pagas DECRE'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 206640
+        mmTop = 26723
+        mmWidth = 26458
+        BandType = 0
+        LayerName = Foreground
+      end
+      object lblRelCabValorPagoDECRE: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'lblRelCabValorPagoDECRE'
+        AutoSize = False
+        Border.mmPadding = 0
+        Caption = 'Valor pago DECRE'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 234418
+        mmTop = 26723
+        mmWidth = 23551
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel1: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'lblRelCabCadastradosAPP1'
+        AutoSize = False
+        Border.mmPadding = 0
+        Caption = 'Parc pagas 0800'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 6878
+        mmTop = 29897
+        mmWidth = 19580
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel2: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label2'
+        AutoSize = False
+        Border.mmPadding = 0
+        Caption = 'Valor pago 0800'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 27809
+        mmTop = 29894
+        mmWidth = 19580
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel3: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label3'
+        AutoSize = False
+        Border.mmPadding = 0
+        Caption = 'Quant pgto Boleto'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 48479
+        mmTop = 29894
+        mmWidth = 20375
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel4: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label4'
+        AutoSize = False
+        Border.mmPadding = 0
+        Caption = 'Valor pgto 0800'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 70178
+        mmTop = 29894
+        mmWidth = 21700
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel5: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label5'
+        AutoSize = False
+        Border.mmPadding = 0
+        Caption = 'Quantidade pgto Debito'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 93134
+        mmTop = 29895
+        mmWidth = 26203
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel6: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label6'
+        AutoSize = False
+        Border.mmPadding = 0
+        Caption = 'Valor pgto Debito'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 120394
+        mmTop = 29895
+        mmWidth = 22226
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel7: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label7'
+        AutoSize = False
+        Border.mmPadding = 0
+        Caption = 'Qtd pgto Credito'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 144010
+        mmTop = 29895
+        mmWidth = 18783
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel8: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label8'
+        AutoSize = False
+        Border.mmPadding = 0
+        Caption = 'Valor pgto Credito'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 164107
+        mmTop = 29895
+        mmWidth = 22491
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel9: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label9'
+        AutoSize = False
+        Border.mmPadding = 0
+        Caption = 'Tot pgtoi CIA'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 188154
+        mmTop = 29895
+        mmWidth = 17191
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel10: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label10'
+        AutoSize = False
+        Border.mmPadding = 0
+        Caption = 'Qtd Boleto DECRE'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 206640
+        mmTop = 29898
+        mmWidth = 26470
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel11: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label11'
+        AutoSize = False
+        Border.mmPadding = 0
+        Caption = 'Valor Boleto DECRE'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 234418
+        mmTop = 29898
+        mmWidth = 23550
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel12: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label12'
+        AutoSize = False
+        Border.mmPadding = 0
+        Caption = 'Qtn pgto Loja'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 6876
+        mmTop = 33073
+        mmWidth = 19580
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel13: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label13'
+        AutoSize = False
+        Border.mmPadding = 0
+        Caption = 'Valor pgto Loja'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 27778
+        mmTop = 33073
+        mmWidth = 19580
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel14: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label14'
+        AutoSize = False
+        Border.mmPadding = 0
+        Caption = 'Qtn Debito Loja'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 48416
+        mmTop = 33073
+        mmWidth = 20374
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel15: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label15'
+        AutoSize = False
+        Border.mmPadding = 0
+        Caption = 'Valor Debito Loja'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 70113
+        mmTop = 33073
+        mmWidth = 21699
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel16: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label16'
+        AutoSize = False
+        Border.mmPadding = 0
+        Caption = 'Quant Credito Loja'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 93134
+        mmTop = 33073
+        mmWidth = 26203
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel17: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label17'
+        AutoSize = False
+        Border.mmPadding = 0
+        Caption = 'Valor Credito Loja'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 120394
+        mmTop = 33073
+        mmWidth = 22226
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLine2: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line2'
+        Border.mmPadding = 0
+        Position = lpBottom
+        Weight = 0.750000000000000000
+        mmHeight = 789
+        mmLeft = 264
+        mmTop = 36245
+        mmWidth = 284428
+        BandType = 0
+        LayerName = Foreground
+      end
+    end
+    object ppDetailBand1: TppDetailBand
+      Background1.Brush.Style = bsClear
+      Background2.Brush.Style = bsClear
+      Border.mmPadding = 0
+      mmBottomOffset = 0
+      mmHeight = 10583
+      mmPrintPosition = 0
+      object lblRelMesAno: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'lblRelMesAno'
+        Border.mmPadding = 0
+        DataField = 'Mes'
+        DataPipeline = pplRelatorio
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'pplRelatorio'
+        mmHeight = 3175
+        mmLeft = 258
+        mmTop = 0
+        mmWidth = 5288
         BandType = 4
         LayerName = Foreground
       end
       object lblRelCadastradosAPP: TppDBText
         DesignLayer = ppDesignLayer1
         UserName = 'lblRelCadastradosAPP'
+        AutoSize = True
         Border.mmPadding = 0
         DataField = 'QTD_TOT_CLI_APP'
         DataPipeline = pplRelatorio
@@ -1624,15 +2609,15 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 9
+        Font.Size = 7
         Font.Style = []
         TextAlignment = taRightJustified
         Transparent = True
         DataPipelineName = 'pplRelatorio'
-        mmHeight = 4498
-        mmLeft = 14278
-        mmTop = -3
-        mmWidth = 25943
+        mmHeight = 3175
+        mmLeft = 6859
+        mmTop = 0
+        mmWidth = 19578
         BandType = 4
         LayerName = Foreground
       end
@@ -1646,15 +2631,15 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 9
+        Font.Size = 7
         Font.Style = []
         TextAlignment = taRightJustified
         Transparent = True
         DataPipelineName = 'pplRelatorio'
-        mmHeight = 4498
-        mmLeft = 41543
+        mmHeight = 3175
+        mmLeft = 27722
         mmTop = 0
-        mmWidth = 25413
+        mmWidth = 19608
         BandType = 4
         LayerName = Foreground
       end
@@ -1668,15 +2653,15 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 9
+        Font.Size = 7
         Font.Style = []
         TextAlignment = taRightJustified
         Transparent = True
         DataPipelineName = 'pplRelatorio'
-        mmHeight = 4498
-        mmLeft = 68317
-        mmTop = -3
-        mmWidth = 27003
+        mmHeight = 3175
+        mmLeft = 48347
+        mmTop = 0
+        mmWidth = 20403
         BandType = 4
         LayerName = Foreground
       end
@@ -1690,15 +2675,15 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 9
+        Font.Size = 7
         Font.Style = []
         TextAlignment = taRightJustified
         Transparent = True
         DataPipelineName = 'pplRelatorio'
-        mmHeight = 4498
-        mmLeft = 96883
+        mmHeight = 3175
+        mmLeft = 70030
         mmTop = 0
-        mmWidth = 28328
+        mmWidth = 21728
         BandType = 4
         LayerName = Foreground
       end
@@ -1712,15 +2697,15 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 9
+        Font.Size = 7
         Font.Style = []
         TextAlignment = taRightJustified
         Transparent = True
         DataPipelineName = 'pplRelatorio'
-        mmHeight = 4498
-        mmLeft = 126514
+        mmHeight = 3175
+        mmLeft = 93028
         mmTop = 0
-        mmWidth = 34953
+        mmWidth = 26233
         BandType = 4
         LayerName = Foreground
       end
@@ -1734,15 +2719,15 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 9
+        Font.Size = 7
         Font.Style = []
         TextAlignment = taRightJustified
         Transparent = True
         DataPipelineName = 'pplRelatorio'
-        mmHeight = 4498
-        mmLeft = 162773
+        mmHeight = 3175
+        mmLeft = 120290
         mmTop = 0
-        mmWidth = 29123
+        mmWidth = 22243
         BandType = 4
         LayerName = Foreground
       end
@@ -1756,15 +2741,491 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 9
+        Font.Size = 7
         Font.Style = []
         TextAlignment = taRightJustified
         Transparent = True
         DataPipelineName = 'pplRelatorio'
-        mmHeight = 4498
-        mmLeft = 193191
+        mmHeight = 3175
+        mmLeft = 143843
         mmTop = 0
-        mmWidth = 24088
+        mmWidth = 18790
+        BandType = 4
+        LayerName = Foreground
+      end
+      object lblRelParcelasPagasAPP: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'lblRelParcelasPagasAPP'
+        Border.mmPadding = 0
+        DataField = 'QTD_PARCELAS_PGTO_APP'
+        DataPipeline = pplRelatorio
+        DisplayFormat = '#,0;-#,0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'pplRelatorio'
+        mmHeight = 3175
+        mmLeft = 164070
+        mmTop = 0
+        mmWidth = 22500
+        BandType = 4
+        LayerName = Foreground
+      end
+      object lblRelValorPagoAPP: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'lblRelValorPagoAPP'
+        Border.mmPadding = 0
+        DataField = 'VLR_PARCELAS_PGTO_APP'
+        DataPipeline = pplRelatorio
+        DisplayFormat = '#,0.00;(#,0.00)'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'pplRelatorio'
+        mmHeight = 3175
+        mmLeft = 188154
+        mmTop = 0
+        mmWidth = 17200
+        BandType = 4
+        LayerName = Foreground
+      end
+      object lblRelParcelasDECRE: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'lblRelValorPagoAPP1'
+        Border.mmPadding = 0
+        DataField = 'QTD_PARCELAS_PGTO_DECRE'
+        DataPipeline = pplRelatorio
+        DisplayFormat = '#,0;-#,0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'pplRelatorio'
+        mmHeight = 3175
+        mmLeft = 206667
+        mmTop = 0
+        mmWidth = 26475
+        BandType = 4
+        LayerName = Foreground
+      end
+      object lblRelValorPagoDECRE: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'lblRelValorPagoDECRE'
+        Border.mmPadding = 0
+        DataField = 'VLR_PARCELAS_PGTO_DECRE'
+        DataPipeline = pplRelatorio
+        DisplayFormat = '#,0.00;(#,0.00)'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'pplRelatorio'
+        mmHeight = 3175
+        mmLeft = 234492
+        mmTop = 0
+        mmWidth = 23560
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppDBText2: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'lblRelCadastradosAPP1'
+        Border.mmPadding = 0
+        DataField = 'QTD_PARCELAS_PGTO_0800'
+        DataPipeline = pplRelatorio
+        DisplayFormat = '#,0;-#,0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'pplRelatorio'
+        mmHeight = 3175
+        mmLeft = 6879
+        mmTop = 3438
+        mmWidth = 19580
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppDBText3: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText3'
+        Border.mmPadding = 0
+        DataField = 'VLR_PARCELAS_PGTO_0800'
+        DataPipeline = pplRelatorio
+        DisplayFormat = '#,0;-#,0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'pplRelatorio'
+        mmHeight = 3175
+        mmLeft = 27781
+        mmTop = 3440
+        mmWidth = 19579
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppDBText4: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText4'
+        Border.mmPadding = 0
+        DataField = 'QTD_PARCELAS_PGTO_0800'
+        DataPipeline = pplRelatorio
+        DisplayFormat = '#,0;-#,0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'pplRelatorio'
+        mmHeight = 3175
+        mmLeft = 48419
+        mmTop = 3440
+        mmWidth = 20374
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppDBText5: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText5'
+        Border.mmPadding = 0
+        DataField = 'VLR_PGTO_BOLETO_APP'
+        DataPipeline = pplRelatorio
+        DisplayFormat = '#,0;-#,0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'pplRelatorio'
+        mmHeight = 3175
+        mmLeft = 70115
+        mmTop = 3440
+        mmWidth = 21699
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppLine1: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line1'
+        Border.mmPadding = 0
+        Pen.Style = psDash
+        Position = lpBottom
+        Weight = 0.750000000000000000
+        mmHeight = 524
+        mmLeft = 232
+        mmTop = 10055
+        mmWidth = 283892
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppDBText6: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText6'
+        Border.mmPadding = 0
+        DataField = 'QTD_PGTO_DEBITO_APP'
+        DataPipeline = pplRelatorio
+        DisplayFormat = '#,0;-#,0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'pplRelatorio'
+        mmHeight = 3175
+        mmLeft = 93201
+        mmTop = 3436
+        mmWidth = 26204
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppDBText7: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText7'
+        Border.mmPadding = 0
+        DataField = 'VLR_PGTO_DEBITO_APP'
+        DataPipeline = pplRelatorio
+        DisplayFormat = '#,0;-#,0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'pplRelatorio'
+        mmHeight = 3175
+        mmLeft = 120461
+        mmTop = 3436
+        mmWidth = 22229
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppDBText8: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText8'
+        Border.mmPadding = 0
+        DataField = 'QTD_PGTO_CREDITO_APP'
+        DataPipeline = pplRelatorio
+        DisplayFormat = '#,0;-#,0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'pplRelatorio'
+        mmHeight = 3175
+        mmLeft = 143934
+        mmTop = 3440
+        mmWidth = 18774
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppDBText9: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText9'
+        Border.mmPadding = 0
+        DataField = 'VLR_PGTO_CREDITO_APP'
+        DataPipeline = pplRelatorio
+        DisplayFormat = '#,0;-#,0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'pplRelatorio'
+        mmHeight = 3175
+        mmLeft = 164031
+        mmTop = 3440
+        mmWidth = 22490
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppDBText10: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText10'
+        Border.mmPadding = 0
+        DataField = 'TOT_CLI_PGTO_CIA'
+        DataPipeline = pplRelatorio
+        DisplayFormat = '#,0;-#,0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'pplRelatorio'
+        mmHeight = 3175
+        mmLeft = 188154
+        mmTop = 3436
+        mmWidth = 17190
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppDBText11: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText11'
+        Border.mmPadding = 0
+        DataField = 'QTD_PGTO_BOLETO_DECRE'
+        DataPipeline = pplRelatorio
+        DisplayFormat = '#,0;-#,0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'pplRelatorio'
+        mmHeight = 3175
+        mmLeft = 206631
+        mmTop = 3440
+        mmWidth = 26470
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppDBText12: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText12'
+        Border.mmPadding = 0
+        DataField = 'VLR_PGTO_BOLETO_DECRE'
+        DataPipeline = pplRelatorio
+        DisplayFormat = '#,0;-#,0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'pplRelatorio'
+        mmHeight = 3175
+        mmLeft = 234425
+        mmTop = 3440
+        mmWidth = 23550
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppDBText13: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText13'
+        Border.mmPadding = 0
+        DataField = 'QTD_PGTO_LOJA'
+        DataPipeline = pplRelatorio
+        DisplayFormat = '#,0;-#,0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'pplRelatorio'
+        mmHeight = 3175
+        mmLeft = 6876
+        mmTop = 6881
+        mmWidth = 19580
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppDBText14: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText14'
+        Border.mmPadding = 0
+        DataField = 'VLR_PGTO_LOJA'
+        DataPipeline = pplRelatorio
+        DisplayFormat = '#,0;-#,0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'pplRelatorio'
+        mmHeight = 3175
+        mmLeft = 27778
+        mmTop = 6881
+        mmWidth = 19579
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppDBText15: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText15'
+        Border.mmPadding = 0
+        DataField = 'QTD_PGTO_DEBITO_LOJA'
+        DataPipeline = pplRelatorio
+        DisplayFormat = '#,0;-#,0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'pplRelatorio'
+        mmHeight = 3175
+        mmLeft = 48481
+        mmTop = 6876
+        mmWidth = 20375
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppDBText16: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText16'
+        Border.mmPadding = 0
+        DataField = 'VLR_PGTO_DEBITO_LOJA'
+        DataPipeline = pplRelatorio
+        DisplayFormat = '#,0;-#,0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'pplRelatorio'
+        mmHeight = 3175
+        mmLeft = 70178
+        mmTop = 6876
+        mmWidth = 21699
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppDBText17: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText17'
+        Border.mmPadding = 0
+        DataField = 'QTD_PGTO_CREDITO_LOJA'
+        DataPipeline = pplRelatorio
+        DisplayFormat = '#,0;-#,0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'pplRelatorio'
+        mmHeight = 3175
+        mmLeft = 93134
+        mmTop = 6879
+        mmWidth = 26203
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppDBText18: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText18'
+        Border.mmPadding = 0
+        DataField = 'VLR_PGTO_CREDITO_LOJA'
+        DataPipeline = pplRelatorio
+        DisplayFormat = '#,0;-#,0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'pplRelatorio'
+        mmHeight = 3175
+        mmLeft = 120394
+        mmTop = 6879
+        mmWidth = 22226
         BandType = 4
         LayerName = Foreground
       end
@@ -1773,99 +3234,8 @@ object frmRelatorioVendas: TfrmRelatorioVendas
       Background.Brush.Style = bsClear
       Border.mmPadding = 0
       mmBottomOffset = 0
-      mmHeight = 74613
+      mmHeight = 11906
       mmPrintPosition = 0
-      object chtRelCadastradosAPP: TppTeeChart
-        DesignLayer = ppDesignLayer1
-        UserName = 'chtRelCadastradosAPP'
-        Border.BorderPositions = [bpLeft, bpTop, bpRight, bpBottom]
-        Border.Visible = True
-        Border.mmPadding = 0
-        mmHeight = 70398
-        mmLeft = 768
-        mmTop = 1040
-        mmWidth = 139509
-        BandType = 11
-        LayerName = Foreground
-        object ppTeeChartControl1: TppTeeChartControl
-          Left = 0
-          Top = 0
-          Width = 400
-          Height = 250
-          Title.Font.Color = clBlack
-          Title.Font.Style = [fsBold]
-          Title.Text.Strings = (
-            'Clientes Cadastrados pelo APP')
-          BackColor = clWhite
-          BottomAxis.LabelsAngle = 90
-          BottomAxis.LabelsFormat.Font.Height = -9
-          Legend.Visible = False
-          MaxPointsPerPage = 0
-          Page = 1
-          ScaleLastPage = True
-          BevelOuter = bvNone
-          BorderStyle = bsNone
-          Color = clWhite
-          DefaultCanvas = 'TTeeCanvas3D'
-          ColorPaletteIndex = 13
-          object Series1: TBarSeries
-            Marks.Font.Height = -9
-            Marks.Visible = False
-            Marks.Angle = 90
-            SeriesColor = 8454143
-            Title = 'RelBarra_Cadastrados_APP'
-            XValues.Name = 'X'
-            XValues.Order = loAscending
-            YValues.Name = 'Bar'
-            YValues.Order = loNone
-          end
-        end
-      end
-      object chtRelNovosCadastros: TppTeeChart
-        DesignLayer = ppDesignLayer1
-        UserName = 'chtRelNovosCadastros'
-        Border.BorderPositions = [bpLeft, bpTop, bpRight, bpBottom]
-        Border.Visible = True
-        Border.mmPadding = 0
-        mmHeight = 70407
-        mmLeft = 144749
-        mmTop = 1058
-        mmWidth = 139457
-        BandType = 11
-        LayerName = Foreground
-        object ppTeeChartControl2: TppTeeChartControl
-          Left = 0
-          Top = 0
-          Width = 400
-          Height = 250
-          BackWall.Color = clWhite
-          Title.Font.Color = clBlack
-          Title.Font.Style = [fsBold]
-          Title.Text.Strings = (
-            'Novos Cadastros')
-          BackColor = clWhite
-          BottomAxis.LabelsAngle = 90
-          BottomAxis.LabelsFormat.Font.Height = -9
-          Legend.Visible = False
-          MaxPointsPerPage = 0
-          Page = 1
-          ScaleLastPage = True
-          BevelOuter = bvNone
-          BorderStyle = bsNone
-          Color = clWhite
-          DefaultCanvas = 'TTeeCanvas3D'
-          ColorPaletteIndex = 13
-          object Series1: TBarSeries
-            Marks.Visible = False
-            SeriesColor = 8454143
-            Title = 'RelBarra_Novos_Cadastros'
-            XValues.Name = 'X'
-            XValues.Order = loAscending
-            YValues.Name = 'Bar'
-            YValues.Order = loNone
-          end
-        end
-      end
     end
     object ppDesignLayers1: TppDesignLayers
       object ppDesignLayer1: TppDesignLayer
@@ -1882,75 +3252,5 @@ object frmRelatorioVendas: TfrmRelatorioVendas
     UserName = 'lRelatorio'
     Left = 612
     Top = 340
-    object pplRelatorioppField1: TppField
-      FieldAlias = 'ANOMES'
-      FieldName = 'ANOMES'
-      FieldLength = 0
-      DisplayWidth = 0
-      Position = 0
-    end
-    object pplRelatorioppField2: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'QTD_TOT_CLI_APP'
-      FieldName = 'QTD_TOT_CLI_APP'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 9
-      Position = 1
-    end
-    object pplRelatorioppField3: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'QTD_NEW_CLI_APP'
-      FieldName = 'QTD_NEW_CLI_APP'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 9
-      Position = 2
-    end
-    object pplRelatorioppField4: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'QTD_CLI_GRAZZIOTIN'
-      FieldName = 'QTD_CLI_GRAZZIOTIN'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 9
-      Position = 3
-    end
-    object pplRelatorioppField5: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'QTD_NEW_CLI_APP_APROV'
-      FieldName = 'QTD_NEW_CLI_APP_APROV'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 9
-      Position = 4
-    end
-    object pplRelatorioppField6: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'TOT_CLI_PGTO_APP'
-      FieldName = 'TOT_CLI_PGTO_APP'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 9
-      Position = 5
-    end
-    object pplRelatorioppField7: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'QTD_PARCELAS_PGTO_CIA'
-      FieldName = 'QTD_PARCELAS_PGTO_CIA'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 9
-      Position = 6
-    end
-    object pplRelatorioppField8: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'VLR_PARCELAS_PGTO_CIA'
-      FieldName = 'VLR_PARCELAS_PGTO_CIA'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 19
-      Position = 7
-    end
   end
 end

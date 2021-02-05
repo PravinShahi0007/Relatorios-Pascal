@@ -29,7 +29,6 @@ object frmPrincipalRelatorioVendas: TfrmPrincipalRelatorioVendas
     BevelInner = bvLowered
     ShowCaption = False
     TabOrder = 0
-    ExplicitWidth = 208
     object btnAtualizar: TBitBtn
       Left = 2
       Top = 2
@@ -144,7 +143,6 @@ object frmPrincipalRelatorioVendas: TfrmPrincipalRelatorioVendas
       ParentFont = False
       TabOrder = 0
       OnClick = btnAtualizarClick
-      ExplicitWidth = 204
     end
     object btnConfiguracao: TBitBtn
       Left = 2
@@ -260,7 +258,6 @@ object frmPrincipalRelatorioVendas: TfrmPrincipalRelatorioVendas
       ParentFont = False
       TabOrder = 1
       OnClick = btnConfiguracaoClick
-      ExplicitWidth = 204
     end
     object btnSair: TBitBtn
       Left = 2
@@ -376,7 +373,6 @@ object frmPrincipalRelatorioVendas: TfrmPrincipalRelatorioVendas
       ParentFont = False
       TabOrder = 2
       OnClick = btnSairClick
-      ExplicitWidth = 204
     end
     object btnUsuario: TBitBtn
       Left = 2
@@ -492,7 +488,6 @@ object frmPrincipalRelatorioVendas: TfrmPrincipalRelatorioVendas
       ParentFont = False
       TabOrder = 3
       OnClick = btnUsuarioClick
-      ExplicitWidth = 204
     end
     object pnlUsuario: TPanel
       Left = 2
@@ -504,8 +499,6 @@ object frmPrincipalRelatorioVendas: TfrmPrincipalRelatorioVendas
       BevelInner = bvLowered
       Caption = ' Usu'#225'rio: 99999999'
       TabOrder = 4
-      ExplicitTop = 509
-      ExplicitWidth = 204
     end
   end
   object pumClienteAVista: TPopupMenu

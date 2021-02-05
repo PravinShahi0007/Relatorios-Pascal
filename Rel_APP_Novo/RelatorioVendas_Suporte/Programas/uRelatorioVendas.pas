@@ -20,7 +20,7 @@ uses
   System.StrUtils, Rest.Json, VclTee.TeeGDIPlus, VCLTee.TeEngine,
   VCLTee.TeeProcs, VCLTee.Chart, VCLTee.Series, ppVar, ppPrnabl, ppClass,
   ppCtrls, ppBands, ppCache, ppDB, ppDesignLayer, ppParameter, ppDBPipe, ppComm,
-  ppRelatv, ppProd, ppReport, ppChrt, Vcl.Imaging.jpeg;
+  ppRelatv, ppProd, ppReport, ppChrt, Vcl.Imaging.jpeg, Vcl.AppEvnts;
 
 type
   TfrmRelatorioVendas = class(TForm)
@@ -75,7 +75,6 @@ type
     srsBarra_Parcelas_Pagas_CIA: TBarSeries;
     srsLinha_Parcelas_Pagas_CIA: TLineSeries;
     srsArea_Parcelas_Pagas_CIA: TAreaSeries;
-    btnRelatorio: TBitBtn;
     rptRelatorio: TppReport;
     pplRelatorio: TppDBPipeline;
     ppParameterList1: TppParameterList;
@@ -99,13 +98,97 @@ type
     lblRelNovosCadastrados: TppDBText;
     lblRelClientesGrazziotin: TppDBText;
     ppPageSummaryBand1: TppPageSummaryBand;
-    chtRelCadastradosAPP: TppTeeChart;
-    chtRelNovosCadastros: TppTeeChart;
     lblRelClientesAprovados: TppDBText;
     lblRelPagamentosAPP: TppDBText;
     lblRelParcelasPagasCIA: TppDBText;
     lblRelValorPagoCIA: TppDBText;
     imgRelLogo: TppImage;
+    qryRelatorioVendasTOT_CLI_PGTO_CIA: TFMTBCDField;
+    qryRelatorioVendasQTD_PARCELAS_PGTO_APP: TBCDField;
+    qryRelatorioVendasVLR_PARCELAS_PGTO_APP: TFMTBCDField;
+    qryRelatorioVendasQTD_PARCELAS_PGTO_DECRE: TBCDField;
+    qryRelatorioVendasVLR_PARCELAS_PGTO_DECRE: TFMTBCDField;
+    qryRelatorioVendasQTD_PARCELAS_PGTO_0800: TBCDField;
+    qryRelatorioVendasVLR_PARCELAS_PGTO_0800: TFMTBCDField;
+    qryRelatorioVendasQTD_PGTO_BOLETO_APP: TBCDField;
+    qryRelatorioVendasVLR_PGTO_BOLETO_APP: TFMTBCDField;
+    qryRelatorioVendasQTD_PGTO_DEBITO_APP: TBCDField;
+    qryRelatorioVendasVLR_PGTO_DEBITO_APP: TFMTBCDField;
+    qryRelatorioVendasQTD_PGTO_CREDITO_APP: TBCDField;
+    qryRelatorioVendasVLR_PGTO_CREDITO_APP: TFMTBCDField;
+    qryRelatorioVendasQTD_PGTO_PIX_APP: TBCDField;
+    qryRelatorioVendasVLR_PGTO_PIX_APP: TFMTBCDField;
+    qryRelatorioVendasQTD_PGTO_BOLETO_DECRE: TBCDField;
+    qryRelatorioVendasVLR_PGTO_BOLETO_DECRE: TFMTBCDField;
+    qryRelatorioVendasQTD_PGTO_PIX_DECRE: TBCDField;
+    qryRelatorioVendasVLR_PGTO_PIX_DECRE: TFMTBCDField;
+    qryRelatorioVendasQTD_PGTO_LOJA: TBCDField;
+    qryRelatorioVendasVLR_PGTO_LOJA: TFMTBCDField;
+    qryRelatorioVendasQTD_PGTO_DEBITO_LOJA: TBCDField;
+    qryRelatorioVendasVLR_PGTO_DEBITO_LOJA: TFMTBCDField;
+    qryRelatorioVendasQTD_PGTO_CREDITO_LOJA: TBCDField;
+    qryRelatorioVendasVLR_PGTO_CREDITO_LOJA: TFMTBCDField;
+    qryRelatorioVendasQTD_PGTO_PIX_LOJA: TBCDField;
+    qryRelatorioVendasVLR_PGTO_PIX_LOJA: TFMTBCDField;
+    srsBarra_Valor_Pago_CIA: TBarSeries;
+    btnRelatorio: TBitBtn;
+    pnlAguarde: TPanel;
+    srsLinha_Valor_Pago_CIA: TLineSeries;
+    srsArea_Valor_Pago_CIA: TAreaSeries;
+    srsBarra_Parcelas_Pagas_APP: TBarSeries;
+    srsBarra_Valor_Pago_APP: TBarSeries;
+    qryRelatorioVendasMes: TStringField;
+    qryRelatorioVendasDTA_MES: TDateTimeField;
+    qryRelatorioVendasANO: TFMTBCDField;
+    lblTituloRelatorioVendas: TppLabel;
+    lblTituloAno: TppLabel;
+    ppDBText1: TppDBText;
+    lblRelCabValorPagoAPP: TppLabel;
+    lblRelCabParcelasPagasAPP: TppLabel;
+    lblRelParcelasPagasAPP: TppDBText;
+    lblRelValorPagoAPP: TppDBText;
+    lblRelCabParcelasPagasDECRE: TppLabel;
+    lblRelCabValorPagoDECRE: TppLabel;
+    lblRelParcelasDECRE: TppDBText;
+    lblRelValorPagoDECRE: TppDBText;
+    srsLinha_Parcelas_Pagas_APP: TLineSeries;
+    srsLinha_Valor_Pago_APP: TLineSeries;
+    ppLabel1: TppLabel;
+    ppDBText2: TppDBText;
+    ppLabel2: TppLabel;
+    ppDBText3: TppDBText;
+    ppLabel3: TppLabel;
+    ppLabel4: TppLabel;
+    ppDBText4: TppDBText;
+    ppDBText5: TppDBText;
+    ppLine1: TppLine;
+    ppLabel5: TppLabel;
+    ppLabel6: TppLabel;
+    ppDBText6: TppDBText;
+    ppDBText7: TppDBText;
+    ppLabel7: TppLabel;
+    ppLabel8: TppLabel;
+    ppDBText8: TppDBText;
+    ppDBText9: TppDBText;
+    ppLabel9: TppLabel;
+    ppDBText10: TppDBText;
+    ppLabel10: TppLabel;
+    ppLabel11: TppLabel;
+    ppDBText11: TppDBText;
+    ppDBText12: TppDBText;
+    ppLabel12: TppLabel;
+    ppLabel13: TppLabel;
+    ppDBText13: TppDBText;
+    ppDBText14: TppDBText;
+    ppLabel14: TppLabel;
+    ppLabel15: TppLabel;
+    ppDBText15: TppDBText;
+    ppDBText16: TppDBText;
+    ppLabel16: TppLabel;
+    ppLabel17: TppLabel;
+    ppDBText17: TppDBText;
+    ppDBText18: TppDBText;
+    ppLine2: TppLine;
     procedure Mostra_Dados(Sender: TObject);
     procedure Preenche_Vetores_Grafico(Sender: TObject);
     procedure btnSairClick(Sender: TObject);
@@ -133,6 +216,7 @@ type
     procedure lblMostrarGraficoClick(Sender: TObject);
     procedure grpDatasClick(Sender: TObject);
     procedure btnRelatorioClick(Sender: TObject);
+    procedure qryRelatorioVendasCalcFields(DataSet: TDataSet);
   private
   protected
     { Private declarations }
@@ -142,14 +226,49 @@ type
         sWhereClientes, sOrderClientes: String;
         aQtd_Tot_Cli_APP, aQtd_New_Cli_APP, aQtd_Cli_Grazziotin,
            aQtd_New_Cli_APP_Aprov, aTot_Cli_Pgto_APP,
-           aQtd_Parcelas_Pgto_CIA, aVlr_Parcelas_Pgto_CIA: array of Double;
+           aQtd_Parcelas_Pgto_CIA, aVlr_Parcelas_Pgto_CIA,
+           aQtd_Parcelas_Pgto_APP, aVlr_Parcelas_Pgto_APP: array of Double;
         aLabels: array of String;
   end;
 
 const
      sSQLRelatorioVendas = 'select extract(month from dta_mes)||''/''||extract(year from dta_mes) as anomes,'+
-                           '       qtd_tot_cli_app,qtd_new_cli_app,qtd_cli_grazziotin,qtd_new_cli_app_aprov,'+
-                           '       tot_cli_pgto_app,qtd_parcelas_pgto_cia,vlr_parcelas_pgto_cia '+
+                           '       dta_mes,'+
+                           '       extract(YEAR FROM dta_mes) AS Ano,'+
+                           '       qtd_tot_cli_app,'+
+                           '       qtd_new_cli_app,'+
+                           '       qtd_cli_grazziotin,'+
+                           '       qtd_new_cli_app_aprov,'+
+                           '       tot_cli_pgto_cia,'+
+                           '       tot_cli_pgto_app,'+
+                           '       qtd_parcelas_pgto_cia,'+
+                           '       qtd_parcelas_pgto_app,'+
+                           '       vlr_parcelas_pgto_cia,'+
+                           '       vlr_parcelas_pgto_app,'+
+                           '       qtd_parcelas_pgto_decre,'+
+                           '       vlr_parcelas_pgto_decre,'+
+                           '       qtd_parcelas_pgto_0800,'+
+                           '       vlr_parcelas_pgto_0800,'+
+                           '       qtd_pgto_boleto_app,'+
+                           '       vlr_pgto_boleto_app,'+
+                           '       qtd_pgto_debito_app,'+
+                           '       vlr_pgto_debito_app,'+
+                           '       qtd_pgto_credito_app,'+
+                           '       vlr_pgto_credito_app,'+
+                           '       qtd_pgto_pix_app,'+
+                           '       vlr_pgto_pix_app,'+
+                           '       qtd_pgto_boleto_decre,'+
+                           '       vlr_pgto_boleto_decre,'+
+                           '       qtd_pgto_pix_decre,'+
+                           '       vlr_pgto_pix_decre,'+
+                           '       qtd_pgto_loja,'+
+                           '       vlr_pgto_loja,'+
+                           '       qtd_pgto_debito_loja,'+
+                           '       vlr_pgto_debito_loja,'+
+                           '       qtd_pgto_credito_loja,'+
+                           '       vlr_pgto_credito_loja,'+
+                           '       qtd_pgto_pix_loja,'+
+                           '       vlr_pgto_pix_loja '+
                            'from grzw_rel_pgtos_appxloja '+
                            'where (extract(year from dta_mes) = :ano) '+
                            'order by dta_mes';
@@ -175,6 +294,8 @@ begin
      SetLength(aTot_Cli_Pgto_APP, iRegistros);
      SetLength(aQtd_Parcelas_Pgto_CIA, iRegistros);
      SetLength(aVlr_Parcelas_Pgto_CIA, iRegistros);
+     SetLength(aQtd_Parcelas_Pgto_APP, iRegistros);
+     SetLength(aVlr_Parcelas_Pgto_APP, iRegistros);
      SetLength(aLabels, iRegistros);
 
      qryRelatorioVendas.First;
@@ -189,6 +310,8 @@ begin
           aTot_Cli_Pgto_APP[iInd] := qryRelatorioVendasTOT_CLI_PGTO_APP.AsFloat;
           aQtd_Parcelas_Pgto_CIA[iInd] := qryRelatorioVendasQTD_PARCELAS_PGTO_CIA.AsFloat;
           aVlr_Parcelas_Pgto_CIA[iInd] := qryRelatorioVendasVLR_PARCELAS_PGTO_CIA.AsFloat;
+          aQtd_Parcelas_Pgto_APP[iInd] := qryRelatorioVendasQTD_PARCELAS_PGTO_APP.AsFloat;
+          aVlr_Parcelas_Pgto_APP[iInd] := qryRelatorioVendasVLR_PARCELAS_PGTO_APP.AsFloat;
 
           aLabels[iInd] := qryRelatorioVendasANOMES.AsString;
 
@@ -203,6 +326,12 @@ begin
      srsBarra_Novos_Clientes_Aprovados_APP.Clear;
      srsBarra_Total_Pagamentos_APP.Clear;
      srsBarra_Parcelas_Pagas_CIA.Clear;
+     srsBarra_Valor_Pago_CIA.Clear;
+     srsBarra_Parcelas_Pagas_APP.Clear;
+     srsBarra_Valor_Pago_APP.Clear;
+
+     //chtRelCadastradosAPP.Chart[0].Clear; // Cadastrados APP
+     //chtRelNovosCadastros.Chart[0].Clear; // Novos Cadastrados
 
      // Linha...
      srsLinha_Cadastrados_APP.Clear;
@@ -211,6 +340,9 @@ begin
      srsLinha_Novos_Clientes_Aprovados_APP.Clear;
      srsLinha_Total_Pagamentos_APP.Clear;
      srsLinha_Parcelas_Pagas_CIA.Clear;
+     srsLinha_Valor_Pago_CIA.Clear;
+     srsLinha_Parcelas_Pagas_APP.Clear;
+     srsLinha_Valor_Pago_APP.Clear;
 
      // Área...
      srsArea_Cadastrados_APP.Clear;
@@ -219,6 +351,7 @@ begin
      srsArea_Novos_Clientes_Aprovados_APP.Clear;
      srsArea_Total_Pagamentos_APP.Clear;
      srsArea_Parcelas_Pagas_CIA.Clear;
+     srsArea_Valor_Pago_CIA.Clear;
 
      for iInd := 0 to High(aQtd_Tot_Cli_APP) do
      begin
@@ -229,10 +362,13 @@ begin
           srsBarra_Novos_Clientes_Aprovados_APP.AddBar(aQtd_New_Cli_APP_Aprov[iInd],aLabels[iInd],clGreen);
           srsBarra_Total_Pagamentos_APP.AddBar(aTot_Cli_Pgto_APP[iInd],aLabels[iInd],clLaranja);
           srsBarra_Parcelas_Pagas_CIA.AddBar(aQtd_Parcelas_Pgto_CIA[iInd],aLabels[iInd],clFuchsia);
+          srsBarra_Valor_Pago_CIA.AddBar(aVlr_Parcelas_Pgto_CIA[iInd],aLabels[iInd],clOlive);
+          srsBarra_Parcelas_Pagas_APP.AddBar(aQtd_Parcelas_Pgto_APP[iInd],aLabels[iInd],clAqua);
+          srsBarra_Valor_Pago_APP.AddBar(aVlr_Parcelas_Pgto_APP[iInd],aLabels[iInd],clSilver);
 
           // Relatorio
-          chtRelCadastradosAPP.Chart[0].Add(aQtd_Tot_Cli_APP[iInd],aLabels[iInd],clYellow); // Cadastrados APP
-          chtRelNovosCadastros.Chart[0].Add(aQtd_New_Cli_APP[iInd],aLabels[iInd],clYellow); // Novos Cadastrados
+          //chtRelCadastradosAPP.Chart[0].Add(aQtd_Tot_Cli_APP[iInd],aLabels[iInd],clYellow); // Cadastrados APP
+          //chtRelNovosCadastros.Chart[0].Add(aQtd_New_Cli_APP[iInd],aLabels[iInd],clYellow); // Novos Cadastrados
 
           // Linha...
           srsLinha_Cadastrados_APP.Add(aQtd_Tot_Cli_APP[iInd],aLabels[iInd],clRed);
@@ -241,6 +377,9 @@ begin
           srsLinha_Novos_Clientes_Aprovados_APP.Add(aQtd_New_Cli_APP_Aprov[iInd],aLabels[iInd],clGreen);
           srsLinha_Total_Pagamentos_APP.Add(aTot_Cli_Pgto_APP[iInd],aLabels[iInd],clLaranja);
           srsLinha_Parcelas_Pagas_CIA.Add(aQtd_Parcelas_Pgto_CIA[iInd],aLabels[iInd],clFuchsia);
+          srsLinha_Valor_Pago_CIA.Add(aVlr_Parcelas_Pgto_CIA[iInd],aLabels[iInd],clOlive);
+          srsLinha_Parcelas_Pagas_APP.Add(aQtd_Parcelas_Pgto_APP[iInd],aLabels[iInd],clAqua);
+          srsLinha_Valor_Pago_APP.Add(aVlr_Parcelas_Pgto_APP[iInd],aLabels[iInd],clOlive);
 
           // Área....
           srsArea_Cadastrados_APP.Add(aQtd_Tot_Cli_APP[iInd],aLabels[iInd],clRed);
@@ -249,11 +388,17 @@ begin
           srsArea_Novos_Clientes_Aprovados_APP.Add(aQtd_New_Cli_APP_Aprov[iInd],aLabels[iInd],clGreen);
           srsArea_Total_Pagamentos_APP.Add(aTot_Cli_Pgto_APP[iInd],aLabels[iInd],clLaranja);
           srsArea_Parcelas_Pagas_CIA.Add(aQtd_Parcelas_Pgto_CIA[iInd],aLabels[iInd],clFuchsia);
+          srsArea_Valor_Pago_CIA.Add(aQtd_Parcelas_Pgto_CIA[iInd],aLabels[iInd],clOlive);
 
      end;
 
      // Seta valores iniciais...
      cbxMostrarGraficoChange(Sender);
+end;
+
+procedure TfrmRelatorioVendas.qryRelatorioVendasCalcFields(DataSet: TDataSet);
+begin
+     qryRelatorioVendasMes.Value := Mes(qryRelatorioVendasDTA_MES.AsDateTime);
 end;
 
 procedure TfrmRelatorioVendas.Mostra_Dados(Sender: TObject);
@@ -270,7 +415,6 @@ begin
 
      qryRelatorioVendas.First;
      pnlFundo.Visible := True;
-     btnRelatorio.Visible := True;
 end;
 
 procedure TfrmRelatorioVendas.btnRelatorioClick(Sender: TObject);
@@ -283,6 +427,9 @@ end;
 
 procedure TfrmRelatorioVendas.btnRelatorioVendasClick(Sender: TObject);
 begin
+     pnlAguarde.Visible := True;
+     pnlAguarde.Update;
+
      if (dtmRelatorioVendas.fdcRelatorioVendas.InTransaction) then
         dtmRelatorioVendas.trsRelatorioVendas.Commit;
      dtmRelatorioVendas.trsRelatorioVendas.StartTransaction;
@@ -312,6 +459,7 @@ begin
      dtmRelatorioVendas.fspGRZ_Rel_Pgto_AppxLoja_SP.Params.ParamByName('pdatafinal').AsString := edtFinal.Text;
      dtmRelatorioVendas.fspGRZ_Rel_Pgto_AppxLoja_SP.Execute();
 
+     pnlAguarde.Visible := False;
      Mostra_Dados(Sender);
 end;
 
@@ -322,7 +470,11 @@ end;
 
 procedure TfrmRelatorioVendas.cbxMostrarGraficoChange(Sender: TObject);
 begin
+     // Eixos Ortogonais...
      chtGrafico.View3DOptions.Orthogonal := True;
+     // Legenda....
+     chtGrafico.Legend.Visible := (cbxMostrarGrafico.ItemIndex = 5) or
+                                  (cbxMostrarGrafico.ItemIndex = 6);
      // Barra
      srsBarra_Cadastrados_APP.Visible := (cbxMostrarGrafico.ItemIndex = 0);
      srsBarra_Novos_Cadastrados.Visible := (cbxMostrarGrafico.ItemIndex = 1);
@@ -330,6 +482,9 @@ begin
      srsBarra_Novos_Clientes_Aprovados_APP.Visible := (cbxMostrarGrafico.ItemIndex = 3);
      srsBarra_Total_Pagamentos_APP.Visible := (cbxMostrarGrafico.ItemIndex = 4);
      srsBarra_Parcelas_Pagas_CIA.Visible := (cbxMostrarGrafico.ItemIndex = 5);
+     srsBarra_Valor_Pago_CIA.Visible := (cbxMostrarGrafico.ItemIndex = 5);
+     srsBarra_Parcelas_Pagas_APP.Visible := (cbxMostrarGrafico.ItemIndex = 6);
+     srsBarra_Valor_Pago_APP.Visible := (cbxMostrarGrafico.ItemIndex = 6);
 
      // Linha
      srsLinha_Cadastrados_APP.Visible := (cbxMostrarGrafico.ItemIndex = 0);
@@ -338,6 +493,9 @@ begin
      srsLinha_Novos_Clientes_Aprovados_APP.Visible := (cbxMostrarGrafico.ItemIndex = 3);
      srsLinha_Total_Pagamentos_APP.Visible := (cbxMostrarGrafico.ItemIndex = 4);
      srsLinha_Parcelas_Pagas_CIA.Visible := (cbxMostrarGrafico.ItemIndex = 5);
+     srsLinha_Valor_Pago_CIA.Visible := (cbxMostrarGrafico.ItemIndex = 5);
+     srsLinha_Parcelas_Pagas_APP.Visible := (cbxMostrarGrafico.ItemIndex = 6);
+     srsLinha_Valor_Pago_APP.Visible := (cbxMostrarGrafico.ItemIndex = 6);
 
      // Área
      srsArea_Cadastrados_APP.Visible := (cbxMostrarGrafico.ItemIndex = 0);
@@ -346,6 +504,7 @@ begin
      srsArea_Novos_Clientes_Aprovados_APP.Visible := (cbxMostrarGrafico.ItemIndex = 3);
      srsArea_Total_Pagamentos_APP.Visible := (cbxMostrarGrafico.ItemIndex = 4);
      srsArea_Parcelas_Pagas_CIA.Visible := (cbxMostrarGrafico.ItemIndex = 5);
+     srsArea_Valor_Pago_CIA.Visible := (cbxMostrarGrafico.ItemIndex = 5);
 
      chtGrafico.Title.Text.Clear;
      case cbxMostrarGrafico.ItemIndex of
@@ -354,7 +513,8 @@ begin
           2: chtGrafico.Title.Text.Add('Clientes Grazziotin (Já cadastrados)');
           3: chtGrafico.Title.Text.Add('Novos clientes aprovados APP');
           4: chtGrafico.Title.Text.Add('Total de Pagamentos pelo APPP');
-          5: chtGrafico.Title.Text.Add('Quantidade de Parcelas Pagas na CIA');
+          5: chtGrafico.Title.Text.Add('Quantidade/Valor de Parcelas Pagas na CIA');
+          6: chtGrafico.Title.Text.Add('Quantidade/Valor de Parcelas Pagas no APP');
      end;
 
      cbxTipoGraficoChange(Sender);
@@ -378,6 +538,9 @@ begin
                    srsBarra_Novos_Clientes_Aprovados_APP.BarStyle := bsArrow;
                    srsBarra_Total_Pagamentos_APP.BarStyle := bsArrow;
                    srsBarra_Parcelas_Pagas_CIA.BarStyle := bsArrow;
+                   srsBarra_Valor_Pago_CIA.BarStyle := bsArrow;
+                   srsBarra_Parcelas_Pagas_APP.BarStyle := bsArrow;
+                   srsBarra_Valor_Pago_APP.BarStyle := bsArrow;
               end;
            1: begin
                    srsBarra_Cadastrados_APP.BarStyle := bsBevel;
@@ -386,6 +549,9 @@ begin
                    srsBarra_Novos_Clientes_Aprovados_APP.BarStyle := bsBevel;
                    srsBarra_Total_Pagamentos_APP.BarStyle := bsBevel;
                    srsBarra_Parcelas_Pagas_CIA.BarStyle := bsBevel;
+                   srsBarra_Valor_Pago_CIA.BarStyle := bsBevel;
+                   srsBarra_Parcelas_Pagas_APP.BarStyle := bsBevel;
+                   srsBarra_Valor_Pago_APP.BarStyle := bsBevel;
               end;
            2: begin
                    srsBarra_Cadastrados_APP.BarStyle := bsCilinder;
@@ -394,6 +560,9 @@ begin
                    srsBarra_Novos_Clientes_Aprovados_APP.BarStyle := bsCilinder;
                    srsBarra_Total_Pagamentos_APP.BarStyle := bsCilinder;
                    srsBarra_Parcelas_Pagas_CIA.BarStyle := bsCilinder;
+                   srsBarra_Valor_Pago_CIA.BarStyle := bsCilinder;
+                   srsBarra_Parcelas_Pagas_APP.BarStyle := bsCilinder;
+                   srsBarra_Valor_Pago_APP.BarStyle := bsCilinder;
               end;
            3: begin
                    srsBarra_Cadastrados_APP.BarStyle := bsCone;
@@ -402,6 +571,9 @@ begin
                    srsBarra_Novos_Clientes_Aprovados_APP.BarStyle := bsCone;
                    srsBarra_Total_Pagamentos_APP.BarStyle := bsCone;
                    srsBarra_Parcelas_Pagas_CIA.BarStyle := bsCone;
+                   srsBarra_Valor_Pago_CIA.BarStyle := bsCone;
+                   srsBarra_Parcelas_Pagas_APP.BarStyle := bsCone;
+                   srsBarra_Valor_Pago_APP.BarStyle := bsCone;
               end;
            4: begin
                    srsBarra_Cadastrados_APP.BarStyle := bsDiamond;
@@ -410,6 +582,9 @@ begin
                    srsBarra_Novos_Clientes_Aprovados_APP.BarStyle := bsDiamond;
                    srsBarra_Total_Pagamentos_APP.BarStyle := bsDiamond;
                    srsBarra_Parcelas_Pagas_CIA.BarStyle := bsDiamond;
+                   srsBarra_Valor_Pago_CIA.BarStyle := bsDiamond;
+                   srsBarra_Parcelas_Pagas_APP.BarStyle := bsDiamond;
+                   srsBarra_Valor_Pago_APP.BarStyle := bsDiamond;
               end;
            5: begin
                    srsBarra_Cadastrados_APP.BarStyle := bsEllipse;
@@ -418,6 +593,9 @@ begin
                    srsBarra_Novos_Clientes_Aprovados_APP.BarStyle := bsEllipse;
                    srsBarra_Total_Pagamentos_APP.BarStyle := bsEllipse;
                    srsBarra_Parcelas_Pagas_CIA.BarStyle := bsEllipse;
+                   srsBarra_Valor_Pago_CIA.BarStyle := bsEllipse;
+                   srsBarra_Parcelas_Pagas_APP.BarStyle := bsEllipse;
+                   srsBarra_Valor_Pago_APP.BarStyle := bsEllipse;
               end;
            6: begin
                    srsBarra_Cadastrados_APP.BarStyle := bsInvArrow;
@@ -426,6 +604,9 @@ begin
                    srsBarra_Novos_Clientes_Aprovados_APP.BarStyle := bsInvArrow;
                    srsBarra_Total_Pagamentos_APP.BarStyle := bsInvArrow;
                    srsBarra_Parcelas_Pagas_CIA.BarStyle := bsInvArrow;
+                   srsBarra_Valor_Pago_CIA.BarStyle := bsInvArrow;
+                   srsBarra_Parcelas_Pagas_APP.BarStyle := bsInvArrow;
+                   srsBarra_Valor_Pago_APP.BarStyle := bsInvArrow;
               end;
            7: begin
                    srsBarra_Cadastrados_APP.BarStyle := bsInvCone;
@@ -434,6 +615,9 @@ begin
                    srsBarra_Novos_Clientes_Aprovados_APP.BarStyle := bsInvCone;
                    srsBarra_Total_Pagamentos_APP.BarStyle := bsInvCone;
                    srsBarra_Parcelas_Pagas_CIA.BarStyle := bsInvCone;
+                   srsBarra_Valor_Pago_CIA.BarStyle := bsInvCone;
+                   srsBarra_Parcelas_Pagas_APP.BarStyle := bsInvCone;
+                   srsBarra_Valor_Pago_APP.BarStyle := bsInvCone;
               end;
            8: begin
                    srsBarra_Cadastrados_APP.BarStyle := bsInvPyramid;
@@ -442,6 +626,9 @@ begin
                    srsBarra_Novos_Clientes_Aprovados_APP.BarStyle := bsInvPyramid;
                    srsBarra_Total_Pagamentos_APP.BarStyle := bsInvPyramid;
                    srsBarra_Parcelas_Pagas_CIA.BarStyle := bsInvPyramid;
+                   srsBarra_Valor_Pago_CIA.BarStyle := bsInvPyramid;
+                   srsBarra_Parcelas_Pagas_APP.BarStyle := bsInvPyramid;
+                   srsBarra_Valor_Pago_APP.BarStyle := bsInvPyramid;
               end;
            9: begin
                    srsBarra_Cadastrados_APP.BarStyle := bsPyramid;
@@ -450,6 +637,9 @@ begin
                    srsBarra_Novos_Clientes_Aprovados_APP.BarStyle := bsPyramid;
                    srsBarra_Total_Pagamentos_APP.BarStyle := bsPyramid;
                    srsBarra_Parcelas_Pagas_CIA.BarStyle := bsPyramid;
+                   srsBarra_Valor_Pago_CIA.BarStyle := bsPyramid;
+                   srsBarra_Parcelas_Pagas_APP.BarStyle := bsPyramid;
+                   srsBarra_Valor_Pago_APP.BarStyle := bsPyramid;
               end;
           10: begin
                    srsBarra_Cadastrados_APP.BarStyle := bsRectangle;
@@ -458,6 +648,9 @@ begin
                    srsBarra_Novos_Clientes_Aprovados_APP.BarStyle := bsRectangle;
                    srsBarra_Total_Pagamentos_APP.BarStyle := bsRectangle;
                    srsBarra_Parcelas_Pagas_CIA.BarStyle := bsRectangle;
+                   srsBarra_Valor_Pago_CIA.BarStyle := bsRectangle;
+                   srsBarra_Parcelas_Pagas_APP.BarStyle := bsRectangle;
+                   srsBarra_Valor_Pago_APP.BarStyle := bsRectangle;
               end;
           11: begin
                    srsBarra_Cadastrados_APP.BarStyle := bsRectGradient;
@@ -466,6 +659,9 @@ begin
                    srsBarra_Novos_Clientes_Aprovados_APP.BarStyle := bsRectGradient;
                    srsBarra_Total_Pagamentos_APP.BarStyle := bsRectGradient;
                    srsBarra_Parcelas_Pagas_CIA.BarStyle := bsRectGradient;
+                   srsBarra_Valor_Pago_CIA.BarStyle := bsRectGradient;
+                   srsBarra_Parcelas_Pagas_APP.BarStyle := bsRectGradient;
+                   srsBarra_Valor_Pago_APP.BarStyle := bsRectGradient;
               end;
           12: begin
                    srsBarra_Cadastrados_APP.BarStyle := bsRoundRectangle;
@@ -474,6 +670,9 @@ begin
                    srsBarra_Novos_Clientes_Aprovados_APP.BarStyle := bsRoundRectangle;
                    srsBarra_Total_Pagamentos_APP.BarStyle := bsRoundRectangle;
                    srsBarra_Parcelas_Pagas_CIA.BarStyle := bsRoundRectangle;
+                   srsBarra_Valor_Pago_CIA.BarStyle := bsRoundRectangle;
+                   srsBarra_Parcelas_Pagas_APP.BarStyle := bsRoundRectangle;
+                   srsBarra_Valor_Pago_APP.BarStyle := bsRoundRectangle;
               end;
           13: begin
                    srsBarra_Cadastrados_APP.BarStyle := bsSlantCube;
@@ -482,6 +681,9 @@ begin
                    srsBarra_Novos_Clientes_Aprovados_APP.BarStyle := bsSlantCube;
                    srsBarra_Total_Pagamentos_APP.BarStyle := bsSlantCube;
                    srsBarra_Parcelas_Pagas_CIA.BarStyle := bsSlantCube;
+                   srsBarra_Valor_Pago_CIA.BarStyle := bsSlantCube;
+                   srsBarra_Parcelas_Pagas_APP.BarStyle := bsSlantCube;
+                   srsBarra_Valor_Pago_APP.BarStyle := bsSlantCube;
               end;
      end;
 
@@ -508,6 +710,9 @@ begin
      srsBarra_Novos_Clientes_Aprovados_APP.Visible := (cbxMostrarGrafico.ItemIndex = 3) and (cbxTipoGrafico.ItemIndex = 0);
      srsBarra_Total_Pagamentos_APP.Visible := (cbxMostrarGrafico.ItemIndex = 4) and (cbxTipoGrafico.ItemIndex = 0);
      srsBarra_Parcelas_Pagas_CIA.Visible := (cbxMostrarGrafico.ItemIndex = 5) and (cbxTipoGrafico.ItemIndex = 0);
+     srsBarra_Valor_Pago_CIA.Visible := (cbxMostrarGrafico.ItemIndex = 5) and (cbxTipoGrafico.ItemIndex = 0);
+     srsBarra_Parcelas_Pagas_APP.Visible := (cbxMostrarGrafico.ItemIndex = 6) and (cbxTipoGrafico.ItemIndex = 0);
+     srsBarra_Valor_Pago_APP.Visible := (cbxMostrarGrafico.ItemIndex = 6) and (cbxTipoGrafico.ItemIndex = 0);
 
      // Linha...
      srsLinha_Cadastrados_APP.Visible := (cbxMostrarGrafico.ItemIndex = 0) and (cbxTipoGrafico.ItemIndex = 1);
@@ -516,6 +721,9 @@ begin
      srsLinha_Novos_Clientes_Aprovados_APP.Visible := (cbxMostrarGrafico.ItemIndex = 3) and (cbxTipoGrafico.ItemIndex = 1);
      srsLinha_Total_Pagamentos_APP.Visible := (cbxMostrarGrafico.ItemIndex = 4) and (cbxTipoGrafico.ItemIndex = 1);
      srsLinha_Parcelas_Pagas_CIA.Visible := (cbxMostrarGrafico.ItemIndex = 5) and (cbxTipoGrafico.ItemIndex = 1);
+     srsLinha_Valor_Pago_CIA.Visible := (cbxMostrarGrafico.ItemIndex = 5) and (cbxTipoGrafico.ItemIndex = 1);
+     srsLinha_Parcelas_Pagas_APP.Visible := (cbxMostrarGrafico.ItemIndex = 6) and (cbxTipoGrafico.ItemIndex = 1);
+     srsLinha_Valor_Pago_APP.Visible := (cbxMostrarGrafico.ItemIndex = 6) and (cbxTipoGrafico.ItemIndex = 1);
 
      // Área....
      srsArea_Cadastrados_APP.Visible := (cbxMostrarGrafico.ItemIndex = 0) and (cbxTipoGrafico.ItemIndex = 2);
@@ -524,6 +732,7 @@ begin
      srsArea_Novos_Clientes_Aprovados_APP.Visible := (cbxMostrarGrafico.ItemIndex = 3) and (cbxTipoGrafico.ItemIndex = 2);
      srsArea_Total_Pagamentos_APP.Visible := (cbxMostrarGrafico.ItemIndex = 4) and (cbxTipoGrafico.ItemIndex = 2);
      srsArea_Parcelas_Pagas_CIA.Visible := (cbxMostrarGrafico.ItemIndex = 5) and (cbxTipoGrafico.ItemIndex = 2);
+     srsArea_Valor_Pago_CIA.Visible := (cbxMostrarGrafico.ItemIndex = 5) and (cbxTipoGrafico.ItemIndex = 2);
 
      cbxTipoBarraChange(Sender);
 end;
@@ -557,6 +766,9 @@ begin
      srsBarra_Novos_Clientes_Aprovados_APP.Marks.Visible := (chbMarcas.Checked);
      srsBarra_Total_Pagamentos_APP.Marks.Visible := (chbMarcas.Checked);
      srsBarra_Parcelas_Pagas_CIA.Marks.Visible := (chbMarcas.Checked);
+     srsBarra_Valor_Pago_CIA.Marks.Visible := (chbMarcas.Checked);
+     srsBarra_Parcelas_Pagas_APP.Marks.Visible := (chbMarcas.Checked);
+     srsBarra_Valor_Pago_APP.Marks.Visible := (chbMarcas.Checked);
 
      // Linha
      srsLinha_Cadastrados_APP.Marks.Visible := (chbMarcas.Checked);
@@ -565,6 +777,9 @@ begin
      srsLinha_Novos_Clientes_Aprovados_APP.Marks.Visible := (chbMarcas.Checked);
      srsLinha_Total_Pagamentos_APP.Marks.Visible := (chbMarcas.Checked);
      srsLinha_Parcelas_Pagas_CIA.Marks.Visible := (chbMarcas.Checked);
+     srsLinha_Valor_Pago_CIA.Marks.Visible := (chbMarcas.Checked);
+     srsLinha_Parcelas_Pagas_APP.Marks.Visible := (chbMarcas.Checked);
+     srsLinha_Valor_Pago_APP.Marks.Visible := (chbMarcas.Checked);
 
      // Area
      srsArea_Cadastrados_APP.Marks.Visible := (chbMarcas.Checked);
@@ -573,7 +788,7 @@ begin
      srsArea_Novos_Clientes_Aprovados_APP.Marks.Visible := (chbMarcas.Checked);
      srsArea_Total_Pagamentos_APP.Marks.Visible := (chbMarcas.Checked);
      srsArea_Parcelas_Pagas_CIA.Marks.Visible := (chbMarcas.Checked);
-
+     srsArea_Valor_Pago_CIA.Marks.Visible := (chbMarcas.Checked);
 end;
 
 procedure TfrmRelatorioVendas.edtFinalExit(Sender: TObject);
@@ -665,6 +880,9 @@ begin
      srsBarra_Novos_Clientes_Aprovados_APP.Visible := (cbxTipoGrafico.ItemIndex = 0);
      srsBarra_Total_Pagamentos_APP.Visible := (cbxTipoGrafico.ItemIndex = 0);
      srsBarra_Parcelas_Pagas_CIA.Visible := (cbxTipoGrafico.ItemIndex = 0);
+     srsBarra_Valor_Pago_CIA.Visible := (cbxTipoGrafico.ItemIndex = 0);
+     srsBarra_Parcelas_Pagas_APP.Visible := (cbxTipoGrafico.ItemIndex = 0);
+     srsBarra_Valor_Pago_APP.Visible := (cbxTipoGrafico.ItemIndex = 0);
 
      // Linha...
      srsLinha_Cadastrados_APP.Visible := (cbxTipoGrafico.ItemIndex = 1);
@@ -673,6 +891,9 @@ begin
      srsLinha_Novos_Clientes_Aprovados_APP.Visible := (cbxTipoGrafico.ItemIndex = 1);
      srsLinha_Total_Pagamentos_APP.Visible := (cbxTipoGrafico.ItemIndex = 1);
      srsLinha_Parcelas_Pagas_CIA.Visible := (cbxTipoGrafico.ItemIndex = 1);
+     srsLinha_Valor_Pago_CIA.Visible := (cbxTipoGrafico.ItemIndex = 1);
+     srsLinha_Parcelas_Pagas_APP.Visible := (cbxTipoGrafico.ItemIndex = 1);
+     srsLinha_Valor_Pago_APP.Visible := (cbxTipoGrafico.ItemIndex = 1);
 
      // Área...
      srsArea_Cadastrados_APP.Visible := (cbxTipoGrafico.ItemIndex = 2);
@@ -681,7 +902,7 @@ begin
      srsArea_Novos_Clientes_Aprovados_APP.Visible := (cbxTipoGrafico.ItemIndex = 2);
      srsArea_Total_Pagamentos_APP.Visible := (cbxTipoGrafico.ItemIndex = 2);
      srsArea_Parcelas_Pagas_CIA.Visible := (cbxTipoGrafico.ItemIndex = 2);
-
+     srsArea_Valor_Pago_CIA.Visible := (cbxTipoGrafico.ItemIndex = 2);
 end;
 
 end.
