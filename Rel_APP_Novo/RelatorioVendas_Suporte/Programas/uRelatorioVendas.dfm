@@ -377,6 +377,102 @@ object frmRelatorioVendas: TfrmRelatorioVendas
             FieldName = 'VLR_PARCELAS_PGTO_DECRE'
             Title.Caption = 'Valor Parcelas DECRE'
             Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'QTD_PARCELAS_PGTO_0800'
+            Title.Caption = 'Qtd Parc 0800'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'VLR_PARCELAS_PGTO_0800'
+            Title.Caption = 'Vlr Parc 0800'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'QTD_PGTO_BOLETO_APP'
+            Title.Caption = 'Qtd Boleto APP'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'VLR_PGTO_BOLETO_APP'
+            Title.Caption = 'Vlr Boleto APP'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'QTD_PGTO_DEBITO_APP'
+            Title.Caption = 'Qtd D'#233'bito APP'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'VLR_PGTO_DEBITO_APP'
+            Title.Caption = 'Vlr D'#233'bito APP'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'QTD_PGTO_CREDITO_APP'
+            Title.Caption = 'Qtd Cr'#233'dito APP'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'VLR_PGTO_CREDITO_APP'
+            Title.Caption = 'Vlr Cr'#233'dito APP'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'QTD_PGTO_BOLETO_DECRE'
+            Title.Caption = 'Qtd Boleto DECRE'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'VLR_PGTO_BOLETO_DECRE'
+            Title.Caption = 'Vlr Boleto DECRE'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'QTD_PGTO_LOJA'
+            Title.Caption = 'Qtd Pgto LOJA'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'VLR_PGTO_LOJA'
+            Title.Caption = 'Vlr Pgto LOJA'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'QTD_PGTO_DEBITO_LOJA'
+            Title.Caption = 'Qtd D'#233'bito LOJA'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'VLR_PGTO_DEBITO_LOJA'
+            Title.Caption = 'Vlr D'#233'bito LOJA'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'QTD_PGTO_CREDITO_LOJA'
+            Title.Caption = 'Qtd Cr'#233'dito LOJA'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'VLR_PGTO_CREDITO_LOJA'
+            Title.Caption = 'Vlr Cr'#233'dito LOJA'
+            Visible = True
           end>
       end
       object pnlCabOpcoesGrafico: TPanel
