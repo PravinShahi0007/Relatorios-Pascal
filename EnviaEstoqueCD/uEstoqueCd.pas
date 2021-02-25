@@ -222,7 +222,7 @@ var
 begin
    try
   //sDiretorio := GetCurrentDir;
-  sDiretorio :='C:\Rel_Envial_Email_Numero_Sorte';
+  sDiretorio :='c:\EnviaEstoqueCD\';
   iArqIni := TIniFile.Create(sDiretorio+'\config.ini');
   sEmail := iArqIni.ReadString('EMAIL','EMAIL','');
   sAssunto := iArqIni.ReadString('EMAIL FROM','Assunto','');
