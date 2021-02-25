@@ -122,24 +122,6 @@ begin
            qry.First;
            while not qry.Eof do
            Begin
-                MedPecasSorTT   :=  0;
-                MedCodlivroTT   :=  0;
-                MedEndlivroTT   :=  0;
-                MedPecaslivroTT :=  0;
-                iSKU_Sresult     := 0;
-                iQT_FUNC_Sresult := 0;
-                iQT_ENDERECO_Sresult := 0;
-                iQT_PECAS_Sresult := 0;
-                iSKU_Presult      := 0;
-                iQT_FUNC_Presult  := 0;
-                iQT_ENDERECO_Presult := 0;
-                iQT_PECAS_Presult := 0;
-                MedCodsor      := 0;
-                MedEndSor      := 0;
-                MedPecasSor    := 0;
-                MedCodlivro    := 0;
-                MedEndlivro    := 0;
-                MedPecaslivro  := 0;
 
                 iSKU_S         := qry.FieldByName('SKU_S').AsInteger;
                 iQT_FUNC_S     := qry.FieldByName('QT_FUNC_S').AsInteger;
@@ -149,21 +131,55 @@ begin
                 iSKU_P         := qry.FieldByName('SKU_P').AsInteger;
                 iQT_ENDERECO_P := qry.FieldByName('QT_ENDERECO_P').AsInteger;
                 iQT_PECAS_P    := qry.FieldByName('QT_PECAS_P').AsInteger;
+                begin
+                  if (iSKU_S > 0) or (iQT_FUNC_S > 0) then
+                     begin
+                        MedCodsor      := iSKU_S div iQT_FUNC_S;
+                     end
+                   else
+                     MedCodsor  := 0;
+                end;
+                begin
+                  if (iQT_ENDERECO_S > 0) or (iQT_FUNC_S > 0) then
+                     begin
+                        MedEndSor      := iQT_ENDERECO_S div iQT_FUNC_S;
+                     end
+                   else
+                     MedEndSor   := 0;
+                end;
                  begin
-                    if ((iSKU_S >0) and (iQT_ENDERECO_S >0)  and (iQT_PECAS_S >0)) then
-                    begin
-                      MedCodsor      := iSKU_S div iQT_FUNC_S;
-                      MedEndSor      := iQT_ENDERECO_S div iQT_FUNC_S;
-                      MedPecasSor    := iQT_PECAS_S div iQT_FUNC_S;
-                    end;
-                     if (( iSKU_p >0) and (iQT_ENDERECO_p >0) and (iQT_PECAS_p >0)) then
-                    begin
-                         MedCodlivro    := iSKU_p div iQT_FUNC_p;
+                  if (iQT_PECAS_S > 0) or (iQT_FUNC_S > 0) then
+                     begin
+                         MedPecasSor    := iQT_PECAS_S div iQT_FUNC_S;
+                     end
+                   else
+                     MedPecasSor    := 0;
+                end;
+                begin
+                  if (iSKU_p > 0) or (iQT_FUNC_p > 0) then
+                     begin
+                        MedCodlivro    := iSKU_p div iQT_FUNC_p;
+                     end
+                   else
+                     MedCodlivro    := 0;
+                end;
+                begin
+                  if (iQT_ENDERECO_p > 0) or (iQT_FUNC_p > 0) then
+                     begin
                          MedEndlivro    := iQT_ENDERECO_p div iQT_FUNC_p;
+                     end
+                   else
+                     MedEndlivro    := 0;
+                end;
+                 begin
+                  if (iQT_PECAS_p > 0) or (iQT_FUNC_p > 0) then
+                     begin
                          MedPecaslivro  := iQT_PECAS_p div iQT_FUNC_p;
-                    end;
+                     end
+                   else
+                     MedPecaslivro    := 0;
+                end;
 
-                 end;
                 sHtml := sHtml + '<tr>';
                 sHtml := sHtml + '<td align="right" WIDTH=100>'+qry.FieldByName('DT_OPER').AsString+'</td>';
                 sHtml := sHtml + '<td align="right" WIDTH=100>'+qry.FieldByName('QT_FUNC_S').AsString+'</td>';
@@ -198,13 +214,13 @@ begin
                 qry.Next;
 
             end;
-           qry.Close;
-                MedCodsorTT     :=  iSKU_Sresult div iQT_FUNC_Sresult;
+           qry.Close;  //Se deixar essas linhas o total se perde nas contas
+               { MedCodsorTT     :=  iSKU_Sresult div iQT_FUNC_Sresult;
                 MedEndSorTT     :=  iQT_ENDERECO_Sresult div iQT_FUNC_Sresult;
                 MedPecasSorTT   :=  iQT_PECAS_Sresult  div iQT_FUNC_Sresult;
                 MedCodlivroTT   :=  iSKU_Presult div iQT_FUNC_Presult;
                 MedEndlivroTT   :=  iQT_ENDERECO_Presult div iQT_FUNC_Presult;
-                MedPecaslivroTT :=  iQT_PECAS_Presult  div iQT_FUNC_Presult;
+                MedPecaslivroTT :=  iQT_PECAS_Presult  div iQT_FUNC_Presult;  }
 
                 sHtml := sHtml + '<tr>';
                 sHtml := sHtml + '<td align="right" <th>TOTAL</th>';
