@@ -97,7 +97,6 @@ type
     lblRelCadastradosAPP: TppDBText;
     lblRelNovosCadastrados: TppDBText;
     lblRelClientesGrazziotin: TppDBText;
-    ppPageSummaryBand1: TppPageSummaryBand;
     lblRelClientesAprovados: TppDBText;
     lblRelPagamentosAPP: TppDBText;
     lblRelParcelasPagasCIA: TppDBText;
@@ -141,8 +140,6 @@ type
     qryRelatorioVendasDTA_MES: TDateTimeField;
     qryRelatorioVendasANO: TFMTBCDField;
     lblTituloRelatorioVendas: TppLabel;
-    lblTituloAno: TppLabel;
-    ppDBText1: TppDBText;
     lblRelCabValorPagoAPP: TppLabel;
     lblRelCabParcelasPagasAPP: TppLabel;
     lblRelParcelasPagasAPP: TppDBText;
@@ -233,10 +230,13 @@ type
         aLabels: array of String;
   end;
 
+type
+    THack = class(TDBGrid);
+
 const
      sSQLRelatorioVendas = 'select extract(month from dta_mes)||''/''||extract(year from dta_mes) as anomes,'+
                            '       dta_mes,'+
-                           '       extract(YEAR FROM dta_mes) AS Ano,'+
+                           '       extract(year from dta_mes) as ano,'+
                            '       qtd_tot_cli_app,'+
                            '       qtd_new_cli_app,'+
                            '       qtd_cli_grazziotin,'+
@@ -272,7 +272,7 @@ const
                            '       qtd_pgto_pix_loja,'+
                            '       vlr_pgto_pix_loja '+
                            'from grzw_rel_pgtos_appxloja '+
-                           'where (extract(year from dta_mes) = :ano) '+
+                           'where (dta_mes between to_date(:inicial,''dd/mm/yyyy'') and to_date(:final,''dd/mm/yyyy'')) '+
                            'order by dta_mes';
      clLaranja = $004080FF;
 
@@ -395,7 +395,6 @@ begin
           srsArea_Valor_Pago_CIA.Add(aQtd_Parcelas_Pgto_CIA[iInd],aLabels[iInd],clOlive);
           srsArea_Parcelas_Pagas_APP.Add(aQtd_Parcelas_Pgto_APP[iInd],aLabels[iInd],clFuchsia);
           srsArea_Valor_Pago_APP.Add(aQtd_Parcelas_Pgto_APP[iInd],aLabels[iInd],clOlive);
-
      end;
 
      // Seta valores iniciais...
@@ -412,7 +411,8 @@ begin
      qryRelatorioVendas.Active := False;
      qryRelatorioVendas.SQL.Clear;
      qryRelatorioVendas.SQL.Add(sSQLRelatorioVendas);
-     qryRelatorioVendas.Params.ParamByName('ano').AsFloat := StrToInt(Copy(edtInicial.Text,7,4));
+     qryRelatorioVendas.Params.ParamByName('inicial').AsDate := StrToDate(edtInicial.Text);
+     qryRelatorioVendas.Params.ParamByName('final').AsDate := StrToDate(edtFinal.Text);
      qryRelatorioVendas.Active := True;
      qryRelatorioVendas.FetchAll;
      iRegistros := qryRelatorioVendas.RecordCount;
@@ -808,7 +808,7 @@ var
    iUltimoDia: Integer;
 begin
      // A data final é o ultimo dia do mes...
-     iUltimoDia := Ultimo_Dia(StrToInt(Copy(edtInicial.Text,4,2)),StrToInt(Copy(edtInicial.Text,7,4)));
+     iUltimoDia := Ultimo_Dia(StrToInt(Copy(edtFinal.Text,4,2)),StrToInt(Copy(edtFinal.Text,7,4)));
 
      if (ValidaData(edtFinal.Text)) or (StrToInt(Copy(edtFinal.Text,1,2)) <> iUltimoDia) then
      begin
@@ -879,8 +879,8 @@ end;
 
 procedure TfrmRelatorioVendas.lblInicialClick(Sender: TObject);
 begin
-     edtInicial.Text := '01/01/2020';
-     edtFinal.Text := '31/01/2020';
+     edtInicial.Text := '01/07/2020';
+     edtFinal.Text := '31/03/2021';
 end;
 
 procedure TfrmRelatorioVendas.lblMostrarGraficoClick(Sender: TObject);

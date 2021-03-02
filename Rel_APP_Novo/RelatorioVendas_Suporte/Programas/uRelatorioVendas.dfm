@@ -956,6 +956,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
           SeriesColor = clAqua
           Title = 'Parcelas Pagas APP'
           ValueFormat = '###,###,###,##0'
+          Brush.BackColor = clDefault
           Pointer.InflateMargins = True
           Pointer.Style = psRectangle
           XValues.Name = 'X'
@@ -983,6 +984,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
           Title = 'Valor Pago APP'
           ValueFormat = '###,###,###,##0.00'
           VertAxis = aRightAxis
+          Brush.BackColor = clDefault
           Pointer.InflateMargins = True
           Pointer.Style = psRectangle
           XValues.Name = 'X'
@@ -1215,6 +1217,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
     Visible = False
   end
   object qryRelatorioVendas: TFDQuery
+    Active = True
     OnCalcFields = qryRelatorioVendasCalcFields
     Connection = dtmRelatorioVendas.fdcRelatorioVendas
     Transaction = dtmRelatorioVendas.trsRelatorioVendas
@@ -1532,7 +1535,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
   end
   object dtsAtualiza: TDataSource
     DataSet = qryRelatorioVendas
-    Left = 520
+    Left = 552
     Top = 8
   end
   object rptRelatorio: TppReport
@@ -1603,7 +1606,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
       Background.Brush.Style = bsClear
       Border.mmPadding = 0
       mmBottomOffset = 0
-      mmHeight = 37571
+      mmHeight = 30956
       mmPrintPosition = 0
       object lblRelEmissao: TppLabel
         DesignLayer = ppDesignLayer1
@@ -1680,7 +1683,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         mmHeight = 3175
         mmLeft = 265
-        mmTop = 26723
+        mmTop = 20628
         mmWidth = 4498
         BandType = 0
         LayerName = Foreground
@@ -1701,7 +1704,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         mmHeight = 3175
         mmLeft = 27781
-        mmTop = 26723
+        mmTop = 20628
         mmWidth = 19580
         BandType = 0
         LayerName = Foreground
@@ -1722,7 +1725,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         mmHeight = 3175
         mmLeft = 6879
-        mmTop = 26723
+        mmTop = 20628
         mmWidth = 19579
         BandType = 0
         LayerName = Foreground
@@ -1743,7 +1746,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         mmHeight = 3175
         mmLeft = 48419
-        mmTop = 26723
+        mmTop = 20628
         mmWidth = 20373
         BandType = 0
         LayerName = Foreground
@@ -1765,7 +1768,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         mmHeight = 3175
         mmLeft = 143845
-        mmTop = 26733
+        mmTop = 20638
         mmWidth = 18788
         BandType = 0
         LayerName = Foreground
@@ -1786,7 +1789,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         mmHeight = 3175
         mmLeft = 70115
-        mmTop = 26723
+        mmTop = 20628
         mmWidth = 21696
         BandType = 0
         LayerName = Foreground
@@ -1807,7 +1810,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         mmHeight = 3175
         mmLeft = 120385
-        mmTop = 26723
+        mmTop = 20628
         mmWidth = 22226
         BandType = 0
         LayerName = Foreground
@@ -1828,7 +1831,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         mmHeight = 3175
         mmLeft = 93134
-        mmTop = 26723
+        mmTop = 20628
         mmWidth = 26193
         BandType = 0
         LayerName = Foreground
@@ -2214,47 +2217,6 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         BandType = 0
         LayerName = Foreground
       end
-      object lblTituloAno: TppLabel
-        DesignLayer = ppDesignLayer1
-        UserName = 'lblTituloAno'
-        Border.mmPadding = 0
-        Caption = 'Ano:'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 9
-        Font.Style = []
-        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
-        FormFieldSettings.FormFieldType = fftNone
-        Transparent = True
-        mmHeight = 3968
-        mmLeft = 265
-        mmTop = 20638
-        mmWidth = 6350
-        BandType = 0
-        LayerName = Foreground
-      end
-      object ppDBText1: TppDBText
-        DesignLayer = ppDesignLayer1
-        UserName = 'DBText1'
-        Border.mmPadding = 0
-        DataField = 'ANO'
-        DataPipeline = pplRelatorio
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 9
-        Font.Style = []
-        TextAlignment = taRightJustified
-        Transparent = True
-        DataPipelineName = 'pplRelatorio'
-        mmHeight = 3968
-        mmLeft = 7937
-        mmTop = 20638
-        mmWidth = 10581
-        BandType = 0
-        LayerName = Foreground
-      end
       object lblRelCabValorPagoAPP: TppLabel
         DesignLayer = ppDesignLayer1
         UserName = 'lblRelCabValorPagoAPP'
@@ -2271,7 +2233,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         mmHeight = 3175
         mmLeft = 188119
-        mmTop = 26723
+        mmTop = 20628
         mmWidth = 17198
         BandType = 0
         LayerName = Foreground
@@ -2292,7 +2254,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         mmHeight = 3175
         mmLeft = 164042
-        mmTop = 26723
+        mmTop = 20628
         mmWidth = 22490
         BandType = 0
         LayerName = Foreground
@@ -2313,7 +2275,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         mmHeight = 3175
         mmLeft = 206640
-        mmTop = 26723
+        mmTop = 20628
         mmWidth = 26458
         BandType = 0
         LayerName = Foreground
@@ -2335,7 +2297,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         mmHeight = 3175
         mmLeft = 234418
-        mmTop = 26723
+        mmTop = 20628
         mmWidth = 23551
         BandType = 0
         LayerName = Foreground
@@ -2357,7 +2319,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         mmHeight = 3175
         mmLeft = 6878
-        mmTop = 29897
+        mmTop = 23802
         mmWidth = 19580
         BandType = 0
         LayerName = Foreground
@@ -2367,7 +2329,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         UserName = 'Label2'
         AutoSize = False
         Border.mmPadding = 0
-        Caption = 'Valor pago 0800'
+        Caption = 'Valor parc 0800'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -2379,7 +2341,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         mmHeight = 3175
         mmLeft = 27809
-        mmTop = 29894
+        mmTop = 23799
         mmWidth = 19580
         BandType = 0
         LayerName = Foreground
@@ -2401,7 +2363,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         mmHeight = 3175
         mmLeft = 48479
-        mmTop = 29894
+        mmTop = 23799
         mmWidth = 20375
         BandType = 0
         LayerName = Foreground
@@ -2411,7 +2373,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         UserName = 'Label4'
         AutoSize = False
         Border.mmPadding = 0
-        Caption = 'Valor pgto 0800'
+        Caption = 'Valor pgto Bol 0800'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -2423,7 +2385,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         mmHeight = 3175
         mmLeft = 70178
-        mmTop = 29894
+        mmTop = 23799
         mmWidth = 21700
         BandType = 0
         LayerName = Foreground
@@ -2445,7 +2407,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         mmHeight = 3175
         mmLeft = 93134
-        mmTop = 29895
+        mmTop = 23800
         mmWidth = 26203
         BandType = 0
         LayerName = Foreground
@@ -2467,7 +2429,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         mmHeight = 3175
         mmLeft = 120394
-        mmTop = 29895
+        mmTop = 23800
         mmWidth = 22226
         BandType = 0
         LayerName = Foreground
@@ -2489,7 +2451,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         mmHeight = 3175
         mmLeft = 144010
-        mmTop = 29895
+        mmTop = 23800
         mmWidth = 18783
         BandType = 0
         LayerName = Foreground
@@ -2511,7 +2473,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         mmHeight = 3175
         mmLeft = 164107
-        mmTop = 29895
+        mmTop = 23800
         mmWidth = 22491
         BandType = 0
         LayerName = Foreground
@@ -2533,7 +2495,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         mmHeight = 3175
         mmLeft = 188154
-        mmTop = 29895
+        mmTop = 23800
         mmWidth = 17191
         BandType = 0
         LayerName = Foreground
@@ -2555,7 +2517,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         mmHeight = 3175
         mmLeft = 206640
-        mmTop = 29898
+        mmTop = 23803
         mmWidth = 26470
         BandType = 0
         LayerName = Foreground
@@ -2577,7 +2539,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         mmHeight = 3175
         mmLeft = 234418
-        mmTop = 29898
+        mmTop = 23803
         mmWidth = 23550
         BandType = 0
         LayerName = Foreground
@@ -2599,7 +2561,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         mmHeight = 3175
         mmLeft = 6876
-        mmTop = 33073
+        mmTop = 26978
         mmWidth = 19580
         BandType = 0
         LayerName = Foreground
@@ -2621,7 +2583,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         mmHeight = 3175
         mmLeft = 27778
-        mmTop = 33073
+        mmTop = 26978
         mmWidth = 19580
         BandType = 0
         LayerName = Foreground
@@ -2643,7 +2605,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         mmHeight = 3175
         mmLeft = 48416
-        mmTop = 33073
+        mmTop = 26978
         mmWidth = 20374
         BandType = 0
         LayerName = Foreground
@@ -2665,7 +2627,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         mmHeight = 3175
         mmLeft = 70113
-        mmTop = 33073
+        mmTop = 26978
         mmWidth = 21699
         BandType = 0
         LayerName = Foreground
@@ -2687,7 +2649,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         mmHeight = 3175
         mmLeft = 93134
-        mmTop = 33073
+        mmTop = 26978
         mmWidth = 26203
         BandType = 0
         LayerName = Foreground
@@ -2709,7 +2671,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         mmHeight = 3175
         mmLeft = 120394
-        mmTop = 33073
+        mmTop = 26978
         mmWidth = 22226
         BandType = 0
         LayerName = Foreground
@@ -2722,7 +2684,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Weight = 0.750000000000000000
         mmHeight = 789
         mmLeft = 264
-        mmTop = 36245
+        mmTop = 30150
         mmWidth = 284428
         BandType = 0
         LayerName = Foreground
@@ -2739,7 +2701,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         DesignLayer = ppDesignLayer1
         UserName = 'lblRelMesAno'
         Border.mmPadding = 0
-        DataField = 'Mes'
+        DataField = 'ANOMES'
         DataPipeline = pplRelatorio
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -2751,14 +2713,13 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         mmHeight = 3175
         mmLeft = 258
         mmTop = 0
-        mmWidth = 5288
+        mmWidth = 9528
         BandType = 4
         LayerName = Foreground
       end
       object lblRelCadastradosAPP: TppDBText
         DesignLayer = ppDesignLayer1
         UserName = 'lblRelCadastradosAPP'
-        AutoSize = True
         Border.mmPadding = 0
         DataField = 'QTD_TOT_CLI_APP'
         DataPipeline = pplRelatorio
@@ -2772,9 +2733,9 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
         DataPipelineName = 'pplRelatorio'
         mmHeight = 3175
-        mmLeft = 6859
+        mmLeft = 10848
         mmTop = 0
-        mmWidth = 19578
+        mmWidth = 15610
         BandType = 4
         LayerName = Foreground
       end
@@ -2804,7 +2765,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         DesignLayer = ppDesignLayer1
         UserName = 'lblRelClientesGrazziotin'
         Border.mmPadding = 0
-        DataField = 'QTD_NEW_CLI_APP'
+        DataField = 'QTD_CLI_GRAZZIOTIN'
         DataPipeline = pplRelatorio
         DisplayFormat = '#,0;-#,0'
         Font.Charset = DEFAULT_CHARSET
@@ -3026,7 +2987,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Border.mmPadding = 0
         DataField = 'VLR_PARCELAS_PGTO_0800'
         DataPipeline = pplRelatorio
-        DisplayFormat = '#,0;-#,0'
+        DisplayFormat = '#,0.00;-#,0.00'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -3046,7 +3007,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         DesignLayer = ppDesignLayer1
         UserName = 'DBText4'
         Border.mmPadding = 0
-        DataField = 'QTD_PARCELAS_PGTO_0800'
+        DataField = 'QTD_PGTO_BOLETO_APP'
         DataPipeline = pplRelatorio
         DisplayFormat = '#,0;-#,0'
         Font.Charset = DEFAULT_CHARSET
@@ -3070,7 +3031,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Border.mmPadding = 0
         DataField = 'VLR_PGTO_BOLETO_APP'
         DataPipeline = pplRelatorio
-        DisplayFormat = '#,0;-#,0'
+        DisplayFormat = '#,0.00;-#,0.00'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -3128,7 +3089,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Border.mmPadding = 0
         DataField = 'VLR_PGTO_DEBITO_APP'
         DataPipeline = pplRelatorio
-        DisplayFormat = '#,0;-#,0'
+        DisplayFormat = '#,0.00;-#,0.00'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -3172,7 +3133,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Border.mmPadding = 0
         DataField = 'VLR_PGTO_CREDITO_APP'
         DataPipeline = pplRelatorio
-        DisplayFormat = '#,0;-#,0'
+        DisplayFormat = '#,0.00;-#,0.00'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -3194,7 +3155,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Border.mmPadding = 0
         DataField = 'TOT_CLI_PGTO_CIA'
         DataPipeline = pplRelatorio
-        DisplayFormat = '#,0;-#,0'
+        DisplayFormat = '#,0.00;-#,0.00'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -3238,7 +3199,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Border.mmPadding = 0
         DataField = 'VLR_PGTO_BOLETO_DECRE'
         DataPipeline = pplRelatorio
-        DisplayFormat = '#,0;-#,0'
+        DisplayFormat = '#,0.00;-#,0.00'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -3282,7 +3243,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Border.mmPadding = 0
         DataField = 'VLR_PGTO_LOJA'
         DataPipeline = pplRelatorio
-        DisplayFormat = '#,0;-#,0'
+        DisplayFormat = '#,0.00;-#,0.00'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -3326,7 +3287,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Border.mmPadding = 0
         DataField = 'VLR_PGTO_DEBITO_LOJA'
         DataPipeline = pplRelatorio
-        DisplayFormat = '#,0;-#,0'
+        DisplayFormat = '#,0.00;-#,0.00'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -3370,7 +3331,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Border.mmPadding = 0
         DataField = 'VLR_PGTO_CREDITO_LOJA'
         DataPipeline = pplRelatorio
-        DisplayFormat = '#,0;-#,0'
+        DisplayFormat = '#,0.00;-#,0.00'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -3387,13 +3348,6 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         LayerName = Foreground
       end
     end
-    object ppPageSummaryBand1: TppPageSummaryBand
-      Background.Brush.Style = bsClear
-      Border.mmPadding = 0
-      mmBottomOffset = 0
-      mmHeight = 11906
-      mmPrintPosition = 0
-    end
     object ppDesignLayers1: TppDesignLayers
       object ppDesignLayer1: TppDesignLayer
         UserName = 'Foreground'
@@ -3409,5 +3363,342 @@ object frmRelatorioVendas: TfrmRelatorioVendas
     UserName = 'lRelatorio'
     Left = 612
     Top = 340
+    object pplRelatorioppField1: TppField
+      FieldAlias = 'ANOMES'
+      FieldName = 'ANOMES'
+      FieldLength = 0
+      DisplayWidth = 0
+      Position = 0
+    end
+    object pplRelatorioppField2: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'QTD_TOT_CLI_APP'
+      FieldName = 'QTD_TOT_CLI_APP'
+      FieldLength = 0
+      DataType = dtDouble
+      DisplayWidth = 9
+      Position = 1
+    end
+    object pplRelatorioppField3: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'QTD_NEW_CLI_APP'
+      FieldName = 'QTD_NEW_CLI_APP'
+      FieldLength = 0
+      DataType = dtDouble
+      DisplayWidth = 9
+      Position = 2
+    end
+    object pplRelatorioppField4: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'QTD_CLI_GRAZZIOTIN'
+      FieldName = 'QTD_CLI_GRAZZIOTIN'
+      FieldLength = 0
+      DataType = dtDouble
+      DisplayWidth = 9
+      Position = 3
+    end
+    object pplRelatorioppField5: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'QTD_NEW_CLI_APP_APROV'
+      FieldName = 'QTD_NEW_CLI_APP_APROV'
+      FieldLength = 0
+      DataType = dtDouble
+      DisplayWidth = 9
+      Position = 4
+    end
+    object pplRelatorioppField6: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'TOT_CLI_PGTO_APP'
+      FieldName = 'TOT_CLI_PGTO_APP'
+      FieldLength = 0
+      DataType = dtDouble
+      DisplayWidth = 9
+      Position = 5
+    end
+    object pplRelatorioppField7: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'QTD_PARCELAS_PGTO_CIA'
+      FieldName = 'QTD_PARCELAS_PGTO_CIA'
+      FieldLength = 0
+      DataType = dtDouble
+      DisplayWidth = 9
+      Position = 6
+    end
+    object pplRelatorioppField8: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'VLR_PARCELAS_PGTO_CIA'
+      FieldName = 'VLR_PARCELAS_PGTO_CIA'
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
+      Position = 7
+    end
+    object pplRelatorioppField9: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'TOT_CLI_PGTO_CIA'
+      FieldName = 'TOT_CLI_PGTO_CIA'
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
+      Position = 8
+    end
+    object pplRelatorioppField10: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'QTD_PARCELAS_PGTO_APP'
+      FieldName = 'QTD_PARCELAS_PGTO_APP'
+      FieldLength = 0
+      DataType = dtDouble
+      DisplayWidth = 9
+      Position = 9
+    end
+    object pplRelatorioppField11: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'VLR_PARCELAS_PGTO_APP'
+      FieldName = 'VLR_PARCELAS_PGTO_APP'
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
+      Position = 10
+    end
+    object pplRelatorioppField12: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'QTD_PARCELAS_PGTO_DECRE'
+      FieldName = 'QTD_PARCELAS_PGTO_DECRE'
+      FieldLength = 0
+      DataType = dtDouble
+      DisplayWidth = 9
+      Position = 11
+    end
+    object pplRelatorioppField13: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'VLR_PARCELAS_PGTO_DECRE'
+      FieldName = 'VLR_PARCELAS_PGTO_DECRE'
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
+      Position = 12
+    end
+    object pplRelatorioppField14: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'QTD_PARCELAS_PGTO_0800'
+      FieldName = 'QTD_PARCELAS_PGTO_0800'
+      FieldLength = 0
+      DataType = dtDouble
+      DisplayWidth = 9
+      Position = 13
+    end
+    object pplRelatorioppField15: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'VLR_PARCELAS_PGTO_0800'
+      FieldName = 'VLR_PARCELAS_PGTO_0800'
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
+      Position = 14
+    end
+    object pplRelatorioppField16: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'QTD_PGTO_BOLETO_APP'
+      FieldName = 'QTD_PGTO_BOLETO_APP'
+      FieldLength = 0
+      DataType = dtDouble
+      DisplayWidth = 9
+      Position = 15
+    end
+    object pplRelatorioppField17: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'VLR_PGTO_BOLETO_APP'
+      FieldName = 'VLR_PGTO_BOLETO_APP'
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
+      Position = 16
+    end
+    object pplRelatorioppField18: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'QTD_PGTO_DEBITO_APP'
+      FieldName = 'QTD_PGTO_DEBITO_APP'
+      FieldLength = 0
+      DataType = dtDouble
+      DisplayWidth = 9
+      Position = 17
+    end
+    object pplRelatorioppField19: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'VLR_PGTO_DEBITO_APP'
+      FieldName = 'VLR_PGTO_DEBITO_APP'
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
+      Position = 18
+    end
+    object pplRelatorioppField20: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'QTD_PGTO_CREDITO_APP'
+      FieldName = 'QTD_PGTO_CREDITO_APP'
+      FieldLength = 0
+      DataType = dtDouble
+      DisplayWidth = 9
+      Position = 19
+    end
+    object pplRelatorioppField21: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'VLR_PGTO_CREDITO_APP'
+      FieldName = 'VLR_PGTO_CREDITO_APP'
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
+      Position = 20
+    end
+    object pplRelatorioppField22: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'QTD_PGTO_PIX_APP'
+      FieldName = 'QTD_PGTO_PIX_APP'
+      FieldLength = 0
+      DataType = dtDouble
+      DisplayWidth = 9
+      Position = 21
+    end
+    object pplRelatorioppField23: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'VLR_PGTO_PIX_APP'
+      FieldName = 'VLR_PGTO_PIX_APP'
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
+      Position = 22
+    end
+    object pplRelatorioppField24: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'QTD_PGTO_BOLETO_DECRE'
+      FieldName = 'QTD_PGTO_BOLETO_DECRE'
+      FieldLength = 0
+      DataType = dtDouble
+      DisplayWidth = 9
+      Position = 23
+    end
+    object pplRelatorioppField25: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'VLR_PGTO_BOLETO_DECRE'
+      FieldName = 'VLR_PGTO_BOLETO_DECRE'
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
+      Position = 24
+    end
+    object pplRelatorioppField26: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'QTD_PGTO_PIX_DECRE'
+      FieldName = 'QTD_PGTO_PIX_DECRE'
+      FieldLength = 0
+      DataType = dtDouble
+      DisplayWidth = 9
+      Position = 25
+    end
+    object pplRelatorioppField27: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'VLR_PGTO_PIX_DECRE'
+      FieldName = 'VLR_PGTO_PIX_DECRE'
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
+      Position = 26
+    end
+    object pplRelatorioppField28: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'QTD_PGTO_LOJA'
+      FieldName = 'QTD_PGTO_LOJA'
+      FieldLength = 0
+      DataType = dtDouble
+      DisplayWidth = 9
+      Position = 27
+    end
+    object pplRelatorioppField29: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'VLR_PGTO_LOJA'
+      FieldName = 'VLR_PGTO_LOJA'
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
+      Position = 28
+    end
+    object pplRelatorioppField30: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'QTD_PGTO_DEBITO_LOJA'
+      FieldName = 'QTD_PGTO_DEBITO_LOJA'
+      FieldLength = 0
+      DataType = dtDouble
+      DisplayWidth = 9
+      Position = 29
+    end
+    object pplRelatorioppField31: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'VLR_PGTO_DEBITO_LOJA'
+      FieldName = 'VLR_PGTO_DEBITO_LOJA'
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
+      Position = 30
+    end
+    object pplRelatorioppField32: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'QTD_PGTO_CREDITO_LOJA'
+      FieldName = 'QTD_PGTO_CREDITO_LOJA'
+      FieldLength = 0
+      DataType = dtDouble
+      DisplayWidth = 9
+      Position = 31
+    end
+    object pplRelatorioppField33: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'VLR_PGTO_CREDITO_LOJA'
+      FieldName = 'VLR_PGTO_CREDITO_LOJA'
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
+      Position = 32
+    end
+    object pplRelatorioppField34: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'QTD_PGTO_PIX_LOJA'
+      FieldName = 'QTD_PGTO_PIX_LOJA'
+      FieldLength = 0
+      DataType = dtDouble
+      DisplayWidth = 9
+      Position = 33
+    end
+    object pplRelatorioppField35: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'VLR_PGTO_PIX_LOJA'
+      FieldName = 'VLR_PGTO_PIX_LOJA'
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
+      Position = 34
+    end
+    object pplRelatorioppField36: TppField
+      FieldAlias = 'Mes'
+      FieldName = 'Mes'
+      FieldLength = 3
+      DisplayWidth = 3
+      Position = 35
+    end
+    object pplRelatorioppField37: TppField
+      FieldAlias = 'DTA_MES'
+      FieldName = 'DTA_MES'
+      FieldLength = 0
+      DataType = dtDateTime
+      DisplayWidth = 18
+      Position = 36
+    end
+    object pplRelatorioppField38: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'ANO'
+      FieldName = 'ANO'
+      FieldLength = 38
+      DataType = dtDouble
+      DisplayWidth = 39
+      Position = 37
+    end
   end
 end

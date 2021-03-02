@@ -32,8 +32,8 @@ object dtmRelatorioVendas: TdtmRelatorioVendas
     Connection = fdcRelatorioVendas
     SchemaName = 'NL'
     StoredProcName = 'GRZ_REL_PGTO_APPXLOJA_SP'
-    Left = 80
-    Top = 128
+    Left = 152
+    Top = 96
     ParamData = <
       item
         Position = 1
