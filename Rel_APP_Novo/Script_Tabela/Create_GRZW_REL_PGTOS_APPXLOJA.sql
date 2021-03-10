@@ -1,12 +1,15 @@
 create table grzw_rel_pgtos_appxloja
 (
   dta_mes                 date,
+  tot_cli_cadastrados     number(8),    -- Acumulado total de clientes cadastrados
   qtd_tot_cli_app         number(8),    -- Cadastrados na base
   qtd_new_cli_app         number(8),    -- Quantidade de novos cadastros
   qtd_cli_grazziotin      number(8),    -- Já são clientes 
   qtd_new_cli_app_aprov   number(8),    -- Novos clientes aprovados
+  qtd_cli_novos_pendentes number(8),    -- Clientes novos pendentes
   tot_cli_pgto_cia        number(18,2), -- Total de valores pagos na CIA
   tot_cli_pgto_app        number(8),    -- Efetuaram pagamento pelo APP
+  qtd_novos_pendentes     number(8),    -- Quantidade de novos clientes pendentes
   qtd_parcelas_pgto_cia   number(8),    -- Quantidade de parcelas pagas na CIA
   qtd_parcelas_pgto_app   number(8),    -- Quantidade de parcelas pagas pelo APP
   vlr_parcelas_pgto_cia   number(18,2), -- Valor de parcelas pagas na CIA
