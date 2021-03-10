@@ -3,10 +3,11 @@
   Empresa...: Grazziotin S/A
   Finalidade: "Acumular" valores para relatório demostrativo de "VENDAS"
 
-  Autor   Data     Operação Descrição
-  Antônio JAN/2021 Criação  Estruturação, criação e testes da PROCEDURE
-  Jaisson JAN/2021 Criação  Criação dos SQL´s
-
+  Autor   Data     Operação  Descrição
+  Antônio JAN/2021 Criação   Estruturação, criação e testes da PROCEDURE
+  Jaisson JAN/2021 Criação   Criação dos SQL´s
+  Antônio MAR/2021 Alteração Acumular o campo TOT_CLI_CADASTRADOS, desde
+                             março de 2020
 
   Parâmetros
   pDataInicial - Data inicial da seleção de dados
@@ -20,10 +21,12 @@ begin
      declare
             v_data_inicial            varchar2(10);
             v_data_final              varchar2(10);
+            v_tot_cli_cadastrados     number(8);
             v_qtd_tot_cli_app         number(8);
             v_qtd_new_cli_app         number(8);
             v_qtd_cli_grazziotin      number(8);
             v_qtd_new_cli_app_aprov   number(8);
+            v_qtd_cli_novos_pendentes number(8);
             v_tot_cli_pgto_app        number(8);
             v_qtd_parcelas_pgto_cia   number(8);
             v_vlr_parcelas_pgto_cia   number(18,2);
@@ -511,6 +514,31 @@ begin
                             vlr_pgto_loja = v_vlr_pgto_loja,
                             tot_cli_pgto_cia = v_tot_cli_pgto_cia
                         where (to_date(dta_mes,'dd/mm/yyyy') = to_date(v_data_inicial,'dd/mm/yyyy'));
+          end;
+
+          commit;
+
+          /* Acumula / atualiza os totais de clientes cadastrados */
+          begin
+               v_tot_cli_cadastrados := 0;
+               /* Acumula clientes cadastrados */
+               select sum(qtd_tot_cli_app)
+               into v_tot_cli_cadastrados
+               from grzw_rel_pgtos_appxloja
+               where (dta_mes between to_date('01/01/2020','dd/mm/yyyy') and
+                                      to_date(v_data_inicial,'dd/mm/yyyy'));
+               exception
+                        when no_data_found then
+                        begin
+                             v_tot_cli_cadastrados := 0;
+                        end;
+          end;
+
+          begin
+               /* Atualiza clientes cadastrados */
+               update grzw_rel_pgtos_appxloja
+               set tot_cli_cadastrados = v_tot_cli_cadastrados
+               where (dta_mes = to_date(v_data_inicial,'dd/mm/yyyy'));
           end;
 
           commit;
