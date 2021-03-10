@@ -20,9 +20,9 @@ object frmRelatorioVendas: TfrmRelatorioVendas
   TextHeight = 13
   object pnlRodape: TPanel
     Left = 0
-    Top = 665
+    Top = 657
     Width = 796
-    Height = 28
+    Height = 36
     Align = alBottom
     BevelInner = bvLowered
     TabOrder = 0
@@ -30,7 +30,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
       Left = 719
       Top = 2
       Width = 75
-      Height = 24
+      Height = 32
       Align = alRight
       Caption = 'Sair'
       Glyph.Data = {
@@ -82,6 +82,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         0000}
       TabOrder = 0
       OnClick = btnSairClick
+      ExplicitHeight = 24
     end
   end
   object pnlCabecalho: TPanel
@@ -255,19 +256,21 @@ object frmRelatorioVendas: TfrmRelatorioVendas
     Left = 0
     Top = 48
     Width = 796
-    Height = 617
+    Height = 609
     Align = alClient
     BevelInner = bvLowered
     TabOrder = 2
     Visible = False
+    ExplicitHeight = 617
     object pnlFundoClilentesAVista: TPanel
       Left = 2
       Top = 2
       Width = 792
-      Height = 613
+      Height = 605
       Align = alClient
       BevelInner = bvLowered
       TabOrder = 0
+      ExplicitHeight = 613
       object pnlCabRelatorioVendas: TPanel
         Left = 2
         Top = 2
@@ -617,7 +620,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         Left = 2
         Top = 274
         Width = 788
-        Height = 337
+        Height = 329
         Legend.Alignment = laBottom
         Legend.Visible = False
         Title.Font.Color = clBlack
@@ -631,6 +634,7 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         RightAxis.AutomaticMinimum = False
         Align = alClient
         TabOrder = 3
+        ExplicitHeight = 337
         DefaultCanvas = 'TGDIPlusCanvas'
         ColorPaletteIndex = 13
         object srsBarra_Cadastrados_APP: TBarSeries
@@ -1217,7 +1221,6 @@ object frmRelatorioVendas: TfrmRelatorioVendas
     Visible = False
   end
   object qryRelatorioVendas: TFDQuery
-    Active = True
     OnCalcFields = qryRelatorioVendasCalcFields
     Connection = dtmRelatorioVendas.fdcRelatorioVendas
     Transaction = dtmRelatorioVendas.trsRelatorioVendas
@@ -1227,6 +1230,8 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         'es) AS anomes,'
       '       dta_mes,'
       '       extract(YEAR FROM dta_mes) AS Ano,'
+      '       tot_cli_cadastrados,'
+      '       qtd_cli_novos_pendentes,'
       '       qtd_tot_cli_app,'
       '       qtd_new_cli_app,'
       '       qtd_cli_grazziotin,'
@@ -1531,6 +1536,18 @@ object frmRelatorioVendas: TfrmRelatorioVendas
       Origin = 'ANO'
       Precision = 38
       Size = 38
+    end
+    object qryRelatorioVendasTOT_CLI_CADASTRADOS: TBCDField
+      FieldName = 'TOT_CLI_CADASTRADOS'
+      Origin = 'TOT_CLI_CADASTRADOS'
+      Precision = 8
+      Size = 0
+    end
+    object qryRelatorioVendasQTD_CLI_NOVOS_PENDENTES: TBCDField
+      FieldName = 'QTD_CLI_NOVOS_PENDENTES'
+      Origin = 'QTD_CLI_NOVOS_PENDENTES'
+      Precision = 8
+      Size = 0
     end
   end
   object dtsAtualiza: TDataSource
@@ -3363,342 +3380,5 @@ object frmRelatorioVendas: TfrmRelatorioVendas
     UserName = 'lRelatorio'
     Left = 612
     Top = 340
-    object pplRelatorioppField1: TppField
-      FieldAlias = 'ANOMES'
-      FieldName = 'ANOMES'
-      FieldLength = 0
-      DisplayWidth = 0
-      Position = 0
-    end
-    object pplRelatorioppField2: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'QTD_TOT_CLI_APP'
-      FieldName = 'QTD_TOT_CLI_APP'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 9
-      Position = 1
-    end
-    object pplRelatorioppField3: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'QTD_NEW_CLI_APP'
-      FieldName = 'QTD_NEW_CLI_APP'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 9
-      Position = 2
-    end
-    object pplRelatorioppField4: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'QTD_CLI_GRAZZIOTIN'
-      FieldName = 'QTD_CLI_GRAZZIOTIN'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 9
-      Position = 3
-    end
-    object pplRelatorioppField5: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'QTD_NEW_CLI_APP_APROV'
-      FieldName = 'QTD_NEW_CLI_APP_APROV'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 9
-      Position = 4
-    end
-    object pplRelatorioppField6: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'TOT_CLI_PGTO_APP'
-      FieldName = 'TOT_CLI_PGTO_APP'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 9
-      Position = 5
-    end
-    object pplRelatorioppField7: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'QTD_PARCELAS_PGTO_CIA'
-      FieldName = 'QTD_PARCELAS_PGTO_CIA'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 9
-      Position = 6
-    end
-    object pplRelatorioppField8: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'VLR_PARCELAS_PGTO_CIA'
-      FieldName = 'VLR_PARCELAS_PGTO_CIA'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 19
-      Position = 7
-    end
-    object pplRelatorioppField9: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'TOT_CLI_PGTO_CIA'
-      FieldName = 'TOT_CLI_PGTO_CIA'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 19
-      Position = 8
-    end
-    object pplRelatorioppField10: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'QTD_PARCELAS_PGTO_APP'
-      FieldName = 'QTD_PARCELAS_PGTO_APP'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 9
-      Position = 9
-    end
-    object pplRelatorioppField11: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'VLR_PARCELAS_PGTO_APP'
-      FieldName = 'VLR_PARCELAS_PGTO_APP'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 19
-      Position = 10
-    end
-    object pplRelatorioppField12: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'QTD_PARCELAS_PGTO_DECRE'
-      FieldName = 'QTD_PARCELAS_PGTO_DECRE'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 9
-      Position = 11
-    end
-    object pplRelatorioppField13: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'VLR_PARCELAS_PGTO_DECRE'
-      FieldName = 'VLR_PARCELAS_PGTO_DECRE'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 19
-      Position = 12
-    end
-    object pplRelatorioppField14: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'QTD_PARCELAS_PGTO_0800'
-      FieldName = 'QTD_PARCELAS_PGTO_0800'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 9
-      Position = 13
-    end
-    object pplRelatorioppField15: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'VLR_PARCELAS_PGTO_0800'
-      FieldName = 'VLR_PARCELAS_PGTO_0800'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 19
-      Position = 14
-    end
-    object pplRelatorioppField16: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'QTD_PGTO_BOLETO_APP'
-      FieldName = 'QTD_PGTO_BOLETO_APP'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 9
-      Position = 15
-    end
-    object pplRelatorioppField17: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'VLR_PGTO_BOLETO_APP'
-      FieldName = 'VLR_PGTO_BOLETO_APP'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 19
-      Position = 16
-    end
-    object pplRelatorioppField18: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'QTD_PGTO_DEBITO_APP'
-      FieldName = 'QTD_PGTO_DEBITO_APP'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 9
-      Position = 17
-    end
-    object pplRelatorioppField19: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'VLR_PGTO_DEBITO_APP'
-      FieldName = 'VLR_PGTO_DEBITO_APP'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 19
-      Position = 18
-    end
-    object pplRelatorioppField20: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'QTD_PGTO_CREDITO_APP'
-      FieldName = 'QTD_PGTO_CREDITO_APP'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 9
-      Position = 19
-    end
-    object pplRelatorioppField21: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'VLR_PGTO_CREDITO_APP'
-      FieldName = 'VLR_PGTO_CREDITO_APP'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 19
-      Position = 20
-    end
-    object pplRelatorioppField22: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'QTD_PGTO_PIX_APP'
-      FieldName = 'QTD_PGTO_PIX_APP'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 9
-      Position = 21
-    end
-    object pplRelatorioppField23: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'VLR_PGTO_PIX_APP'
-      FieldName = 'VLR_PGTO_PIX_APP'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 19
-      Position = 22
-    end
-    object pplRelatorioppField24: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'QTD_PGTO_BOLETO_DECRE'
-      FieldName = 'QTD_PGTO_BOLETO_DECRE'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 9
-      Position = 23
-    end
-    object pplRelatorioppField25: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'VLR_PGTO_BOLETO_DECRE'
-      FieldName = 'VLR_PGTO_BOLETO_DECRE'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 19
-      Position = 24
-    end
-    object pplRelatorioppField26: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'QTD_PGTO_PIX_DECRE'
-      FieldName = 'QTD_PGTO_PIX_DECRE'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 9
-      Position = 25
-    end
-    object pplRelatorioppField27: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'VLR_PGTO_PIX_DECRE'
-      FieldName = 'VLR_PGTO_PIX_DECRE'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 19
-      Position = 26
-    end
-    object pplRelatorioppField28: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'QTD_PGTO_LOJA'
-      FieldName = 'QTD_PGTO_LOJA'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 9
-      Position = 27
-    end
-    object pplRelatorioppField29: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'VLR_PGTO_LOJA'
-      FieldName = 'VLR_PGTO_LOJA'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 19
-      Position = 28
-    end
-    object pplRelatorioppField30: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'QTD_PGTO_DEBITO_LOJA'
-      FieldName = 'QTD_PGTO_DEBITO_LOJA'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 9
-      Position = 29
-    end
-    object pplRelatorioppField31: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'VLR_PGTO_DEBITO_LOJA'
-      FieldName = 'VLR_PGTO_DEBITO_LOJA'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 19
-      Position = 30
-    end
-    object pplRelatorioppField32: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'QTD_PGTO_CREDITO_LOJA'
-      FieldName = 'QTD_PGTO_CREDITO_LOJA'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 9
-      Position = 31
-    end
-    object pplRelatorioppField33: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'VLR_PGTO_CREDITO_LOJA'
-      FieldName = 'VLR_PGTO_CREDITO_LOJA'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 19
-      Position = 32
-    end
-    object pplRelatorioppField34: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'QTD_PGTO_PIX_LOJA'
-      FieldName = 'QTD_PGTO_PIX_LOJA'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 9
-      Position = 33
-    end
-    object pplRelatorioppField35: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'VLR_PGTO_PIX_LOJA'
-      FieldName = 'VLR_PGTO_PIX_LOJA'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 19
-      Position = 34
-    end
-    object pplRelatorioppField36: TppField
-      FieldAlias = 'Mes'
-      FieldName = 'Mes'
-      FieldLength = 3
-      DisplayWidth = 3
-      Position = 35
-    end
-    object pplRelatorioppField37: TppField
-      FieldAlias = 'DTA_MES'
-      FieldName = 'DTA_MES'
-      FieldLength = 0
-      DataType = dtDateTime
-      DisplayWidth = 18
-      Position = 36
-    end
-    object pplRelatorioppField38: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'ANO'
-      FieldName = 'ANO'
-      FieldLength = 38
-      DataType = dtDouble
-      DisplayWidth = 39
-      Position = 37
-    end
   end
 end

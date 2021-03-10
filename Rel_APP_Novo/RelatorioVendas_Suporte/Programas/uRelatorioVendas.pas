@@ -188,6 +188,8 @@ type
     ppLine2: TppLine;
     srsArea_Parcelas_Pagas_APP: TAreaSeries;
     srsArea_Valor_Pago_APP: TAreaSeries;
+    qryRelatorioVendasTOT_CLI_CADASTRADOS: TBCDField;
+    qryRelatorioVendasQTD_CLI_NOVOS_PENDENTES: TBCDField;
     procedure Mostra_Dados(Sender: TObject);
     procedure Preenche_Vetores_Grafico(Sender: TObject);
     procedure btnSairClick(Sender: TObject);
@@ -237,6 +239,8 @@ const
      sSQLRelatorioVendas = 'select extract(month from dta_mes)||''/''||extract(year from dta_mes) as anomes,'+
                            '       dta_mes,'+
                            '       extract(year from dta_mes) as ano,'+
+                           '       tot_cli_cadastrados,'+
+                           '       qtd_cli_novos_pendentes,'+
                            '       qtd_tot_cli_app,'+
                            '       qtd_new_cli_app,'+
                            '       qtd_cli_grazziotin,'+
