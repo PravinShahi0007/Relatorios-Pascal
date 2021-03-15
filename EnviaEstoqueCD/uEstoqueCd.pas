@@ -53,7 +53,10 @@ procedure TfrmEstoqueCD.btnImprimirClick(Sender: TObject);
 var
 sCaminhoArquivo,sNomeArquivo,sCabecalho,sHtml,sPerUso,sNumSorteUsado,sNumSorteDisponivel : String;
 sValor,sPecas,sCodigos, sCodigosVDA, sQtdVDA, sValorVDA :string;
-codEstoque,codEstoqueRes, qtdEstoque, qtdEstoqueRes, valorEstoque, valorEstoqueRes, codVda, codVdaRes, qtdVda, qtdVdaRes, valorVda, valorVdaRes : integer;
+codEstoque,codEstoqueRes, qtdEstoque, qtdEstoqueRes :integer ;
+codVda, codVdaRes, qtdVda, qtdVdaRes : integer;
+valorEstoque, valorEstoqueRes, valorVda, valorVdaRes: double;
+
 begin
         sCaminhoArquivo := 'c:\EstoqueCD\';
 
@@ -141,13 +144,13 @@ begin
                 codEstoqueRes := codEstoqueRes + codEstoque;
                 qtdEstoque := qry.FieldByName('qtde_est').AsInteger;
                 qtdEstoqueRes := qtdEstoqueRes + qtdEstoque;
-                valorEstoque := qry.FieldByName('valor_est').AsInteger;
+                valorEstoque := qry.FieldByName('valor_est').AsFloat;
                 valorEstoqueRes := valorEstoqueRes + valorEstoque;
                 codVda := qry.FieldByName('nro_skus_vda').AsInteger;
                 codVdaRes := codVdaRes + codVda;
                 qtdVda := qry.FieldByName('qtde_vda').AsInteger;
                 qtdVdaRes := qtdVdaRes + qtdVda;
-                valorVda := qry.FieldByName('valor_vda').AsInteger;
+                valorVda := qry.FieldByName('valor_vda').AsFloat;
                 valorVdaRes := valorVdaRes + valorVda;
 
                 sHtml := sHtml + '<tr>';
