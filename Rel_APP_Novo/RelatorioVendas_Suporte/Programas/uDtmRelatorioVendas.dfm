@@ -30,6 +30,7 @@ object dtmRelatorioVendas: TdtmRelatorioVendas
   end
   object fspGRZ_Rel_Pgto_AppxLoja_SP: TFDStoredProc
     Connection = fdcRelatorioVendas
+    Transaction = trsRelatorioVendas
     SchemaName = 'NL'
     StoredProcName = 'GRZ_REL_PGTO_APPXLOJA_SP'
     Left = 152

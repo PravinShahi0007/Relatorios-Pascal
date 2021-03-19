@@ -276,7 +276,8 @@ const
                            '       qtd_pgto_pix_loja,'+
                            '       vlr_pgto_pix_loja '+
                            'from grzw_rel_pgtos_appxloja '+
-                           'where (dta_mes between to_date(:inicial,''dd/mm/yyyy'') and to_date(:final,''dd/mm/yyyy'')) '+
+                           'where (dta_mes between to_date(:inicial,''dd/mm/yyyy'') and '+
+                           '                       to_date(:final,''dd/mm/yyyy'')) '+
                            'order by dta_mes';
      clLaranja = $004080FF;
 
@@ -452,7 +453,7 @@ begin
               'select * from grzw_rel_pgtos_appxloja where (dta_mes = :dta_mes)');
      dtmRelatorioVendas.qryGeralDados.Params.ParamByName('dta_mes').AsDate := StrToDate(edtInicial.Text);
      dtmRelatorioVendas.qryGeralDados.Active := True;
-     // Existe registrio....
+     // Existe registro....
      if not (dtmRelatorioVendas.qryGeralDados.FieldByName('dta_mes').IsNull) then
      begin
           dtmRelatorioVendas.qryGeralDados.Active := False;

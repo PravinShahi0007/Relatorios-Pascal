@@ -100,7 +100,7 @@ begin
           begin
                select count(1) as cli_aprovados
                into v_qtd_new_cli_app_aprov
-               from appgrz.grz_api_ps_pessoas,appgrz.grz_api_user  
+               from appgrz.grz_api_ps_pessoas,appgrz.grz_api_user
                where appgrz.grz_api_user."cpf" = appgrz.grz_api_ps_pessoas.num_cpf and 
                     appgrz.grz_api_user."credit_status" = 'approve' and 
                     nvl(appgrz.grz_api_ps_pessoas.ind_cliente,0) = 0 and 
@@ -111,7 +111,21 @@ begin
                        when no_data_found then
                             v_qtd_new_cli_app_aprov := 0;
           end;
-          /* Clientes que efetuaram o pagamentom pelo APP */
+          /* Clientes pendentes de aprovação */
+          begin
+               select count(1) as cli_pend_aprov 
+               into v_qtd_cli_novos_pendentes
+               from appgrz.grz_api_ps_pessoas, appgrz.grz_api_user
+               where appgrz.grz_api_user."cpf" = appgrz.grz_api_ps_pessoas.num_cpf and 
+                     appgrz.grz_api_user."credit_status" = 'analyze' and 
+                     nvl(appgrz.grz_api_ps_pessoas.ind_cliente,0) = 0 and 
+                     (trunc(appgrz.grz_api_user."created_at") between to_date(v_data_inicial,'dd/mm/yyyy') and 
+                                                                      to_date(v_data_final,'dd/mm/yyyy')); 
+              exception
+                       when no_data_found then
+                            v_qtd_cli_novos_pendentes := 0;
+          end;
+          /* Clientes que efetuaram o pagamento pelo APP */
           begin
                select count(distinct appgrz.grz_api_ps_pessoas.num_cpf) as pgto_app 
                into v_tot_cli_pgto_app
@@ -368,7 +382,7 @@ begin
                select count(1) qtd_pagamentos_lojas,
                       sum(nvl(cr_historicos.vlr_lancamento,0) +
                           nvl(cr_historicos.vlr_juro_cobr,0) +
-                          nvl(cr_historicos.vlr_desp_cobr,0)) vlr_tot_lojas
+                          nvl(cr_historicos.vlr_desp_cobr,0) - nvl(cr_historicos.vlr_desconto,0)) vlr_tot_lojas
                into v_qtd_pgto_loja, v_vlr_pgto_loja
                from cr_titulos, cr_historicos, ge_grupos_unidades
                where cr_historicos.cod_pessoa = cr_titulos.cod_pessoa and
@@ -377,7 +391,7 @@ begin
                      cr_historicos.num_titulo = cr_titulos.num_titulo and
                      cr_historicos.cod_compl = cr_titulos.cod_compl and
                      cr_historicos.num_parcela = cr_titulos.num_parcela and
-                     cr_titulos.ind_pago = 1 and
+                     -- cr_titulos.ind_pago = 1 and
                      cr_historicos.ind_dc = 2 and
                      cr_historicos.cod_lancamento in (100,20,75) and
                      cr_titulos.cod_unidade = ge_grupos_unidades.cod_unidade and
@@ -429,6 +443,7 @@ begin
                                                     qtd_new_cli_app,
                                                     qtd_cli_grazziotin,
                                                     qtd_new_cli_app_aprov,
+                                                    qtd_cli_novos_pendentes,
                                                     tot_cli_pgto_app,
                                                     qtd_parcelas_pgto_cia,
                                                     vlr_parcelas_pgto_cia,
@@ -458,6 +473,7 @@ begin
                        v_qtd_new_cli_app,
                        v_qtd_cli_grazziotin,
                        v_qtd_new_cli_app_aprov,
+                       v_qtd_cli_novos_pendentes,
                        v_tot_cli_pgto_app,
                        v_qtd_parcelas_pgto_cia,
                        v_vlr_parcelas_pgto_cia,
@@ -489,6 +505,7 @@ begin
                             qtd_new_cli_app = v_qtd_new_cli_app,
                             qtd_cli_grazziotin = v_qtd_cli_grazziotin,
                             qtd_new_cli_app_aprov = v_qtd_new_cli_app_aprov,
+                            qtd_cli_novos_pendentes = v_qtd_cli_novos_pendentes,
                             tot_cli_pgto_app = v_tot_cli_pgto_app,
                             qtd_parcelas_pgto_cia = v_qtd_parcelas_pgto_cia,
                             vlr_parcelas_pgto_cia = v_vlr_parcelas_pgto_cia,

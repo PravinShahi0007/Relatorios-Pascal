@@ -82,7 +82,6 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         0000}
       TabOrder = 0
       OnClick = btnSairClick
-      ExplicitHeight = 24
     end
   end
   object pnlCabecalho: TPanel
@@ -261,7 +260,6 @@ object frmRelatorioVendas: TfrmRelatorioVendas
     BevelInner = bvLowered
     TabOrder = 2
     Visible = False
-    ExplicitHeight = 617
     object pnlFundoClilentesAVista: TPanel
       Left = 2
       Top = 2
@@ -270,7 +268,6 @@ object frmRelatorioVendas: TfrmRelatorioVendas
       Align = alClient
       BevelInner = bvLowered
       TabOrder = 0
-      ExplicitHeight = 613
       object pnlCabRelatorioVendas: TPanel
         Left = 2
         Top = 2
@@ -634,7 +631,6 @@ object frmRelatorioVendas: TfrmRelatorioVendas
         RightAxis.AutomaticMinimum = False
         Align = alClient
         TabOrder = 3
-        ExplicitHeight = 337
         DefaultCanvas = 'TGDIPlusCanvas'
         ColorPaletteIndex = 13
         object srsBarra_Cadastrados_APP: TBarSeries
