@@ -1,18 +1,18 @@
 /*------------------------------------------------------------------------
   Procedure.: grz_rel_pgto_appxloja_sp
   Empresa...: Grazziotin S/A
-  Finalidade: "Acumular" valores para relatório demostrativo de "VENDAS"
+  Finalidade: "Acumular" valores para relatorio demostrativo de "VENDAS"
 
-  Autor   Data     Operação  Descrição
-  Antônio JAN/2021 Criação   Estruturação, criação e testes da PROCEDURE
-  Jaisson JAN/2021 Criação   Criação dos SQL´s
-  Antônio MAR/2021 Alteração Acumular o campo TOT_CLI_CADASTRADOS, desde
-                             março de 2020
+  Autor   Data     Operacao  Descricao
+  Antonio JAN/2021 Criacao   Estruturacao, criacao e testes da PROCEDURE
+  Jaisson JAN/2021 Criacao   Criacao dos SQL's
+  Antonio MAR/2021 Alteracao Acumular o campo TOT_CLI_CADASTRADOS, desde
+                             marco de 2020
 
-  Parâmetros
-  pDataInicial - Data inicial da seleção de dados
-  pDataFinal   - Data final da seleção de dados, compoem o período da
-                 seleção de dados
+  Parametros
+  pDataInicial - Data inicial da selecao de dados
+  pDataFinal   - Data final da selecao de dados, compoem o periodo da
+                 selecao de dados
 ------------------------------------------------------------------------*/
 create or replace procedure grz_rel_pgto_appxloja_sp (pdatainicial in varchar2,
                                                       pdatafinal in varchar2)
@@ -27,6 +27,8 @@ begin
             v_qtd_cli_grazziotin      number(8);
             v_qtd_new_cli_app_aprov   number(8);
             v_qtd_cli_novos_pendentes number(8);
+            v_qtd_parcelas_areceber   number(8);
+            v_vlr_parcelas_areceber   number(18,2);
             v_tot_cli_pgto_app        number(8);
             v_qtd_parcelas_pgto_cia   number(8);
             v_vlr_parcelas_pgto_cia   number(18,2);
@@ -82,7 +84,7 @@ begin
                         when no_data_found then
                              v_qtd_new_cli_app := 0;
           end;
-          /* Já são clientes */
+          /* Ja sao clientes */
           begin
                select count(1) as cli_antigos
                into v_qtd_cli_grazziotin
@@ -96,7 +98,7 @@ begin
                        when no_data_found then
                             v_qtd_cli_grazziotin := 0;
           end;
-          /* Número de cadastros novos aprovados */
+          /* Numero de cadastros novos aprovados */
           begin
                select count(1) as cli_aprovados
                into v_qtd_new_cli_app_aprov
@@ -111,7 +113,7 @@ begin
                        when no_data_found then
                             v_qtd_new_cli_app_aprov := 0;
           end;
-          /* Clientes pendentes de aprovação */
+          /* Clientes pendentes de aprovacao */
           begin
                select count(1) as cli_pend_aprov 
                into v_qtd_cli_novos_pendentes
@@ -124,6 +126,31 @@ begin
               exception
                        when no_data_found then
                             v_qtd_cli_novos_pendentes := 0;
+          end;
+          /* Quantidade e valor de parcelas A RECEBER */
+          begin
+               select count(1) as qtd_pagamentos_a_recebe,
+                      sum(nvl(cr_titulos.vlr_cdc,0)) as vlr_tot_a_receber
+               into v_qtd_parcelas_areceber, v_vlr_parcelas_areceber
+               from cr_titulos, cr_historicos, ge_grupos_unidades
+               where cr_historicos.cod_pessoa = cr_titulos.cod_pessoa and
+                     cr_historicos.cod_emp = cr_titulos.cod_emp and
+                     cr_historicos.cod_unidade = cr_titulos.cod_unidade and
+                     cr_historicos.num_titulo = cr_titulos.num_titulo and
+                     cr_historicos.cod_compl = cr_titulos.cod_compl and
+                     cr_historicos.num_parcela = cr_titulos.num_parcela and
+                     cr_titulos.dta_vencimento between to_date(v_data_inicial,'dd/mm/yyyy') and 
+                                                       to_date(v_data_final,'dd/mm/yyyy') and
+                     cr_titulos.ind_dc = 1 and
+                     cr_titulos.cod_unidade = ge_grupos_unidades.cod_unidade and
+                     ge_grupos_unidades.cod_grupo in (71010,71030,71040,71050,71070) and
+                     ge_grupos_unidades.cod_emp = 1;
+              exception
+                       when no_data_found then
+                       begin
+                            v_qtd_parcelas_areceber := 0;
+                            v_vlr_parcelas_areceber := 0;
+                       end;
           end;
           /* Clientes que efetuaram o pagamento pelo APP */
           begin
@@ -214,7 +241,7 @@ begin
                                     nvl(cr_historicos.vlr_juro_cobr,0) +
                                     nvl(cr_historicos.vlr_desp_cobr,0)) 
                               else 0 
-                          end) as vlr_0800 
+                          end) as vlr_0800
                into v_qtd_parcelas_pgto_app,v_qtd_parcelas_pgto_0800,
                     v_vlr_parcelas_pgto_app,v_vlr_parcelas_pgto_0800
                from cr_titulos,cr_historicos
@@ -275,7 +302,7 @@ begin
                              v_qtd_pgto_credito_app := 0;
                         end;
           end;
-          /* Quantidade e valor de débito APP */
+          /* Quantidade e valor de debito APP */
           begin
                select sum("amount") vlr_debito_app,
                       count(1) qtd_debito_app
@@ -313,7 +340,7 @@ begin
                              v_qtd_pgto_boleto_decre := 0;
                         end;
           end;
-          /* Valor e quantidade de débito e crédito na LOJA */
+          /* Valor e quantidade de debito e credito na LOJA */
           begin
                v_qtd_pgto_debito_loja  := 0;
                v_vlr_pgto_debito_loja  := 0;
@@ -467,7 +494,9 @@ begin
                                                     vlr_pgto_credito_loja,
                                                     qtd_pgto_loja,
                                                     vlr_pgto_loja,
-                                                    tot_cli_pgto_cia)
+                                                    tot_cli_pgto_cia,
+                                                    qtd_parcelas_areceber,
+                                                    vlr_parcelas_areceber)
                values (to_date(v_data_inicial,'dd/mm/yyyy'),
                        v_qtd_tot_cli_app,
                        v_qtd_new_cli_app,
@@ -497,7 +526,9 @@ begin
                        v_vlr_pgto_credito_loja,
                        v_qtd_pgto_loja,
                        v_vlr_pgto_loja,
-                       v_tot_cli_pgto_cia);
+                       v_tot_cli_pgto_cia,
+                       v_qtd_parcelas_areceber,
+                       v_vlr_parcelas_areceber);
           exception
                    when dup_val_on_index then
                         update grzw_rel_pgtos_appxloja
@@ -529,7 +560,9 @@ begin
                             vlr_pgto_credito_loja = v_vlr_pgto_credito_loja,
                             qtd_pgto_loja = v_qtd_pgto_loja,
                             vlr_pgto_loja = v_vlr_pgto_loja,
-                            tot_cli_pgto_cia = v_tot_cli_pgto_cia
+                            tot_cli_pgto_cia = v_tot_cli_pgto_cia,
+                            qtd_parcelas_areceber = v_qtd_parcelas_areceber,
+                            vlr_parcelas_areceber = v_vlr_parcelas_areceber
                         where (to_date(dta_mes,'dd/mm/yyyy') = to_date(v_data_inicial,'dd/mm/yyyy'));
           end;
 

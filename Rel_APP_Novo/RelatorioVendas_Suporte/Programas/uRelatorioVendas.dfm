@@ -1228,6 +1228,8 @@ object frmRelatorioVendas: TfrmRelatorioVendas
       '       extract(YEAR FROM dta_mes) AS Ano,'
       '       tot_cli_cadastrados,'
       '       qtd_cli_novos_pendentes,'
+      '       qtd_parcelas_areceber,'
+      '       vlr_parcelas_areceber,'
       '       qtd_tot_cli_app,'
       '       qtd_new_cli_app,'
       '       qtd_cli_grazziotin,'
@@ -1544,6 +1546,18 @@ object frmRelatorioVendas: TfrmRelatorioVendas
       Origin = 'QTD_CLI_NOVOS_PENDENTES'
       Precision = 8
       Size = 0
+    end
+    object qryRelatorioVendasQTD_PARCELAS_ARECEBER: TBCDField
+      FieldName = 'QTD_PARCELAS_ARECEBER'
+      Origin = 'QTD_PARCELAS_ARECEBER'
+      Precision = 8
+      Size = 0
+    end
+    object qryRelatorioVendasVLR_PARCELAS_ARECEBER: TFMTBCDField
+      FieldName = 'VLR_PARCELAS_ARECEBER'
+      Origin = 'VLR_PARCELAS_ARECEBER'
+      Precision = 18
+      Size = 2
     end
   end
   object dtsAtualiza: TDataSource

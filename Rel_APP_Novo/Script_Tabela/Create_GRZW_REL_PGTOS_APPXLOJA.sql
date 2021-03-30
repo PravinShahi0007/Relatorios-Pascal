@@ -10,6 +10,8 @@ create table grzw_rel_pgtos_appxloja
   tot_cli_pgto_cia        number(18,2), -- Total de valores pagos na CIA
   tot_cli_pgto_app        number(8),    -- Efetuaram pagamento pelo APP
   qtd_novos_pendentes     number(8),    -- Quantidade de novos clientes pendentes
+  qtd_parcelas_areceber   number(8),    -- Quantidade parcelas a receber
+  vlr_parcelas_areceber   number(18,2), -- Valor parcelas a receber
   qtd_parcelas_pgto_cia   number(8),    -- Quantidade de parcelas pagas na CIA
   qtd_parcelas_pgto_app   number(8),    -- Quantidade de parcelas pagas pelo APP
   vlr_parcelas_pgto_cia   number(18,2), -- Valor de parcelas pagas na CIA
