@@ -3,8 +3,8 @@ object frmPrincipal: TfrmPrincipal
   Top = 0
   BorderIcons = [biSystemMenu]
   Caption = 'Envia E-Mail KPI Pagamentos....'
-  ClientHeight = 167
-  ClientWidth = 303
+  ClientHeight = 169
+  ClientWidth = 311
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -21,15 +21,17 @@ object frmPrincipal: TfrmPrincipal
   object pnlFundo: TPanel
     Left = 0
     Top = 0
-    Width = 303
-    Height = 167
+    Width = 311
+    Height = 169
     Align = alClient
     BevelInner = bvLowered
     TabOrder = 0
+    ExplicitWidth = 509
+    ExplicitHeight = 324
     object lblMensagem: TLabel
       Left = 2
       Top = 82
-      Width = 299
+      Width = 307
       Height = 13
       Align = alTop
       Caption = 'lblMensagem'
@@ -44,7 +46,7 @@ object frmPrincipal: TfrmPrincipal
     object ggeKPIPagamentos: TGauge
       Left = 2
       Top = 95
-      Width = 299
+      Width = 307
       Height = 34
       Align = alTop
       ForeColor = clBlue
@@ -62,7 +64,7 @@ object frmPrincipal: TfrmPrincipal
     object pnlCabecalho: TPanel
       Left = 2
       Top = 2
-      Width = 299
+      Width = 307
       Height = 31
       Align = alTop
       BevelInner = bvLowered
@@ -74,15 +76,17 @@ object frmPrincipal: TfrmPrincipal
       Font.Style = [fsBold]
       ParentFont = False
       TabOrder = 0
+      ExplicitWidth = 505
     end
     object grpIntervalo: TGroupBox
       Left = 2
       Top = 33
-      Width = 299
+      Width = 307
       Height = 49
       Align = alTop
       Caption = '[ Intervalo ]'
       TabOrder = 1
+      ExplicitWidth = 505
       object lblInicio: TLabel
         Left = 17
         Top = 22
@@ -121,16 +125,18 @@ object frmPrincipal: TfrmPrincipal
     object pnlRodape: TPanel
       Left = 2
       Top = 129
-      Width = 299
-      Height = 36
+      Width = 307
+      Height = 38
       Align = alClient
       BevelInner = bvLowered
       TabOrder = 2
+      ExplicitWidth = 505
+      ExplicitHeight = 193
       object BitBtn1: TBitBtn
-        Left = 222
+        Left = 230
         Top = 2
         Width = 75
-        Height = 32
+        Height = 34
         Align = alRight
         Caption = 'Sair'
         Font.Charset = DEFAULT_CHARSET
@@ -188,6 +194,8 @@ object frmPrincipal: TfrmPrincipal
         ParentFont = False
         TabOrder = 0
         OnClick = mniSairClick
+        ExplicitLeft = 428
+        ExplicitHeight = 189
       end
     end
   end
@@ -204,8 +212,8 @@ object frmPrincipal: TfrmPrincipal
   end
   object trsOracle: TFDTransaction
     Connection = fdcOracle
-    Left = 52
-    Top = 136
+    Left = 68
+    Top = 96
   end
   object fdcOracle: TFDConnection
     Params.Strings = (
@@ -217,14 +225,14 @@ object frmPrincipal: TfrmPrincipal
     Connected = True
     LoginPrompt = False
     Transaction = trsOracle
-    Left = 16
-    Top = 128
+    Left = 24
+    Top = 96
   end
   object dtsRelatorioVendas: TDataSource
     AutoEdit = False
     DataSet = qryRelatorioVendas
-    Left = 121
-    Top = 131
+    Left = 169
+    Top = 99
   end
   object qryRelatorioVendas: TFDQuery
     Connection = fdcOracle
@@ -236,6 +244,8 @@ object frmPrincipal: TfrmPrincipal
       '       qtd_cli_grazziotin,'
       '       qtd_new_cli_app_aprov,'
       '       qtd_cli_novos_pendentes,'
+      '       qtd_parcelas_areceber,'
+      '       vlr_parcelas_areceber,'
       '       tot_cli_pgto_cia,'
       '       tot_cli_pgto_app,'
       '       qtd_parcelas_pgto_cia,'
@@ -272,8 +282,8 @@ object frmPrincipal: TfrmPrincipal
         'e(:final,'#39'dd/mm/yyyy'#39')) '
       'order by dta_mes'
       '')
-    Left = 89
-    Top = 131
+    Left = 129
+    Top = 99
     ParamData = <
       item
         Name = 'INICIAL'
@@ -291,8 +301,8 @@ object frmPrincipal: TfrmPrincipal
   object dtsTotais: TDataSource
     AutoEdit = False
     DataSet = qryTotais
-    Left = 185
-    Top = 139
+    Left = 209
+    Top = 99
   end
   object qryTotais: TFDQuery
     Connection = fdcOracle
@@ -303,6 +313,8 @@ object frmPrincipal: TfrmPrincipal
       '       sum(qtd_cli_grazziotin) as qtd_cli_grazziotin,'
       '       sum(qtd_new_cli_app_aprov) as qtd_new_cli_app_aprov,'
       '       sum(qtd_cli_novos_pendentes) as qtd_cli_novos_pendentes,'
+      '       sum(qtd_parcelas_areceber) as qtd_parcelas_areceber,'
+      '       sum(vlr_parcelas_areceber) as vlr_parcelas_areceber,'
       '       sum(tot_cli_pgto_cia) as tot_cli_pgto_cia,'
       '       sum(tot_cli_pgto_app) as tot_cli_pgto_app,'
       '       sum(qtd_parcelas_pgto_cia) as qtd_parcelas_pgto_cia,'
@@ -339,8 +351,8 @@ object frmPrincipal: TfrmPrincipal
         'e(:final,'#39'dd/mm/yyyy'#39'))'
       ''
       '')
-    Left = 153
-    Top = 131
+    Left = 241
+    Top = 99
     ParamData = <
       item
         Name = 'INICIAL'

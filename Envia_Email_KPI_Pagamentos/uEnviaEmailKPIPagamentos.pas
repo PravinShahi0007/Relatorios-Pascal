@@ -23,133 +23,277 @@ uses
 type
     RGRZW_REL_PGTOS_APPXLOJA = record
               // Campos vindos do SQL....
-              DTA_MES                 : TDate;
-              ANOMES                  : String;
-              ANO                     : String;
-              TOT_CLI_CADASTRADOS     : Double; //NUMBER(8)     -- TOTAL DE CLIENTES CADASTRADOS (Acumulado)
-              QTD_TOT_CLI_APP         : Double; //NUMBER(8),    -- CADASTRADOS NA BASE
-              QTD_NEW_CLI_APP         : Double; //NUMBER(8),    -- QUANTIDADE DE NOVOS CADASTROS
-              QTD_CLI_GRAZZIOTIN      : Double; //NUMBER(8),    -- JÁ SÃO CLIENTES
-              QTD_NEW_CLI_APP_APROV   : Double; //NUMBER(8),    -- NOVOS CLIENTES APROVADOS
-              QTD_CLI_NOVOS_PENDENTES : Double; //NUMBER(8),    -- CLIENTES NOVOS PENDENTES
-              TOT_CLI_PGTO_CIA        : Double; //NUMBER(18,2), -- TOTAL DE VALORES PAGOS NA CIA
-              TOT_CLI_PGTO_APP        : Double; //NUMBER(8),    -- EFETUARAM PAGAMENTO PELO APP
-              QTD_PARCELAS_PGTO_CIA   : Double; //NUMBER(8),    -- QUANTIDADE DE PARCELAS PAGAS NA CIA
-              QTD_PARCELAS_PGTO_APP   : Double; //NUMBER(8),    -- QUANTIDADE DE PARCELAS PAGAS PELO APP
-              VLR_PARCELAS_PGTO_CIA   : Double; //NUMBER(18,2), -- VALOR DE PARCELAS PAGAS NA CIA
-              VLR_PARCELAS_PGTO_APP   : Double; //NUMBER(18,2), -- VALOR DE PARCELAS PAGAS PELO APP
-              QTD_PARCELAS_PGTO_DECRE : Double; //NUMBER(8),    -- QUANTIDADE DE PARCELAS PAGAS - DECRE
-              VLR_PARCELAS_PGTO_DECRE : Double; //NUMBER(18,2), -- VALOR DAS PARCELAS PAGAS - DECRE
-              QTD_PARCELAS_PGTO_0800  : Double; //NUMBER(8),    -- QUANTIDADE DE PARCELAS PAGAS - 0800
-              VLR_PARCELAS_PGTO_0800  : Double; //NUMBER(18,2), -- VALOR DAS PARCELAS PAGAS - 0800
-              QTD_PGTO_BOLETO_APP     : Double; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO BOLETO APP
-              VLR_PGTO_BOLETO_APP     : Double; //NUMBER(18,2), -- VALOR DE PAGAMENTO BOLETO APP
-              QTD_PGTO_DEBITO_APP     : Double; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO DEBITO BOLETO APP
-              VLR_PGTO_DEBITO_APP     : Double; //NUMBER(18,2), -- VALOR DE PAGAMENTO DEBITO BOLETO APP
-              QTD_PGTO_CREDITO_APP    : Double; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO CREDITO BOLETO APP
-              VLR_PGTO_CREDITO_APP    : Double; //NUMBER(18,2), -- VALOR DE PAGAMENTO CREDITO BOLETO APP
-              QTD_PGTO_PIX_APP        : Double; //NUMBER(8),
-              VLR_PGTO_PIX_APP        : Double; //NUMBER(18,2),
-              QTD_PGTO_BOLETO_DECRE   : Double; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO BOLETO DECRE
-              VLR_PGTO_BOLETO_DECRE   : Double; //NUMBER(18,2), -- VALOR DE PAGAMENTO CREDITO BOLETO DECRE
-              QTD_PGTO_CARTAO_DECRE   : Double; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO COM CARTAO DECRE - Campo não existe na tabela, será criado futuramente
-              VLR_PGTO_CARTAO_DECRE   : Double; //NUMBER(18,2), -- VALOR DE PAGAMENTO COM CARTAO DECRE - Campo não existe na tabela, será criado futuramente
-              QTD_PGTO_PIX_DECRE      : Double; //NUMBER(8),
-              VLR_PGTO_PIX_DECRE      : Double; //NUMBER(18,2),
-              QTD_PGTO_LOJA           : Double; //NUMBER(8),
-              VLR_PGTO_LOJA           : Double; //NUMBER(18,2),
-              QTD_PGTO_DEBITO_LOJA    : Double; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO DEBITO LOJA
-              VLR_PGTO_DEBITO_LOJA    : Double; //NUMBER(18,2), -- VALOR PAGAMENTO DEBITO LOJA
-              QTD_PGTO_CREDITO_LOJA   : Double; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO CREDITO LOJA
-              VLR_PGTO_CREDITO_LOJA   : Double; //NUMBER(18,2), -- VALOR PAGAMENTO CREDITO LOJA
-              QTD_PGTO_PIX_LOJA       : Double; //NUMBER(8),
-              VLR_PGTO_PIX_LOJA       : Double; //NUMBER(18,2),
+              DTA_MES                  : TDate;
+              ANOMES                   : String;
+              ANO                      : String;
+              TOT_CLI_CADASTRADOS      : Double; //NUMBER(8)     -- TOTAL DE CLIENTES CADASTRADOS (Acumulado)
+              QTD_TOT_CLI_APP          : Double; //NUMBER(8),    -- CADASTRADOS NA BASE
+              QTD_NEW_CLI_APP          : Double; //NUMBER(8),    -- QUANTIDADE DE NOVOS CADASTROS
+              QTD_CLI_GRAZZIOTIN       : Double; //NUMBER(8),    -- JÁ SÃO CLIENTES
+              PERC_CRESCIMENTO         : Double; //NUMBER(5,2),  -- PERCENTUAL DE CRESCIMENTO
+              QTD_NEW_CLI_APP_APROV    : Double; //NUMBER(8),    -- NOVOS CLIENTES APROVADOS
+              QTD_CLI_NOVOS_PENDENTES  : Double; //NUMBER(8),    -- CLIENTES NOVOS PENDENTES
+
+              QTD_PARCELAS_ARECEBER    : Double; //NUMBER(8),    -- QUANTIDADE PARCELAS A RECEBER
+              VLR_PARCELAS_ARECEBER    : Double; //NUMBER(18,2), -- VALOR PARCELAS A RECEBER
+
+              TOT_CLI_PGTO_CIA         : Double; //NUMBER(18,2), -- TOTAL DE VALORES PAGOS NA CIA
+              TOT_CLI_PGTO_APP         : Double; //NUMBER(8),    -- EFETUARAM PAGAMENTO PELO APP
+              QTD_PARCELAS_PGTO_CIA    : Double; //NUMBER(8),    -- QUANTIDADE DE PARCELAS PAGAS NA CIA
+              QTD_PARCELAS_PGTO_APP    : Double; //NUMBER(8),    -- QUANTIDADE DE PARCELAS PAGAS PELO APP
+              VLR_PARCELAS_PGTO_CIA    : Double; //NUMBER(18,2), -- VALOR DE PARCELAS PAGAS NA CIA
+              VLR_PARCELAS_PGTO_APP    : Double; //NUMBER(18,2), -- VALOR DE PARCELAS PAGAS PELO APP
+              QTD_PARCELAS_PGTO_DECRE  : Double; //NUMBER(8),    -- QUANTIDADE DE PARCELAS PAGAS - DECRE
+              VLR_PARCELAS_PGTO_DECRE  : Double; //NUMBER(18,2), -- VALOR DAS PARCELAS PAGAS - DECRE
+              QTD_PARCELAS_PGTO_0800   : Double; //NUMBER(8),    -- QUANTIDADE DE PARCELAS PAGAS - 0800
+              VLR_PARCELAS_PGTO_0800   : Double; //NUMBER(18,2), -- VALOR DAS PARCELAS PAGAS - 0800
+              QTD_PGTO_BOLETO_APP      : Double; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO BOLETO APP
+              VLR_PGTO_BOLETO_APP      : Double; //NUMBER(18,2), -- VALOR DE PAGAMENTO BOLETO APP
+              QTD_PGTO_DEBITO_APP      : Double; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO DEBITO BOLETO APP
+              VLR_PGTO_DEBITO_APP      : Double; //NUMBER(18,2), -- VALOR DE PAGAMENTO DEBITO BOLETO APP
+              QTD_PGTO_CREDITO_APP     : Double; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO CREDITO BOLETO APP
+              VLR_PGTO_CREDITO_APP     : Double; //NUMBER(18,2), -- VALOR DE PAGAMENTO CREDITO BOLETO APP
+              QTD_PGTO_PIX_APP         : Double; //NUMBER(8),
+              VLR_PGTO_PIX_APP         : Double; //NUMBER(18,2),
+              QTD_PGTO_BOLETO_DECRE    : Double; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO BOLETO DECRE
+              VLR_PGTO_BOLETO_DECRE    : Double; //NUMBER(18,2), -- VALOR DE PAGAMENTO CREDITO BOLETO DECRE
+              QTD_PGTO_CARTAO_DECRE    : Double; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO COM CARTAO DECRE - Campo não existe na tabela, será criado futuramente
+              VLR_PGTO_CARTAO_DECRE    : Double; //NUMBER(18,2), -- VALOR DE PAGAMENTO COM CARTAO DECRE - Campo não existe na tabela, será criado futuramente
+              QTD_PGTO_PIX_DECRE       : Double; //NUMBER(8),
+              VLR_PGTO_PIX_DECRE       : Double; //NUMBER(18,2),
+              QTD_PGTO_LOJA            : Double; //NUMBER(8),
+              VLR_PGTO_LOJA            : Double; //NUMBER(18,2),
+              QTD_PGTO_DEBITO_LOJA     : Double; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO DEBITO LOJA
+              VLR_PGTO_DEBITO_LOJA     : Double; //NUMBER(18,2), -- VALOR PAGAMENTO DEBITO LOJA
+              QTD_PGTO_CREDITO_LOJA    : Double; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO CREDITO LOJA
+              VLR_PGTO_CREDITO_LOJA    : Double; //NUMBER(18,2), -- VALOR PAGAMENTO CREDITO LOJA
+              QTD_PGTO_PIX_LOJA        : Double; //NUMBER(8),
+              VLR_PGTO_PIX_LOJA        : Double; //NUMBER(18,2),
+              // Campo de percentuais e totais....
+              // Área Nº Pagamentos - APP...
+              TOTAL_N_PAGAMENTOS       : Double;
+              PERC_TOTAL_N_PAGAMENTOS  : Double;
+              TOT_N_PGTO_APP           : Double;
+              PERC_TOT_N_PGTO_APP      : Double;
+              PERC_N_PGTO_APP_DEBITO   : Double;
+              PERC_N_PGTO_APP_CREDITO  : Double;
+              PERC_N_PGTO_APP_PIX      : Double;
+              PERC_N_PGTO_APP_BOLETO   : Double;
+              // Área Nº Pagamentos - Decre...
+              TOT_N_PGTO_DECRE         : Double;
+              PERC_TOT_N_PGTO_DECRE    : Double;
+              PERC_N_PGTO_DECRE_BOLETO : Double;
+              PERC_N_PGTO_DECRE_PIX    : Double;
+              PERC_N_PGTO_DECRE_CARTAO : Double;
+              // Área Nº Pagamentos - Loja...
+              TOT_N_PGTO_LOJA          : Double;
+              PERC_TOT_N_PGTO_LOJA     : Double;
+              PERC_N_PGTO_LOJA_EFETIVO : Double;
+              PERC_N_PGTO_LOJA_DEBITO  : Double;
+              PERC_N_PGTO_LOJA_PIX     : Double;
+              // Área Pagamentos R$ - APP...
+              TOTAL_RS_PAGAMENTOS      : Double;
+              PERC_TOTAL_RS_PAGAMENTOS : Double;
+              TOT_RS_PGTO_APP          : Double;
+              PERC_TOT_RS_PGTO_APP     : Double;
+              PERC_RS_PGTO_APP_DEBITO  : Double;
+              PERC_RS_PGTO_APP_CREDITO : Double;
+              PERC_RS_PGTO_APP_PIX     : Double;
+              PERC_RS_PGTO_APP_BOLETO  : Double;
+              // Área Pagamentos R$ - Decre...
+              TOT_RS_PGTO_DECRE        : Double;
+              PERC_TOT_RS_PGTO_DECRE   : Double;
+              PERC_RS_PGTO_DECRE_BOLETO: Double;
+              PERC_RS_PGTO_DECRE_PIX   : Double;
+              PERC_RS_PGTO_DECRE_CARTAO: Double;
+              // Área Pagamentos R$ - Loja...
+              TOT_RS_PGTO_LOJA         : Double;
+              PERC_TOT_RS_PGTO_LOJA    : Double;
+              PERC_RS_PGTO_LOJA_EFETIVO: Double;
+              PERC_RS_PGTO_LOJA_DEBITO : Double;
+              PERC_RS_PGTO_LOJA_PIX    : Double;
               // Campos formatados para montagem e visualização no HTML...
-              HTML_DTA_MES                 : String;
-              HTML_ANOMES                  : String;
-              HTML_ANO                     : String;
-              HTML_TOT_CLI_CADASTRADOS     : String; //NUMBER(8)     -- TOTAL DE CLIENTES CADASTRADOS (Acumulado)
-              HTML_QTD_TOT_CLI_APP         : String; //NUMBER(8),     -- CADASTRADOS NA BASE
-              HTML_QTD_NEW_CLI_APP         : String; //NUMBER(8),    -- QUANTIDADE DE NOVOS CADASTROS
-              HTML_QTD_CLI_GRAZZIOTIN      : String; //NUMBER(8),    -- JÁ SÃO CLIENTES
-              HTML_QTD_NEW_CLI_APP_APROV   : String; //NUMBER(8),    -- NOVOS CLIENTES APROVADOS
-              HTML_QTD_CLI_NOVOS_PENDENTES : String; //NUMBER(8),    -- CLIENTES NOVOS PENDENTES
-              HTML_TOT_CLI_PGTO_CIA        : String; //NUMBER(18,2), -- TOTAL DE VALORES PAGOS NA CIA
-              HTML_TOT_CLI_PGTO_APP        : String; //NUMBER(8),    -- EFETUARAM PAGAMENTO PELO APP
-              HTML_QTD_PARCELAS_PGTO_CIA   : String; //NUMBER(8),    -- QUANTIDADE DE PARCELAS PAGAS NA CIA
-              HTML_QTD_PARCELAS_PGTO_APP   : String; //NUMBER(8),    -- QUANTIDADE DE PARCELAS PAGAS PELO APP
-              HTML_VLR_PARCELAS_PGTO_CIA   : String; //NUMBER(18,2), -- VALOR DE PARCELAS PAGAS NA CIA
-              HTML_VLR_PARCELAS_PGTO_APP   : String; //NUMBER(18,2), -- VALOR DE PARCELAS PAGAS PELO APP
-              HTML_QTD_PARCELAS_PGTO_DECRE : String; //NUMBER(8),    -- QUANTIDADE DE PARCELAS PAGAS - DECRE
-              HTML_VLR_PARCELAS_PGTO_DECRE : String; //NUMBER(18,2), -- VALOR DAS PARCELAS PAGAS - DECRE
-              HTML_QTD_PARCELAS_PGTO_0800  : String; //NUMBER(8),    -- QUANTIDADE DE PARCELAS PAGAS - 0800
-              HTML_VLR_PARCELAS_PGTO_0800  : String; //NUMBER(18,2), -- VALOR DAS PARCELAS PAGAS - 0800
-              HTML_QTD_PGTO_BOLETO_APP     : String; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO BOLETO APP
-              HTML_VLR_PGTO_BOLETO_APP     : String; //NUMBER(18,2), -- VALOR DE PAGAMENTO BOLETO APP
-              HTML_QTD_PGTO_DEBITO_APP     : String; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO DEBITO BOLETO APP
-              HTML_VLR_PGTO_DEBITO_APP     : String; //NUMBER(18,2), -- VALOR DE PAGAMENTO DEBITO BOLETO APP
-              HTML_QTD_PGTO_CREDITO_APP    : String; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO CREDITO BOLETO APP
-              HTML_VLR_PGTO_CREDITO_APP    : String; //NUMBER(18,2), -- VALOR DE PAGAMENTO CREDITO BOLETO APP
-              HTML_QTD_PGTO_PIX_APP        : String; //NUMBER(8),
-              HTML_VLR_PGTO_PIX_APP        : String; //NUMBER(18,2),
-              HTML_QTD_PGTO_BOLETO_DECRE   : String; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO BOLETO DECRE
-              HTML_VLR_PGTO_BOLETO_DECRE   : String; //NUMBER(18,2), -- VALOR DE PAGAMENTO CREDITO BOLETO APP
+              HTML_DTA_MES                  : String;
+              HTML_ANOMES                   : String;
+              HTML_ANO                      : String;
+              HTML_TOT_CLI_CADASTRADOS      : String; //NUMBER(8)  -- TOTAL DE CLIENTES CADASTRADOS (Acumulado)
+              HTML_QTD_TOT_CLI_APP          : String; //NUMBER(8), -- CADASTRADOS NA BASE
+              HTML_QTD_NEW_CLI_APP          : String; //NUMBER(8), -- QUANTIDADE DE NOVOS CADASTROS
+              HTML_QTD_CLI_GRAZZIOTIN       : String; //NUMBER(8), -- JÁ SÃO CLIENTES
 
-              HTML_QTD_PGTO_CARTAO_DECRE   : String; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO COM CARTAO DECRE - Campo não existe na tabela, será criado futuramente
-              HTML_VLR_PGTO_CARTAO_DECRE   : String; //NUMBER(18,2), -- VALOR DE PAGAMENTO COM CARTAO DECRE - Campo não existe na tabela, será criado futuramente
+              HTML_PERC_CRESCIMENTO         : String; //NUMBER(5,2), -- PERCENTUAL DE CRESCIMENTO
 
-              HTML_QTD_PGTO_PIX_DECRE      : String; //NUMBER(8),
-              HTML_VLR_PGTO_PIX_DECRE      : String; //NUMBER(18,2),
-              HTML_QTD_PGTO_LOJA           : String; //NUMBER(8),
-              HTML_VLR_PGTO_LOJA           : String; //NUMBER(18,2),
-              HTML_QTD_PGTO_DEBITO_LOJA    : String; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO DEBITO LOJA
-              HTML_VLR_PGTO_DEBITO_LOJA    : String; //NUMBER(18,2), -- VALOR PAGAMENTO DEBITO LOJA
-              HTML_QTD_PGTO_CREDITO_LOJA   : String; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO CREDITO LOJA
-              HTML_VLR_PGTO_CREDITO_LOJA   : String; //NUMBER(18,2), -- VALOR PAGAMENTO CREDITO LOJA
-              HTML_QTD_PGTO_PIX_LOJA       : String; //NUMBER(8),
-              HTML_VLR_PGTO_PIX_LOJA       : String; //NUMBER(18,2),
+              HTML_QTD_NEW_CLI_APP_APROV    : String; //NUMBER(8), -- NOVOS CLIENTES APROVADOS
+              HTML_QTD_CLI_NOVOS_PENDENTES  : String; //NUMBER(8), -- CLIENTES NOVOS PENDENTES
+
+              HTML_QTD_PARCELAS_ARECEBER    : String; //NUMBER(8),    -- QUANTIDADE PARCELAS A RECEBER
+              HTML_VLR_PARCELAS_ARECEBER    : String; //NUMBER(18,2), -- VALOR PARCELAS A RECEBER
+
+              HTML_TOT_CLI_PGTO_CIA         : String; //NUMBER(18,2), -- TOTAL DE VALORES PAGOS NA CIA
+              HTML_TOT_CLI_PGTO_APP         : String; //NUMBER(8),    -- EFETUARAM PAGAMENTO PELO APP
+              HTML_QTD_PARCELAS_PGTO_CIA    : String; //NUMBER(8),    -- QUANTIDADE DE PARCELAS PAGAS NA CIA
+              HTML_QTD_PARCELAS_PGTO_APP    : String; //NUMBER(8),    -- QUANTIDADE DE PARCELAS PAGAS PELO APP
+              HTML_VLR_PARCELAS_PGTO_CIA    : String; //NUMBER(18,2), -- VALOR DE PARCELAS PAGAS NA CIA
+              HTML_VLR_PARCELAS_PGTO_APP    : String; //NUMBER(18,2), -- VALOR DE PARCELAS PAGAS PELO APP
+              HTML_QTD_PARCELAS_PGTO_DECRE  : String; //NUMBER(8),    -- QUANTIDADE DE PARCELAS PAGAS - DECRE
+              HTML_VLR_PARCELAS_PGTO_DECRE  : String; //NUMBER(18,2), -- VALOR DAS PARCELAS PAGAS - DECRE
+              HTML_QTD_PARCELAS_PGTO_0800   : String; //NUMBER(8),    -- QUANTIDADE DE PARCELAS PAGAS - 0800
+              HTML_VLR_PARCELAS_PGTO_0800   : String; //NUMBER(18,2), -- VALOR DAS PARCELAS PAGAS - 0800
+              HTML_QTD_PGTO_BOLETO_APP      : String; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO BOLETO APP
+              HTML_VLR_PGTO_BOLETO_APP      : String; //NUMBER(18,2), -- VALOR DE PAGAMENTO BOLETO APP
+              HTML_QTD_PGTO_DEBITO_APP      : String; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO DEBITO BOLETO APP
+              HTML_VLR_PGTO_DEBITO_APP      : String; //NUMBER(18,2), -- VALOR DE PAGAMENTO DEBITO BOLETO APP
+              HTML_QTD_PGTO_CREDITO_APP     : String; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO CREDITO BOLETO APP
+              HTML_VLR_PGTO_CREDITO_APP     : String; //NUMBER(18,2), -- VALOR DE PAGAMENTO CREDITO BOLETO APP
+              HTML_QTD_PGTO_PIX_APP         : String; //NUMBER(8),
+              HTML_VLR_PGTO_PIX_APP         : String; //NUMBER(18,2),
+              HTML_QTD_PGTO_BOLETO_DECRE    : String; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO BOLETO DECRE
+              HTML_VLR_PGTO_BOLETO_DECRE    : String; //NUMBER(18,2), -- VALOR DE PAGAMENTO CREDITO BOLETO APP
+
+              HTML_QTD_PGTO_CARTAO_DECRE    : String; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO COM CARTAO DECRE - Campo não existe na tabela, será criado futuramente
+              HTML_VLR_PGTO_CARTAO_DECRE    : String; //NUMBER(18,2), -- VALOR DE PAGAMENTO COM CARTAO DECRE - Campo não existe na tabela, será criado futuramente
+
+              HTML_QTD_PGTO_PIX_DECRE       : String; //NUMBER(8),
+              HTML_VLR_PGTO_PIX_DECRE       : String; //NUMBER(18,2),
+              HTML_QTD_PGTO_LOJA            : String; //NUMBER(8),
+              HTML_VLR_PGTO_LOJA            : String; //NUMBER(18,2),
+              HTML_QTD_PGTO_DEBITO_LOJA     : String; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO DEBITO LOJA
+              HTML_VLR_PGTO_DEBITO_LOJA     : String; //NUMBER(18,2), -- VALOR PAGAMENTO DEBITO LOJA
+              HTML_QTD_PGTO_CREDITO_LOJA    : String; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO CREDITO LOJA
+              HTML_VLR_PGTO_CREDITO_LOJA    : String; //NUMBER(18,2), -- VALOR PAGAMENTO CREDITO LOJA
+              HTML_QTD_PGTO_PIX_LOJA        : String; //NUMBER(8),
+              HTML_VLR_PGTO_PIX_LOJA        : String; //NUMBER(18,2),
+              // Campo de percentuais e totais....
+              // Área Nº Pagamentos - APP...
+              HTML_TOTAL_N_PAGAMENTOS       : String;
+              HTML_PERC_TOTAL_N_PAGAMENTOS  : String;
+              HTML_TOT_N_PGTO_APP           : String;
+              HTML_PERC_TOT_N_PGTO_APP      : String;
+              HTML_PERC_N_PGTO_APP_DEBITO   : String;
+              HTML_PERC_N_PGTO_APP_CREDITO  : String;
+              HTML_PERC_N_PGTO_APP_PIX      : String;
+              HTML_PERC_N_PGTO_APP_BOLETO   : String;
+              // Área Nº Pagamentos - Decre...
+              HTML_TOT_N_PGTO_DECRE         : String;
+              HTML_PERC_TOT_N_PGTO_DECRE    : String;
+              HTML_PERC_N_PGTO_DECRE_BOLETO : String;
+              HTML_PERC_N_PGTO_DECRE_PIX    : String;
+              HTML_PERC_N_PGTO_DECRE_CARTAO : String;
+              // Área Nº Pagamentos - Loja...
+              HTML_TOT_N_PGTO_LOJA          : String;
+              HTML_PERC_TOT_N_PGTO_LOJA     : String;
+              HTML_PERC_N_PGTO_LOJA_EFETIVO : String;
+              HTML_PERC_N_PGTO_LOJA_DEBITO  : String;
+              HTML_PERC_N_PGTO_LOJA_PIX     : String;
+              // Área Pagamentos R$ - APP...
+              HTML_TOTAL_RS_PAGAMENTOS      : String;
+              HTML_PERC_TOTAL_RS_PAGAMENTOS : String;
+              HTML_TOT_RS_PGTO_APP          : String;
+              HTML_PERC_TOT_RS_PGTO_APP     : String;
+              HTML_PERC_RS_PGTO_APP_DEBITO  : String;
+              HTML_PERC_RS_PGTO_APP_CREDITO : String;
+              HTML_PERC_RS_PGTO_APP_PIX     : String;
+              HTML_PERC_RS_PGTO_APP_BOLETO  : String;
+              // Área Pagamentos R$ - Decre...
+              HTML_TOT_RS_PGTO_DECRE        : String;
+              HTML_PERC_TOT_RS_PGTO_DECRE   : String;
+              HTML_PERC_RS_PGTO_DECRE_BOLETO: String;
+              HTML_PERC_RS_PGTO_DECRE_PIX   : String;
+              HTML_PERC_RS_PGTO_DECRE_CARTAO: String;
+              // Área Pagamentos R$ - Loja...
+              HTML_TOT_RS_PGTO_LOJA         : String;
+              HTML_PERC_TOT_RS_PGTO_LOJA    : String;
+              HTML_PERC_RS_PGTO_LOJA_EFETIVO: String;
+              HTML_PERC_RS_PGTO_LOJA_DEBITO : String;
+              HTML_PERC_RS_PGTO_LOJA_PIX    : String;
               // Totais dos valores...
-              TOTAL_TOT_CLI_CADASTRADOS     : Double; //NUMBER(8)     -- TOTAL DE CLIENTES CADASTRADOS (Acumulado)
-              TOTAL_QTD_TOT_CLI_APP         : Double; //NUMBER(8),    -- CADASTRADOS NA BASE
-              TOTAL_QTD_NEW_CLI_APP         : Double; //NUMBER(8),    -- QUANTIDADE DE NOVOS CADASTROS
-              TOTAL_QTD_CLI_GRAZZIOTIN      : Double; //NUMBER(8),    -- JÁ SÃO CLIENTES
-              TOTAL_QTD_NEW_CLI_APP_APROV   : Double; //NUMBER(8),    -- NOVOS CLIENTES APROVADOS
-              TOTAL_QTD_CLI_NOVOS_PENDENTES : Double; //NUMBER(8),    -- NOVOS CLIENTES APROVADOS
-              TOTAL_TOT_CLI_PGTO_CIA        : Double; //NUMBER(18,2), -- TOTAL DE VALORES PAGOS NA CIA
-              TOTAL_TOT_CLI_PGTO_APP        : Double; //NUMBER(8),    -- EFETUARAM PAGAMENTO PELO APP
-              TOTAL_QTD_PARCELAS_PGTO_CIA   : Double; //NUMBER(8),    -- QUANTIDADE DE PARCELAS PAGAS NA CIA
-              TOTAL_QTD_PARCELAS_PGTO_APP   : Double; //NUMBER(8),    -- QUANTIDADE DE PARCELAS PAGAS PELO APP
-              TOTAL_VLR_PARCELAS_PGTO_CIA   : Double; //NUMBER(18,2), -- VALOR DE PARCELAS PAGAS NA CIA
-              TOTAL_VLR_PARCELAS_PGTO_APP   : Double; //NUMBER(18,2), -- VALOR DE PARCELAS PAGAS PELO APP
-              TOTAL_QTD_PARCELAS_PGTO_DECRE : Double; //NUMBER(8),    -- QUANTIDADE DE PARCELAS PAGAS - DECRE
-              TOTAL_VLR_PARCELAS_PGTO_DECRE : Double; //NUMBER(18,2), -- VALOR DAS PARCELAS PAGAS - DECRE
-              TOTAL_QTD_PARCELAS_PGTO_0800  : Double; //NUMBER(8),    -- QUANTIDADE DE PARCELAS PAGAS - 0800
-              TOTAL_VLR_PARCELAS_PGTO_0800  : Double; //NUMBER(18,2), -- VALOR DAS PARCELAS PAGAS - 0800
-              TOTAL_QTD_PGTO_BOLETO_APP     : Double; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO BOLETO APP
-              TOTAL_VLR_PGTO_BOLETO_APP     : Double; //NUMBER(18,2), -- VALOR DE PAGAMENTO BOLETO APP
-              TOTAL_QTD_PGTO_DEBITO_APP     : Double; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO DEBITO BOLETO APP
-              TOTAL_VLR_PGTO_DEBITO_APP     : Double; //NUMBER(18,2), -- VALOR DE PAGAMENTO DEBITO BOLETO APP
-              TOTAL_QTD_PGTO_CREDITO_APP    : Double; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO CREDITO BOLETO APP
-              TOTAL_VLR_PGTO_CREDITO_APP    : Double; //NUMBER(18,2), -- VALOR DE PAGAMENTO CREDITO BOLETO APP
-              TOTAL_QTD_PGTO_PIX_APP        : Double; //NUMBER(8),
-              TOTAL_VLR_PGTO_PIX_APP        : Double; //NUMBER(18,2),
-              TOTAL_QTD_PGTO_BOLETO_DECRE   : Double; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO BOLETO DECRE
-              TOTAL_VLR_PGTO_BOLETO_DECRE   : Double; //NUMBER(18,2), -- VALOR DE PAGAMENTO CREDITO BOLETO APP
+              TOTAL_TOT_CLI_CADASTRADOS      : Double; //NUMBER(8)     -- TOTAL DE CLIENTES CADASTRADOS (Acumulado)
+              TOTAL_QTD_TOT_CLI_APP          : Double; //NUMBER(8),    -- CADASTRADOS NA BASE
+              TOTAL_QTD_NEW_CLI_APP          : Double; //NUMBER(8),    -- QUANTIDADE DE NOVOS CADASTROS
+              TOTAL_QTD_CLI_GRAZZIOTIN       : Double; //NUMBER(8),    -- JÁ SÃO CLIENTES
+              TOTAL_QTD_NEW_CLI_APP_APROV    : Double; //NUMBER(8),    -- NOVOS CLIENTES APROVADOS
+              TOTAL_QTD_CLI_NOVOS_PENDENTES  : Double; //NUMBER(8),    -- NOVOS CLIENTES APROVADOS
 
-              TOTAL_QTD_PGTO_CARTAO_DECRE   : Double; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO COM CARTAO DECRE - Campo não existe na tabela, será criado futuramente
-              TOTAL_VLR_PGTO_CARTAO_DECRE   : Double; //NUMBER(18,2), -- VALOR DE PAGAMENTO COM CARTAO DECRE - Campo não existe na tabela, será criado futuramente
+              TOTAL_QTD_PARCELAS_ARECEBER    : Double; //NUMBER(8),    -- QUANTIDADE PARCELAS A RECEBER
+              TOTAL_VLR_PARCELAS_ARECEBER    : Double; //NUMBER(18,2), -- VALOR PARCELAS A RECEBER
 
-              TOTAL_QTD_PGTO_PIX_DECRE      : Double; //NUMBER(8),
-              TOTAL_VLR_PGTO_PIX_DECRE      : Double; //NUMBER(18,2),
-              TOTAL_QTD_PGTO_LOJA           : Double; //NUMBER(8),
-              TOTAL_VLR_PGTO_LOJA           : Double; //NUMBER(18,2),
-              TOTAL_QTD_PGTO_DEBITO_LOJA    : Double; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO DEBITO LOJA
-              TOTAL_VLR_PGTO_DEBITO_LOJA    : Double; //NUMBER(18,2), -- VALOR PAGAMENTO DEBITO LOJA
-              TOTAL_QTD_PGTO_CREDITO_LOJA   : Double; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO CREDITO LOJA
-              TOTAL_VLR_PGTO_CREDITO_LOJA   : Double; //NUMBER(18,2), -- VALOR PAGAMENTO CREDITO LOJA
-              TOTAL_QTD_PGTO_PIX_LOJA       : Double; //NUMBER(8),
-              TOTAL_VLR_PGTO_PIX_LOJA       : Double; //NUMBER(18,2),
+              TOTAL_TOT_CLI_PGTO_CIA         : Double; //NUMBER(18,2), -- TOTAL DE VALORES PAGOS NA CIA
+              TOTAL_TOT_CLI_PGTO_APP         : Double; //NUMBER(8),    -- EFETUARAM PAGAMENTO PELO APP
+              TOTAL_QTD_PARCELAS_PGTO_CIA    : Double; //NUMBER(8),    -- QUANTIDADE DE PARCELAS PAGAS NA CIA
+              TOTAL_QTD_PARCELAS_PGTO_APP    : Double; //NUMBER(8),    -- QUANTIDADE DE PARCELAS PAGAS PELO APP
+              TOTAL_VLR_PARCELAS_PGTO_CIA    : Double; //NUMBER(18,2), -- VALOR DE PARCELAS PAGAS NA CIA
+              TOTAL_VLR_PARCELAS_PGTO_APP    : Double; //NUMBER(18,2), -- VALOR DE PARCELAS PAGAS PELO APP
+              TOTAL_QTD_PARCELAS_PGTO_DECRE  : Double; //NUMBER(8),    -- QUANTIDADE DE PARCELAS PAGAS - DECRE
+              TOTAL_VLR_PARCELAS_PGTO_DECRE  : Double; //NUMBER(18,2), -- VALOR DAS PARCELAS PAGAS - DECRE
+              TOTAL_QTD_PARCELAS_PGTO_0800   : Double; //NUMBER(8),    -- QUANTIDADE DE PARCELAS PAGAS - 0800
+              TOTAL_VLR_PARCELAS_PGTO_0800   : Double; //NUMBER(18,2), -- VALOR DAS PARCELAS PAGAS - 0800
+              TOTAL_QTD_PGTO_BOLETO_APP      : Double; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO BOLETO APP
+              TOTAL_VLR_PGTO_BOLETO_APP      : Double; //NUMBER(18,2), -- VALOR DE PAGAMENTO BOLETO APP
+              TOTAL_QTD_PGTO_DEBITO_APP      : Double; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO DEBITO BOLETO APP
+              TOTAL_VLR_PGTO_DEBITO_APP      : Double; //NUMBER(18,2), -- VALOR DE PAGAMENTO DEBITO BOLETO APP
+              TOTAL_QTD_PGTO_CREDITO_APP     : Double; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO CREDITO BOLETO APP
+              TOTAL_VLR_PGTO_CREDITO_APP     : Double; //NUMBER(18,2), -- VALOR DE PAGAMENTO CREDITO BOLETO APP
+              TOTAL_QTD_PGTO_PIX_APP         : Double; //NUMBER(8),
+              TOTAL_VLR_PGTO_PIX_APP         : Double; //NUMBER(18,2),
+              TOTAL_QTD_PGTO_BOLETO_DECRE    : Double; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO BOLETO DECRE
+              TOTAL_VLR_PGTO_BOLETO_DECRE    : Double; //NUMBER(18,2), -- VALOR DE PAGAMENTO CREDITO BOLETO APP
 
+              TOTAL_QTD_PGTO_CARTAO_DECRE    : Double; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO COM CARTAO DECRE - Campo não existe na tabela, será criado futuramente
+              TOTAL_VLR_PGTO_CARTAO_DECRE    : Double; //NUMBER(18,2), -- VALOR DE PAGAMENTO COM CARTAO DECRE - Campo não existe na tabela, será criado futuramente
+
+              TOTAL_QTD_PGTO_PIX_DECRE       : Double; //NUMBER(8),
+              TOTAL_VLR_PGTO_PIX_DECRE       : Double; //NUMBER(18,2),
+              TOTAL_QTD_PGTO_LOJA            : Double; //NUMBER(8),
+              TOTAL_VLR_PGTO_LOJA            : Double; //NUMBER(18,2),
+              TOTAL_QTD_PGTO_DEBITO_LOJA     : Double; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO DEBITO LOJA
+              TOTAL_VLR_PGTO_DEBITO_LOJA     : Double; //NUMBER(18,2), -- VALOR PAGAMENTO DEBITO LOJA
+              TOTAL_QTD_PGTO_CREDITO_LOJA    : Double; //NUMBER(8),    -- QUANTIDADE DE PAGAMENTO CREDITO LOJA
+              TOTAL_VLR_PGTO_CREDITO_LOJA    : Double; //NUMBER(18,2), -- VALOR PAGAMENTO CREDITO LOJA
+              TOTAL_QTD_PGTO_PIX_LOJA        : Double; //NUMBER(8),
+              TOTAL_VLR_PGTO_PIX_LOJA        : Double; //NUMBER(18,2),
+              // Campo de percentuais e totais....
+              // Área Nº Pagamentos - APP...
+              TOTAL_TOTAL_N_PAGAMENTOS       : Double;
+              TOTAL_PERC_TOTAL_N_PAGAMENTOS  : Double;
+              TOTAL_TOT_N_PGTO_APP           : Double;
+              TOTAL_PERC_TOT_N_PGTO_APP      : Double;
+              TOTAL_PERC_N_PGTO_APP_DEBITO   : Double;
+              TOTAL_PERC_N_PGTO_APP_CREDITO  : Double;
+              TOTAL_PERC_N_PGTO_APP_PIX      : Double;
+              TOTAL_PERC_N_PGTO_APP_BOLETO   : Double;
+              // Área Nº Pagamentos - Decre...
+              TOTAL_TOT_N_PGTO_DECRE         : Double;
+              TOTAL_PERC_TOT_N_PGTO_DECRE    : Double;
+              TOTAL_PERC_N_PGTO_DECRE_BOLETO : Double;
+              TOTAL_PERC_N_PGTO_DECRE_PIX    : Double;
+              TOTAL_PERC_N_PGTO_DECRE_CARTAO : Double;
+              // Área Nº Pagamentos - Loja...
+              TOTAL_TOT_N_PGTO_LOJA          : Double;
+              TOTAL_PERC_TOT_N_PGTO_LOJA     : Double;
+              TOTAL_PERC_N_PGTO_LOJA_EFETIVO : Double;
+              TOTAL_PERC_N_PGTO_LOJA_DEBITO  : Double;
+              TOTAL_PERC_N_PGTO_LOJA_PIX     : Double;
+              // Área Pagamentos R$ - APP...
+              TOTAL_TOTAL_RS_PAGAMENTOS      : Double;
+              TOTAL_PERC_TOTAL_RS_PAGAMENTOS : Double;
+              TOTAL_TOT_RS_PGTO_APP          : Double;
+              TOTAL_PERC_TOT_RS_PGTO_APP     : Double;
+              TOTAL_PERC_RS_PGTO_APP_DEBITO  : Double;
+              TOTAL_PERC_RS_PGTO_APP_CREDITO : Double;
+              TOTAL_PERC_RS_PGTO_APP_PIX     : Double;
+              TOTAL_PERC_RS_PGTO_APP_BOLETO  : Double;
+              // Área Pagamentos R$ - Decre...
+              TOTAL_TOT_RS_PGTO_DECRE        : Double;
+              TOTAL_PERC_TOT_RS_PGTO_DECRE   : Double;
+              TOTAL_PERC_RS_PGTO_DECRE_BOLETO: Double;
+              TOTAL_PERC_RS_PGTO_DECRE_PIX   : Double;
+              TOTAL_PERC_RS_PGTO_DECRE_CARTAO: Double;
+              // Área Pagamentos R$ - Loja...
+              TOTAL_TOT_RS_PGTO_LOJA         : Double;
+              TOTAL_PERC_TOT_RS_PGTO_LOJA    : Double;
+              TOTAL_PERC_RS_PGTO_LOJA_EFETIVO: Double;
+              TOTAL_PERC_RS_PGTO_LOJA_DEBITO : Double;
+              TOTAL_PERC_RS_PGTO_LOJA_PIX    : Double;
               // Campos formatados de TOTAIS para montagem e visualização no HTML...
               HTML_TOTAL_DTA_MES                 : String;
               HTML_TOTAL_ANOMES                  : String;
@@ -160,6 +304,10 @@ type
               HTML_TOTAL_QTD_CLI_GRAZZIOTIN      : String; //NUMBER(8),    -- JÁ SÃO CLIENTES
               HTML_TOTAL_QTD_NEW_CLI_APP_APROV   : String; //NUMBER(8),    -- NOVOS CLIENTES APROVADOS
               HTML_TOTAL_QTD_CLI_NOVOS_PENDENTES : String; //NUMBER(8),    -- NOVOS CLIENTES APROVADOS
+
+              HTML_TOTAL_QTD_PARCELAS_ARECEBER   : String; //NUMBER(8),    -- QUANTIDADE PARCELAS A RECEBER
+              HTML_TOTAL_VLR_PARCELAS_ARECEBER   : String; //NUMBER(18,2), -- VALOR PARCELAS A RECEBER
+
               HTML_TOTAL_TOT_CLI_PGTO_CIA        : String; //NUMBER(18,2), -- TOTAL DE VALORES PAGOS NA CIA
               HTML_TOTAL_TOT_CLI_PGTO_APP        : String; //NUMBER(8),    -- EFETUARAM PAGAMENTO PELO APP
               HTML_TOTAL_QTD_PARCELAS_PGTO_CIA   : String; //NUMBER(8),    -- QUANTIDADE DE PARCELAS PAGAS NA CIA
@@ -194,6 +342,49 @@ type
               HTML_TOTAL_VLR_PGTO_CREDITO_LOJA   : String; //NUMBER(18,2), -- VALOR PAGAMENTO CREDITO LOJA
               HTML_TOTAL_QTD_PGTO_PIX_LOJA       : String; //NUMBER(8),
               HTML_TOTAL_VLR_PGTO_PIX_LOJA       : String; //NUMBER(18,2),
+              // Campo de percentuais e totais....
+              // Área Nº Pagamentos - APP...
+              HTML_TOTAL_TOTAL_N_PAGAMENTOS       : String;
+              HTML_TOTAL_PERC_TOTAL_N_PAGAMENTOS  : String;
+              HTML_TOTAL_TOT_N_PGTO_APP           : String;
+              HTML_TOTAL_PERC_TOT_N_PGTO_APP      : String;
+              HTML_TOTAL_PERC_N_PGTO_APP_DEBITO   : String;
+              HTML_TOTAL_PERC_N_PGTO_APP_CREDITO  : String;
+              HTML_TOTAL_PERC_N_PGTO_APP_PIX      : String;
+              HTML_TOTAL_PERC_N_PGTO_APP_BOLETO   : String;
+              // Área Nº Pagamentos - Decre...
+              HTML_TOTAL_TOT_N_PGTO_DECRE         : String;
+              HTML_TOTAL_PERC_TOT_N_PGTO_DECRE    : String;
+              HTML_TOTAL_PERC_N_PGTO_DECRE_BOLETO : String;
+              HTML_TOTAL_PERC_N_PGTO_DECRE_PIX    : String;
+              HTML_TOTAL_PERC_N_PGTO_DECRE_CARTAO : String;
+              // Área Nº Pagamentos - Loja...
+              HTML_TOTAL_TOT_N_PGTO_LOJA          : String;
+              HTML_TOTAL_PERC_TOT_N_PGTO_LOJA     : String;
+              HTML_TOTAL_PERC_N_PGTO_LOJA_EFETIVO : String;
+              HTML_TOTAL_PERC_N_PGTO_LOJA_DEBITO  : String;
+              HTML_TOTAL_PERC_N_PGTO_LOJA_PIX     : String;
+              // Área Pagamentos R$ - APP...
+              HTML_TOTAL_TOTAL_RS_PAGAMENTOS      : String;
+              HTML_TOTAL_PERC_TOTAL_RS_PAGAMENTOS : String;
+              HTML_TOTAL_TOT_RS_PGTO_APP          : String;
+              HTML_TOTAL_PERC_TOT_RS_PGTO_APP     : String;
+              HTML_TOTAL_PERC_RS_PGTO_APP_DEBITO  : String;
+              HTML_TOTAL_PERC_RS_PGTO_APP_CREDITO : String;
+              HTML_TOTAL_PERC_RS_PGTO_APP_PIX     : String;
+              HTML_TOTAL_PERC_RS_PGTO_APP_BOLETO  : String;
+              // Área Pagamentos R$ - Decre...
+              HTML_TOTAL_TOT_RS_PGTO_DECRE        : String;
+              HTML_TOTAL_PERC_TOT_RS_PGTO_DECRE   : String;
+              HTML_TOTAL_PERC_RS_PGTO_DECRE_BOLETO: String;
+              HTML_TOTAL_PERC_RS_PGTO_DECRE_PIX   : String;
+              HTML_TOTAL_PERC_RS_PGTO_DECRE_CARTAO: String;
+              // Área Pagamentos R$ - Loja...
+              HTML_TOTAL_TOT_RS_PGTO_LOJA         : String;
+              HTML_TOTAL_PERC_TOT_RS_PGTO_LOJA    : String;
+              HTML_TOTAL_PERC_RS_PGTO_LOJA_EFETIVO: String;
+              HTML_TOTAL_PERC_RS_PGTO_LOJA_DEBITO : String;
+              HTML_TOTAL_PERC_RS_PGTO_LOJA_PIX    : String;
     end;
     REMAIL = record
              ASSUNTO     : String;
@@ -260,6 +451,10 @@ const
                   '       qtd_cli_grazziotin,'+
                   '       qtd_new_cli_app_aprov,'+
                   '       qtd_cli_novos_pendentes,'+
+
+                  '       qtd_parcelas_areceber,'+
+                  '       vlr_parcelas_areceber,'+
+
                   '       tot_cli_pgto_cia,'+
                   '       tot_cli_pgto_app,'+
                   '       qtd_parcelas_pgto_cia,'+
@@ -299,6 +494,10 @@ const
                   '       sum(qtd_cli_grazziotin) as qtd_cli_grazziotin,'+
                   '       sum(qtd_new_cli_app_aprov) as qtd_new_cli_app_aprov,'+
                   '       sum(qtd_cli_novos_pendentes) as qtd_cli_novos_pendentes,'+
+
+                  '       sum(qtd_parcelas_areceber) as qtd_parcelas_areceber,'+
+                  '       sum(vlr_parcelas_areceber) as vlr_parcelas_areceber,'+
+
                   '       sum(tot_cli_pgto_cia) as tot_cli_pgto_cia,'+
                   '       sum(tot_cli_pgto_app) as tot_cli_pgto_app,'+
                   '       sum(qtd_parcelas_pgto_cia) as qtd_parcelas_pgto_cia,'+
@@ -416,6 +615,7 @@ begin
      Log('Executando PROCEDURE para atualizar valores....');
      lblMensagem.Caption := 'Executando PROCEDURE, atualizando valores...';
      lblMensagem.Update;
+     ggeKPIPagamentos.Progress := 10;
      Delay(200);
 
      fspGRZ_Rel_Pgto_AppxLoja_SP.Active := False;
@@ -517,6 +717,10 @@ begin
      GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_CLI_GRAZZIOTIN := qryTotais.FieldByName('qtd_cli_grazziotin').AsFloat;
      GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_NEW_CLI_APP_APROV := qryTotais.FieldByName('qtd_new_cli_app_aprov').AsFloat;
      GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_CLI_NOVOS_PENDENTES := qryTotais.FieldByName('qtd_cli_novos_pendentes').AsFloat;
+
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PARCELAS_ARECEBER := qryTotais.FieldByName('qtd_parcelas_areceber').AsFloat;
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PARCELAS_ARECEBER := qryTotais.FieldByName('vlr_parcelas_areceber').AsFloat;
+
      GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_CLI_PGTO_APP := qryTotais.FieldByName('tot_cli_pgto_app').AsFloat;
      GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PARCELAS_PGTO_CIA := qryTotais.FieldByName('qtd_parcelas_pgto_cia').AsFloat;
      GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PARCELAS_PGTO_CIA := qryTotais.FieldByName('vlr_parcelas_pgto_cia').AsFloat;
@@ -570,6 +774,204 @@ begin
      GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_PIX_DECRE := qryTotais.FieldByName('vlr_pgto_pix_decre').AsFloat;
      GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_PIX_LOJA := qryTotais.FieldByName('vlr_pgto_pix_loja').AsFloat;
 
+     // Calcula percentuais e totais das áreas do relatório...
+     // Área Nº Pagamentos - Total APP...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_APP := GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_DEBITO_APP+
+                                                     GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_CREDITO_APP+
+                                                     GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_PIX_APP+
+                                                     GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_BOLETO_APP;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOT_N_PGTO_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_APP,ffNumber,10,0);
+     // Área Nº Pagamentos - Percentuais APP - Débito...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_N_PGTO_APP_DEBITO := GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_DEBITO_APP /
+                                                             iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_APP = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_APP) * 100;
+                                                             //  GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_APP * 100;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_N_PGTO_APP_DEBITO := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_N_PGTO_APP_DEBITO,ffNumber,5,2);
+     // Área Nº Pagamentos - Percentuais APP - Credito...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_N_PGTO_APP_CREDITO := GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_CREDITO_APP /
+                                                              iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_APP = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_APP) * 100;
+                                                              //  GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_APP * 100;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_N_PGTO_APP_CREDITO := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_N_PGTO_APP_CREDITO,ffNumber,5,2);
+     // Área Nº Pagamentos - Percentuais APP - PIX...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_N_PGTO_APP_PIX := GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_PIX_APP /
+                                                          iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_APP = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_APP) * 100;
+                                                          //  GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_APP * 100;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_N_PGTO_APP_PIX := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_N_PGTO_APP_PIX,ffNumber,5,2);
+     // Área Nº Pagamentos - Percentuais APP - Boleto...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_N_PGTO_APP_BOLETO := GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_BOLETO_APP /
+                                                             iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_APP = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_APP) * 100;
+                                                             //  GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_APP * 100;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_N_PGTO_APP_BOLETO := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_N_PGTO_APP_BOLETO,ffNumber,5,2);
+
+     // Área Nº Pagamentos - Total Decre...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_DECRE := GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_BOLETO_DECRE+
+                                                       GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_PIX_DECRE+
+                                                       GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_CARTAO_DECRE;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOT_N_PGTO_DECRE := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_DECRE,ffNumber,10,0);
+     // Área Nº Pagamentos - Percentuais Decre - Boleto...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_N_PGTO_DECRE_BOLETO := GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_BOLETO_DECRE /
+                                                               iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_DECRE = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_DECRE) * 100;
+                                                               //  GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_DECRE * 100;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_N_PGTO_DECRE_BOLETO := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_N_PGTO_DECRE_BOLETO,ffNumber,5,2);
+     // Área Nº Pagamentos - Percentuais Decre - PIX...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_N_PGTO_DECRE_PIX := GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_PIX_DECRE /
+                                                            iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_DECRE = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_DECRE) * 100;
+                                                            //  GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_DECRE * 100;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_N_PGTO_DECRE_PIX := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_N_PGTO_DECRE_PIX,ffNumber,5,2);
+     // Área Nº Pagamentos - Percentuais Decre - Cartão...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_N_PGTO_DECRE_CARTAO := GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_CARTAO_DECRE /
+                                                               iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_DECRE = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_DECRE) * 100;
+                                                               //  GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_DECRE * 100;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_N_PGTO_DECRE_CARTAO := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_N_PGTO_DECRE_CARTAO,ffNumber,5,2);
+
+     // Área Nº Pagamentos - Total Loja...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_LOJA := GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_LOJA+
+                                                      GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_DEBITO_LOJA+
+                                                      GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_PIX_LOJA;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOT_N_PGTO_LOJA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_LOJA,ffNumber,10,0);
+     // Área Nº Pagamentos - Percentuais Loja - Efetivo...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_N_PGTO_LOJA_EFETIVO := GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_LOJA /
+                                                               iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_LOJA = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_LOJA) * 100;
+                                                               //  GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_LOJA * 100;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_N_PGTO_LOJA_EFETIVO := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_N_PGTO_LOJA_EFETIVO,ffNumber,5,2);
+     // Área Nº Pagamentos - Percentuais Loja - Débito...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_N_PGTO_LOJA_DEBITO := GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_DEBITO_LOJA /
+                                                              iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_LOJA = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_LOJA) * 100;
+                                                              //  GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_LOJA * 100;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_N_PGTO_LOJA_DEBITO := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_N_PGTO_LOJA_DEBITO,ffNumber,5,2);
+     // Área Nº Pagamentos - Percentuais Loja - PIX...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_N_PGTO_LOJA_PIX := GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_PIX_LOJA /
+                                                           iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_LOJA = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_LOJA) * 100;
+                                                           //  GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_LOJA * 100;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_N_PGTO_LOJA_PIX := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_N_PGTO_LOJA_PIX,ffNumber,5,2);
+
+     // Área Nº Pagamentos - Total Nº Pagamentos...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOTAL_N_PAGAMENTOS := GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_APP +
+                                                         GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_DECRE +
+                                                         GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_LOJA;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOTAL_N_PAGAMENTOS := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOTAL_N_PAGAMENTOS,ffNumber,10,0);
+
+     // Percentual de Recebidos (quantidade) sobre as parcelas a receber....
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_TOTAL_N_PAGAMENTOS := GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOTAL_N_PAGAMENTOS /
+                                                              iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PARCELAS_ARECEBER = 0,1,
+                                                                  GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PARCELAS_ARECEBER) * 100;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_TOTAL_N_PAGAMENTOS := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_TOTAL_N_PAGAMENTOS,ffNumber,5,2);
+
+
+     // Área Nº Pagamentos - Calculo dos percentuais dos totais de APP, DECRE e LOJA, em cima do total geral do Nº pagamentos....
+     // % APP...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_TOT_N_PGTO_APP := GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_APP /
+                                                          iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOTAL_N_PAGAMENTOS = 0,1,
+                                                              GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOTAL_N_PAGAMENTOS) * 100;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_TOT_N_PGTO_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_TOT_N_PGTO_APP,ffNumber,5,2);
+     // % DECRE...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_TOT_N_PGTO_DECRE := GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_DECRE /
+                                                           iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOTAL_N_PAGAMENTOS = 0,1,
+                                                               GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOTAL_N_PAGAMENTOS) * 100;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_TOT_N_PGTO_DECRE := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_TOT_N_PGTO_DECRE,ffNumber,5,2);
+     // % Loja...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_TOT_N_PGTO_LOJA := GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_N_PGTO_LOJA /
+                                                          iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOTAL_N_PAGAMENTOS = 0,1,
+                                                              GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOTAL_N_PAGAMENTOS) * 100;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_TOT_N_PGTO_LOJA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_TOT_N_PGTO_LOJA,ffNumber,5,2);
+
+     // Área Pagamentos R$ - Total APP...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_APP := GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_DEBITO_APP+
+                                                      GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_CREDITO_APP+
+                                                      GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_PIX_APP+
+                                                      GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_BOLETO_APP;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOT_RS_PGTO_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_APP,ffNumber,18,2);
+     // Área Pagamentos R$ - Percentuais APP - Débito...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_RS_PGTO_APP_DEBITO := GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_DEBITO_APP /
+                                                              iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_APP = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_APP) * 100;
+                                                              //  GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_APP * 100;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_APP_DEBITO := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_RS_PGTO_APP_DEBITO,ffNumber,5,2);
+     // Área Pagamentos R$ - Percentuais APP - Crédito...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_RS_PGTO_APP_CREDITO := GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_CREDITO_APP /
+                                                               iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_APP = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_APP) * 100;
+                                                               //  GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_APP * 100;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_APP_CREDITO := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_RS_PGTO_APP_CREDITO,ffNumber,5,2);
+     // Área Pagamentos R$ - Percentuais APP - PIX...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_RS_PGTO_APP_PIX := GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_PIX_APP /
+                                                           iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_APP = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_APP) * 100;
+                                                           //  GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_APP * 100;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_APP_PIX := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_RS_PGTO_APP_PIX,ffNumber,5,2);
+     // Área Pagamentos R$ - Percentuais APP - Boleto...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_RS_PGTO_APP_BOLETO := GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_BOLETO_APP /
+                                                              iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_APP = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_APP) * 100;
+                                                              //  GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_APP * 100;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_APP_BOLETO := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_RS_PGTO_APP_BOLETO,ffNumber,5,2);
+
+     // Área Pagamentos R$ - Total Decre...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_DECRE := GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_BOLETO_DECRE+
+                                                        GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_PIX_DECRE+
+                                                        GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_CARTAO_DECRE;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOT_RS_PGTO_DECRE := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_DECRE,ffNumber,18,2);
+     // Área Pagamentos R$ - Percentuais Decre - Boleto...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_RS_PGTO_DECRE_BOLETO := GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_BOLETO_DECRE /
+                                                                iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_DECRE = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_DECRE) * 100;
+                                                                //  GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_DECRE * 100;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_DECRE_BOLETO := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_RS_PGTO_DECRE_BOLETO,ffNumber,5,2);
+     // Área Pagamentos R$ - Percentuais Decre - PIX...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_RS_PGTO_DECRE_PIX := GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_PIX_DECRE /
+                                                             iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_DECRE = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_DECRE) * 100;
+                                                             //  GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_DECRE * 100;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_DECRE_PIX := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_RS_PGTO_DECRE_PIX,ffNumber,5,2);
+     // Área Pagamentos R$ - Percentuais Decre - Cartão...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_RS_PGTO_DECRE_CARTAO := GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_CARTAO_DECRE /
+                                                                iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_DECRE = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_DECRE) * 100;
+                                                                //  GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_DECRE * 100;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_DECRE_CARTAO := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_RS_PGTO_DECRE_CARTAO,ffNumber,5,2);
+
+     // Área Pagamentos R$ - Total Loja...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_LOJA := GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_LOJA+
+                                                       GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_DEBITO_LOJA+
+                                                       GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_PIX_LOJA;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOT_RS_PGTO_LOJA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_LOJA,ffNumber,18,2);
+     // Área Pagamentos R$ - Percentuais Loja - Efetivo...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_RS_PGTO_LOJA_EFETIVO := GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_LOJA /
+                                                                iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_LOJA = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_LOJA) * 100;
+                                                                //  GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_LOJA * 100;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_LOJA_EFETIVO := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_RS_PGTO_LOJA_EFETIVO,ffNumber,5,2);
+     // Área Pagamentos R$ - Percentuais Loja - Débito...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_RS_PGTO_LOJA_DEBITO := GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_DEBITO_LOJA /
+                                                               iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_LOJA = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_LOJA) * 100;
+                                                               //  GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_LOJA * 100;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_LOJA_DEBITO := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_RS_PGTO_LOJA_DEBITO,ffNumber,5,2);
+     // Área Pagamentos R$ - Percentuais Loja - PIX...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_RS_PGTO_LOJA_PIX := GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_PIX_LOJA /
+                                                            iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_LOJA = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_LOJA) * 100;
+                                                            //  GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_LOJA * 100;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_LOJA_PIX := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_RS_PGTO_LOJA_PIX,ffNumber,5,2);
+
+     // Área Pagamentos R$ - Total Pagamentos R$...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOTAL_RS_PAGAMENTOS := GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_APP +
+                                                          GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_DECRE +
+                                                          GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_LOJA;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOTAL_RS_PAGAMENTOS := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOTAL_RS_PAGAMENTOS,ffNumber,18,2);
+
+     // Percentual de Recebidos (valor) sobre as parcelas a receber....
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_TOTAL_RS_PAGAMENTOS := GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOTAL_RS_PAGAMENTOS /
+                                                               iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PARCELAS_ARECEBER = 0,1,
+                                                                   GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PARCELAS_ARECEBER) * 100;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_TOTAL_RS_PAGAMENTOS := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_TOTAL_RS_PAGAMENTOS,ffNumber,5,2);
+
+     // Área Nº Pagamentos - Calculo dos percentuais dos totais de APP, DECRE e LOJA, em cima do total geral do Nº pagamentos....
+     // % APP...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_TOT_RS_PGTO_APP := GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_APP /
+                                                           iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOTAL_RS_PAGAMENTOS = 0,1,
+                                                               GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOTAL_RS_PAGAMENTOS) * 100;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_TOT_RS_PGTO_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_TOT_RS_PGTO_APP,ffNumber,5,2);
+     // % DECRE...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_TOT_RS_PGTO_DECRE := GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_DECRE /
+                                                             iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOTAL_RS_PAGAMENTOS = 0,1,
+                                                                 GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOTAL_RS_PAGAMENTOS) * 100;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_TOT_RS_PGTO_DECRE := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_TOT_RS_PGTO_DECRE,ffNumber,5,2);
+     // % Loja...
+     GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_TOT_RS_PGTO_LOJA := GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_RS_PGTO_LOJA /
+                                                            iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOTAL_RS_PAGAMENTOS = 0,1,
+                                                                GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOTAL_RS_PAGAMENTOS) * 100;
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_TOT_RS_PGTO_LOJA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_PERC_TOT_RS_PGTO_LOJA,ffNumber,5,2);
+
      // Formata os valores dos totais....
      GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_TOT_CLI_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_TOT_CLI_APP,ffNumber,8,0);
      GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOT_CLI_CADASTRADOS := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_CLI_CADASTRADOS,ffNumber,8,0);
@@ -577,6 +979,10 @@ begin
      GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_CLI_GRAZZIOTIN := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_CLI_GRAZZIOTIN,ffNumber,8,0);
      GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_NEW_CLI_APP_APROV := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_NEW_CLI_APP_APROV,ffNumber,8,0);
      GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_CLI_NOVOS_PENDENTES := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_CLI_NOVOS_PENDENTES,ffNumber,8,0);
+
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PARCELAS_ARECEBER := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PARCELAS_ARECEBER,ffNumber,8,0);
+     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PARCELAS_ARECEBER := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PARCELAS_ARECEBER,ffNumber,18,2);
+
      GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOT_CLI_PGTO_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_CLI_PGTO_APP,ffNumber,8,0);
      GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PARCELAS_PGTO_CIA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PARCELAS_PGTO_CIA,ffNumber,8,0);
      GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PARCELAS_PGTO_CIA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PARCELAS_PGTO_CIA,ffNumber,18,2);
@@ -615,7 +1021,7 @@ begin
      GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_PIX_LOJA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_PIX_LOJA,ffNumber,18,2);
 
      sHTMLEMail := ''; sHTMLLinha := '';
-     ggeKPIPagamentos.Progress := 1;
+     ggeKPIPagamentos.Progress := 15;
      lblMensagem.Caption := 'Iniciando montagem HTML...';
      lblMensagem.Update;
      Delay(200);
@@ -636,8 +1042,15 @@ begin
                       '    padding: 0px;'+
                       '    border-spacing: 0px;'+
                       '    text-align: center;}'+
+                      ' /* Standard Tables */'+
+                      ' table {'+
+                      ' vertical-align: center;'+
+                      ' border-collapse: collapse;'+
+                      ' border: 0.1em solid #d6d6d6;'+
+                      ' width: 5000px;'+
+                      //' width: 4200px;'+
+                      ' }'+
                       ' </style> '+
-
                       ' </head> '+
                       ' <body> '+
                       ' <table> '+
@@ -645,60 +1058,83 @@ begin
                       ' <h3>Relatório KPI Pagamentos</h3> '+
                       ' <p>Período: '+edtInicio.Text+' a '+edtFinal.Text+'</p> '+
                       ' <tr>'+
-                      ' <th style="width:50px" rowspan="3" bgcolor="#C0C0C0">Mês/Ano</th> '+
-                      ' <th style="width:50px" colspan="6" bgcolor="#C0C0C0">Clientes APP</th> '+
-                      ' <th colspan="10" bgcolor="#F4A460">Nº Pagamentos</th> '+
-                      ' <th colspan="10" bgcolor="#90EE90">Pagamentos R$</th> '+
-                      ' </tr>'+
-                      ' <tr> '+
-                      ' <th style="width:50px" rowspan="2" bgcolor="#C0C0C0">Acumulado</th> '+
-                      ' <th style="width:50px" rowspan="2" bgcolor="#C0C0C0">Cadastrados</th> '+
-                      ' <th style="width:50px" rowspan="2" bgcolor="#C0C0C0">Novos</th> '+
-                      ' <th style="width:50px" rowspan="2" bgcolor="#C0C0C0">Grazziotin</th> '+
-                      ' <th style="width:50px" rowspan="2" bgcolor="#C0C0C0">Aprovados</th> '+
-                      ' <th style="width:50px" rowspan="2" bgcolor="#C0C0C0">Pendentes</th> '+
-                      // Cabeçalho - PAGAMENTOS...
-                      ' <th style="width:50px" colspan="4" bgcolor="#F4A460">App</th> '+
-                      ' <th style="width:50px" colspan="3" bgcolor="#F4A460">Decre</th> '+
-                      ' <th style="width:50px" colspan="3" bgcolor="#F4A460">Loja</th> '+
-                      // Cabeçalho - PAGAMENTOS R$...
-                      ' <th style="width:50px" colspan="4" bgcolor="#90EE90">App</th> '+
-                      ' <th style="width:50px" colspan="3" bgcolor="#90EE90">Decre</th> '+
-                      ' <th style="width:50px" colspan="3" bgcolor="#90EE90">Loja</th> '+
-                      ' </tr> '+
-                      // Cabeçalho PAGAMENTOS....
-                      ' <tr> '+
-                      // Sub cabeçalho APP
-                      ' <th style="width:50px" bgcolor="#F4A460">Débito</th> '+
-                      ' <th style="width:50px" bgcolor="#F4A460">Crédito</th> '+
-                      ' <th style="width:50px" bgcolor="#F4A460">PIX</th> '+
-                      ' <th style="width:50px" bgcolor="#F4A460">Boleto</th> '+
-                      // Sub cabeçalho DECRE
-                      ' <th style="width:50px" bgcolor="#F4A460">Boleto</th> '+
-                      ' <th style="width:50px" bgcolor="#F4A460">PIX</th> '+
-                      ' <th style="width:50px" bgcolor="#F4A460">Cartão</th> '+
-                      // Sub cabeçalho LOJA
-                      ' <th style="width:50px" bgcolor="#F4A460">Efetivo</th> '+
-                      ' <th style="width:50px" bgcolor="#F4A460">Débito</th> '+
-                      ' <th style="width:50px" bgcolor="#F4A460">PIX</th> '+
-                      // Cabeçalho PAGAMENTOS R$....
-                      // Sub cabeçalho - APP...
-                      ' <th style="width:50px" bgcolor="#90EE90">Débito</th> '+
-                      ' <th style="width:50px" bgcolor="#90EE90">Crédito</th> '+
-                      ' <th style="width:50px" bgcolor="#90EE90">PIX</th> '+
-                      ' <th style="width:50px" bgcolor="#90EE90">Boleto</th> '+
-                      // Sub cabeçalho DECRE
-                      ' <th style="width:50px" bgcolor="#90EE90">Boleto</th> '+
-                      ' <th style="width:50px" bgcolor="#90EE90">PIX</th> '+
-                      ' <th style="width:50px" bgcolor="#90EE90">Cartão</th> '+
-                      // Sub cabeçalho LOJA
-                      ' <th style="width:50px" bgcolor="#90EE90">Efetivo</th> '+
-                      ' <th style="width:50px" bgcolor="#90EE90">Débito</th> '+
-                      ' <th style="width:50px" bgcolor="#90EE90">PIX</th> '+
 
-                      ' </tr> '+
-                      ' </thead> '+
-                      ' <tbody> ';
+                       ' <th style="width:50px" rowspan="3" bgcolor="#C0C0C0">Mês/Ano</th> '+
+                       ' <th style="width:50px" colspan="7" bgcolor="#C0C0C0">Clientes APP</th> '+ // colspan="7" quando tuiver a coluna de usuario s ativos ultimos 60 dias
+                       ' <th colspan="19" bgcolor="#F4A460">Nº Pagamentos</th> '+
+                       ' <th colspan="19" bgcolor="#90EE90">Pagamentos R$</th> '+
+                       ' </tr>'+
+                       ' <tr> '+
+                       ' <th style="width:40px" rowspan="2" bgcolor="#C0C0C0">Acumulado</th> '+
+                       ' <th style="width:50px" rowspan="2" bgcolor="#C0C0C0">Cadastrados</th> '+
+                       ' <th style="width:50px" rowspan="2" bgcolor="#C0C0C0">%</th> '+
+                       //' <th style="width:50px" rowspan="2" bgcolor="#C0C0C0">Ativos Ult 60 dias</th> '+
+                       ' <th style="width:50px" rowspan="2" bgcolor="#C0C0C0">Novos</th> '+
+                       ' <th style="width:50px" rowspan="2" bgcolor="#C0C0C0">Grazziotin</th> '+
+                       ' <th style="width:50px" rowspan="2" bgcolor="#C0C0C0">Aprovados</th> '+
+                       ' <th style="width:50px" rowspan="2" bgcolor="#C0C0C0">Pendentes</th> '+
+                       // Cabeçalho - PAGAMENTOS...
+                       ' <th style="width:90px" rowspan="2" bgcolor="#F4A460">Parc. A Receber</th> '+ // Total de Nº Pagamentos
+                       ' <th style="width:50px" rowspan="2" bgcolor="#F4A460">Recebidos</th> '+ // Total de Nº Pagamentos
+                       ' <th style="width:50px" rowspan="2" bgcolor="#F4A460">%</th> '+ // Percentual quantidade dos recebidos pelas Parcelas a receber
+                       ' <th style="width:50px" colspan="6" bgcolor="#F4A460">% App</th> '+
+                       ' <th style="width:50px" colspan="5" bgcolor="#F4A460">% Decre</th> '+
+                       ' <th style="width:50px" colspan="5" bgcolor="#F4A460">% Loja</th> '+
+                       // Cabeçalho - PAGAMENTOS R$...
+                       ' <th style="width:90px" rowspan="2" bgcolor="#90EE90">Parc. A Receber</th> '+ // Total de Pagamentos R$
+                       ' <th style="width:50px" rowspan="2" bgcolor="#90EE90">Recebidos</th> '+ // Total de Pagamentos R$
+                       ' <th style="width:50px" rowspan="2" bgcolor="#90EE90">%</th> '+ // Percentual valor dos recebidos pelas Parcelas a receber
+                       ' <th style="width:50px" colspan="6" bgcolor="#90EE90">% App</th> '+
+                       ' <th style="width:50px" colspan="5" bgcolor="#90EE90">% Decre</th> '+
+                       ' <th style="width:50px" colspan="5" bgcolor="#90EE90">% Loja</th> '+
+                       ' </tr> '+
+
+                       // Cabeçalho Nº PAGAMENTOS....
+                       ' <tr> '+
+                       // Sub cabeçalho APP
+                       ' <th style="width:50px" bgcolor="#F4A460">Total</th> '+ // Total APP...
+                       ' <th style="width:50px" bgcolor="#F4A460">%</th> '+
+                       ' <th style="width:50px" bgcolor="#F4A460">% Débito</th> '+
+                       ' <th style="width:60px" bgcolor="#F4A460">% Crédito</th> '+
+                       ' <th style="width:50px" bgcolor="#F4A460">% PIX</th> '+
+                       ' <th style="width:50px" bgcolor="#F4A460">% Boleto</th> '+
+                       // Sub cabeçalho DECRE
+                       ' <th style="width:50px" bgcolor="#F4A460">Total</th> '+ // Total Decre...
+                       ' <th style="width:50px" bgcolor="#F4A460">%</th> '+
+                       ' <th style="width:50px" bgcolor="#F4A460">% Boleto</th> '+
+                       ' <th style="width:50px" bgcolor="#F4A460">% PIX</th> '+
+                       ' <th style="width:50px" bgcolor="#F4A460">% Cartão</th> '+
+                       // Sub cabeçalho LOJA
+                       ' <th style="width:50px" bgcolor="#F4A460">Total</th> '+ // Total Decre...
+                       ' <th style="width:50px" bgcolor="#F4A460">%</th> '+
+                       ' <th style="width:50px" bgcolor="#F4A460">% Efetivo</th> '+
+                       ' <th style="width:50px" bgcolor="#F4A460">% Débito</th> '+
+                       ' <th style="width:50px" bgcolor="#F4A460">% PIX</th> '+
+
+                       // Cabeçalho PAGAMENTOS R$....
+                       // Sub cabeçalho - APP...
+                       ' <th style="width:50px" bgcolor="#90EE90">Total</th> '+ // Total APP...
+                       ' <th style="width:50px" bgcolor="#90EE90">%</th> '+
+                       ' <th style="width:50px" bgcolor="#90EE90">% Débito</th> '+
+                       ' <th style="width:50px" bgcolor="#90EE90">% Crédito</th> '+
+                       ' <th style="width:50px" bgcolor="#90EE90">% PIX</th> '+
+                       ' <th style="width:50px" bgcolor="#90EE90">% Boleto</th> '+
+                       // Sub cabeçalho DECRE
+                       ' <th style="width:50px" bgcolor="#90EE90">Total</th> '+ // Total Decre...
+                       ' <th style="width:50px" bgcolor="#90EE90">%</th> '+
+                       ' <th style="width:50px" bgcolor="#90EE90">% Boleto</th> '+
+                       ' <th style="width:50px" bgcolor="#90EE90">% PIX</th> '+
+                       ' <th style="width:50px" bgcolor="#90EE90">% Cartão</th> '+
+                       // Sub cabeçalho LOJA
+                       ' <th style="width:50px" bgcolor="#90EE90">Total</th> '+ // Total Loja...
+                       ' <th style="width:50px" bgcolor="#90EE90">%</th> '+
+                       ' <th style="width:50px" bgcolor="#90EE90">% Efetivo</th> '+
+                       ' <th style="width:50px" bgcolor="#90EE90">% Débito</th> '+
+                       ' <th style="width:50px" bgcolor="#90EE90">% PIX</th> '+
+
+                       ' </tr> '+
+                       ' </thead> '+
+                       ' <tbody> ';
 
         ggeKPIPagamentos.Progress := 30;
         lblMensagem.Caption := 'Lendo dados das tabelas...';
@@ -710,43 +1146,47 @@ begin
         while not qryRelatorioVendas.Eof do
         begin
              // Dados do SQL...
-             GRZW_REL_PGTOS_APPXLOJA.DTA_MES :=  qryRelatorioVendas.FieldByName('dta_mes').AsDateTime; // qryRelatorioVendasDTA_MES.AsDateTime;
+             GRZW_REL_PGTOS_APPXLOJA.DTA_MES :=  qryRelatorioVendas.FieldByName('dta_mes').AsDateTime;
              GRZW_REL_PGTOS_APPXLOJA.ANOMES := Copy(DateToStr(GRZW_REL_PGTOS_APPXLOJA.DTA_MES),4,7);
              GRZW_REL_PGTOS_APPXLOJA.ANO := Copy(DateToStr(GRZW_REL_PGTOS_APPXLOJA.DTA_MES),7,4);
-             GRZW_REL_PGTOS_APPXLOJA.TOT_CLI_CADASTRADOS := qryRelatorioVendas.FieldByName('tot_cli_cadastrados').AsFloat; //qryRelatorioVendasTOT_CLI_CADASTRADOS.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_TOT_CLI_APP := qryRelatorioVendas.FieldByName('qtd_tot_cli_app').AsFloat; //qryRelatorioVendasQTD_TOT_CLI_APP.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_NEW_CLI_APP := qryRelatorioVendas.FieldByName('qtd_new_cli_app').AsFloat; //qryRelatorioVendasQTD_NEW_CLI_APP.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_CLI_GRAZZIOTIN := qryRelatorioVendas.FieldByName('qtd_cli_grazziotin').AsFloat; //qryRelatorioVendasQTD_CLI_GRAZZIOTIN.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_NEW_CLI_APP_APROV := qryRelatorioVendas.FieldByName('qtd_new_cli_app_aprov').AsFloat; //qryRelatorioVendasQTD_NEW_CLI_APP_APROV.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_CLI_NOVOS_PENDENTES := qryRelatorioVendas.FieldByName('qtd_cli_novos_pendentes').AsFloat; //qryRelatorioVendasQTD_CLI_NOVOS_PENDENTES.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.TOT_CLI_PGTO_APP := qryRelatorioVendas.FieldByName('tot_cli_pgto_app').AsFloat; //qryRelatorioVendasTOT_CLI_PGTO_APP.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PARCELAS_PGTO_CIA := qryRelatorioVendas.FieldByName('qtd_parcelas_pgto_cia').AsFloat; //qryRelatorioVendasQTD_PARCELAS_PGTO_CIA.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PARCELAS_PGTO_CIA := qryRelatorioVendas.FieldByName('vlr_parcelas_pgto_cia').AsFloat; //qryRelatorioVendasVLR_PARCELAS_PGTO_CIA.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PARCELAS_PGTO_APP := qryRelatorioVendas.FieldByName('qtd_parcelas_pgto_app').AsFloat; //qryRelatorioVendasQTD_PARCELAS_PGTO_APP.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PARCELAS_PGTO_APP := qryRelatorioVendas.FieldByName('vlr_parcelas_pgto_app').AsFloat; //qryRelatorioVendasVLR_PARCELAS_PGTO_APP.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PARCELAS_PGTO_DECRE := qryRelatorioVendas.FieldByName('qtd_parcelas_pgto_decre').AsFloat; //qryRelatorioVendasQTD_PARCELAS_PGTO_DECRE.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PARCELAS_PGTO_DECRE := qryRelatorioVendas.FieldByName('vlr_parcelas_pgto_decre').AsFloat; //qryRelatorioVendasVLR_PARCELAS_PGTO_DECRE.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PARCELAS_PGTO_0800 := qryRelatorioVendas.FieldByName('qtd_parcelas_pgto_0800').AsFloat; //qryRelatorioVendasQTD_PARCELAS_PGTO_0800.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PARCELAS_PGTO_0800 := qryRelatorioVendas.FieldByName('vlr_parcelas_pgto_0800').AsFloat; //qryRelatorioVendasVLR_PARCELAS_PGTO_0800.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_BOLETO_APP := qryRelatorioVendas.FieldByName('qtd_pgto_boleto_app').AsFloat; //qryRelatorioVendasQTD_PGTO_BOLETO_APP.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_BOLETO_APP := qryRelatorioVendas.FieldByName('vlr_pgto_boleto_app').AsFloat; //qryRelatorioVendasVLR_PGTO_BOLETO_APP.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_DEBITO_APP := qryRelatorioVendas.FieldByName('qtd_pgto_debito_app').AsFloat; //qryRelatorioVendasQTD_PGTO_DEBITO_APP.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_DEBITO_APP := qryRelatorioVendas.FieldByName('vlr_pgto_debito_app').AsFloat; //qryRelatorioVendasVLR_PGTO_DEBITO_APP.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_CREDITO_APP := qryRelatorioVendas.FieldByName('qtd_pgto_credito_app').AsFloat; //qryRelatorioVendasQTD_PGTO_CREDITO_APP.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_CREDITO_APP := qryRelatorioVendas.FieldByName('vlr_pgto_credito_app').AsFloat; //qryRelatorioVendasVLR_PGTO_CREDITO_APP.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.TOT_CLI_PGTO_CIA := qryRelatorioVendas.FieldByName('tot_cli_pgto_cia').AsFloat; //qryRelatorioVendasTOT_CLI_PGTO_CIA.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_BOLETO_DECRE := qryRelatorioVendas.FieldByName('qtd_pgto_boleto_decre').AsFloat; //qryRelatorioVendasQTD_PGTO_BOLETO_DECRE.AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.TOT_CLI_CADASTRADOS := qryRelatorioVendas.FieldByName('tot_cli_cadastrados').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.QTD_TOT_CLI_APP := qryRelatorioVendas.FieldByName('qtd_tot_cli_app').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.QTD_NEW_CLI_APP := qryRelatorioVendas.FieldByName('qtd_new_cli_app').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.QTD_CLI_GRAZZIOTIN := qryRelatorioVendas.FieldByName('qtd_cli_grazziotin').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.QTD_NEW_CLI_APP_APROV := qryRelatorioVendas.FieldByName('qtd_new_cli_app_aprov').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.QTD_CLI_NOVOS_PENDENTES := qryRelatorioVendas.FieldByName('qtd_cli_novos_pendentes').AsFloat;
+
+             GRZW_REL_PGTOS_APPXLOJA.QTD_PARCELAS_ARECEBER := qryRelatorioVendas.FieldByName('qtd_parcelas_areceber').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.VLR_PARCELAS_ARECEBER := qryRelatorioVendas.FieldByName('vlr_parcelas_areceber').AsFloat;
+
+             GRZW_REL_PGTOS_APPXLOJA.TOT_CLI_PGTO_APP := qryRelatorioVendas.FieldByName('tot_cli_pgto_app').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.QTD_PARCELAS_PGTO_CIA := qryRelatorioVendas.FieldByName('qtd_parcelas_pgto_cia').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.VLR_PARCELAS_PGTO_CIA := qryRelatorioVendas.FieldByName('vlr_parcelas_pgto_cia').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.QTD_PARCELAS_PGTO_APP := qryRelatorioVendas.FieldByName('qtd_parcelas_pgto_app').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.VLR_PARCELAS_PGTO_APP := qryRelatorioVendas.FieldByName('vlr_parcelas_pgto_app').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.QTD_PARCELAS_PGTO_DECRE := qryRelatorioVendas.FieldByName('qtd_parcelas_pgto_decre').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.VLR_PARCELAS_PGTO_DECRE := qryRelatorioVendas.FieldByName('vlr_parcelas_pgto_decre').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.QTD_PARCELAS_PGTO_0800 := qryRelatorioVendas.FieldByName('qtd_parcelas_pgto_0800').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.VLR_PARCELAS_PGTO_0800 := qryRelatorioVendas.FieldByName('vlr_parcelas_pgto_0800').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_BOLETO_APP := qryRelatorioVendas.FieldByName('qtd_pgto_boleto_app').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_BOLETO_APP := qryRelatorioVendas.FieldByName('vlr_pgto_boleto_app').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_DEBITO_APP := qryRelatorioVendas.FieldByName('qtd_pgto_debito_app').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_DEBITO_APP := qryRelatorioVendas.FieldByName('vlr_pgto_debito_app').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_CREDITO_APP := qryRelatorioVendas.FieldByName('qtd_pgto_credito_app').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_CREDITO_APP := qryRelatorioVendas.FieldByName('vlr_pgto_credito_app').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.TOT_CLI_PGTO_CIA := qryRelatorioVendas.FieldByName('tot_cli_pgto_cia').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_BOLETO_DECRE := qryRelatorioVendas.FieldByName('qtd_pgto_boleto_decre').AsFloat;
 
              GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_CARTAO_DECRE := 0; // Campo não existe na tabela, será criado futuramente....
              GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_CARTAO_DECRE := 0; // Campo não existe na tabela, será criado futuramente....
 
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_BOLETO_DECRE := qryRelatorioVendas.FieldByName('vlr_pgto_boleto_decre').AsFloat; //qryRelatorioVendasVLR_PGTO_BOLETO_DECRE.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_LOJA := qryRelatorioVendas.FieldByName('qtd_pgto_loja').AsFloat; //qryRelatorioVendasQTD_PGTO_LOJA.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_LOJA := qryRelatorioVendas.FieldByName('vlr_pgto_loja').AsFloat; //qryRelatorioVendasVLR_PGTO_LOJA.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_DEBITO_LOJA := qryRelatorioVendas.FieldByName('qtd_pgto_debito_loja').AsFloat; //qryRelatorioVendasQTD_PGTO_DEBITO_LOJA.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_DEBITO_LOJA := qryRelatorioVendas.FieldByName('vlr_pgto_debito_loja').AsFloat; //qryRelatorioVendasVLR_PGTO_DEBITO_LOJA.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_CREDITO_LOJA := qryRelatorioVendas.FieldByName('qtd_pgto_credito_loja').AsFloat; //qryRelatorioVendasQTD_PGTO_CREDITO_LOJA.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_CREDITO_LOJA := qryRelatorioVendas.FieldByName('vlr_pgto_credito_loja').AsFloat; //qryRelatorioVendasVLR_PGTO_CREDITO_LOJA.AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_BOLETO_DECRE := qryRelatorioVendas.FieldByName('vlr_pgto_boleto_decre').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_LOJA := qryRelatorioVendas.FieldByName('qtd_pgto_loja').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_LOJA := qryRelatorioVendas.FieldByName('vlr_pgto_loja').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_DEBITO_LOJA := qryRelatorioVendas.FieldByName('qtd_pgto_debito_loja').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_DEBITO_LOJA := qryRelatorioVendas.FieldByName('vlr_pgto_debito_loja').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_CREDITO_LOJA := qryRelatorioVendas.FieldByName('qtd_pgto_credito_loja').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_CREDITO_LOJA := qryRelatorioVendas.FieldByName('vlr_pgto_credito_loja').AsFloat;
              // Soma os valores de parcelas 0800, nos valores do s boletos DECRE...
              GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_BOLETO_DECRE := GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_BOLETO_DECRE +
                                                               GRZW_REL_PGTOS_APPXLOJA.VLR_PARCELAS_PGTO_0800;
@@ -768,24 +1208,233 @@ begin
                 GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_LOJA := 0;
 
              // Campos PIX....
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_PIX_APP := qryRelatorioVendas.FieldByName('qtd_pgto_pix_app').AsFloat; //qryRelatorioVendasQTD_PGTO_PIX_APP.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_PIX_DECRE := qryRelatorioVendas.FieldByName('qtd_pgto_pix_decre').AsFloat; //qryRelatorioVendasQTD_PGTO_PIX_DECRE.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_PIX_LOJA := qryRelatorioVendas.FieldByName('qtd_pgto_pix_loja').AsFloat; //qryRelatorioVendasQTD_PGTO_PIX_LOJA.AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_PIX_APP := qryRelatorioVendas.FieldByName('qtd_pgto_pix_app').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_PIX_DECRE := qryRelatorioVendas.FieldByName('qtd_pgto_pix_decre').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_PIX_LOJA := qryRelatorioVendas.FieldByName('qtd_pgto_pix_loja').AsFloat;
 
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_PIX_APP := qryRelatorioVendas.FieldByName('vlr_pgto_pix_app').AsFloat; //qryRelatorioVendasVLR_PGTO_PIX_APP.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_PIX_DECRE := qryRelatorioVendas.FieldByName('vlr_pgto_pix_decre').AsFloat; //qryRelatorioVendasVLR_PGTO_PIX_DECRE.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_PIX_LOJA := qryRelatorioVendas.FieldByName('vlr_pgto_pix_loja').AsFloat; //qryRelatorioVendasVLR_PGTO_PIX_LOJA.AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_PIX_APP := qryRelatorioVendas.FieldByName('vlr_pgto_pix_app').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_PIX_DECRE := qryRelatorioVendas.FieldByName('vlr_pgto_pix_decre').AsFloat;
+             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_PIX_LOJA := qryRelatorioVendas.FieldByName('vlr_pgto_pix_loja').AsFloat;
+
+             // Calcula percentuais e totais das áreas do relatório...
+             // Área Nº Pagamentos - Total APP...
+             GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_APP := GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_DEBITO_APP+
+                                                       GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_CREDITO_APP+
+                                                       GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_PIX_APP+
+                                                       GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_BOLETO_APP;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_TOT_N_PGTO_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_APP,ffNumber,10,0);
+             // Área Nº Pagamentos - Percentuais APP - Débito...
+             GRZW_REL_PGTOS_APPXLOJA.PERC_N_PGTO_APP_DEBITO := GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_DEBITO_APP /
+                                                               iif(GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_APP = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_APP) * 100;
+                                                               //  GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_APP * 100;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_N_PGTO_APP_DEBITO := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.PERC_N_PGTO_APP_DEBITO,ffNumber,5,2);
+             // Área Nº Pagamentos - Percentuais APP - Credito...
+             GRZW_REL_PGTOS_APPXLOJA.PERC_N_PGTO_APP_CREDITO := GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_CREDITO_APP /
+                                                                iif(GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_APP = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_APP) * 100;
+                                                                //  GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_APP * 100;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_N_PGTO_APP_CREDITO := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.PERC_N_PGTO_APP_CREDITO,ffNumber,5,2);
+             // Área Nº Pagamentos - Percentuais APP - PIX...
+             GRZW_REL_PGTOS_APPXLOJA.PERC_N_PGTO_APP_PIX := GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_PIX_APP /
+                                                            iif(GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_APP = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_APP) * 100;
+                                                            //  GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_APP * 100;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_N_PGTO_APP_PIX := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.PERC_N_PGTO_APP_PIX,ffNumber,5,2);
+             // Área Nº Pagamentos - Percentuais APP - Boleto...
+             GRZW_REL_PGTOS_APPXLOJA.PERC_N_PGTO_APP_BOLETO := GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_BOLETO_APP /
+                                                               iif(GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_APP = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_APP) * 100;
+                                                               //  GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_APP * 100;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_N_PGTO_APP_BOLETO := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.PERC_N_PGTO_APP_BOLETO,ffNumber,5,2);
+
+             // Área Nº Pagamentos - Total Decre...
+             GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_DECRE := GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_BOLETO_DECRE+
+                                                         GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_PIX_DECRE+
+                                                         GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_CARTAO_DECRE;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_TOT_N_PGTO_DECRE := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_DECRE,ffNumber,10,0);
+             // Área Nº Pagamentos - Percentuais Decre - Boleto...
+             GRZW_REL_PGTOS_APPXLOJA.PERC_N_PGTO_DECRE_BOLETO := GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_BOLETO_DECRE /
+                                                                 iif(GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_DECRE = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_DECRE) * 100;
+                                                                 //  GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_DECRE * 100;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_N_PGTO_DECRE_BOLETO := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.PERC_N_PGTO_DECRE_BOLETO,ffNumber,5,2);
+             // Área Nº Pagamentos - Percentuais Decre - PIX...
+             GRZW_REL_PGTOS_APPXLOJA.PERC_N_PGTO_DECRE_PIX := GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_PIX_DECRE /
+                                                              iif(GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_DECRE = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_DECRE) * 100;
+                                                              //  GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_DECRE * 100;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_N_PGTO_DECRE_PIX := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.PERC_N_PGTO_DECRE_PIX,ffNumber,5,2);
+             // Área Nº Pagamentos - Percentuais Decre - Cartão...
+             GRZW_REL_PGTOS_APPXLOJA.PERC_N_PGTO_DECRE_CARTAO := GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_CARTAO_DECRE /
+                                                                 iif(GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_DECRE = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_DECRE) * 100;
+                                                                 // GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_DECRE * 100;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_N_PGTO_DECRE_CARTAO := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.PERC_N_PGTO_DECRE_CARTAO,ffNumber,5,2);
+
+             // Área Nº Pagamentos - Total Loja...
+             GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_LOJA := GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_LOJA+
+                                                        GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_DEBITO_LOJA+
+                                                        GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_PIX_LOJA;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_TOT_N_PGTO_LOJA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_LOJA,ffNumber,10,0);
+             // Área Nº Pagamentos - Percentuais Loja - Efetivo...
+             GRZW_REL_PGTOS_APPXLOJA.PERC_N_PGTO_LOJA_EFETIVO := GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_LOJA /
+                                                                 iif(GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_LOJA = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_LOJA) * 100;
+                                                                 //  GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_LOJA * 100;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_N_PGTO_LOJA_EFETIVO := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.PERC_N_PGTO_LOJA_EFETIVO,ffNumber,5,2);
+             // Área Nº Pagamentos - Percentuais Loja - Débito...
+             GRZW_REL_PGTOS_APPXLOJA.PERC_N_PGTO_LOJA_DEBITO := GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_DEBITO_LOJA /
+                                                                iif(GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_LOJA = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_LOJA) * 100;
+                                                                //  GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_LOJA * 100;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_N_PGTO_LOJA_DEBITO := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.PERC_N_PGTO_LOJA_DEBITO,ffNumber,5,2);
+             // Área Nº Pagamentos - Percentuais Loja - PIX...
+             GRZW_REL_PGTOS_APPXLOJA.PERC_N_PGTO_LOJA_PIX := GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_PIX_LOJA /
+                                                             iif(GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_LOJA = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_LOJA) * 100;
+                                                             // GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_LOJA * 100;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_N_PGTO_LOJA_PIX := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.PERC_N_PGTO_LOJA_PIX,ffNumber,5,2);
+
+             // Área Nº Pagamentos - Total Nº Pagamentos...
+             GRZW_REL_PGTOS_APPXLOJA.TOTAL_N_PAGAMENTOS := GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_APP +
+                                                           GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_DECRE +
+                                                           GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_LOJA;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_N_PAGAMENTOS := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_N_PAGAMENTOS,ffNumber,10,0);
+
+             // Percentual de recebidos (quantidade) sobre a quantidade de parcelas areceber...
+             GRZW_REL_PGTOS_APPXLOJA.PERC_TOTAL_N_PAGAMENTOS := GRZW_REL_PGTOS_APPXLOJA.TOTAL_N_PAGAMENTOS /
+                                                                iif(GRZW_REL_PGTOS_APPXLOJA.QTD_PARCELAS_ARECEBER = 0,1,
+                                                                    GRZW_REL_PGTOS_APPXLOJA.QTD_PARCELAS_ARECEBER) * 100;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_TOTAL_N_PAGAMENTOS := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.PERC_TOTAL_N_PAGAMENTOS,ffNumber,5,2);
+
+             // Área Pagamentos R$ - Total APP...
+             GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_APP := GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_DEBITO_APP+
+                                                        GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_CREDITO_APP+
+                                                        GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_PIX_APP+
+                                                        GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_BOLETO_APP;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_TOT_RS_PGTO_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_APP,ffNumber,18,2);
+             // Área Pagamentos R$ - Percentuais APP - Débito...
+             GRZW_REL_PGTOS_APPXLOJA.PERC_RS_PGTO_APP_DEBITO := GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_DEBITO_APP /
+                                                                iif(GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_APP = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_APP) * 100;
+                                                                //  GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_APP * 100;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_APP_DEBITO := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.PERC_RS_PGTO_APP_DEBITO,ffNumber,18,2);
+             // Área Pagamentos R$ - Percentuais APP - Crédito...
+             GRZW_REL_PGTOS_APPXLOJA.PERC_RS_PGTO_APP_CREDITO := GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_CREDITO_APP /
+                                                                 iif(GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_APP = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_APP) * 100;
+                                                                 //  GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_APP * 100;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_APP_CREDITO := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.PERC_RS_PGTO_APP_CREDITO,ffNumber,18,2);
+             // Área Pagamentos R$ - Percentuais APP - PIX...
+             GRZW_REL_PGTOS_APPXLOJA.PERC_RS_PGTO_APP_PIX := GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_PIX_APP /
+                                                             iif(GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_APP = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_APP) * 100;
+                                                             //  GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_APP * 100;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_APP_PIX := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.PERC_RS_PGTO_APP_PIX,ffNumber,18,2);
+             // Área Pagamentos R$ - Percentuais APP - Boleto...
+             GRZW_REL_PGTOS_APPXLOJA.PERC_RS_PGTO_APP_BOLETO := GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_BOLETO_APP /
+                                                                iif(GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_APP = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_APP) * 100;
+                                                                //  GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_APP * 100;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_APP_BOLETO := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.PERC_RS_PGTO_APP_BOLETO,ffNumber,18,2);
+
+             // Área Pagamentos R$ - Total Decre...
+             GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_DECRE := GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_BOLETO_DECRE+
+                                                          GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_PIX_DECRE+
+                                                          GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_CARTAO_DECRE;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_TOT_RS_PGTO_DECRE := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_DECRE,ffNumber,18,2);
+             // Área Pagamentos R$ - Percentuais Decre - Boleto...
+             GRZW_REL_PGTOS_APPXLOJA.PERC_RS_PGTO_DECRE_BOLETO := GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_BOLETO_DECRE /
+                                                                  iif(GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_DECRE = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_DECRE) * 100;
+                                                                  //  GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_DECRE * 100;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_DECRE_BOLETO := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.PERC_RS_PGTO_DECRE_BOLETO,ffNumber,18,2);
+             // Área Pagamentos R$ - Percentuais Decre - PIX...
+             GRZW_REL_PGTOS_APPXLOJA.PERC_RS_PGTO_DECRE_PIX := GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_PIX_DECRE /
+                                                               iif(GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_DECRE = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_DECRE) * 100;
+                                                               //  GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_DECRE * 100;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_DECRE_PIX := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.PERC_RS_PGTO_DECRE_PIX,ffNumber,18,2);
+             // Área Pagamentos R$ - Percentuais Decre - Cartão...
+             GRZW_REL_PGTOS_APPXLOJA.PERC_RS_PGTO_DECRE_CARTAO := GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_CARTAO_DECRE /
+                                                                  iif(GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_DECRE = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_DECRE) * 100;
+                                                                  //  GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_DECRE * 100;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_DECRE_CARTAO := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.PERC_RS_PGTO_DECRE_CARTAO,ffNumber,18,2);
+
+             // Área Pagamentos R$ - Total Loja...
+             GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_LOJA := GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_LOJA+
+                                                         GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_DEBITO_LOJA+
+                                                         GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_PIX_LOJA;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_TOT_RS_PGTO_LOJA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_LOJA,ffNumber,18,2);
+             // Área Pagamentos R$ - Percentuais Loja - Efetivo....
+             GRZW_REL_PGTOS_APPXLOJA.PERC_RS_PGTO_LOJA_EFETIVO := GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_LOJA /
+                                                                  iif(GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_LOJA = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_LOJA) * 100;
+                                                                  //  GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_LOJA * 100;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_LOJA_EFETIVO := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.PERC_RS_PGTO_LOJA_EFETIVO,ffNumber,18,2);
+             // Área Pagamentos R$ - Percentuais Loja - Débito....
+             GRZW_REL_PGTOS_APPXLOJA.PERC_RS_PGTO_LOJA_DEBITO := GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_DEBITO_LOJA /
+                                                                 iif(GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_LOJA = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_LOJA) * 100;
+                                                                 //  GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_LOJA * 100;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_LOJA_DEBITO := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.PERC_RS_PGTO_LOJA_DEBITO,ffNumber,18,2);
+             // Área Pagamentos R$ - Percentuais Loja - PIX....
+             GRZW_REL_PGTOS_APPXLOJA.PERC_RS_PGTO_LOJA_PIX := GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_PIX_LOJA /
+                                                              iif(GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_LOJA = 0,1,GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_LOJA) * 100;
+                                                              //  GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_LOJA * 100;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_LOJA_PIX := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.PERC_RS_PGTO_LOJA_PIX,ffNumber,18,2);
+
+             // Área Pagamentos R$ - Total Pagamentos R$...
+             GRZW_REL_PGTOS_APPXLOJA.TOTAL_RS_PAGAMENTOS := GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_APP+
+                                                            GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_DECRE+
+                                                            GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_LOJA;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_RS_PAGAMENTOS := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_RS_PAGAMENTOS,ffNumber,18,2);
+
+             // Percentual de recebidos (valor) sobre a quantidade de parcelas areceber...
+             GRZW_REL_PGTOS_APPXLOJA.PERC_TOTAL_RS_PAGAMENTOS := GRZW_REL_PGTOS_APPXLOJA.TOTAL_RS_PAGAMENTOS /
+                                                                iif(GRZW_REL_PGTOS_APPXLOJA.VLR_PARCELAS_ARECEBER = 0,1,
+                                                                    GRZW_REL_PGTOS_APPXLOJA.VLR_PARCELAS_ARECEBER) * 100;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_TOTAL_RS_PAGAMENTOS := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.PERC_TOTAL_RS_PAGAMENTOS,ffNumber,5,2);
+
+             // Área Nº Pagamentos - Calculo dos percentuais dos totais de APP, DECRE e LOJA, em cima do total geral do Nº pagamentos....
+             // % APP...
+             GRZW_REL_PGTOS_APPXLOJA.PERC_TOT_N_PGTO_APP := GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_APP /
+                                                            iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_N_PAGAMENTOS = 0,1,
+                                                                GRZW_REL_PGTOS_APPXLOJA.TOTAL_N_PAGAMENTOS) * 100;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_TOT_N_PGTO_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.PERC_TOT_N_PGTO_APP,ffNumber,5,2);
+             // % DECRE...
+             GRZW_REL_PGTOS_APPXLOJA.PERC_TOT_N_PGTO_DECRE := GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_DECRE /
+                                                              iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_N_PAGAMENTOS = 0,1,
+                                                                  GRZW_REL_PGTOS_APPXLOJA.TOTAL_N_PAGAMENTOS) * 100;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_TOT_N_PGTO_DECRE := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.PERC_TOT_N_PGTO_DECRE,ffNumber,5,2);
+             // % Loja...
+             GRZW_REL_PGTOS_APPXLOJA.PERC_TOT_N_PGTO_LOJA := GRZW_REL_PGTOS_APPXLOJA.TOT_N_PGTO_LOJA /
+                                                             iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_N_PAGAMENTOS = 0,1,
+                                                                 GRZW_REL_PGTOS_APPXLOJA.TOTAL_N_PAGAMENTOS) * 100;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_TOT_N_PGTO_LOJA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.PERC_TOT_N_PGTO_LOJA,ffNumber,5,2);
+
+             // Calcula percentual de crescimento.....
+             GRZW_REL_PGTOS_APPXLOJA.PERC_CRESCIMENTO := (GRZW_REL_PGTOS_APPXLOJA.QTD_TOT_CLI_APP * 100) /
+                                                         (GRZW_REL_PGTOS_APPXLOJA.TOT_CLI_CADASTRADOS -
+                                                          GRZW_REL_PGTOS_APPXLOJA.QTD_TOT_CLI_APP);
+
+             // Área R$ Pagamentos - Calculo dos percentuais dos totais de APP, DECRE e LOJA, em cima do total geral do Nº pagamentos....
+             // % APP...
+             GRZW_REL_PGTOS_APPXLOJA.PERC_TOT_RS_PGTO_APP := GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_APP /
+                                                             iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_RS_PAGAMENTOS = 0,1,
+                                                                 GRZW_REL_PGTOS_APPXLOJA.TOTAL_RS_PAGAMENTOS) * 100;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_TOT_RS_PGTO_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.PERC_TOT_RS_PGTO_APP,ffNumber,5,2);
+             // % DECRE...
+             GRZW_REL_PGTOS_APPXLOJA.PERC_TOT_RS_PGTO_DECRE := GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_DECRE /
+                                                               iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_RS_PAGAMENTOS = 0,1,
+                                                                   GRZW_REL_PGTOS_APPXLOJA.TOTAL_RS_PAGAMENTOS) * 100;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_TOT_RS_PGTO_DECRE := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.PERC_TOT_RS_PGTO_DECRE,ffNumber,5,2);
+             // % LOJA...
+             GRZW_REL_PGTOS_APPXLOJA.PERC_TOT_RS_PGTO_LOJA := GRZW_REL_PGTOS_APPXLOJA.TOT_RS_PGTO_LOJA /
+                                                               iif(GRZW_REL_PGTOS_APPXLOJA.TOTAL_RS_PAGAMENTOS = 0,1,
+                                                                   GRZW_REL_PGTOS_APPXLOJA.TOTAL_RS_PAGAMENTOS) * 100;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_TOT_RS_PGTO_LOJA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.PERC_TOT_RS_PGTO_LOJA,ffNumber,5,2);
 
              // Dados formatados para o HTML...
-             GRZW_REL_PGTOS_APPXLOJA.HTML_ANO := GRZW_REL_PGTOS_APPXLOJA.ANO; //qryRelatorioVendas.FieldByName('ano').AsString; //qryRelatorioVendasANO.AsString;
-             GRZW_REL_PGTOS_APPXLOJA.HTML_ANOMES := GRZW_REL_PGTOS_APPXLOJA.ANOMES; //PadLeft(qryRelatorioVendas.FieldByName('anomes').AsString,7,'0'); //PadLeft(qryRelatorioVendasANOMES.AsString,7,'0');
-             GRZW_REL_PGTOS_APPXLOJA.HTML_DTA_MES := qryRelatorioVendas.FieldByName('dta_mes').AsString; //qryRelatorioVendasDTA_MES.AsString;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_ANO := GRZW_REL_PGTOS_APPXLOJA.ANO;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_ANOMES := GRZW_REL_PGTOS_APPXLOJA.ANOMES;
+             GRZW_REL_PGTOS_APPXLOJA.HTML_DTA_MES := qryRelatorioVendas.FieldByName('dta_mes').AsString;
              GRZW_REL_PGTOS_APPXLOJA.HTML_TOT_CLI_CADASTRADOS := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOT_CLI_CADASTRADOS,ffNumber,8,0);
              GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_TOT_CLI_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.QTD_TOT_CLI_APP,ffNumber,8,0);
+
+             GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_CRESCIMENTO := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.PERC_CRESCIMENTO,ffNumber,8,2);
+
              GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_NEW_CLI_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.QTD_NEW_CLI_APP,ffNumber,8,0);
              GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_CLI_GRAZZIOTIN := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.QTD_CLI_GRAZZIOTIN,ffNumber,8,0);
              GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_NEW_CLI_APP_APROV := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.QTD_NEW_CLI_APP_APROV,ffNumber,8,0);
              GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_CLI_NOVOS_PENDENTES := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.QTD_CLI_NOVOS_PENDENTES,ffNumber,8,0);
+
+             GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PARCELAS_ARECEBER := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.QTD_PARCELAS_ARECEBER,ffNumber,8,0);
+             GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PARCELAS_ARECEBER := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.VLR_PARCELAS_ARECEBER,ffNumber,18,2);
+
              GRZW_REL_PGTOS_APPXLOJA.HTML_TOT_CLI_PGTO_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOT_CLI_PGTO_APP,ffNumber,8,0);
              GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PARCELAS_PGTO_CIA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.QTD_PARCELAS_PGTO_CIA,ffNumber,8,0);
              GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PARCELAS_PGTO_CIA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.VLR_PARCELAS_PGTO_CIA,ffNumber,18,2);
@@ -833,6 +1482,7 @@ begin
                             ' <th style="width:50px" scope="row">'+GRZW_REL_PGTOS_APPXLOJA.HTML_ANOMES+'</th> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOT_CLI_CADASTRADOS+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_TOT_CLI_APP+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_CRESCIMENTO+'</td> '+
                             //' <td style="width:50px" >&nbsp;</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_NEW_CLI_APP+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_CLI_GRAZZIOTIN+'</td> '+
@@ -840,32 +1490,51 @@ begin
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_CLI_NOVOS_PENDENTES+'</td> '+
                             // Cabecalho PAGAMENTOS...
                             // Sub cabeçalho APP....
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PGTO_DEBITO_APP+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PGTO_CREDITO_APP+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PGTO_PIX_APP+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PGTO_BOLETO_APP+'</td> '+
+                            ' <td style="width:90px" >'+GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PARCELAS_ARECEBER+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_N_PAGAMENTOS+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_TOTAL_N_PAGAMENTOS+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOT_N_PGTO_APP+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_TOT_N_PGTO_APP+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_N_PGTO_APP_DEBITO+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_N_PGTO_APP_CREDITO+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_N_PGTO_APP_PIX+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_N_PGTO_APP_BOLETO+'</td> '+
                             // Sub cabeçalho DECRE....
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PGTO_BOLETO_DECRE+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PGTO_PIX_DECRE+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PGTO_CARTAO_DECRE+'</td> '+ // Campo Cartão DECRE, agora não existe, foi deixado em branco...
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOT_N_PGTO_DECRE+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_TOT_N_PGTO_DECRE+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_N_PGTO_DECRE_BOLETO+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_N_PGTO_DECRE_PIX+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_N_PGTO_DECRE_CARTAO+'</td> '+
                             // Sub cabeçalho LOJA...
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PGTO_LOJA+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PGTO_DEBITO_LOJA+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PGTO_PIX_LOJA+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOT_N_PGTO_LOJA+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_TOT_N_PGTO_LOJA+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_N_PGTO_LOJA_EFETIVO+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_N_PGTO_LOJA_DEBITO+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_N_PGTO_LOJA_PIX+'</td> '+
                             // Cabecalho PAGAMENTOS R$...
                             // Sub cabeçalho APP....
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PGTO_DEBITO_APP+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PGTO_CREDITO_APP+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PGTO_PIX_APP+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PGTO_BOLETO_APP+'</td> '+
+                            //' <td style="width:50px">&nbsp;</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PARCELAS_ARECEBER+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_RS_PAGAMENTOS+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_TOTAL_RS_PAGAMENTOS+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOT_RS_PGTO_APP+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_TOT_RS_PGTO_APP+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_APP_DEBITO+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_APP_CREDITO+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_APP_PIX+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_APP_BOLETO+'</td> '+
                             // Sub cabeçalho DECRE....
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PGTO_BOLETO_DECRE+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PGTO_PIX_DECRE+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PGTO_CARTAO_DECRE+'</td> '+ // Campo Cartão DECRE, agora não existe, foi deixado em branco...
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOT_RS_PGTO_DECRE+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_TOT_RS_PGTO_DECRE+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_DECRE_BOLETO+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_DECRE_PIX+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_DECRE_CARTAO+'</td> '+
                             // Sub cabeçalho LOJA....
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PGTO_LOJA+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PGTO_DEBITO_LOJA+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PGTO_PIX_LOJA+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOT_RS_PGTO_LOJA+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_TOT_RS_PGTO_LOJA+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_LOJA_EFETIVO+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_LOJA_DEBITO+'</td> '+
+                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_LOJA_PIX+'</td> '+
                             ' </tr> ';
              sHTMLEMail := sHTMLEMail + sHTMLLinha;
 
@@ -881,458 +1550,71 @@ begin
         sHTMLLinha := ' <tfoot> <tr> ' +
                        //' <th colspan="1" bgcolor="#C0C0C0">Total Geral</th> '+
                        ' <th style="width:50px" bgcolor="#C0C0C0">Total Geral</th> '+
-
                        ' <th style="width:50px" bgcolor="#C0C0C0">&nbsp;</th> '+
                        //' <th style="width:50px" bgcolor="#C0C0C0">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOT_CLI_CADASTRADOS+'</th> '+
                        ' <th style="width:50px" bgcolor="#C0C0C0">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_TOT_CLI_APP+'</th> '+
+                       ' <th style="width:50px" bgcolor="#C0C0C0">&nbsp;</td> '+
                        ' <th style="width:50px" bgcolor="#C0C0C0">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_NEW_CLI_APP+'</th> '+
                        ' <th style="width:50px" bgcolor="#C0C0C0">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_CLI_GRAZZIOTIN+'</th> '+
                        ' <th style="width:50px" bgcolor="#C0C0C0">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_NEW_CLI_APP_APROV+'</th> '+
                        ' <th style="width:50px" bgcolor="#C0C0C0">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_CLI_NOVOS_PENDENTES+'</th> '+
-                       // Cabeçalho PAGAMENTOS - APP...
-                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PGTO_DEBITO_APP+'</th> '+
-                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PGTO_CREDITO_APP+'</th> '+
-                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PGTO_PIX_APP+'</th> '+
-                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PGTO_BOLETO_APP+'</th> '+
+                       // Cabeçalho Nº PAGAMENTOS - APP...
+                       ' <th style="width:90px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PARCELAS_ARECEBER+'</th> '+
+                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOTAL_N_PAGAMENTOS+'</th> '+
+                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_TOTAL_N_PAGAMENTOS+'</th> '+
+                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOT_N_PGTO_APP+'</th> '+
+                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_TOT_N_PGTO_APP+'</th> '+
+                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_N_PGTO_APP_DEBITO+'</th> '+
+                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_N_PGTO_APP_CREDITO+'</th> '+
+                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_N_PGTO_APP_PIX+'</th> '+
+                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_N_PGTO_APP_BOLETO+'</th> '+
                        // Cabeçalho PAGAMENTOS - DECRE...
-                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PGTO_BOLETO_DECRE+'</th> '+
-                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PGTO_PIX_DECRE+'</th> '+
-                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PGTO_CARTAO_DECRE+'</th> '+ // Campo Cartão DECRE, agora não existe, foi deixado em branco...
+                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOT_N_PGTO_DECRE+'</th> '+
+                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_TOT_N_PGTO_DECRE+'</th> '+
+                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_N_PGTO_DECRE_BOLETO+'</th> '+
+                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_N_PGTO_DECRE_PIX+'</th> '+
+                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_N_PGTO_DECRE_CARTAO+'</th> '+
                        // Cabeçalho PAGAMENTOS - LOJA...
-                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PGTO_LOJA+'</th> '+
-                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PGTO_DEBITO_LOJA+'</th> '+
-                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PGTO_PIX_LOJA+'</th> '+
+                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOT_N_PGTO_LOJA+'</th> '+
+                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_TOT_N_PGTO_LOJA+'</th> '+
+                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_N_PGTO_LOJA_EFETIVO+'</th> '+
+                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_N_PGTO_LOJA_DEBITO+'</th> '+
+                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_N_PGTO_LOJA_PIX+'</th> '+
                        // Cabeçalho PAGAMENTOS R$ - APP...
-                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_DEBITO_APP+'</th> '+
-                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_CREDITO_APP+'</th> '+
-                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_PIX_APP+'</th> '+
-                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_BOLETO_APP+'</th> '+
+                       //' <td style="width:50px" >&nbsp;</td> '+
+                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PARCELAS_ARECEBER+'</th> '+
+                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOTAL_RS_PAGAMENTOS+'</th> '+
+                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_TOTAL_RS_PAGAMENTOS+'</th> '+
+                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOT_RS_PGTO_APP+'</th> '+
+                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_TOT_RS_PGTO_APP+'</th> '+
+                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_APP_DEBITO+'</th> '+
+                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_APP_CREDITO+'</th> '+
+                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_APP_PIX+'</th> '+
+                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_APP_BOLETO+'</th> '+
                        // Cabeçalho PAGAMENTOS R$ - DECRE...
-                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_BOLETO_DECRE+'</th> '+
-                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_PIX_DECRE+'</th> '+
-                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_CARTAO_DECRE+'</th> '+ // Campo Cartão DECRE, agora não existe, foi deixado em branco...
+                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOT_RS_PGTO_DECRE+'</th> '+
+                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_TOT_RS_PGTO_DECRE+'</th> '+
+                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_DECRE_BOLETO+'</th> '+
+                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_DECRE_PIX+'</th> '+
+                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_DECRE_CARTAO+'</th> '+
                        // Cabeçalho PAGAMENTOS R$ - LOJA...
-                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_LOJA+'</th> '+
-                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_DEBITO_LOJA+'</th> '+
-                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_PIX_LOJA+'</th> '+
+                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOT_RS_PGTO_LOJA+'</th> '+
+                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_TOT_RS_PGTO_LOJA+'</th> '+
+                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_LOJA_EFETIVO+'</th> '+
+                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_LOJA_DEBITO+'</th> '+
+                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_LOJA_PIX+'</th> '+
                        ' </tr></tfoot> ';
-        sHTMLEMail := sHTMLEMail + sHTMLLinha;
 
+        sHTMLEMail := sHTMLEMail + sHTMLLinha;
         sHTMLEMail := sHTMLEMail + ' </tbody> </table> </body> </html> ';
+
         ggeKPIPagamentos.Progress := 100;
         lblMensagem.Caption := 'Finalizando montagem HTML....';
         lblMensagem.Update;
         Delay(200);
      finally
      end;
-
-
-
-
-
-
-
-
-
-
-
-
-
-     (*// Transfere valores do SQL de Totais para estrutura em memória....
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_TOT_CLI_APP := qryTotais.FieldByName('qtd_tot_cli_app').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_CLI_CADASTRADOS := qryTotais.FieldByName('tot_cli_cadastrados').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_NEW_CLI_APP := qryTotais.FieldByName('qtd_new_cli_app').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_CLI_GRAZZIOTIN := qryTotais.FieldByName('qtd_cli_grazziotin').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_NEW_CLI_APP_APROV := qryTotais.FieldByName('qtd_new_cli_app_aprov').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_CLI_NOVOS_PENDENTES := qryTotais.FieldByName('qtd_cli_novos_pendentes').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_CLI_PGTO_APP := qryTotais.FieldByName('tot_cli_pgto_app').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PARCELAS_PGTO_CIA := qryTotais.FieldByName('qtd_parcelas_pgto_cia').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PARCELAS_PGTO_CIA := qryTotais.FieldByName('vlr_parcelas_pgto_cia').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PARCELAS_PGTO_APP := qryTotais.FieldByName('qtd_parcelas_pgto_app').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PARCELAS_PGTO_APP := qryTotais.FieldByName('vlr_parcelas_pgto_app').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PARCELAS_PGTO_DECRE := qryTotais.FieldByName('qtd_parcelas_pgto_decre').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PARCELAS_PGTO_DECRE := qryTotais.FieldByName('vlr_parcelas_pgto_decre').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PARCELAS_PGTO_0800 := qryTotais.FieldByName('qtd_parcelas_pgto_0800').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PARCELAS_PGTO_0800 := qryTotais.FieldByName('vlr_parcelas_pgto_0800').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_BOLETO_APP := qryTotais.FieldByName('qtd_pgto_boleto_app').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_BOLETO_APP := qryTotais.FieldByName('vlr_pgto_boleto_app').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_DEBITO_APP := qryTotais.FieldByName('qtd_pgto_debito_app').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_DEBITO_APP := qryTotais.FieldByName('vlr_pgto_debito_app').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_CREDITO_APP := qryTotais.FieldByName('qtd_pgto_credito_app').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_CREDITO_APP := qryTotais.FieldByName('vlr_pgto_credito_app').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_CLI_PGTO_CIA := qryTotais.FieldByName('tot_cli_pgto_cia').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_BOLETO_DECRE := qryTotais.FieldByName('qtd_pgto_boleto_decre').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_BOLETO_DECRE := qryTotais.FieldByName('vlr_pgto_boleto_decre').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_LOJA := qryTotais.FieldByName('qtd_pgto_loja').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_LOJA := qryTotais.FieldByName('vlr_pgto_loja').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_DEBITO_LOJA := qryTotais.FieldByName('qtd_pgto_debito_loja').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_DEBITO_LOJA := qryTotais.FieldByName('vlr_pgto_debito_loja').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_CREDITO_LOJA := qryTotais.FieldByName('qtd_pgto_credito_loja').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_CREDITO_LOJA := qryTotais.FieldByName('vlr_pgto_credito_loja').AsFloat;
-     // Soma os valores de parcelas 0800, nos valores do s boletos DECRE...
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_BOLETO_DECRE := GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_BOLETO_DECRE +
-                                                            GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PARCELAS_PGTO_0800;
-     // Soma as quantidades de parcelas 0800, nos valores dos boletos DECRE...
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_BOLETO_DECRE := GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_BOLETO_DECRE +
-                                                            GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PARCELAS_PGTO_0800;
-
-     // Na área Pagamentros R$ - Loja, diminui o debito (GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_DEBITO_LOJA)
-     // do Efetivo (GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_LOJA)...
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_LOJA := GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_LOJA -
-                                                    GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_DEBITO_LOJA;
-     // Na área Nº Pagamentos - Loja, diminui o debito  (GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_DEBITO_LOJA)
-     // do Efetivo (GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_LOJA)...
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_LOJA := GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_LOJA -
-                                                    GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_DEBITO_LOJA;
-
-     // Campos PIX...
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_PIX_APP := qryTotais.FieldByName('qtd_pgto_pix_app').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_PIX_DECRE := qryTotais.FieldByName('qtd_pgto_pix_decre').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_PIX_LOJA := qryTotais.FieldByName('qtd_pgto_pix_loja').AsFloat;
-
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_PIX_APP := qryTotais.FieldByName('vlr_pgto_pix_app').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_PIX_DECRE := qryTotais.FieldByName('vlr_pgto_pix_decre').AsFloat;
-     GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_PIX_LOJA := qryTotais.FieldByName('vlr_pgto_pix_loja').AsFloat;
-
-     // Formata os valores dos totais....
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_TOT_CLI_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_TOT_CLI_APP,ffNumber,8,0);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOT_CLI_CADASTRADOS := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_CLI_CADASTRADOS,ffNumber,8,0);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_NEW_CLI_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_NEW_CLI_APP,ffNumber,8,0);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_CLI_GRAZZIOTIN := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_CLI_GRAZZIOTIN,ffNumber,8,0);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_NEW_CLI_APP_APROV := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_NEW_CLI_APP_APROV,ffNumber,8,0);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_CLI_NOVOS_PENDENTES := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_CLI_NOVOS_PENDENTES,ffNumber,8,0);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOT_CLI_PGTO_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_CLI_PGTO_APP,ffNumber,8,0);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PARCELAS_PGTO_CIA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PARCELAS_PGTO_CIA,ffNumber,8,0);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PARCELAS_PGTO_CIA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PARCELAS_PGTO_CIA,ffNumber,18,2);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PARCELAS_PGTO_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PARCELAS_PGTO_APP,ffNumber,8,0);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PARCELAS_PGTO_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PARCELAS_PGTO_APP,ffNumber,18,2);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PARCELAS_PGTO_DECRE := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PARCELAS_PGTO_DECRE,ffNumber,8,0);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PARCELAS_PGTO_DECRE := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PARCELAS_PGTO_DECRE,ffNumber,18,2);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PARCELAS_PGTO_0800 := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PARCELAS_PGTO_0800,ffNumber,8,0);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PARCELAS_PGTO_0800 := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PARCELAS_PGTO_0800,ffNumber,18,2);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PGTO_BOLETO_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_BOLETO_APP,ffNumber,8,0);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_BOLETO_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_BOLETO_APP,ffNumber,18,2);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PGTO_DEBITO_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_DEBITO_APP,ffNumber,8,0);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_DEBITO_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_DEBITO_APP,ffNumber,18,2);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PGTO_CREDITO_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_CREDITO_APP,ffNumber,8,0);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_CREDITO_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_CREDITO_APP,ffNumber,18,2);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOT_CLI_PGTO_CIA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_TOT_CLI_PGTO_CIA,ffNumber,8,0);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PGTO_BOLETO_DECRE := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_BOLETO_DECRE,ffNumber,8,0);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_BOLETO_DECRE := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_BOLETO_DECRE,ffNumber,18,2);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PGTO_LOJA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_LOJA,ffNumber,8,0);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_LOJA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_LOJA,ffNumber,18,2);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PGTO_DEBITO_LOJA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_DEBITO_LOJA,ffNumber,8,0);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_DEBITO_LOJA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_DEBITO_LOJA,ffNumber,18,2);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PGTO_CREDITO_LOJA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_CREDITO_LOJA,ffNumber,8,0);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_CREDITO_LOJA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_CREDITO_LOJA,ffNumber,18,2);
-     // Campos PIX....
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PGTO_PIX_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_PIX_APP,ffNumber,8,0);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PGTO_PIX_DECRE := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_PIX_DECRE,ffNumber,8,0);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PGTO_PIX_LOJA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_QTD_PGTO_PIX_LOJA,ffNumber,8,0);
-
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_PIX_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_PIX_APP,ffNumber,18,2);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_PIX_DECRE := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_PIX_DECRE,ffNumber,18,2);
-     GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_PIX_LOJA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOTAL_VLR_PGTO_PIX_LOJA,ffNumber,18,2);
-
-     sHTMLEMail := ''; sHTMLLinha := '';
-     ggeKPIPagamentos.Progress := 1;
-     lblMensagem.Caption := 'Iniciando montagem HTML...';
-     lblMensagem.Update;
-     Delay(200);
-     try
-        lblMensagem.Caption := 'Cabeçalhos e CSS .... ';
-        lblMensagem.Update;
-        Delay(200);
-
-        // Montagem do HTML enviado por e-mail...
-        sHTMLEMail := ' <!DOCTYPE html>'+
-                      ' <html lang="en" >'+
-
-                      ' <head>'+
-                      ' <meta charset="UTF-8">'+
-                      ' <style> '+
-                      '    table, th, td {'+
-                      '    border: 1px solid black;'+
-                      '    padding: 0px;'+
-                      '    border-spacing: 0px;'+
-                      '    text-align: center;}'+
-                      ' </style> '+
-
-                      ' </head> '+
-                      ' <body> '+
-                      ' <table> '+
-                      ' <thead> '+
-                      ' <h3>Relatório KPI Pagamentos</h3> '+
-                      ' <p>Período: '+edtInicio.Text+' a '+edtFinal.Text+'</p> '+
-                      ' <tr>'+
-                      ' <th style="width:50px" rowspan="3" bgcolor="#C0C0C0">Mês/Ano</th> '+
-                      ' <th style="width:50px" colspan="6" bgcolor="#C0C0C0">Clientes APP</th> '+
-                      ' <th colspan="10" bgcolor="#F4A460">Nº Pagamentos</th> '+
-                      ' <th colspan="10" bgcolor="#90EE90">Pagamentos R$</th> '+
-                      ' </tr>'+
-                      ' <tr> '+
-                      ' <th style="width:50px" rowspan="2" bgcolor="#C0C0C0">Acumulado</th> '+
-                      ' <th style="width:50px" rowspan="2" bgcolor="#C0C0C0">Cadastrados</th> '+
-                      ' <th style="width:50px" rowspan="2" bgcolor="#C0C0C0">Novos</th> '+
-                      ' <th style="width:50px" rowspan="2" bgcolor="#C0C0C0">Grazziotin</th> '+
-                      ' <th style="width:50px" rowspan="2" bgcolor="#C0C0C0">Aprovados</th> '+
-                      ' <th style="width:50px" rowspan="2" bgcolor="#C0C0C0">Pendentes</th> '+
-                      // Cabeçalho - PAGAMENTOS...
-                      ' <th style="width:50px" colspan="4" bgcolor="#F4A460">App</th> '+
-                      ' <th style="width:50px" colspan="3" bgcolor="#F4A460">Decre</th> '+
-                      ' <th style="width:50px" colspan="3" bgcolor="#F4A460">Loja</th> '+
-                      // Cabeçalho - PAGAMENTOS R$...
-                      ' <th style="width:50px" colspan="4" bgcolor="#90EE90">App</th> '+
-                      ' <th style="width:50px" colspan="3" bgcolor="#90EE90">Decre</th> '+
-                      ' <th style="width:50px" colspan="3" bgcolor="#90EE90">Loja</th> '+
-                      ' </tr> '+
-                      // Cabeçalho PAGAMENTOS....
-                      ' <tr> '+
-                      // Sub cabeçalho APP
-                      ' <th style="width:50px" bgcolor="#F4A460">Débito</th> '+
-                      ' <th style="width:50px" bgcolor="#F4A460">Crédito</th> '+
-                      ' <th style="width:50px" bgcolor="#F4A460">PIX</th> '+
-                      ' <th style="width:50px" bgcolor="#F4A460">Boleto</th> '+
-                      // Sub cabeçalho DECRE
-                      ' <th style="width:50px" bgcolor="#F4A460">Boleto</th> '+
-                      ' <th style="width:50px" bgcolor="#F4A460">PIX</th> '+
-                      ' <th style="width:50px" bgcolor="#F4A460">Cartão</th> '+
-                      // Sub cabeçalho LOJA
-                      ' <th style="width:50px" bgcolor="#F4A460">Efetivo</th> '+
-                      ' <th style="width:50px" bgcolor="#F4A460">Débito</th> '+
-                      ' <th style="width:50px" bgcolor="#F4A460">PIX</th> '+
-                      // Cabeçalho PAGAMENTOS R$....
-                      // Sub cabeçalho - APP...
-                      ' <th style="width:50px" bgcolor="#90EE90">Débito</th> '+
-                      ' <th style="width:50px" bgcolor="#90EE90">Crédito</th> '+
-                      ' <th style="width:50px" bgcolor="#90EE90">PIX</th> '+
-                      ' <th style="width:50px" bgcolor="#90EE90">Boleto</th> '+
-                      // Sub cabeçalho DECRE
-                      ' <th style="width:50px" bgcolor="#90EE90">Boleto</th> '+
-                      ' <th style="width:50px" bgcolor="#90EE90">PIX</th> '+
-                      ' <th style="width:50px" bgcolor="#90EE90">Cartão</th> '+
-                      // Sub cabeçalho LOJA
-                      ' <th style="width:50px" bgcolor="#90EE90">Efetivo</th> '+
-                      ' <th style="width:50px" bgcolor="#90EE90">Débito</th> '+
-                      ' <th style="width:50px" bgcolor="#90EE90">PIX</th> '+
-
-                      ' </tr> '+
-                      ' </thead> '+
-                      ' <tbody> ';
-
-
-        ggeKPIPagamentos.Progress := 30;
-        lblMensagem.Caption := 'Lendo dados das tabelas...';
-        lblMensagem.Update;
-        Delay(200);
-
-        // Lê o SQL e transfere para a estrutura em memória e formata os valores...
-        qryRelatorioVendas.First;
-        while not qryRelatorioVendas.Eof do
-        begin
-             // Dados do SQL...
-             GRZW_REL_PGTOS_APPXLOJA.DTA_MES := qryRelatorioVendasDTA_MES.AsDateTime;
-             GRZW_REL_PGTOS_APPXLOJA.TOT_CLI_CADASTRADOS := qryRelatorioVendasTOT_CLI_CADASTRADOS.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_TOT_CLI_APP := qryRelatorioVendasQTD_TOT_CLI_APP.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_NEW_CLI_APP := qryRelatorioVendasQTD_NEW_CLI_APP.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_CLI_GRAZZIOTIN := qryRelatorioVendasQTD_CLI_GRAZZIOTIN.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_NEW_CLI_APP_APROV := qryRelatorioVendasQTD_NEW_CLI_APP_APROV.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_CLI_NOVOS_PENDENTES := qryRelatorioVendasQTD_CLI_NOVOS_PENDENTES.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.TOT_CLI_PGTO_APP := qryRelatorioVendasTOT_CLI_PGTO_APP.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PARCELAS_PGTO_CIA := qryRelatorioVendasQTD_PARCELAS_PGTO_CIA.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PARCELAS_PGTO_CIA := qryRelatorioVendasVLR_PARCELAS_PGTO_CIA.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PARCELAS_PGTO_APP := qryRelatorioVendasQTD_PARCELAS_PGTO_APP.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PARCELAS_PGTO_APP := qryRelatorioVendasVLR_PARCELAS_PGTO_APP.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PARCELAS_PGTO_DECRE := qryRelatorioVendasQTD_PARCELAS_PGTO_DECRE.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PARCELAS_PGTO_DECRE := qryRelatorioVendasVLR_PARCELAS_PGTO_DECRE.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PARCELAS_PGTO_0800 := qryRelatorioVendasQTD_PARCELAS_PGTO_0800.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PARCELAS_PGTO_0800 := qryRelatorioVendasVLR_PARCELAS_PGTO_0800.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_BOLETO_APP := qryRelatorioVendasQTD_PGTO_BOLETO_APP.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_BOLETO_APP := qryRelatorioVendasVLR_PGTO_BOLETO_APP.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_DEBITO_APP := qryRelatorioVendasQTD_PGTO_DEBITO_APP.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_DEBITO_APP := qryRelatorioVendasVLR_PGTO_DEBITO_APP.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_CREDITO_APP := qryRelatorioVendasQTD_PGTO_CREDITO_APP.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_CREDITO_APP := qryRelatorioVendasVLR_PGTO_CREDITO_APP.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.TOT_CLI_PGTO_CIA := qryRelatorioVendasTOT_CLI_PGTO_CIA.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_BOLETO_DECRE := qryRelatorioVendasQTD_PGTO_BOLETO_DECRE.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_BOLETO_DECRE := qryRelatorioVendasVLR_PGTO_BOLETO_DECRE.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_LOJA := qryRelatorioVendasQTD_PGTO_LOJA.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_LOJA := qryRelatorioVendasVLR_PGTO_LOJA.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_DEBITO_LOJA := qryRelatorioVendasQTD_PGTO_DEBITO_LOJA.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_DEBITO_LOJA := qryRelatorioVendasVLR_PGTO_DEBITO_LOJA.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_CREDITO_LOJA := qryRelatorioVendasQTD_PGTO_CREDITO_LOJA.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_CREDITO_LOJA := qryRelatorioVendasVLR_PGTO_CREDITO_LOJA.AsFloat;
-             // Soma os valores de parcelas 0800, nos valores dos boletos DECRE...
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_BOLETO_DECRE := GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_BOLETO_DECRE +
-                                                              GRZW_REL_PGTOS_APPXLOJA.VLR_PARCELAS_PGTO_0800;
-             // Soma as quantidades de parcelas 0800, nos valores dos boletos DECRE...
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_BOLETO_DECRE := GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_BOLETO_DECRE +
-                                                              GRZW_REL_PGTOS_APPXLOJA.QTD_PARCELAS_PGTO_0800;
-
-             // Na área Pagamentros R$ - Loja, diminui o debito (GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_DEBITO_LOJA)
-             // do Efetivo (GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_LOJA)...
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_LOJA := GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_LOJA -
-                                                      GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_DEBITO_LOJA;
-             // Na área Nº Pagamentos - Loja, diminui o debito  (GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_DEBITO_LOJA)
-             // do Efetivo (GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_LOJA)...
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_LOJA := GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_LOJA -
-                                                      GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_DEBITO_LOJA;
-
-             // Campos PIX....
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_PIX_APP := qryRelatorioVendasQTD_PGTO_PIX_APP.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_PIX_DECRE := qryRelatorioVendasQTD_PGTO_PIX_DECRE.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_PIX_LOJA := qryRelatorioVendasQTD_PGTO_PIX_LOJA.AsFloat;
-
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_PIX_APP := qryRelatorioVendasVLR_PGTO_PIX_APP.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_PIX_DECRE := qryRelatorioVendasVLR_PGTO_PIX_DECRE.AsFloat;
-             GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_PIX_LOJA := qryRelatorioVendasVLR_PGTO_PIX_LOJA.AsFloat;
-
-             // Dados formatados para o HTML...
-             GRZW_REL_PGTOS_APPXLOJA.HTML_ANO := qryRelatorioVendasANO.AsString;
-             GRZW_REL_PGTOS_APPXLOJA.HTML_ANOMES := PadLeft(qryRelatorioVendasANOMES.AsString,7,'0');
-             GRZW_REL_PGTOS_APPXLOJA.HTML_DTA_MES := qryRelatorioVendasDTA_MES.AsString;
-             GRZW_REL_PGTOS_APPXLOJA.HTML_TOT_CLI_CADASTRADOS := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOT_CLI_CADASTRADOS,ffNumber,8,0);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_TOT_CLI_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.QTD_TOT_CLI_APP,ffNumber,8,0);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_NEW_CLI_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.QTD_NEW_CLI_APP,ffNumber,8,0);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_CLI_GRAZZIOTIN := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.QTD_CLI_GRAZZIOTIN,ffNumber,8,0);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_NEW_CLI_APP_APROV := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.QTD_NEW_CLI_APP_APROV,ffNumber,8,0);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_CLI_NOVOS_PENDENTES := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.QTD_CLI_NOVOS_PENDENTES,ffNumber,8,0);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_TOT_CLI_PGTO_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOT_CLI_PGTO_APP,ffNumber,8,0);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PARCELAS_PGTO_CIA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.QTD_PARCELAS_PGTO_CIA,ffNumber,8,0);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PARCELAS_PGTO_CIA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.VLR_PARCELAS_PGTO_CIA,ffNumber,18,2);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PARCELAS_PGTO_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.QTD_PARCELAS_PGTO_APP,ffNumber,8,0);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PARCELAS_PGTO_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.VLR_PARCELAS_PGTO_APP,ffNumber,18,2);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PARCELAS_PGTO_DECRE := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.QTD_PARCELAS_PGTO_DECRE,ffNumber,8,0);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PARCELAS_PGTO_DECRE := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.VLR_PARCELAS_PGTO_DECRE,ffNumber,18,2);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PARCELAS_PGTO_0800 := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.QTD_PARCELAS_PGTO_0800,ffNumber,8,0);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PARCELAS_PGTO_0800 := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.VLR_PARCELAS_PGTO_0800,ffNumber,18,2);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PGTO_BOLETO_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_BOLETO_APP,ffNumber,8,0);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PGTO_BOLETO_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_BOLETO_APP,ffNumber,18,2);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PGTO_DEBITO_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_DEBITO_APP,ffNumber,8,0);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PGTO_DEBITO_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_DEBITO_APP,ffNumber,18,2);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PGTO_CREDITO_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_CREDITO_APP,ffNumber,8,0);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PGTO_CREDITO_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_CREDITO_APP,ffNumber,18,2);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_TOT_CLI_PGTO_CIA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.TOT_CLI_PGTO_CIA,ffNumber,8,0);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PGTO_BOLETO_DECRE := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_BOLETO_DECRE,ffNumber,8,0);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PGTO_BOLETO_DECRE := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_BOLETO_DECRE,ffNumber,18,2);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PGTO_LOJA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_LOJA,ffNumber,8,0);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PGTO_LOJA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_LOJA,ffNumber,18,2);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PGTO_DEBITO_LOJA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_DEBITO_LOJA,ffNumber,8,0);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PGTO_DEBITO_LOJA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_DEBITO_LOJA,ffNumber,18,2);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PGTO_CREDITO_LOJA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_CREDITO_LOJA,ffNumber,8,0);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PGTO_CREDITO_LOJA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_CREDITO_LOJA,ffNumber,18,2);
-             // Campos PIX...
-             GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PGTO_PIX_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_PIX_APP,ffNumber,8,0);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PGTO_PIX_DECRE := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_PIX_DECRE,ffNumber,8,0);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PGTO_PIX_LOJA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.QTD_PGTO_PIX_LOJA,ffNumber,8,0);
-
-             GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PGTO_PIX_APP := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_PIX_APP,ffNumber,18,2);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PGTO_PIX_DECRE := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_PIX_DECRE,ffNumber,18,2);
-             GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PGTO_PIX_LOJA := FloatToStrF(GRZW_REL_PGTOS_APPXLOJA.VLR_PGTO_PIX_LOJA,ffNumber,18,2);
-
-             ggeKPIPagamentos.Progress := 60;
-             lblMensagem.Caption := 'Montagem HTML... Ano/Mês: '+GRZW_REL_PGTOS_APPXLOJA.HTML_ANOMES;
-             lblMensagem.Update;
-             Delay(200);
-
-             // Montagem da linha de valores do HTML...
-             sHTMLLinha :=  ' <tr> '+
-                            ' <th style="width:50px" scope="row">'+GRZW_REL_PGTOS_APPXLOJA.HTML_ANOMES+'</th> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOT_CLI_CADASTRADOS+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_TOT_CLI_APP+'</td> '+
-                            //' <td style="width:50px" >&nbsp;</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_NEW_CLI_APP+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_CLI_GRAZZIOTIN+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_NEW_CLI_APP_APROV+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_CLI_NOVOS_PENDENTES+'</td> '+
-                            // Cabecalho PAGAMENTOS...
-                            // Sub cabeçalho APP....
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PGTO_DEBITO_APP+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PGTO_CREDITO_APP+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PGTO_PIX_APP+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PGTO_BOLETO_APP+'</td> '+
-                            // Sub cabeçalho DECRE....
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PGTO_BOLETO_DECRE+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PGTO_PIX_DECRE+'</td> '+
-                            ' <td style="width:50px">'+'0'+'</td> '+ // Campo Cartão DECRE, agora não existe, foi deixado em branco...
-                            // Sub cabeçalho LOJA...
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PGTO_LOJA+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PGTO_DEBITO_LOJA+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_QTD_PGTO_PIX_LOJA+'</td> '+
-                            // Cabecalho PAGAMENTOS R$...
-                            // Sub cabeçalho APP....
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PGTO_DEBITO_APP+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PGTO_CREDITO_APP+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PGTO_PIX_APP+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PGTO_BOLETO_APP+'</td> '+
-                            // Sub cabeçalho DECRE....
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PGTO_BOLETO_DECRE+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PGTO_PIX_DECRE+'</td> '+
-                            ' <td style="width:50px">'+'0,00'+'</td> '+ // Campo Cartão DECRE, agora não existe, foi deixado em branco...
-                            // Sub cabeçalho LOJA....
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PGTO_LOJA+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PGTO_DEBITO_LOJA+'</td> '+
-                            ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PGTO_PIX_LOJA+'</td> '+
-
-                            ' </tr> ';
-             sHTMLEMail := sHTMLEMail + sHTMLLinha;
-
-             qryRelatorioVendas.Next;
-        end;
-
-        ggeKPIPagamentos.Progress := 80;
-        lblMensagem.Caption := 'Formatando TOTAIS...';
-        lblMensagem.Update;
-        Delay(200);
-
-        // Totais das colunas....
-        sHTMLLinha := ' <tfoot> <tr> ' +
-                       ' <th style="width:50px" bgcolor="#C0C0C0">Total Geral</th> '+
-
-                       ' <th style="width:50px" bgcolor="#C0C0C0">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOT_CLI_CADASTRADOS+'</th> '+
-                       ' <th style="width:50px" bgcolor="#C0C0C0">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_TOT_CLI_APP+'</th> '+
-                       ' <th style="width:50px" bgcolor="#C0C0C0">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_NEW_CLI_APP+'</th> '+
-                       ' <th style="width:50px" bgcolor="#C0C0C0">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_CLI_GRAZZIOTIN+'</th> '+
-                       ' <th style="width:50px" bgcolor="#C0C0C0">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_NEW_CLI_APP_APROV+'</th> '+
-                       ' <th style="width:50px" bgcolor="#C0C0C0">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_CLI_NOVOS_PENDENTES+'</th> '+
-                       // Cabeçalho PAGAMENTOS - APP...
-                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PGTO_DEBITO_APP+'</th> '+
-                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PGTO_CREDITO_APP+'</th> '+
-                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PGTO_PIX_APP+'</th> '+
-                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PGTO_BOLETO_APP+'</th> '+
-                       // Cabeçalho PAGAMENTOS - DECRE...
-                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PGTO_BOLETO_DECRE+'</th> '+
-                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PGTO_PIX_DECRE+'</th> '+
-                       ' <th style="width:50px" bgcolor="#F4A460">'+'0'+'</th> '+ // Campo Cartão DECRE, agora não existe, foi deixado em branco...
-                       // Cabeçalho PAGAMENTOS - LOJA...
-                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PGTO_LOJA+'</th> '+
-                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PGTO_DEBITO_LOJA+'</th> '+
-                       ' <th style="width:50px" bgcolor="#F4A460">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_QTD_PGTO_PIX_LOJA+'</th> '+
-                       // Cabeçalho PAGAMENTOS R$ - APP...
-                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_DEBITO_APP+'</th> '+
-                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_CREDITO_APP+'</th> '+
-                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_PIX_APP+'</th> '+
-                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_BOLETO_APP+'</th> '+
-                       // Cabeçalho PAGAMENTOS R$ - DECRE...
-                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_BOLETO_DECRE+'</th> '+
-                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_PIX_DECRE+'</th> '+
-                       ' <th style="width:50px" bgcolor="#90EE90">'+'0,00'+'</th> '+ // Campo Cartão DECRE, agora não existe, foi deixado em branco...
-                       // Cabeçalho PAGAMENTOS R$ - LOJA...
-                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_LOJA+'</th> '+
-                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_DEBITO_LOJA+'</th> '+
-                       ' <th style="width:50px" bgcolor="#90EE90">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PGTO_PIX_LOJA+'</th> '+
-
-                       ' </tr></tfoot> ';
-        sHTMLEMail := sHTMLEMail + sHTMLLinha;
-
-        sHTMLEMail := sHTMLEMail + ' </tbody> </table> </body> </html> ';
-        ggeKPIPagamentos.Progress := 100;
-        lblMensagem.Caption := 'Finalizando montagem HTML....';
-        lblMensagem.Update;
-        Delay(200);
-     finally
-     end;*)
-end;
+ end;
 
 procedure TfrmPrincipal.FormActivate(Sender: TObject);
 begin

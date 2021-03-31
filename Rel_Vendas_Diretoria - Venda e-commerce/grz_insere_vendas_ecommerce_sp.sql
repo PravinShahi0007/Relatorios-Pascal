@@ -22,17 +22,17 @@ begin
             v_data_inicial varchar2(10);
             v_data_final   varchar2(10);
             type R_ECOMMERCE is record -- definicao do registro de dados para gravacao da VENDA DIARIA
-                 (cod_loja number(4), -- numero da loja / unidade
-                  cod_rede number(2), -- codigo de rede, equivale ao codigo da empresa
-                  cod_regiao number(4),
-                  dt_mvto date,
-                  cod_mp_resumo number(9),
-                  cod_ecf number(9), -- numero do CAIXA, criar um numero, sugestao: 666
-                  gt_inicial number(18),
-                  gt_atual number(18),
+                 (cod_loja        number(4), -- numero da loja / unidade
+                  cod_rede        number(2), -- codigo de rede, equivale ao codigo da empresa
+                  cod_regiao      number(4),
+                  dt_mvto         date,
+                  cod_mp_resumo   number(9),
+                  cod_ecf         number(9), -- numero do CAIXA, criar um numero, sugestao: 666
+                  gt_inicial      number(18),
+                  gt_atual        number(18),
                   venda_bruta_dia number(13,2),
-                  total_liq_dia number(13,2),
-                  dt_alteracao varchar2(10));
+                  total_liq_dia   number(13,2),
+                  dt_alteracao    varchar2(10));
             ECOMMERCE R_ECOMMERCE;
 
             cursor cursor_lojas_ecommerce is

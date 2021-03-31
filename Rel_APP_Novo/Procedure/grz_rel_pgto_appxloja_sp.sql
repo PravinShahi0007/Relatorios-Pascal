@@ -53,6 +53,7 @@ begin
             v_qtd_pgto_loja           number(8);
             v_vlr_pgto_loja           number(18,2);
             v_tot_cli_pgto_cia        number(18,2);
+            v_valor_seguro_areceber   number(18,2);
 
      begin
           v_data_inicial := pdatainicial;
@@ -129,28 +130,43 @@ begin
           end;
           /* Quantidade e valor de parcelas A RECEBER */
           begin
-               select count(1) as qtd_pagamentos_a_recebe,
+               select count(1) as qtd_pagamentos_a_receber,
                       sum(nvl(cr_titulos.vlr_cdc,0)) as vlr_tot_a_receber
                into v_qtd_parcelas_areceber, v_vlr_parcelas_areceber
-               from cr_titulos, cr_historicos, ge_grupos_unidades
-               where cr_historicos.cod_pessoa = cr_titulos.cod_pessoa and
-                     cr_historicos.cod_emp = cr_titulos.cod_emp and
-                     cr_historicos.cod_unidade = cr_titulos.cod_unidade and
-                     cr_historicos.num_titulo = cr_titulos.num_titulo and
-                     cr_historicos.cod_compl = cr_titulos.cod_compl and
-                     cr_historicos.num_parcela = cr_titulos.num_parcela and
-                     cr_titulos.dta_vencimento between to_date(v_data_inicial,'dd/mm/yyyy') and 
+               from cr_titulos, ge_grupos_unidades
+               where cr_titulos.tip_titulo in (1,50,70,72,73) and
+                     cr_titulos.dta_vencimento between to_date(v_data_inicial,'dd/mm/yyyy') and
                                                        to_date(v_data_final,'dd/mm/yyyy') and
                      cr_titulos.ind_dc = 1 and
                      cr_titulos.cod_unidade = ge_grupos_unidades.cod_unidade and
                      ge_grupos_unidades.cod_grupo in (71010,71030,71040,71050,71070) and
                      ge_grupos_unidades.cod_emp = 1;
-              exception
-                       when no_data_found then
-                       begin
-                            v_qtd_parcelas_areceber := 0;
-                            v_vlr_parcelas_areceber := 0;
-                       end;
+               exception
+                        when no_data_found then
+                        begin
+                             v_qtd_parcelas_areceber := 0;
+                             v_vlr_parcelas_areceber := 0;
+                        end;
+          end;
+          /* Seleciona valor do seguro, posteriormente sera somado ao valor das parcelas a receber */
+          begin
+               select sum(nvl(cr_titulos.vlr_cdc,0)) as vlr_tot_a_receber_seguro
+               into v_valor_seguro_areceber
+               from cr_titulos, ge_grupos_unidades
+               where cr_titulos.tip_titulo in (55,57) and
+                     cr_titulos.dta_vencimento between to_date(v_data_inicial,'dd/mm/yyyy') and 
+                                                       to_date(v_data_final, 'dd/mm/yyyy') and  
+                     cr_titulos.ind_dc = 1 and                     
+                     cr_titulos.cod_unidade = ge_grupos_unidades.cod_unidade and
+                     ge_grupos_unidades.cod_grupo in (71010,71030,71040,71050,71070) and
+                     ge_grupos_unidades.cod_emp = 1;  
+               exception
+                        when no_data_found then
+                        begin
+                             v_valor_seguro_areceber := 0;
+                        end;
+               /* Soma o valor do segura a receber no valor das parcelas a receber */
+               v_vlr_parcelas_areceber := v_vlr_parcelas_areceber + v_valor_seguro_areceber;
           end;
           /* Clientes que efetuaram o pagamento pelo APP */
           begin
@@ -406,10 +422,14 @@ begin
           end;
           /* Quantidade e valor pagamento na loja */
           begin
-               select count(1) qtd_pagamentos_lojas,
+               select sum(decode(cr_titulos.tip_titulo,1,1,70,1,50,1,72,1,73,1,0)) as qtd_pagamentos_lojas,
                       sum(nvl(cr_historicos.vlr_lancamento,0) +
-                          nvl(cr_historicos.vlr_juro_cobr,0) +
-                          nvl(cr_historicos.vlr_desp_cobr,0) - nvl(cr_historicos.vlr_desconto,0)) vlr_tot_lojas
+                      nvl(cr_historicos.vlr_juro_cobr,0) +
+                      nvl(cr_historicos.vlr_desp_cobr,0) - nvl(cr_historicos.vlr_desconto,0)) as vlr_tot_lojas
+               --select count(1) qtd_pagamentos_lojas,
+               --       sum(nvl(cr_historicos.vlr_lancamento,0) +
+               --           nvl(cr_historicos.vlr_juro_cobr,0) +
+               --           nvl(cr_historicos.vlr_desp_cobr,0) - nvl(cr_historicos.vlr_desconto,0)) vlr_tot_lojas
                into v_qtd_pgto_loja, v_vlr_pgto_loja
                from cr_titulos, cr_historicos, ge_grupos_unidades
                where cr_historicos.cod_pessoa = cr_titulos.cod_pessoa and

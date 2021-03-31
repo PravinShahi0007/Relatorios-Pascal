@@ -4,10 +4,9 @@ interface
 
 Uses
     SysUtils, WinTypes, WinProcs, Messages, Classes, Graphics, Controls, Forms,
-    Dialogs, Printers, DB, dbctrls, Stdctrls, Math, uFunc, Variants;
+    Dialogs, Printers, DB, dbctrls, Stdctrls, Math, uFunc;
 
 {  Functions  }
-function sonumeros( val : string ):string;
 Function CemExtenso(StrValor: string): string;
 Function ValorExtenso(Valor: extended): string;
 function AllTrim(OQue : String) : String;
@@ -36,7 +35,6 @@ function Verifica_Historico(Letras, VerBranco : String) : Boolean;
 function Elimina_Caracteres(Letras, Elimina, Novo : String) : String;
 function Conta_Domingos(Dia, Mes, Ano : Integer) : Integer;
 function Ultimo_Dia(Mes, Ano : Word) : Word;
-function Conta_Caracter(Palavra,Letra : String) : Word;
 //=============================================================
 function VerificaFloat(sValor:String) : Boolean;
 function VerificaVariavel( Variavel : Variant ) : Boolean;
@@ -46,7 +44,6 @@ function DateMais(Dat:TDateTime;Numdias:Integer): TDateTime;
 function JanelaExiste(Classe,Janela:String) :Boolean;
 function DelphiCarregado : Boolean;
 function DetectaDrv(const drive : char): boolean;
-function DiasNoMes(AYear, AMonth: Integer): Integer;
 function DifDateUtil(dataini,datafin:string):integer;
 function DifHora(Inicio,Fim : String):String;
 function DiscoNoDrive(const drive : char): boolean;
@@ -80,7 +77,9 @@ function Divide(Dividendo, Divisor : Variant): Real;
 function Trunca_Numero(Numero : Variant; Decimais : Integer): Real;
 function Inteiro(Numero : Variant): String;
 function Decimais(Numero : Variant; Decimais : Integer): String;
-function Formatar(Numero : double):string;
+function iif(Test: boolean; TrueR, FalseR: string): string; overload;
+function iif(Test: boolean; TrueR, FalseR: integer): integer; overload;
+function iif(Test: boolean; TrueR, FalseR: extended): extended; overload;
 
 { Procedures }
 procedure Adverte(Mensagem,Cabecalho : String);
@@ -93,70 +92,35 @@ procedure Verifica_Data(Campo : TField; sData : String);
 procedure Transforma_Hora(var pHora : String; pValor : String; var pHoras : Real; var pMinutos : Real );
 procedure Transf_Hora(var pHora : String; pValor : Real; var pHoras : Real; var pMinutos : Real);
 
-CONST LETRAS_PERMITIDAS = ['A'..'Z', 'a'..'z', '¡', '¿', '√', '¬', 'ƒ', '…', '»', ' ',
-      'À', 'Õ', 'Ã', 'Œ', 'œ', '”', '“', '‘', '’', '÷', '⁄', 'Ÿ', '€', '‹', '—', '«',
-      '›', 'ü', '&', '·', '‡', '„', '‚', '‰', 'È', 'Ë', 'Í', 'Î', 'Ì', 'Ï', 'Ó', 'Ô',
-      'Û', 'Ú', 'ı', 'Ù', 'ˆ', '˙', '˘', '˚', '¸', 'Á', ' '];
-
 var resultado : word;
     dDatavalida : TDateTime;
     iNumValido : Integer;
-    dHoravalida : TTime;
-    
+    dHoravalida : TTime;    
+
 implementation
 
-function sonumeros( val : string ):string;
-var ind : integer;
-    mat : set of char;
-    aresult : string;
+function iif(Test: boolean; TrueR, FalseR: string): string;
 begin
-    aresult := '';
-    mat:=['0','1','2','3','4','5','6','7','8','9'];
-    for ind := 1 to length(val) do begin
-        if (val[ind] in mat)then
-         aresult := aresult + val[ind];
-    end;
-    result := aresult;
+    if Test then
+        Result := TrueR
+    else
+        Result := FalseR;
 end;
 
-function Conta_Caracter(Palavra,Letra : String) : Word;
-var
-  sPalavra : String;
-  iIndice, iContador : Word;
-
+function iif(Test: boolean; TrueR, FalseR: integer): integer;
 begin
-     sPalavra := Trim(Palavra);
-     iContador := 0;
-     for iIndice := 1 to Length(sPalavra) do
-     begin
-          if Copy(sPalavra,iIndice,1) = Letra then
-             Inc(iContador);
-     end;
-     Result := iContador;
+    if Test then
+        Result := TrueR
+    else
+        Result := FalseR;
 end;
 
-
-function Formatar(Numero : double):string;
-var aresult : string;
-    ipos,i : integer;
+function iif(Test: boolean; TrueR, FalseR: extended): extended;
 begin
-   //
-   str(Numero:10:2,aresult);
-   aresult := trim(aresult);
-   for i := 1 to length(aresult) do
-    if aresult[i]='.' then aresult[i] := ',';
-   ipos := pos(',',aresult)-1;
-   if (ipos >  3)and(ipos <= 6) then //1 virgula
-     insert('.',aresult,ipos-2)
-   else if (ipos > 6)and(ipos <=9) then  begin// 2 virgulas
-     insert('.',aresult,ipos-5);
-     insert('.',aresult,ipos-2)
-   end else if ipos > 9 then begin// 3 virgulas
-     insert('.',aresult,ipos-8);
-     insert('.',aresult,ipos-5);
-     insert('.',aresult,ipos-2)
-   end;
-   result := aresult;
+    if Test then
+        Result := TrueR
+    else
+        Result := FalseR;
 end;
 
 function CemExtenso(StrValor: string): string;
@@ -463,7 +427,7 @@ Begin
             dDatavalida := StrToDate(sData);
          Except on EConvertError do
             begin
-                 Adverte('Data Inv·lida !','');
+                 ShowMessage('Data Inv·lida!');
                  Result := True; // se a data for inv·lida retorna TRUE
             end;
          end;
@@ -722,7 +686,7 @@ end;
 
 function Formata_CFOP(CFOP: String) : string;
 begin
-     Result := Copy(CFOP,1,1)+'.'+Copy(CFOP,2,3);
+     Result := Copy(CFOP,1,1)+'.'+Copy(CFOP,2,2);
 end;
 
 function Formata_Codigo_Produto(PRODUTO: String) : string;
@@ -820,38 +784,7 @@ begin
 end;
 
 // Retorna quantos dias tem um referido mes do ano
-function DiasNoMes(AYear, AMonth: Integer): Integer;
-var
-   dData : TDateTime;
-   sData : String;
-   iDias : Integer;
-   DaysInMonth : array[1..12] of Integer;
-begin
-     DaysInMonth[01] := 31; DaysInMonth[02] := 28; DaysInMonth[03] := 31;
-     DaysInMonth[04] := 30; DaysInMonth[05] := 31; DaysInMonth[06] := 30;
-     DaysInMonth[07] := 31; DaysInMonth[08] := 31; DaysInMonth[09] := 30;
-     DaysInMonth[10] := 31; DaysInMonth[11] := 30; DaysInMonth[12] := 31;
-     {if Length(IntToStr(AYear)) <> 4 then
-     begin
-          Adverte( 'ERRO FATAL......'+#13+
-                   'Parametro errado na funÁ„o DIASNOMES()!'+#13+
-                   'Ano deve ter 4 digitos.','Aviso');
-          Application.Terminate;
-     end;}
-     sData := '01/'+PadLeft(IntToStr(Amonth),2,'0')+'/'+IntToStr(AYear);
-     dData := StrToDate(sData);
-     if AMonth = 2 then
-     begin
-          if AnoBis(dData) then
-          begin
-               DaysInMonth[AMonth] := DaysInMonth[AMonth] + 1;
-          end;
-     end;
-     iDias := DaysInMonth[AMonth];
-     if AMonth = 2 then
-        DaysInMonth[AMonth] := 28;
-     Result := iDias;
-end;
+
 
 {Retorna a quantidade de dias uteis entre duas datas}
 function DifDateUtil(dataini,datafin:string):integer;
@@ -951,10 +884,9 @@ var
    i, iIndice :integer;
    bResultado : Boolean;
 begin
-     i := 0;
-     bresultado := false;
      for iIndice := 1 to Length(Trim(Texto)) do
      begin
+          i := 0;
           //bResultado := (Copy(Texto,iIndice,1) in ['0','1','2','3','4','5','6','7','8','9']);
 
           try
@@ -1354,8 +1286,8 @@ var f ,C,CD, SCHK : integer;
     aa,cc:string;
 begin
      schk := 0;
-     //CD   := 0;
-     //C := 1;
+     CD   := 0;
+     C := 1;
      COD:=TRIM(COD);
 
         {FLG=0 sÛ retorna DC n„o avisa se esta incorreto}
@@ -1391,10 +1323,9 @@ var
      iIndice, iSoma, iDigito : Integer;
      sDigito : String;
 const
-     cPesos = '9875432';
+     cPesos = '875432';
 begin
-     
-     if Length(Cod) <> 7 then
+     if Length(Cod) <> 6 then
      begin
           Informacao('CÛdigo inv·lido!!!!','Aviso...');
           Result := ' ';
@@ -1415,6 +1346,7 @@ begin
 
      //if iDigito > 10 then
      //   iDigito := 1;
+
 
      str(iDigito:1,sDigito);
      Result := sDigito;
@@ -1539,7 +1471,7 @@ var
    bTrocou : Boolean;
 begin
      sTrabalho := UpperCase(Trim(Letras));
-     //bTrocou := False;
+     bTrocou := False;
      repeat
            bTrocou := (Pos(Elimina, sTrabalho) <> 0);
            sTrabalho := StringReplace(sTrabalho,
@@ -1555,8 +1487,8 @@ var
    sFinal, sTrabalho : String;
    iIndice, iPosicao : Integer;
 const
-     sCaracteres = '¡¿√¬ƒ…» ÀÕÃŒœ”“‘’÷⁄Ÿ€‹—«›ü,'+'''';
-     sValidos    = 'AAAAAEEEEIIIIOOOOOUUUUNCYY '+' ';
+     sCaracteres = '¡¿√¬ƒ…» ÀÕÃŒœ”“‘’÷⁄Ÿ€‹—«›ü';
+     sValidos    = 'AAAAAEEEEIIIIOOOOOUUUUNCYY';
 begin
      sTrabalho := UpperCase(Trim(Letras));
      sFinal := Trim(sTrabalho);
@@ -1582,7 +1514,7 @@ var
    bRetorno, bErro : Boolean;
 begin
      bRetorno := True;
-     //bErro := False;
+     bErro := False;
      sTrabalho := UpperCase(Trim(Letras));
      for iIndice := 1 to Length(sTrabalho) do
      begin
@@ -1691,8 +1623,7 @@ function VerificaVariavel( Variavel : Variant ) : Boolean;
 var
    bRetorno : Boolean;
 begin
-     bretorno := false;
-     case VarType(Variavel) of
+{     case VarType(Variavel) of
           varString : bRetorno := (VarIsNull(Variavel)) or (Trim(Variavel) = '');
           varDate : bRetorno := (VarIsNull(Variavel)) or
                                 (AllTrim(DateToStr(Variavel)) = '//') or
@@ -1700,7 +1631,7 @@ begin
           varCurrency : bRetorno := (VarIsNull(Variavel)) or (Variavel <= 0);
           varInteger : bRetorno := (VarIsNull(Variavel)) or (Variavel <= 0);
      end;
-     Result := bRetorno;
+     Result := bRetorno;  }
 end;
 
 function TestaCPF(xCPF: string) : Boolean;
@@ -1756,98 +1687,17 @@ begin
 
     if localResult then
        localResult := not ((Length(Trim(xCPF)) <> 11) or
-                            (Trim(xCPF) = '1') or
-                            (Trim(xCPF) = '111') or                                                               
-                            (Trim(xCPF) = '1111') or                            
-                            (Trim(xCPF) = '11111') or                            
-                            (Trim(xCPF) = '111111') or                            
-                            (Trim(xCPF) = '1111111') or                            
-                            (Trim(xCPF) = '11111111') or                            
-                            (Trim(xCPF) = '111111111') or                            
-                            (Trim(xCPF) = '1111111111') or                            
-                            (Trim(xCPF) = '11111111111') or
-                            (Trim(xCPF) = '1234567890') or
-                            (Trim(xCPF) = '2') or
-                            (Trim(xCPF) = '222') or                                                               
-                            (Trim(xCPF) = '2222') or                            
-                            (Trim(xCPF) = '22222') or                            
-                            (Trim(xCPF) = '222222') or                            
-                            (Trim(xCPF) = '2222222') or                            
-                            (Trim(xCPF) = '22222222') or                            
-                            (Trim(xCPF) = '222222222') or                            
-                            (Trim(xCPF) = '2222222222') or                            
-                            (Trim(xCPF) = '22222222222') or
-                            (Trim(xCPF) = '3') or
-                            (Trim(xCPF) = '333') or                                                               
-                            (Trim(xCPF) = '3333') or                            
-                            (Trim(xCPF) = '33333') or                            
-                            (Trim(xCPF) = '333333') or                            
-                            (Trim(xCPF) = '3333333') or                            
-                            (Trim(xCPF) = '33333333') or                            
-                            (Trim(xCPF) = '333333333') or                            
-                            (Trim(xCPF) = '3333333333') or                            
-                            (Trim(xCPF) = '33333333333') or
-                            (Trim(xCPF) = '4') or
-                            (Trim(xCPF) = '444') or                                                               
-                            (Trim(xCPF) = '4444') or                            
-                            (Trim(xCPF) = '44444') or                            
-                            (Trim(xCPF) = '444444') or                            
-                            (Trim(xCPF) = '4444444') or                            
-                            (Trim(xCPF) = '44444444') or                            
-                            (Trim(xCPF) = '444444444') or                            
-                            (Trim(xCPF) = '4444444444') or                            
-                            (Trim(xCPF) = '44444444444') or
-                            (Trim(xCPF) = '5') or
-                            (Trim(xCPF) = '555') or                                                               
-                            (Trim(xCPF) = '5555') or                            
-                            (Trim(xCPF) = '55555') or                            
-                            (Trim(xCPF) = '555555') or                            
-                            (Trim(xCPF) = '5555555') or                            
-                            (Trim(xCPF) = '55555555') or                            
-                            (Trim(xCPF) = '555555555') or                            
-                            (Trim(xCPF) = '5555555555') or                            
-                            (Trim(xCPF) = '55555555555') or
-                            (Trim(xCPF) = '6') or
-                            (Trim(xCPF) = '666') or                                                               
-                            (Trim(xCPF) = '6666') or                            
-                            (Trim(xCPF) = '66666') or                            
-                            (Trim(xCPF) = '666666') or                            
-                            (Trim(xCPF) = '6666666') or                            
-                            (Trim(xCPF) = '66666666') or                            
-                            (Trim(xCPF) = '666666666') or                            
-                            (Trim(xCPF) = '6666666666') or                            
-                            (Trim(xCPF) = '66666666666') or
-                            (Trim(xCPF) = '7') or
-                            (Trim(xCPF) = '777') or                                                               
-                            (Trim(xCPF) = '7777') or                            
-                            (Trim(xCPF) = '77777') or                            
-                            (Trim(xCPF) = '777777') or                            
-                            (Trim(xCPF) = '7777777') or                            
-                            (Trim(xCPF) = '77777777') or                            
-                            (Trim(xCPF) = '777777777') or                            
-                            (Trim(xCPF) = '7777777777') or                            
-                            (Trim(xCPF) = '77777777777') or
-                            (Trim(xCPF) = '8') or
-                            (Trim(xCPF) = '888') or                                                               
-                            (Trim(xCPF) = '8888') or                            
-                            (Trim(xCPF) = '88888') or                            
-                            (Trim(xCPF) = '888888') or                            
-                            (Trim(xCPF) = '8888888') or                            
-                            (Trim(xCPF) = '88888888') or                            
-                            (Trim(xCPF) = '888888888') or                            
-                            (Trim(xCPF) = '8888888888') or                            
-                            (Trim(xCPF) = '88888888888') or
-                            (Trim(xCPF) = '9') or
-                            (Trim(xCPF) = '999') or                                                               
-                            (Trim(xCPF) = '9999') or                            
-                            (Trim(xCPF) = '99999') or                            
-                            (Trim(xCPF) = '999999') or                            
-                            (Trim(xCPF) = '9999999') or                            
-                            (Trim(xCPF) = '99999999') or                            
-                            (Trim(xCPF) = '999999999') or                            
-                            (Trim(xCPF) = '9999999999') or                            
-                            (Trim(xCPF) = '99999999999') or                           
-                            (Trim(xCPF) = '98765432100'));
+                           (Trim(xCPF) = '11111111111') or
+                           (Trim(xCPF) = '22222222222') or
+                           (Trim(xCPF) = '33333333333') or
+                           (Trim(xCPF) = '44444444444') or
+                           (Trim(xCPF) = '55555555555') or
+                           (Trim(xCPF) = '66666666666') or
+                           (Trim(xCPF) = '77777777777') or
+                           (Trim(xCPF) = '88888888888') or
+                           (Trim(xCPF) = '99999999999') or
+                           (Trim(xCPF) = '00000000000'));
+
     Result := localResult;
 end;
 
@@ -1889,6 +1739,7 @@ end;
 function GeraDatas(Data : TDateTime; FatorSoma : Integer ) : TDateTime;
 var
    wAno, wMes, wDia : Word;
+   dtDataGerar : TDateTime;
 const
      DiasNoMes: array[1..12] of Integer = ( 31, 28, 31, 30, 31, 30, 31, 31, 30,
                                             31, 30, 31);
@@ -2069,7 +1920,7 @@ end;
 function Conta_Domingos(Dia, Mes, Ano : Integer) : Integer;
 var
    dDataInicial, dDataFinal  : TDateTime;
-   iContaDomingos : Integer;
+   iDiasFinal, iContaDomingos : Integer;
 begin
      //iDiasFinal := DiasNoMes(Ano, Mes);
      //dDataFinal := EnCodeDate(Ano,Mes,iDiasFinal);
@@ -2131,7 +1982,7 @@ procedure Transforma_Hora( var pHora : String; pValor : String;
                            var pHoras : Real; var pMinutos : Real );
 var
    iPosicao, iMinutoInteiro, iMinutoResto : Integer;
-   {sValor,} sHoras, sMinutos : String;
+   sValor, sHoras, sMinutos : String;
 begin
      iPosicao := Pos(',',pValor);
      if iPosicao = 0 then
@@ -2199,6 +2050,5 @@ begin
      end;
      Result := Dia
 end;
-
 end.
 
