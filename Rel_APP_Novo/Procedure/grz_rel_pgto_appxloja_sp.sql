@@ -8,6 +8,9 @@
   Jaisson JAN/2021 Criacao   Criacao dos SQL's
   Antonio MAR/2021 Alteracao Acumular o campo TOT_CLI_CADASTRADOS, desde
                              marco de 2020
+  Jaisson MAR/2021 Alteracao Ajuste na quantidade de pagamentos na loja e
+                             alteracao na verificacao dos titulos de 
+                             pagamentos
 
   Parametros
   pDataInicial - Data inicial da selecao de dados
@@ -187,7 +190,7 @@ begin
           end;
           /* Total de pagamento e quantidade de parcelas CIA */
           begin
-               select count(1) qtd_pagamentos_cia,
+               select sum(decode(cr_titulos.tip_titulo,1,1,70,1,50,1,72,1,73,1,0)) as qtd_pagamentos_cia,
                       sum(nvl(cr_historicos.vlr_lancamento,0) +
                       nvl(cr_historicos.vlr_juro_cobr,0) +
                       nvl(cr_historicos.vlr_desp_cobr,0)) vlr_tot_cia
@@ -240,11 +243,12 @@ begin
           end;
           /* Quantidade e valor pagamento parcelas pelo APP e 0800 */
           begin
-               select sum(decode(cr_historicos.cod_unidade_pgto,702,1,0)) qtd_app,
+               select sum(decode(cr_historicos.cod_unidade_pgto,702,
+                          decode(cr_titulos.tip_titulo,1,1,70,1,50,1,72,1,73,1,0),0)) as qtd_app,               
                       sum(case 
                               when (cr_historicos.cod_unidade_pgto = 701) or 
                                    (cr_historicos.cod_lancamento = 103) then 
-                                   1
+                                   decode(cr_titulos.tip_titulo,1,1,70,1,50,1,72,1,73,1,0)
                               else 0
                           end) as qtd_0800,
                       sum(decode(cr_historicos.cod_unidade_pgto,702,(nvl(cr_historicos.vlr_lancamento,0) +
@@ -426,10 +430,6 @@ begin
                       sum(nvl(cr_historicos.vlr_lancamento,0) +
                       nvl(cr_historicos.vlr_juro_cobr,0) +
                       nvl(cr_historicos.vlr_desp_cobr,0) - nvl(cr_historicos.vlr_desconto,0)) as vlr_tot_lojas
-               --select count(1) qtd_pagamentos_lojas,
-               --       sum(nvl(cr_historicos.vlr_lancamento,0) +
-               --           nvl(cr_historicos.vlr_juro_cobr,0) +
-               --           nvl(cr_historicos.vlr_desp_cobr,0) - nvl(cr_historicos.vlr_desconto,0)) vlr_tot_lojas
                into v_qtd_pgto_loja, v_vlr_pgto_loja
                from cr_titulos, cr_historicos, ge_grupos_unidades
                where cr_historicos.cod_pessoa = cr_titulos.cod_pessoa and
@@ -438,7 +438,6 @@ begin
                      cr_historicos.num_titulo = cr_titulos.num_titulo and
                      cr_historicos.cod_compl = cr_titulos.cod_compl and
                      cr_historicos.num_parcela = cr_titulos.num_parcela and
-                     -- cr_titulos.ind_pago = 1 and
                      cr_historicos.ind_dc = 2 and
                      cr_historicos.cod_lancamento in (100,20,75) and
                      cr_titulos.cod_unidade = ge_grupos_unidades.cod_unidade and

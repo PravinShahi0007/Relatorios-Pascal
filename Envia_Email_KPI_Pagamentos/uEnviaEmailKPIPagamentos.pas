@@ -692,7 +692,7 @@ begin
      acbrEMail.Port := EMAIL.PORTA;
      acbrEMail.Subject := EMAIL.ASSUNTO;
      acbrEMail.AddAddress(EMAIL.DESTINATARIO,'');
-     //acbrEMail.AddCC(EMAIL.COPIAOCULTA); // E-mail em copia...
+     //acbrEMail.AddCC(EMAIL.DESTINATARIO); // E-mail em copia...
      acbrEMail.AddBCC(EMAIL.COPIAOCULTA); // E-mail em copia...
      acbrEMail.Body.Add(EMAIL.CORPO);
      acbrEMail.IsHTML := True;
@@ -1612,7 +1612,8 @@ begin
         lblMensagem.Caption := 'Finalizando montagem HTML....';
         lblMensagem.Update;
         Delay(200);
-     finally
+     except
+           Informacao('Erro! Possível erro na montagem do E_MAIL!!!!','Aviso...');
      end;
  end;
 
