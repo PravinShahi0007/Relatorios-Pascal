@@ -3,8 +3,8 @@ object frmPrincipal: TfrmPrincipal
   Top = 0
   BorderIcons = [biSystemMenu]
   Caption = 'Envia E-Mail KPI Pagamentos....'
-  ClientHeight = 169
-  ClientWidth = 311
+  ClientHeight = 168
+  ClientWidth = 296
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -21,15 +21,15 @@ object frmPrincipal: TfrmPrincipal
   object pnlFundo: TPanel
     Left = 0
     Top = 0
-    Width = 311
-    Height = 169
+    Width = 296
+    Height = 168
     Align = alClient
     BevelInner = bvLowered
     TabOrder = 0
     object lblMensagem: TLabel
       Left = 2
       Top = 82
-      Width = 307
+      Width = 292
       Height = 13
       Align = alTop
       Caption = 'lblMensagem'
@@ -44,7 +44,7 @@ object frmPrincipal: TfrmPrincipal
     object ggeKPIPagamentos: TGauge
       Left = 2
       Top = 95
-      Width = 307
+      Width = 292
       Height = 34
       Align = alTop
       ForeColor = clBlue
@@ -62,7 +62,7 @@ object frmPrincipal: TfrmPrincipal
     object pnlCabecalho: TPanel
       Left = 2
       Top = 2
-      Width = 307
+      Width = 292
       Height = 31
       Align = alTop
       BevelInner = bvLowered
@@ -78,7 +78,7 @@ object frmPrincipal: TfrmPrincipal
     object grpIntervalo: TGroupBox
       Left = 2
       Top = 33
-      Width = 307
+      Width = 292
       Height = 49
       Align = alTop
       Caption = '[ Intervalo ]'
@@ -121,16 +121,16 @@ object frmPrincipal: TfrmPrincipal
     object pnlRodape: TPanel
       Left = 2
       Top = 129
-      Width = 307
-      Height = 38
+      Width = 292
+      Height = 37
       Align = alClient
       BevelInner = bvLowered
       TabOrder = 2
       object BitBtn1: TBitBtn
-        Left = 230
+        Left = 215
         Top = 2
         Width = 75
-        Height = 34
+        Height = 33
         Align = alRight
         Caption = 'Sair'
         Font.Charset = DEFAULT_CHARSET
@@ -196,6 +196,8 @@ object frmPrincipal: TfrmPrincipal
     Port = '25'
     SetSSL = False
     SetTLS = False
+    Priority = MP_high
+    IsHTML = True
     Attempts = 3
     DefaultCharset = UTF_8
     IDECharset = CP1252
@@ -214,7 +216,6 @@ object frmPrincipal: TfrmPrincipal
       'Password=nl'
       'MetaDefSchema=system'
       'DriverID=Ora')
-    Connected = True
     LoginPrompt = False
     Transaction = trsOracle
     Left = 24
@@ -372,7 +373,7 @@ object frmPrincipal: TfrmPrincipal
     Transaction = trsOracle
     SchemaName = 'NL'
     StoredProcName = 'GRZ_REL_PGTO_APPXLOJA_SP'
-    Left = 264
+    Left = 240
     Top = 8
     ParamData = <
       item
@@ -393,7 +394,7 @@ object frmPrincipal: TfrmPrincipal
   object qryGeralDados: TFDQuery
     Connection = fdcOracle
     Transaction = trsOracle
-    Left = 264
-    Top = 56
+    Left = 240
+    Top = 48
   end
 end
