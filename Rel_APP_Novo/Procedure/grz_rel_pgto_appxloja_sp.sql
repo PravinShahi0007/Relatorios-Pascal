@@ -2,15 +2,20 @@
   Procedure.: grz_rel_pgto_appxloja_sp
   Empresa...: Grazziotin S/A
   Finalidade: "Acumular" valores para relatorio demostrativo de "VENDAS"
+              KPI Pagamentos
 
-  Autor   Data     Operacao  Descricao
-  Antonio JAN/2021 Criacao   Estruturacao, criacao e testes da PROCEDURE
-  Jaisson JAN/2021 Criacao   Criacao dos SQL's
-  Antonio MAR/2021 Alteracao Acumular o campo TOT_CLI_CADASTRADOS, desde
-                             marco de 2020
-  Jaisson MAR/2021 Alteracao Ajuste na quantidade de pagamentos na loja e
-                             alteracao na verificacao dos titulos de 
-                             pagamentos
+  Responsavel Data     Operacao  Descricao
+  Antonio     JAN/2021 Criacao   Estruturacao, criacao e testes da PROCEDURE
+  Jaisson     JAN/2021 Criacao   Criacao dos SQL's
+  Antonio     MAR/2021 Alteracao Acumular o campo TOT_CLI_CADASTRADOS, desde
+                                 marco de 2020
+  Jaisson     MAR/2021 Alteracao Ajuste na quantidade de pagamentos na loja e
+                                 alteracao na verificacao dos titulos de 
+                                 pagamentos
+  Jaisson     ABR/2021 Alteracao Alteracao do SQL, de TEF, para selecionar 
+                                 os valores de PIX
+  Antonio     ABR/2021 Alteracao Modificacao e teste do SQL para selecionar
+                                 os valores de PIX (quantidade e valor);
 
   Parametros
   pDataInicial - Data inicial da selecao de dados
@@ -55,6 +60,8 @@ begin
             v_vlr_pgto_credito_loja   number(18,2);
             v_qtd_pgto_loja           number(8);
             v_vlr_pgto_loja           number(18,2);
+            v_qtd_pgto_pix_loja       number(8);
+            v_vlr_pgto_pix_loja       number(18,2);
             v_tot_cli_pgto_cia        number(18,2);
             v_valor_seguro_areceber   number(18,2);
 
@@ -391,6 +398,7 @@ begin
                               grz_tef_transacao_servidor.dta_movimento between 
                                       to_date(v_data_inicial,'dd/mm/yyyy') and
                                       to_date(v_data_final,'dd/mm/yyyy') and 
+                              grz_tef_transacao_servidor.des_bandeira <> 'PIX' and
                               not exists (select 1 
                                           from grz_tef_transacao_servidor c
                                           where grz_tef_transacao_servidor.cod_emp = c.cod_emp and
@@ -420,6 +428,66 @@ begin
                                else -- = 2, crédito
                                   v_qtd_pgto_credito_loja := reg_loja.qtd_loja;
                                   v_vlr_pgto_credito_loja := reg_loja.vlr_loja;
+                               end if;
+                           end loop;
+                      end;
+          end;
+          /* Valor e quantidade de PIX na LOJA */
+          begin
+               v_qtd_pgto_pix_loja := 0;
+               v_vlr_pgto_pix_loja := 0;
+               declare
+                      cursor cur_loja
+                      is
+                        select grz_tef_transacao_lojas.ind_deb_cred, 
+                               count(1) qtd_loja, 
+                               sum(nvl(grz_tef_transacao_servidor.vlr_lcto,0)) vlr_loja
+                        from grz_tef_transacao_servidor, grz_tef_transacao_lojas
+                        where grz_tef_transacao_lojas.cod_emp =
+                              grz_tef_transacao_servidor.cod_emp and
+                              grz_tef_transacao_lojas.cod_unidade =
+                              grz_tef_transacao_servidor.cod_unidade and
+                              grz_tef_transacao_lojas.dta_movimento =
+                              grz_tef_transacao_servidor.dta_movimento and
+                              to_number(grz_tef_transacao_servidor.num_nsusitef) =
+                              to_number(grz_tef_transacao_lojas.num_nsusitef) and
+                              grz_tef_transacao_lojas.ind_cancelado = 0 and
+                              grz_tef_transacao_lojas.tip_origem    = 4 and
+                              grz_tef_transacao_servidor.dta_movimento =
+                              grz_tef_transacao_lojas.dta_movimento and
+                              grz_tef_transacao_servidor.cod_resposta  = '00' and
+                              grz_tef_transacao_servidor.ind_cancelado = 0 and
+                              grz_tef_transacao_servidor.des_operacao not like '%CANC%' and
+                              grz_tef_transacao_servidor.dta_movimento between 
+                                      to_date(v_data_inicial,'dd/mm/yyyy') and
+                                      to_date(v_data_final,'dd/mm/yyyy') and 
+                              grz_tef_transacao_servidor.des_bandeira = 'PIX' and
+                              not exists (select 1 
+                                          from grz_tef_transacao_servidor c
+                                          where grz_tef_transacao_servidor.cod_emp = c.cod_emp and
+                                                grz_tef_transacao_servidor.cod_unidade = c.cod_unidade and
+                                                grz_tef_transacao_servidor.dta_movimento =
+                                                     c. dta_movimento and
+                                                to_number(grz_tef_transacao_servidor.num_nsuhost) =
+                                                to_number(c.nsu_host_cancel) and
+                                                grz_tef_transacao_servidor.des_rede = c.des_rede and
+                                                c.cod_resposta  = '00') and
+                              exists (select 1
+                                      from grz_lojas_recebimentos
+                                      where grz_tef_transacao_lojas.cod_unidade =
+                                            grz_lojas_recebimentos.cod_unidade and
+                                            grz_tef_transacao_lojas.num_equipamento =
+                                            grz_lojas_recebimentos.num_equipamento and
+                                            grz_tef_transacao_lojas.dta_movimento =
+                                            grz_lojas_recebimentos.dta_mvto and
+                                            grz_tef_transacao_lojas.num_nsusitef =
+                                            grz_lojas_recebimentos.num_nsusitef)
+                        group by grz_tef_transacao_lojas.ind_deb_cred;
+                      begin
+                           for reg_loja in cur_loja loop
+                               if (reg_loja.ind_deb_cred = 5) then -- = 5, PIX
+                                  v_qtd_pgto_pix_loja := reg_loja.qtd_loja;
+                                  v_vlr_pgto_pix_loja := reg_loja.vlr_loja;
                                end if;
                            end loop;
                       end;
@@ -515,7 +583,9 @@ begin
                                                     vlr_pgto_loja,
                                                     tot_cli_pgto_cia,
                                                     qtd_parcelas_areceber,
-                                                    vlr_parcelas_areceber)
+                                                    vlr_parcelas_areceber,
+                                                    qtd_pgto_pix_loja,
+                                                    vlr_pgto_pix_loja)
                values (to_date(v_data_inicial,'dd/mm/yyyy'),
                        v_qtd_tot_cli_app,
                        v_qtd_new_cli_app,
@@ -547,7 +617,9 @@ begin
                        v_vlr_pgto_loja,
                        v_tot_cli_pgto_cia,
                        v_qtd_parcelas_areceber,
-                       v_vlr_parcelas_areceber);
+                       v_vlr_parcelas_areceber,
+                       v_qtd_pgto_pix_loja,
+                       v_vlr_pgto_pix_loja);
           exception
                    when dup_val_on_index then
                         update grzw_rel_pgtos_appxloja
@@ -581,7 +653,9 @@ begin
                             vlr_pgto_loja = v_vlr_pgto_loja,
                             tot_cli_pgto_cia = v_tot_cli_pgto_cia,
                             qtd_parcelas_areceber = v_qtd_parcelas_areceber,
-                            vlr_parcelas_areceber = v_vlr_parcelas_areceber
+                            vlr_parcelas_areceber = v_vlr_parcelas_areceber,
+                            qtd_pgto_pix_loja = v_qtd_pgto_pix_loja,
+                            vlr_pgto_pix_loja = v_vlr_pgto_pix_loja
                         where (to_date(dta_mes,'dd/mm/yyyy') = to_date(v_data_inicial,'dd/mm/yyyy'));
           end;
 
