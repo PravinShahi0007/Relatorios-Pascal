@@ -18,7 +18,8 @@ uses
   FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.Oracle,
   FireDAC.Phys.OracleDef, FireDAC.VCLUI.Wait, FireDAC.Stan.Param, FireDAC.DatS,
   FireDAC.DApt.Intf, FireDAC.DApt, Vcl.Menus, Data.DB, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client, ACBrBase, ACBrMail, Vcl.Buttons, IniFiles;
+  FireDAC.Comp.Client, ACBrBase, ACBrMail, Vcl.Buttons, IniFiles,
+  FireDAC.Comp.UI;
 
 type
     RGRZW_REL_PGTOS_APPXLOJA = record
@@ -665,6 +666,18 @@ begin
         EMAIL.DESTINATARIO := ifArquivo.ReadString('EMAIL','DESTINATARIO','Não encontrado');
         EMAIL.COPIAOCULTA := ifArquivo.ReadString('EMAIL','COPIAOCULTA','Não encontrado');
         ifArquivo.Free;
+        {Informacao('DADOS DO E-MAIL...'+#13+
+                   'Diretorio: '+sDiretorioAtual+'\KPIPagamentos.ini'+#13+
+                   'Endereço: '+EMAIL.ENDERECO+#13+
+                   'Nome: '+EMAIL.NOME+#13+
+                   'Host: '+EMAIL.HOST+#13+
+                   'Porta: '+EMAIL.PORTA+#13+
+                   'Usuário: '+EMAIL.USUARIO+#13+
+                   'Senha: '+EMAIL.SENHA+#13+
+                   'Assunto: '+EMAIL.ASSUNTO+#13+
+                   'Destinatário: '+EMAIL.DESTINATARIO+#13+
+                   'Cópia Oculta: '+EMAIL.COPIAOCULTA,
+                   'Aviso...');}
      except
            Informacao('Erro: Não carregou arquivo de configuração.'+#13+
                       'Verifique!!!!'+#13+
@@ -697,7 +710,21 @@ begin
      acbrEMail.Body.Add(EMAIL.CORPO);
      acbrEMail.IsHTML := True;
      acbrEMail.SetTLS := True;
-     acbrEMail.Send;
+     //try
+        acbrEMail.Send;
+     {except
+           Log('DADOS DO E-MAIL...'+#13+
+               'Diretorio: '+sDiretorioAtual+'\KPIPagamentos.ini'+#13+
+               'Endereço: '+EMAIL.ENDERECO+#13+
+               'Nome: '+EMAIL.NOME+#13+
+               'Host: '+EMAIL.HOST+#13+
+               'Porta: '+EMAIL.PORTA+#13+
+               'Usuário: '+EMAIL.USUARIO+#13+
+               'Senha: '+EMAIL.SENHA+#13+
+               'Assunto: '+EMAIL.ASSUNTO+#13+
+               'Destinatário: '+EMAIL.DESTINATARIO+#13+
+               'Cópia Oculta: '+EMAIL.COPIAOCULTA);
+     end;}
 
      lblMensagem.Caption := 'E-mail enviado...';
      lblMensagem.Update;
@@ -1646,7 +1673,8 @@ end;
 
 procedure TfrmPrincipal.FormShow(Sender: TObject);
 begin
-     sDiretorioAtual := GetCurrentDir;
+     //sDiretorioAtual := GetCurrentDir;
+     sDiretorioAtual := ExtractFilePath(Application.ExeName);
 
      // Gera intervalo de datas...
      sDataAtual := DateToStr(Date);
