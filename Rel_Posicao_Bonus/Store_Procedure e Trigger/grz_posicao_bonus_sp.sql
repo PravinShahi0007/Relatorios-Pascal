@@ -94,7 +94,7 @@ begin
                                 and grz_mvto_bonus.cod_lote = bonus.cod_lote
                                 and bonus.tip_movimento = 2
                                 and bonus.dta_movimento between to_date(pDataInicial,'dd/mm/yyyy') and 
-                                                        to_date(pDataFinal,'dd/mm/yyyy'))
+                                                                to_date(pDataFinal,'dd/mm/yyyy'))
                     group by grz_mvto_bonus.cod_emp
                     order by grz_mvto_bonus.cod_emp;
              reg_bonus_utilizados cursor_bonus_utilizados%rowtype; -- definicao do registro de dados
