@@ -12,12 +12,15 @@ program pEnviaEmailsKPIPagamentos;
 uses
   Forms,
   Ufuncoes in 'Ufuncoes.pas',
-  uEnviaEmailKPIPagamentos in 'uEnviaEmailKPIPagamentos.pas' {frmPrincipal};
+  uEnviaEmailKPIPagamentos in 'uEnviaEmailKPIPagamentos.pas' {frmPrincipal},
+  Vcl.Themes,
+  Vcl.Styles;
 
 {$R *.res}
 
 begin
   Application.Initialize;
+  TStyleManager.TrySetStyle('Windows10');
   Application.CreateForm(TfrmPrincipal, frmPrincipal);
   Application.Run;
 end.

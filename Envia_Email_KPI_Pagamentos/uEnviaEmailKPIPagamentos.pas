@@ -424,6 +424,7 @@ type
     BitBtn1: TBitBtn;
     fspGRZ_Rel_Pgto_AppxLoja_SP: TFDStoredProc;
     qryGeralDados: TFDQuery;
+    procedure CarregaEstilos;
     procedure Envia_Email(Sender: TObject);
     procedure Monta_HTML(Sender: TObject);
     procedure Seleciona_Valores(Sender: TObject);
@@ -1643,6 +1644,23 @@ begin
            Informacao('Erro! Possível erro na montagem do E_MAIL!!!!','Aviso...');
      end;
  end;
+
+procedure TfrmPrincipal.CarregaEstilos;
+var
+   sStyles: String;
+   aEstilos: array of String;
+begin
+     {cbxAparencia.Items.BeginUpdate;
+     try
+        cbxAparencia.Items.Clear;
+        for sStyles in TStyleManager.StyleNames do
+            cbxAparencia.Items.Add(sStyles);
+        cbxAparencia.Sorted :=True;
+        cbxAparencia.ItemIndex := cbxAparencia.Items.IndexOf(dtmRelatorioVendas.USUARIO.APARECIA);
+     finally
+            cbxAparencia.Items.EndUpdate;
+     end;}
+end;
 
 procedure TfrmPrincipal.FormActivate(Sender: TObject);
 begin

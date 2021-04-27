@@ -4,12 +4,7 @@
     <Transaction>2021/03/11 15:59:59.000.350,C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\pEnviaEmailsCupons.dproj=C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\pEnviaEmailsKPIPagamentos.dproj</Transaction>
     <Transaction>2021/03/11 16:01:07.000.568,C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\uEnviaEmailCupons.pas=C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\uEnviaEmailKPIPagamentos.pas</Transaction>
     <Transaction>2021/03/11 16:01:07.000.568,C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\uEnviaEmailCupons.dfm=C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\uEnviaEmailKPIPagamentos.dfm</Transaction>
-    <Transaction>2021/03/11 16:38:16.000.208,=C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\Ufuncoes.pas</Transaction>
-    <Transaction>2021/03/12 09:42:38.000.390,=C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\Unit1.pas</Transaction>
-    <Transaction>2021/03/12 10:01:19.000.187,C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\uEnviaEmail.pas=C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\uEnviaEmailKPIPagamentos.pas</Transaction>
     <Transaction>2021/03/12 10:01:19.000.187,C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\uEnviaEmail.dfm=C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\uEnviaEmailKPIPagamentos.dfm</Transaction>
     <Transaction>2021/03/12 10:01:32.000.623,C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\uEnviaEmailKPIPagamentos.dfm=C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\Unit1.dfm</Transaction>
-    <Transaction>2021/03/12 10:01:32.000.623,C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\uEnviaEmailKPIPagamentos.pas=C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\Unit1.pas</Transaction>
-    <Transaction>2021/03/12 10:27:11.000.995,C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\uEnviaEmail.pas=</Transaction>
   </Transactions>
 </BorlandProject>
