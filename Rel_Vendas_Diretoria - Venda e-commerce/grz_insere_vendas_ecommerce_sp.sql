@@ -17,8 +17,8 @@ create or replace procedure grz_insere_vendas_ecommerce_sp(pdatainicial in varch
 is
 begin
      declare
-            --v_result       integer;
-            --v_cur          integer;
+            v_result       integer;
+            v_cur          integer;
             v_data_inicial varchar2(10);
             v_data_final   varchar2(10);
             type R_ECOMMERCE is record -- definicao do registro de dados para gravacao da VENDA DIARIA
@@ -66,10 +66,10 @@ begin
             reg_le_valores_ecommerce cursor_le_valores_ecommerce%rowtype; -- definicao do registro de dados
 
      begin
-          --v_cur := dbms_sql.open_cursor;
-          --dbms_sql.parse(v_cur,'alter session set nls_date_format= "dd/mm/rrrr"',dbms_sql.native);
-          --v_result := dbms_sql.execute(v_cur);
-          --dbms_sql.close_cursor(v_cur);     
+          v_cur := dbms_sql.open_cursor;
+          dbms_sql.parse(v_cur,'alter session set nls_date_format= "dd/mm/rrrr"',dbms_sql.native);
+          v_result := dbms_sql.execute(v_cur);
+          dbms_sql.close_cursor(v_cur);     
 
           v_data_inicial := pdatainicial;
           v_data_final := pdatafinal;
