@@ -28,10 +28,11 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
   end
   object FDConnection1: TFDConnection
     Params.Strings = (
-      'Database=192.168.200.110:1521/GRZPROD'
+      'Database=192.168.200.110:1522/GRZPROD'
       'User_Name=nl'
       'Password=nl'
       'DriverID=Ora')
+    Connected = True
     LoginPrompt = False
     Left = 42
     Top = 14
@@ -48,6 +49,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     Top = 15
   end
   object qryRelVenda: TFDQuery
+    Active = True
     Connection = FDConnection1
     SQL.Strings = (
       'SELECT * FROM grazz.VDA_VENDA_Ano a'
@@ -66,7 +68,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     Connection = FDConnection1
     SQL.Strings = (
       'select max(dta_movimento) dta_movimento'
-      '  from vda_venda_ano'
+      '  from grazz.vda_venda_ano'
       ' where dta_movimento <= trunc(sysdate)'
       '   and vlr_venda_diaria > 0')
     Left = 152
@@ -140,7 +142,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     XLSSettings.WorksheetName = 'Report'
     Left = 228
     Top = 10
-    Version = '20.0'
+    Version = '20.04'
     mmColumnWidth = 94765
     DataPipelineName = 'pplVda_Venda_Temp'
     object prbCab: TppHeaderBand
@@ -1864,6 +1866,40 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
       DisplayWidth = 10
       Position = 32
     end
+    object pplVda_Venda_TempppField34: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'IND_NIVEL'
+      FieldName = 'IND_NIVEL'
+      FieldLength = 0
+      DataType = dtDouble
+      DisplayWidth = 2
+      Position = 33
+    end
+    object pplVda_Venda_TempppField35: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'COD_CIDADE'
+      FieldName = 'COD_CIDADE'
+      FieldLength = 0
+      DataType = dtDouble
+      DisplayWidth = 6
+      Position = 34
+    end
+    object pplVda_Venda_TempppField36: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'COD_MACRO'
+      FieldName = 'COD_MACRO'
+      FieldLength = 0
+      DataType = dtDouble
+      DisplayWidth = 5
+      Position = 35
+    end
+    object pplVda_Venda_TempppField37: TppField
+      FieldAlias = 'DES_MACRO'
+      FieldName = 'DES_MACRO'
+      FieldLength = 50
+      DisplayWidth = 50
+      Position = 36
+    end
   end
   object ACBrMail1: TACBrMail
     Host = '127.0.0.1'
@@ -1878,6 +1914,11 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
   end
   object qryEmailRegional: TFDQuery
     Connection = FDConnection1
+    SQL.Strings = (
+      'select cod_regiao, email_regional '
+      'from grz_email_regional '
+      'where cod_regiao >= 8701 '
+      'and cod_regiao <= 8725  ')
     Left = 104
     Top = 191
   end

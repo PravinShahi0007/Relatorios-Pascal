@@ -135,22 +135,17 @@ var
     Size : Cardinal;
 begin
 
-
-
-
-
      sMes  := copy(DateToStr(Date-1),4,2);
      sAno  := copy(DateToStr(Date-1),7,4);
 
      qryEmailRegional.SQL.Text :=  '';
-    qryEmailRegional.Active := False;
+     qryEmailRegional.Active := False;
 
 
-     qryEmailRegional.SQL.Text := ' select cod_regiao '+
-                        ' , email_regional '+
-                        ' from grz_email_regional '+
-                        '  where cod_regiao >= 8701 '+
-                             ' and cod_regiao <= 8725  ';
+     qryEmailRegional.SQL.Text := ' select cod_regiao, email_regional '+
+                                  ' from grz_email_regional '+
+                                  ' where cod_regiao >= 8701 '+
+                                  ' and cod_regiao <= 8725  ';
 
      qryEmailRegional.Active := true;
 
@@ -158,7 +153,8 @@ begin
 
      while not qryEmailRegional.Eof do  // faz o laço de repetição enquanto tiver registros
      begin
-     sCaminhoArquivo := 'C:\Rel_Venda_Regiao_Email_Regionais\';
+     sCaminhoArquivo :='C:\Rel_Venda_Regiao_Email_Regionais\';
+
         //  sCodRegiao := '8716';
       sCodRegiao := qryEmailRegional.FieldByName('cod_regiao').value;
 
@@ -206,8 +202,8 @@ begin
          //sDiretorio := GetCurrentDir;
          sDiretorio :='C:\Rel_Venda_Regiao_Email_Regionais\';
          iArqIni := TIniFile.Create(sDiretorio+'\config.ini');
-     // sEmail :=  qryEmailRegional.FieldByName('email_regional').value;
-        sEmail:= '386552@grupograzziotin.com.br';
+     //  sEmail :=  qryEmailRegional.FieldByName('email_regional').value;
+         sEmail:= '386552@grupograzziotin.com.br';
          sAssunto := iArqIni.ReadString('EMAIL FROM','Assunto','');
          sEmailFrom := iArqIni.ReadString('EMAIL FROM','Endereco','');
          sUserName := iArqIni.ReadString('EMAIL FROM','UserName','');
@@ -255,11 +251,8 @@ end;
 
 procedure TfrmRel_Venda_dia_Email.FormCreate(Sender: TObject);
 begin
-   try
-
-     FDConnection1.Params.UserName := 'grazz';
-     FDConnection1.Params.Password := 'grazz';
-     FDConnection1.Connected := True;
+  try
+    FDConnection1.Connected := True;
    except
        on E:EDatabaseError do
             begin

@@ -15,11 +15,11 @@
     <Transaction>2018/05/09 16:31:47.000.217,=C:\Users\380256\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
     <Transaction>2018/08/17 15:57:09.000.688,=C:\Users\380256\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
     <Transaction>2018/11/20 14:35:24.000.181,=C:\Users\380256\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
-    <Transaction>2018/11/20 14:36:53.000.600,C:\Users\380256\Desktop\Rel_Venda_Dia_Email\uRel_Venda_Dia_Email.pas=C:\Users\380256\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
-    <Transaction>2018/11/20 14:36:53.000.600,C:\Users\380256\Desktop\Rel_Venda_Dia_Email\uRel_Venda_Dia_Email.dfm=C:\Users\380256\Documents\Embarcadero\Studio\Projects\Unit2.dfm</Transaction>
-    <Transaction>2018/11/20 14:37:08.000.232,C:\Users\380256\Desktop\Rel_Venda_Dia_Email\pRel_Venda_Dia_Email.dproj=C:\Users\380256\Documents\Embarcadero\Studio\Projects\Project2.dproj</Transaction>
+    <Transaction>2018/11/20 14:36:53.000.600,C:\Users\380256\Documents\Embarcadero\Studio\Projects\Unit2.pas=C:\Users\380256\Desktop\Rel_Venda_Dia_Email\uRel_Venda_Dia_Email.pas</Transaction>
+    <Transaction>2018/11/20 14:36:53.000.600,C:\Users\380256\Documents\Embarcadero\Studio\Projects\Unit2.dfm=C:\Users\380256\Desktop\Rel_Venda_Dia_Email\uRel_Venda_Dia_Email.dfm</Transaction>
+    <Transaction>2018/11/20 14:37:08.000.232,C:\Users\380256\Documents\Embarcadero\Studio\Projects\Project2.dproj=C:\Users\380256\Desktop\Rel_Venda_Dia_Email\pRel_Venda_Dia_Email.dproj</Transaction>
     <Transaction>2018/11/20 15:05:07.000.255,=C:\Users\380256\Desktop\Rel_Venda_Dia_Email\uFunc.pas</Transaction>
     <Transaction>2018/11/20 15:05:07.000.277,=C:\Users\380256\Desktop\Rel_Venda_Dia_Email\ufuncoes.pas</Transaction>
-    <Transaction>2020/01/17 09:38:24.000.674,C:\Users\386552\Desktop\fontes_jaisson\pRel_Venda_Dia_Email.dproj=C:\Users\386552\Desktop\fontes_jaisson\pRel_Venda_Dia_Email_RegioesNovas.dproj</Transaction>
+    <Transaction>2020/01/17 09:38:24.000.674,C:\Users\386552\Desktop\fontes_jaisson\pRel_Venda_Dia_Email_RegioesNovas.dproj=C:\Users\386552\Desktop\fontes_jaisson\pRel_Venda_Dia_Email.dproj</Transaction>
   </Transactions>
 </BorlandProject>
