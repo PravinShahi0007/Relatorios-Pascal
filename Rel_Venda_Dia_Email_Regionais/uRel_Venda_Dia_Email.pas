@@ -202,8 +202,8 @@ begin
          //sDiretorio := GetCurrentDir;
          sDiretorio :='C:\Rel_Venda_Regiao_Email_Regionais\';
          iArqIni := TIniFile.Create(sDiretorio+'\config.ini');
-     //  sEmail :=  qryEmailRegional.FieldByName('email_regional').value;
-         sEmail:= '386552@grupograzziotin.com.br';
+         sEmail :=  qryEmailRegional.FieldByName('email_regional').value;
+         //sEmail:= '388164@grupograzziotin.com.br';
          sAssunto := iArqIni.ReadString('EMAIL FROM','Assunto','');
          sEmailFrom := iArqIni.ReadString('EMAIL FROM','Endereco','');
          sUserName := iArqIni.ReadString('EMAIL FROM','UserName','');
@@ -234,7 +234,7 @@ begin
          ACBrMail1.Username := sUserName;
          ACBrMail1.Password := sPassword;
          ACBrMail1.Port := '587';
-        ACBrMail1.AddAddress(sEmail,'');
+         ACBrMail1.AddAddress(sEmail,'');
          ACBrMail1.AddBCC(sCopia_oculta);
          ACBrMail1.Subject := sAssunto;
          ACBrMail1.IsHTML := True;
