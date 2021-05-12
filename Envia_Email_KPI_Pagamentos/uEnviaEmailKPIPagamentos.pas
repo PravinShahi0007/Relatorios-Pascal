@@ -19,7 +19,7 @@ uses
   FireDAC.Phys.OracleDef, FireDAC.VCLUI.Wait, FireDAC.Stan.Param, FireDAC.DatS,
   FireDAC.DApt.Intf, FireDAC.DApt, Vcl.Menus, Data.DB, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, ACBrBase, ACBrMail, Vcl.Buttons, IniFiles,
-  FireDAC.Comp.UI;
+  FireDAC.Comp.UI, Vcl.Themes, Vcl.Styles;
 
 type
     RGRZW_REL_PGTOS_APPXLOJA = record
@@ -424,7 +424,7 @@ type
     BitBtn1: TBitBtn;
     fspGRZ_Rel_Pgto_AppxLoja_SP: TFDStoredProc;
     qryGeralDados: TFDQuery;
-    procedure CarregaEstilos;
+    procedure PreencheEstilos(Sender: TObject);
     procedure Envia_Email(Sender: TObject);
     procedure Monta_HTML(Sender: TObject);
     procedure Seleciona_Valores(Sender: TObject);
@@ -442,6 +442,9 @@ type
         EMAIL: REMAIL;
         sHTMLEMail, sHTMLLinha: WideString;
         sDataAtual, sDataInicio, sDataFinal, sDataInicioAno: String;
+        aEstilos: array of String;
+        mmoEstilos: TMemo;
+        iEstilos: Integer;
   end;
 
 const
@@ -543,6 +546,33 @@ implementation
 {$R *.dfm}
 
 uses Ufuncoes;
+
+procedure TfrmPrincipal.PreencheEstilos(Sender: TObject);
+var
+   sEstilos: String;
+   iInd: Integer;
+begin
+     mmoEstilos := TMemo.Create(Self);
+     mmoEstilos.Parent := self;
+     mmoEstilos.Name := 'mmoEstilos'; // Caso vc queira nomeá-lo
+     mmoEstilos.Visible := False;
+
+     mmoEstilos.Lines.Clear;
+
+     for sEstilos in TStyleManager.StyleNames do
+         mmoEstilos.Lines.Add(sEstilos);
+
+     iEstilos := mmoEstilos.Lines.Count;
+     SetLength(aEstilos, iEstilos);
+
+     for iInd := 0 to iEstilos do
+         aEstilos[iInd] := mmoEstilos.Lines[iInd];
+
+     Randomize;
+     iEstilos := Random(40);
+
+     TStyleManager.TrySetStyle(aEstilos[iEstilos]);
+end;
 
 procedure TfrmPrincipal.Log(Texto: String);
 var
@@ -1645,23 +1675,6 @@ begin
      end;
  end;
 
-procedure TfrmPrincipal.CarregaEstilos;
-var
-   sStyles: String;
-   aEstilos: array of String;
-begin
-     {cbxAparencia.Items.BeginUpdate;
-     try
-        cbxAparencia.Items.Clear;
-        for sStyles in TStyleManager.StyleNames do
-            cbxAparencia.Items.Add(sStyles);
-        cbxAparencia.Sorted :=True;
-        cbxAparencia.ItemIndex := cbxAparencia.Items.IndexOf(dtmRelatorioVendas.USUARIO.APARECIA);
-     finally
-            cbxAparencia.Items.EndUpdate;
-     end;}
-end;
-
 procedure TfrmPrincipal.FormActivate(Sender: TObject);
 begin
      Le_Configuracao_Email(Sender);
@@ -1676,6 +1689,7 @@ end;
 
 procedure TfrmPrincipal.FormCreate(Sender: TObject);
 begin
+     PreencheEstilos(Sender);
      try
         fdcOracle.Connected := True;
      except
@@ -1691,16 +1705,10 @@ end;
 
 procedure TfrmPrincipal.FormShow(Sender: TObject);
 begin
-     //sDiretorioAtual := GetCurrentDir;
      sDiretorioAtual := ExtractFilePath(Application.ExeName);
 
      // Gera intervalo de datas...
      sDataAtual := DateToStr(Date);
-     //sDataInicio := '01/01/2020';
-     //sDataFinal := '31/12/2020';
-
-     //sDataInicio := '01/01/'+Copy(sDataAtual,7,4);
-     //sDataFinal := '31/12/'+Copy(sDataAtual,7,4);
 
      // Gera as datas do intervalo. Gera o primeiro dia do mês corrente até
      // o dia atual (dia de execução da rotina)...
