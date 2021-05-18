@@ -11,7 +11,6 @@ object dtmRelatorioVendas: TdtmRelatorioVendas
       'MetaDefSchema=system'
       'DriverID=Ora')
     FetchOptions.AssignedValues = [evUnidirectional]
-    Connected = True
     LoginPrompt = False
     Transaction = trsRelatorioVendas
     Left = 40

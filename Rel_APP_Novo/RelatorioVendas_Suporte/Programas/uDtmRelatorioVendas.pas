@@ -70,6 +70,8 @@ uses uFuncoes, uConfiguracaoINI;
 
 procedure TdtmRelatorioVendas.DataModuleCreate(Sender: TObject);
 begin
+     fdcRelatorioVendas.Connected := True;
+
      // Configura CAMINHOS...
      CAMINHOS.CAMINHOEXE := ExtractFilePath(Application.ExeName);
      CAMINHOS.CAMINHOINI := CAMINHOS.CAMINHOEXE+'RelatorioVendas.INI';
