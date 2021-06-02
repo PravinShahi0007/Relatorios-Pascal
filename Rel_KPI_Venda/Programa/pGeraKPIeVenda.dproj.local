@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2019/07/23 10:16:05.000.533,=C:\Users\386552\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2019/08/30 15:45:24.000.388,=C:\Users\386552\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2019/12/13 10:06:01.000.378,=C:\Users\386552\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2019/12/13 10:06:42.000.476,=C:\Users\386552\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2019/12/13 11:13:25.000.820,=C:\Users\386552\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2020/03/24 16:13:30.000.709,=C:\Users\386552\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2020/04/27 08:57:24.000.904,=C:\Users\386552\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2020/09/23 09:50:14.000.121,=C:\Users\386552\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2020/10/02 09:45:59.000.695,=C:\Users\386552\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2020/10/02 09:54:06.000.771,C:\Users\386552\Documents\Embarcadero\Studio\Projects\Unit1.dfm=G:\SisLog\Rel.Kpi e VEnda\GeraVenda\uGeraKPIeVenda.dfm</Transaction>
+    <Transaction>2020/10/02 09:54:06.000.771,C:\Users\386552\Documents\Embarcadero\Studio\Projects\Unit1.pas=G:\SisLog\Rel.Kpi e VEnda\GeraVenda\uGeraKPIeVenda.pas</Transaction>
+    <Transaction>2020/10/02 09:54:16.000.330,C:\Users\386552\Documents\Embarcadero\Studio\Projects\Project1.dproj=G:\SisLog\Rel.Kpi e VEnda\GeraVenda\pGeraKPIeVenda.dproj</Transaction>
+    <Transaction>2021/05/04 14:50:36.000.734,=C:\Bruno\Rel.Kpi e VEnda\GeraVenda\Encryp.pas</Transaction>
+    <Transaction>2021/05/04 14:50:42.000.480,=C:\Bruno\Rel.Kpi e VEnda\GeraVenda\uCarregaSenha.pas</Transaction>
+    <Transaction>2021/05/24 17:33:26.000.011,=C:\GitHub\Relatorios\trunk\Rel_KPI_Venda\Programa\UFuncoes.pas</Transaction>
+  </Transactions>
+</BorlandProject>

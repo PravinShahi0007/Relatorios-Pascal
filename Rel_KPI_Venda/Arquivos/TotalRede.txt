@@ -1,0 +1,53 @@
+UNIDADE = cod_rede = varchar(4)
+REDE = des_rede = varchar(40)
+CIDADE = = varchar(50)
+UF = = varchar(2)
+| Campo                       | Campo SQL              | Cabeçalho    | Tamanho |
+| ATUAL_VENDA                 | vlr_vd_mes             | Venda        | N(12,0) |
+| ATUAL_NEGOC                 | qtd_negocio_mes        | Negoc        | N(12,0) |
+| ATUAL_PERC_TICKET_MEDIO     | sTicket_medio          | Ticket Médio | N(5,2)  |
+| ATUAL_WHATS                 | vlr_vd_whats_mes       | Whats        | N(12,0) |
+| ATUAL_PERC_WHATS            | sPerc_whats            | %            | N(5,2)  |
+| ATUAL_DEMONSTRACAO          | vlr_demost_mes         | Demonstração | N(12,0) |
+| ATUAL_PERC_DEMONSTRACAO     | sPerc_demost           | %            | N(5,2)  |
+| ATUAL_VENDA_APRAZO          | vlr_vd_prazo_mes       | Vda Prazo    | N(12,0) |
+| ATUAL_PERC_VENDA_PRAZO      | sPerc_vd_prazo         | %            | N(5,2)  |
+| ATUAL_ACRESCIMO             | vlr_acresc_mes         | Acresc       | N(12,0) |
+| ATUAL_PERC_ACRESCIMO        | sPerc_acresc           | %            | N(5,2)  |
+| ATUAL_SEGURO                | vlr_seguro_mes         | Seguro       | N(12,0) |
+| ATUAL_PERC_SEGURO           | sPerc_seguro           | %            | N(5,2)  |
+| ATUAL_QTDCPP                | qtd_cpp_mes            | Qtd CPP      | N(12,0) |
+| ATUAL_CPP                   | vlr_cpp_mes            | CPP          | N(12,0) |
+*-----------------------------*------------------------*--------------*---------*
+| ANTERIOR_VENDA              | vlr_vd_mes_ant         | Venda        | N(12,0) |
+| ANTERIOR_NEGOC              | qtd_negocio_mes_ant    | Negoc        | N(12,0) |
+| ANTERIOR_PERC_TICKET_MEDIO  | sTicket_medio_mes_ant  | Ticket Médio | N(5,2)  |
+| ANTERIOR_WHATS              | vlr_vd_whats_mes_ant   | Whats        | N(12,0) |
+| ANTERIOR_PERC_WHATS         | sPerc_whats_mes_ant    | %            | N(5,2)  |
+| ANTERIOR_DEMONSTRACAO       | vlr_demost_mes_ant     | Demonstração | N(12,0) |
+| ANTERIOR_PERC_DEMONSTRACAO  | sPerc_demost_mes_ant   | %            | N(5,2)  |
+| ANTERIOR_VENDA_APRAZO       | vlr_vd_prazo_mes_ant   | Vda Prazo    | N(12,0) |
+| ANTERIOR_PERC_VENDA_PRAZO   | sPerc_vd_prazo_mes_ant | %            | N(5,2)  |
+| ANTERIOR_ACRESCIMO          | vlr_acresc_mes_ant     | Acresc       | N(12,0) |
+| ANTERIOR_PERC_ACRESCIMO     | sPerc_acresc_mes_ant   | %            | N(5,2)  |
+| ANTERIOR_SEGURO             | vlr_seguro_mes_ant     | Seguro       | N(12,0) |
+| ANTERIOR_PERC_SEGURO        | sPerc_seguro_mes_ant   | %            | N(5,2)  |
+| ANTERIOR_QTDCPP             | qtd_cpp_mes_ant        | Qtd CPP      | N(12,0) |
+| ANTERIOR_CPP                | vlr_cpp_mes_ant        | CPP          | N(12,0) |
+*-----------------------------*------------------------*--------------*---------*
+| POSTERIOR_VENDA             | vlr_vd_mes_penul       | Venda        | N(12,0) |
+| POSTERIOR_NEGOC             | qtd_negocio_mes_penul  | Negoc        | N(12,0) |
+| POSTERIOR_PERC_TICKET_MEDIO | sTicket_medio_penult   | Ticket Médio | N(5,2)  |
+| POSTERIOR_WHATS             | vlr_vd_whats_mes_penul | Whats        | N(12,0) |
+| POSTERIOR_PERC_WHATS        | sPerc_whats_penult     | %            | N(5,2)  |
+| POSTERIOR_DEMONSTRACAO      | vlr_demost_mes_penul   | Demonstração | N(12,0) |
+| POSTERIOR_PERC_DEMONSTRACAO | sPerc_demost_penult    | %            | N(5,2)  |
+| POSTERIOR_VENDA_APRAZO      | vlr_vd_prazo_mes_penul | Vda Prazo    | N(12,0) |
+| POSTERIOR_PERC_VENDA_PRAZO  | sPerc_vd_prazo_penult  | %            | N(5,2)  |
+| POSTERIOR_ACRESCIMO         | vlr_acresc_mes_penul   | Acresc       | N(12,0) |
+| POSTERIOR_PERC_ACRESCIMO    | sPerc_Acresc_Penult    | %            | N(5,2)  |
+| POSTERIOR_SEGURO            | vlr_seguro_mes_penul   | Seguro       | N(12,0) |
+| POSTERIOR_PERC_SEGURO       | sPerc_Seguro_Penult    | %            | N(5,2)  |
+| POSTERIOR_QTDCPP            | qtd_cpp_mes_penul      | Qtd CPP      | N(12,0) |
+| POSTERIOR_CPP               | vlr_cpp_mes_penul      | CPP          | N(12,0) |
+*-----------------------------*------------------------*--------------*---------*
