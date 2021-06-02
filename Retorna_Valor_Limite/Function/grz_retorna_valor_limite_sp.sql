@@ -148,7 +148,6 @@ begin
           -- Nao entrou nas REGRAS...
           if (v_num_cpf_cnpj = 0) or (v_num_cpf_cnpj is NULL) then
              return v_creditscoring;
-
           else -- entrou nas REGRAS...
               return pi_limite;
           end if;
