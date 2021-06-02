@@ -44,9 +44,10 @@ is
 begin
      declare
             /* Parametros de entrada */
-            v_result       integer;
-            v_cur          integer;
-            v_num_cpf_cnpj number(18,0);
+            v_result        integer;
+            v_cur           integer;
+            v_num_cpf_cnpj  number(18,0);
+            v_creditscoring number(18,0); -- Credit Scoring arredondado por 10
 
             type R_CONF_REGRA_LIMITE is record -- definicao do registro de dados para as REGRAS
                  (cod_regra           number(4,0),
@@ -83,6 +84,15 @@ begin
           from grz_config_regra_limite
           where (cod_regra = 1);
 
+          -- Arredondamento do Credit Scoring
+          v_creditscoring := (10 * (Round(Round(pi_creditscoring) / 10)));
+
+          if (v_creditscoring < CONF_REGRA_LIMITE.vlr_limite_inferior) then
+             v_creditscoring := CONF_REGRA_LIMITE.vlr_limite_inferior; -- valor limite inferior
+          elsif (v_creditscoring > CONF_REGRA_LIMITE.vlr_limite_superior) then
+                v_creditscoring := CONF_REGRA_LIMITE.vlr_limite_superior; -- valor limite superior
+          end if;
+
           if (pi_tipo_pessoa = 1) then -- pessoa fisica
           begin
                select psfis.num_cpf
@@ -106,11 +116,7 @@ begin
                and to_char(psper.cod_classificacao_atu) in (CONF_REGRA_LIMITE.ind_perfil); -- < 99 -- perfil
                exception -- nao entrou nas regras...
                         when no_data_found then -- Nao entrou na REGRAS..
-                             if (pi_limite < CONF_REGRA_LIMITE.vlr_limite_inferior) then
-                                return CONF_REGRA_LIMITE.vlr_limite_inferior; -- valor limite inferior
-                             else
-                                 return pi_limite;
-                             end if;
+                             v_num_cpf_cnpj := 0;
           end;
           else -- pessoa juridica
           begin
@@ -135,27 +141,16 @@ begin
                and psper.cod_classificacao_atu >= CONF_REGRA_LIMITE.ind_perfil_juridica;
                exception -- nao entrou nas regras...
                         when no_data_found then -- Nao entrou na REGRAS..
-                             if (pi_limite < CONF_REGRA_LIMITE.vlr_limite_inferior) then
-                                return CONF_REGRA_LIMITE.vlr_limite_inferior; -- valor limite inferior
-                             else
-                                 return pi_limite;
-                             end if;
+                             v_num_cpf_cnpj := 0;
           end;
           end if; -- end if do (pi_tipo_pessoa = 1)
 
           -- Nao entrou nas REGRAS...
           if (v_num_cpf_cnpj = 0) or (v_num_cpf_cnpj is NULL) then
-             if (pi_limite < CONF_REGRA_LIMITE.vlr_limite_inferior) then
-                return CONF_REGRA_LIMITE.vlr_limite_inferior; -- valor limite inferior
-             else
-                 return pi_limite;
-             end if;
+             return v_creditscoring;
+
           else -- entrou nas REGRAS...
-              if (pi_creditscoring > CONF_REGRA_LIMITE.vlr_limite_superior) then
-                 return CONF_REGRA_LIMITE.vlr_limite_superior; -- valor limite superior
-              else
-                  return pi_creditscoring;
-              end if;
+              return pi_limite;
           end if;
      end; -- inicio da function
 end; -- retorna_valor_limite_func
