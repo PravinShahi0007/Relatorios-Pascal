@@ -132,7 +132,7 @@ CREATE OR REPLACE PROCEDURE GRZ_CADCLI_DIARIO_NOITE_SP
     wIND_INC_CONTROLE      VARCHAR2(100);
 
     -- rotina diaria que roda os clientes novos seta o ind_processado para 4 para saber que o cliente j¿ existia, ent¿o precisamos buscar este cliente tbm
-    /*CURSOR c_clientes_diario IS
+    CURSOR c_clientes_diario IS
              select *
                    from grz_lojas_clientes_diario a
                   where a.num_rede       >= 00
@@ -146,24 +146,6 @@ CREATE OR REPLACE PROCEDURE GRZ_CADCLI_DIARIO_NOITE_SP
                     --and a.cod_cliente in (96995890000)
                     and (a.ind_processado is null 
                     or a.ind_processado = 4)
-                    and not exists (select 1 from grz_lojas_clientes_controle b
-                                     where a.num_rede    = b.num_rede
-                                       and a.num_loja    = b.num_loja
-                                       and a.cod_cliente = b.cod_cliente
-                                       and a.dta_mvto    = b.dta_mvto)
-                    --and rownum <= 500
-                  order by a.num_rede, a.num_loja;*/
-    CURSOR c_clientes_diario IS
-             select *
-                   from grz_lojas_clientes_diario a
-                  where a.num_rede       >= 30
-                    and a.num_rede       <= 30
-                    and a.num_rede       <> 70
-                    and a.num_loja       >= 159
-                    and a.num_loja       <= 159
-                    and a.dta_mvto        = to_date('01/06/2021')
-                    and a.cod_cliente in (71792686072)
-                    and a.ind_processado is null
                     and not exists (select 1 from grz_lojas_clientes_controle b
                                      where a.num_rede    = b.num_rede
                                        and a.num_loja    = b.num_loja
@@ -1557,16 +1539,16 @@ CREATE OR REPLACE PROCEDURE GRZ_CADCLI_DIARIO_NOITE_SP
                       --###########################
 
                       -- Antonio - Funcao para "Alterar" os Limites de Creditos (31/05/2021)
-                      if (r_clientes_diario.num_loja = 159) or (r_clientes_diario.num_loja = 53) then
+                      --if (r_clientes_diario.num_loja = 159) or (r_clientes_diario.num_loja = 53) then
                       begin
-                           r_clientes_diario.vlr_limite := 
+                           r_clientes_diario.vlr_limite :=
                                  sislogweb.grz_retorna_valor_limite_sp(r_clientes_diario.tip_pessoa,
                                                                        wCod_completo,
                                                                        r_clientes_diario.num_cpf_cnpj,
                                                                        r_clientes_diario.vlr_limite,
                                                                        r_clientes_diario.vlr_creditscoring);
                       end;
-                      end if;
+                      --end if;
 
                       BEGIN
                           INSERT INTO AI_LC_LIMITES (COD_PESSOA, DTA_TRANSACAO, VLR_LIM_MENSAL, VLR_LIM_GERAL,
@@ -1662,7 +1644,7 @@ CREATE OR REPLACE PROCEDURE GRZ_CADCLI_DIARIO_NOITE_SP
 	     OPEN c_geracao_juridicas;
          FETCH c_geracao_juridicas INTO r_geracao_juridicas;
          WHILE c_geracao_juridicas%FOUND LOOP
-         BEGIN		   
+         BEGIN
 	         wPI_WHERE := '';
              wPI_OPCAO := '50#'||r_geracao_juridicas.cod_pessoa||'#'||r_geracao_juridicas.cod_pessoa||'#'||to_char(wDta_mvto,'dd/mm/yyyy')||'#'||to_char(wDta_mvto,'dd/mm/yyyy')||'#'||'0#0#1#0#0';
              wPO_ERRO  := '';
