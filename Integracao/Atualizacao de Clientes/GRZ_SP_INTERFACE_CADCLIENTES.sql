@@ -2417,16 +2417,16 @@ is
             --###########################
             
             -- Antonio - Funcao para "Alterar" os Limites de Creditos (31/05/2021)
-            if (r_clientes_sislog.cod_unidade = 159) or (r_clientes_sislog.cod_unidade = 53) then
+            --if (r_clientes_sislog.cod_unidade = 159) or (r_clientes_sislog.cod_unidade = 53) then
             begin
-                 r_clientes_sislog.vlr_limite := 
+                 r_clientes_sislog.vlr_limite :=
                       sislogweb.grz_retorna_valor_limite_sp(r_clientes_sislog.tip_pessoa,
                                                             wCod_pessoa,
                                                             r_clientes_sislog.num_cpf_cnpj,
                                                             r_clientes_sislog.vlr_limite,
                                                             r_clientes_sislog.vlr_creditscoring);
             end;
-            end if;
+            --end if;
 
             wTip_lin_registro    := '115';
             wVlr_lim_mensal      := replace(to_char(r_clientes_sislog.vlr_limite),',','.');
