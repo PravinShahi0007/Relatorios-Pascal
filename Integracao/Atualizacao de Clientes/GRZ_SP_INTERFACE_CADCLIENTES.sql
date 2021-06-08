@@ -430,7 +430,7 @@ is
                     and a.cod_unidade    <= pi_uni_fim
                     and a.dta_importacao >= to_date(pi_data_ini,'dd/mm/yyyy hh24:mi:ss')
                     and a.dta_importacao <= to_date(pi_data_fim,'dd/mm/yyyy hh24:mi:ss')
-                    and a.num_loja       not in (25)
+                    --and a.num_loja       not in (25)
                     --and a.cod_cliente     = 0
                     -- and a.cod_cliente in (1801028001)
                     and not exists (select 1 from grz_lojas_clientes_controle b
