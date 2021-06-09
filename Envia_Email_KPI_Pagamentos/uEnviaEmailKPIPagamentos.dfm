@@ -4,7 +4,7 @@ object frmPrincipal: TfrmPrincipal
   BorderIcons = [biSystemMenu]
   Caption = 'Envia E-Mail KPI Pagamentos....'
   ClientHeight = 168
-  ClientWidth = 296
+  ClientWidth = 279
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -21,15 +21,16 @@ object frmPrincipal: TfrmPrincipal
   object pnlFundo: TPanel
     Left = 0
     Top = 0
-    Width = 296
+    Width = 279
     Height = 168
     Align = alClient
     BevelInner = bvLowered
     TabOrder = 0
+    ExplicitWidth = 296
     object lblMensagem: TLabel
       Left = 2
       Top = 82
-      Width = 292
+      Width = 275
       Height = 13
       Align = alTop
       Caption = 'lblMensagem'
@@ -44,7 +45,7 @@ object frmPrincipal: TfrmPrincipal
     object ggeKPIPagamentos: TGauge
       Left = 2
       Top = 95
-      Width = 292
+      Width = 275
       Height = 34
       Align = alTop
       ForeColor = clBlue
@@ -62,7 +63,7 @@ object frmPrincipal: TfrmPrincipal
     object pnlCabecalho: TPanel
       Left = 2
       Top = 2
-      Width = 292
+      Width = 275
       Height = 31
       Align = alTop
       BevelInner = bvLowered
@@ -74,15 +75,17 @@ object frmPrincipal: TfrmPrincipal
       Font.Style = [fsBold]
       ParentFont = False
       TabOrder = 0
+      ExplicitWidth = 292
     end
     object grpIntervalo: TGroupBox
       Left = 2
       Top = 33
-      Width = 292
+      Width = 275
       Height = 49
       Align = alTop
       Caption = '[ Intervalo ]'
       TabOrder = 1
+      ExplicitWidth = 292
       object lblInicio: TLabel
         Left = 17
         Top = 22
@@ -121,13 +124,14 @@ object frmPrincipal: TfrmPrincipal
     object pnlRodape: TPanel
       Left = 2
       Top = 129
-      Width = 292
+      Width = 275
       Height = 37
       Align = alClient
       BevelInner = bvLowered
       TabOrder = 2
+      ExplicitWidth = 292
       object BitBtn1: TBitBtn
-        Left = 215
+        Left = 198
         Top = 2
         Width = 75
         Height = 33
@@ -188,6 +192,7 @@ object frmPrincipal: TfrmPrincipal
         ParentFont = False
         TabOrder = 0
         OnClick = mniSairClick
+        ExplicitLeft = 215
       end
     end
   end
@@ -224,8 +229,8 @@ object frmPrincipal: TfrmPrincipal
   object dtsRelatorioVendas: TDataSource
     AutoEdit = False
     DataSet = qryRelatorioVendas
-    Left = 169
-    Top = 99
+    Left = 177
+    Top = 91
   end
   object qryRelatorioVendas: TFDQuery
     Connection = fdcOracle
@@ -275,8 +280,8 @@ object frmPrincipal: TfrmPrincipal
         'e(:final,'#39'dd/mm/yyyy'#39')) '
       'order by dta_mes'
       '')
-    Left = 129
-    Top = 99
+    Left = 121
+    Top = 83
     ParamData = <
       item
         Name = 'INICIAL'
@@ -344,7 +349,7 @@ object frmPrincipal: TfrmPrincipal
         'e(:final,'#39'dd/mm/yyyy'#39'))'
       ''
       '')
-    Left = 241
+    Left = 233
     Top = 99
     ParamData = <
       item
