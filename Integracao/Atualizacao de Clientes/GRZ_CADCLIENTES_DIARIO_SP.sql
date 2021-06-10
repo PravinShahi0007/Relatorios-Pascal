@@ -1432,7 +1432,7 @@ DECLARE
 							elsif iCount = 25 then
 			                     wVlr_coluna := to_char(r_clientes_diario.IND_POLITICAMENTE_EXPOSTA);
                             elsif iCount = 26 then
-			                     wVlr_coluna := to_char(r_clientes_diario.vlr_liq_patrimonio,'FM9999990D00');
+			                     wVlr_coluna := to_char(r_clientes_diario.vlr_liq_patrimonio,'FM9999999999990D00');
 			                end if;
                              wSeq_coluna := to_char(iCount);
 
