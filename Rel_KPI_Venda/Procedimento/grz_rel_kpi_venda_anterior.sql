@@ -8,107 +8,109 @@ begin
             pi_empresa         number;
             pi_dta_ini         date;
             pi_dta_fim         date;
-            pi_UnidadeIni      number;
-            pi_UnidadeFim      number;
-            wDia               number(2);
-            wMes               number(2);
-            wAno               number(4);
-            wDes_Quebra        varchar2(50);
-            wDes_Grupo         VARCHAR2(50);
-            wCod_unidade       NUMBER;
-            wCod_grupo_macro   NUMBER;
-            wDes_grupo_macro   VARCHAR2(50);
-            wDes_Rede          VARCHAR2(50);
-            wDes_Cidade        VARCHAR2(50);
-            wDes_UF            VARCHAR2(50);
-            wControle          NUMBER;
-            wControleUnidade   NUMBER;
-            wTicket_medio      NUMBER(18,2);
-            wPerc_whats        NUMBER(18,2);
-            wPerc_demost       NUMBER(18,2);
-            wPerc_vd_prazo     NUMBER(18,2);
-            wPerc_acresc       NUMBER(18,2);
-            wPerc_seguro       NUMBER(18,2);
-            wQtdCPP            NUMBER;
-            wVlrCPP            NUMBER(18,2);
-            wGztStoreRede      Number;
-            wGztStoreUnidade   Number;
-            wGztStoreUnidadeDe Number;
-            wCodUnidade        Number;
-            wCodRede           Number;
-            wCod_Regiao        Number;
-            wCod_RegiaoNova    Number;
-            wCod_UnidadeNova   Number;
+            pi_unidadeini      number;
+            pi_unidadefim      number;
+            wdia               number(2);
+            wmes               number(2);
+            wano               number(4);
+            wdes_quebra        varchar2(50);
+            wdes_grupo         varchar2(50);
+            wcod_unidade       number;
+            wcod_grupo_macro   number;
+            wdes_grupo_macro   varchar2(50);
+            wdes_rede          varchar2(50);
+            wdes_cidade        varchar2(50);
+            wdes_uf            varchar2(50);
+            wcontrole          number;
+            wcontroleunidade   number;
+            wticket_medio      number(18,2);
+            wperc_whats        number(18,2);
+            wperc_demost       number(18,2);
+            wperc_vd_prazo     number(18,2);
+            wperc_acresc       number(18,2);
+            wperc_seguro       number(18,2);
+            wqtdcpp            number;
+            wvlrcpp            number(18,2);
+            wgztstorerede      number;
+            wgztstoreunidade   number;
+            wgztstoreunidadede number;
+            wcodunidade        number;
+            wcodrede           number;
+            wcod_regiao        number;
+            wcod_regiaonova    number;
+            wcod_unidadenova   number;
 
-
-
-
-
-
-	    CURSOR c_venda IS
-	select a.dta_emissao dta_movimento
-           ,gu.cod_grupo
-		       ,gu.cod_quebra cod_regiao
-			   ,a.cod_unidade cod_unidade
-			   ,decode(g.cod_nivel2,810,'10',830,'30',840,'40',850,'50','870','70')  cod_rede
-			   ,decode(g.cod_nivel2,810,'GRZ',830,'PRM',840,'FRG',850,'TOT','GZT')     des_rede
-			   ,g1.des_cidade des_cidade
-			   ,g1.cod_uf des_uf
-			   ,COUNT(distinct(decode(notas.cod_oper,302,a.num_seq,300,a.num_seq))) qtd_negocio
-			   ,SUM(decode(notas.cod_oper,6100,0,nvl(notas.vlr_operacao,0))) vlr_venda
-               ,SUM(nvl(venda_whats.vlr_vda_whats,0)) vlr_venda_whats
-			   ,SUM(nvl(venda_demo.vlr_vda_demo,0) )vlr_demost
-			   ,SUM(decode(notas.cod_oper,302,(nvl(notas.vlr_operacao,0) - nvl(notas.vlr_entrada,0)),0)) vlr_venda_prazo
-			   ,SUM(decode(notas.cod_oper,302,nvl(notas.vlr_acrescimo,0),0)) vlr_acrescimo
-			   ,SUM(decode(notas.cod_oper,6100,nvl(notas.vlr_operacao,0),0)) vlr_seguro
-			  from ns_notas a
-			  ,(select ns.num_seq,ns.cod_maquina,decode(nso.cod_oper,300,300,4300,300,6100,6100,302) cod_oper
-					,sum(nvl(nso.vlr_acrescimo,0) + nvl(nso.vlr_acrescimo_cob,0)) vlr_acrescimo
-					,sum(nvl(nso.vlr_operacao,0)) vlr_operacao
-					,sum(nvl(nso.vlr_entrada,0)) vlr_entrada
-			   from ns_notas ns
-				   ,ns_notas_operacoes nso
-			    where nso.num_seq = ns.num_seq
-				  and nso.cod_maquina = ns.cod_maquina
-			      and nso.cod_oper in (300,302,305,4300,4302,4305,6100)
-			      and ns.cod_emp = 1
-				  and ns.dta_emissao >= pi_dta_ini
-				  and ns.dta_emissao <= pi_dta_fim
-				  and ns.tip_nota in (2,3)
-				  and ns.ind_status = 1
-			     group by ns.num_seq,ns.cod_maquina,decode(nso.cod_oper,300,300,4300,300,6100,6100,302) ) notas
-			,(select nsw.num_seq,nsw.cod_maquina
-					,sum(nvl(nsow.vlr_operacao,0)) vlr_vda_whats
-			    from ns_notas nsw
-					,ns_notas_operacoes nsow
-			,(select sislog.cod_unidade,sislog.num_cupom,sislog.num_equipamento,sislog.dta_lancamento
-			    ,sum(sislog.vlr_total) vlr_total
-			      from grz_lojas_cupom_itens sislog
-				   where sislog.dta_lancamento >= pi_dta_ini
-				     and sislog.dta_lancamento <= pi_dta_fim
-					 and nvl(sislog.ind_venda_whatsapp,0) = 1
-					 and sislog.ind_cancelado = 0
-					 and sislog.ind_cancelado_item = 0
-					group by sislog.cod_unidade,sislog.num_cupom,sislog.num_equipamento,sislog.dta_lancamento ) vda_whats
-			  where vda_whats.cod_unidade = nsw.cod_unidade
-				and vda_whats.num_cupom   = nsw.num_nota
-			    and vda_whats.dta_lancamento = nsw.dta_emissao
-			    and vda_whats.num_equipamento = nsw.num_equipamento
-				and nsow.num_seq = nsw.num_seq
-				and nsow.cod_maquina = nsw.cod_maquina
-			    and nsow.cod_oper in (300,302,305,4300,4302,4305)
-			    and nsw.cod_emp = pi_empresa
-			    and nsw.dta_emissao >= pi_dta_ini
-			    and nsw.dta_emissao <= pi_dta_fim
-			    and nsw.tip_nota in (2,3)
-			    and nsw.ind_status = 1
-			  group by nsw.num_seq,nsw.cod_maquina ) venda_whats
-			,(select nsd.num_seq,nsd.cod_maquina,decode(nsod.cod_oper,300,300,4300,300,302) cod_oper
-					,sum(nvl(nsod.vlr_operacao,0)) vlr_vda_demo
-		     	from ns_notas nsd
-				   ,ns_notas_operacoes nsod
-          	where exists (select 1 from ne_notas ne
-								,ne_notas_operacoes neo
+     cursor c_venda is
+            select a.dta_emissao dta_movimento
+                   ,gu.cod_grupo
+                   ,gu.cod_quebra cod_regiao
+                   ,a.cod_unidade cod_unidade
+                   ,decode(g.cod_nivel2,810,'10',830,'30',840,'40',850,'50','870','70') cod_rede
+                   ,decode(g.cod_nivel2,810,'GRZ',830,'PRM',840,'FRG',850,'TOT','GZT') des_rede
+                   ,g1.des_cidade des_cidade
+                   ,g1.cod_uf des_uf
+                   ,count(distinct(decode(notas.cod_oper,302,a.num_seq,300,a.num_seq))) qtd_negocio
+                   ,sum(decode(notas.cod_oper,6100,0,nvl(notas.vlr_operacao,0))) vlr_venda
+                   ,sum(nvl(venda_whats.vlr_vda_whats,0)) vlr_venda_whats
+                   ,sum(nvl(venda_demo.vlr_vda_demo,0) )vlr_demost
+                   ,sum(decode(notas.cod_oper,302,(nvl(notas.vlr_operacao,0) - nvl(notas.vlr_entrada,0)),0)) vlr_venda_prazo
+                   ,sum(decode(notas.cod_oper,302,nvl(notas.vlr_acrescimo,0),0)) vlr_acrescimo
+                   ,sum(decode(notas.cod_oper,6100,nvl(notas.vlr_operacao,0),0)) vlr_seguro
+            from ns_notas a
+                 ,(select ns.num_seq,ns.cod_maquina,decode(nso.cod_oper,300,300,4300,300,6100,6100,302) cod_oper
+                          ,sum(nvl(nso.vlr_acrescimo,0) + nvl(nso.vlr_acrescimo_cob,0)) vlr_acrescimo
+                          ,sum(nvl(nso.vlr_operacao,0)) vlr_operacao
+                          ,sum(nvl(nso.vlr_entrada,0)) vlr_entrada
+                   from ns_notas ns
+                        ,ns_notas_operacoes nso
+                   where nso.num_seq = ns.num_seq
+                   and nso.cod_maquina = ns.cod_maquina
+                   and nso.cod_oper in (300,302,305,4300,4302,4305,6100)
+                   and ns.cod_emp = 1
+                   and ns.dta_emissao >= pi_dta_ini
+                   and ns.dta_emissao <= pi_dta_fim
+                   and ns.tip_nota in (2,3)
+                   and ns.ind_status = 1
+                   group by ns.num_seq,ns.cod_maquina,decode(nso.cod_oper,300,300,4300,300,6100,6100,302) ) notas
+                 ,(select nsw.num_seq,nsw.cod_maquina
+                          ,sum(nvl(nsow.vlr_operacao,0)) vlr_vda_whats
+                   from ns_notas nsw
+                        ,ns_notas_operacoes nsow
+                        ,(select sislog.cod_unidade,
+                                 sislog.num_cupom,
+                                 sislog.num_equipamento,
+                                 sislog.dta_lancamento
+                                 ,sum(sislog.vlr_total) vlr_total
+                          from grz_lojas_cupom_itens sislog
+                          where sislog.dta_lancamento >= pi_dta_ini
+                          and sislog.dta_lancamento <= pi_dta_fim
+                          and nvl(sislog.ind_venda_whatsapp,0) = 1
+                          and sislog.ind_cancelado = 0
+                          and sislog.ind_cancelado_item = 0
+                          group by sislog.cod_unidade,
+                                   sislog.num_cupom,
+                                   sislog.num_equipamento,
+                                   sislog.dta_lancamento ) vda_whats
+                   where vda_whats.cod_unidade = nsw.cod_unidade
+                   and vda_whats.num_cupom = nsw.num_nota
+                   and vda_whats.dta_lancamento = nsw.dta_emissao
+                   and vda_whats.num_equipamento = nsw.num_equipamento
+                   and nsow.num_seq = nsw.num_seq
+                   and nsow.cod_maquina = nsw.cod_maquina
+                   and nsow.cod_oper in (300,302,305,4300,4302,4305)
+                   and nsw.cod_emp = pi_empresa
+                   and nsw.dta_emissao >= pi_dta_ini
+                   and nsw.dta_emissao <= pi_dta_fim
+                   and nsw.tip_nota in (2,3)
+                   and nsw.ind_status = 1
+                   group by nsw.num_seq,nsw.cod_maquina ) venda_whats
+                 ,(select nsd.num_seq,nsd.cod_maquina,decode(nsod.cod_oper,300,300,4300,300,302) cod_oper
+                         ,sum(nvl(nsod.vlr_operacao,0)) vlr_vda_demo
+                   from ns_notas nsd
+                        ,ns_notas_operacoes nsod
+                   where exists (select 1 
+                                 from ne_notas ne
+                                      ,ne_notas_operacoes neo
 							 where neo.num_seq        = ne.num_seq
 							   and neo.cod_maquina    = ne.cod_maquina
 							   and neo.cod_oper       = 150
