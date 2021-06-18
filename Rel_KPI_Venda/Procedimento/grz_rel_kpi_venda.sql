@@ -24,8 +24,8 @@
   pi_Opcao - Parametros da insercao de dados.
   Parametros: Empresa#DataInicial#DataFinal#UnidadeInicial#UnidadeFinal#
 ------------------------------------------------------------------------*/
---create or replace procedure grz_rel_kpi_venda (pi_opcao in varchar2)
-create or replace procedure grz_rel_kpi_venda_teste (pi_opcao in varchar2)
+create or replace procedure grz_rel_kpi_venda (pi_opcao in varchar2)
+--create or replace procedure grz_rel_kpi_venda_teste (pi_opcao in varchar2)
 is
 begin
      declare
@@ -593,5 +593,5 @@ begin
 
           commit;
      end;
---end grz_rel_kpi_venda;
-end grz_rel_kpi_venda_teste;
+end grz_rel_kpi_venda;
+--end grz_rel_kpi_venda_teste;
