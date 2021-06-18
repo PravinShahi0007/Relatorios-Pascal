@@ -337,7 +337,7 @@ begin
                     and to_date(b.dta_emissao,'dd/mm/yyyy') <= to_date(r_venda.dta_movimento,'dd/mm/yyyy')
                     and not exists (select 1 from grz_lojas_unificadas_cia c
                                     where b.cod_emp = c.cod_emp
-                                    and b.cod_unidade =c.cod_unidade_para);
+                                    and b.cod_unidade = c.cod_unidade_para);
                     exception
                              when no_data_found then
                                   wqtd_seguro_cpp := 0;
