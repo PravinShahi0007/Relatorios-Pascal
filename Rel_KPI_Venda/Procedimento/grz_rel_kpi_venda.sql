@@ -9,61 +9,69 @@
   Antonio JUN/2021 Alteracao Modificado o CURSOR para selecionar a quantidade
                              seguro; inclusao de SQL para selecionar a 
                              quantidade de elegiveis; calculo da conversao
-                             de seguro e gravacao dos campos na tabela de
+                             de seguro (CRE) e gravacao dos campos na tabela de
                              KPI VENDAS.
+  Jaisson JUN/2021 Alteracao SQL´s e regras para selecionar valores de seguro e
+                             elegiveis CRE
+  Antonio JUN/2021 Alteracao Conversao CPP: Criação de campos na tabela GRZ_KPI_VENDAS;
+                             criação de colunas de percentual de conversao de 
+                             seguro CPP em cada período do relatório;
+                             modificacao da procedure GRZ_REL_KPI_VENDAS
+                             para selecionar os valores (seguro e elegiveis)
+                             para calcular conversao do seguro.
 
   Parametros
   pi_Opcao - Parametros da insercao de dados.
   Parametros: Empresa#DataInicial#DataFinal#UnidadeInicial#UnidadeFinal#
 ------------------------------------------------------------------------*/
-create or replace procedure grz_rel_kpi_venda (pi_opcao in varchar2)
---create or replace procedure grz_rel_kpi_venda_teste (pi_opcao in varchar2)
+--create or replace procedure grz_rel_kpi_venda (pi_opcao in varchar2)
+create or replace procedure grz_rel_kpi_venda_teste (pi_opcao in varchar2)
 is
 begin
      declare
             -- Parametros de entrada
-            v_result           integer;
-            v_cur              integer;
+            v_result            integer;
+            v_cur               integer;
 
-            pi_empresa         number;
-            pi_dta_ini         date;
-            pi_dta_fim         date;
-            pi_unidadeini      number;
-            pi_unidadefim      number;
+            pi_empresa          number;
+            pi_dta_ini          date;
+            pi_dta_fim          date;
+            pi_unidadeini       number;
+            pi_unidadefim       number;
 
-            wi                 number;
-            wf                 number;
-            wdia               number(2);
-            wmes               number(2);
-            wano               number(4);
-            wdes_quebra        varchar2(50);
-            --wdes_grupo         varchar2(50);
-            --wcod_unidade       number;
-            wcod_grupo_macro   number;
-            wdes_grupo_macro   varchar2(50);
-            wdes_rede          varchar2(50);
-            --wdes_cidade        varchar2(50);
-            --wdes_uf            varchar2(50);
-            wcontrole          number;
-            wcontroleunidade   number;
-            wticket_medio      number(18,2);
-            wperc_whats        number(18,2);
-            wperc_demost       number(18,2);
-            wperc_vd_prazo     number(18,2);
-            wperc_acresc       number(18,2);
-            wperc_seguro       number(18,2);
-            wqtdcpp            number;
-            wvlrcpp            number(18,2);
-            wqtd_vp_elegiveis  number(12,0);
-            wperc_conversao    number(18,2);
-            wgztstorerede      number;
-            wgztstoreunidade   number;
-            wgztstoreunidadede number;
-            wcodunidade        number;
-            wcodrede           number;
-            wcod_regiao        number;
-            wcod_regiaonova    number;
-            wcod_unidadenova   number;
+            wi                  number;
+            wf                  number;
+            wdia                number(2);
+            wmes                number(2);
+            wano                number(4);
+            wdes_quebra         varchar2(50);
+            wcod_grupo_macro    number;
+            wdes_grupo_macro    varchar2(50);
+            wdes_rede           varchar2(50);
+            wcontrole           number;
+            wcontroleunidade    number;
+            wticket_medio       number(18,2);
+            wperc_whats         number(18,2);
+            wperc_demost        number(18,2);
+            wperc_vd_prazo      number(18,2);
+            wperc_acresc        number(18,2);
+            wperc_seguro        number(18,2);
+            wqtdcpp             number;
+            wvlrcpp             number(18,2);
+            wqtd_vp_elegiveis   number(12,0);
+            wperc_conversao     number(18,2);
+            -- variaveis para calculo da CONVERSAO seguro CPP
+            wqtd_elegiveis_cpp  number(12,0);
+            wqtd_seguro_cpp     number(12,0);
+            wperc_conversao_cpp number(18,2);
+            wgztstorerede       number;
+            wgztstoreunidade    number;
+            wgztstoreunidadede  number;
+            wcodunidade         number;
+            wcodrede            number;
+            wcod_regiao         number;
+            wcod_regiaonova     number;
+            wcod_unidadenova    number;
 
             -- Declaracao do CURSOR
             cursor c_venda is
@@ -83,7 +91,7 @@ begin
                                                           nvl(notas.vlr_entrada,0)),0)) vlr_venda_prazo
                           ,sum(decode(notas.cod_oper,302,nvl(notas.vlr_acrescimo,0),0)) vlr_acrescimo
                           ,sum(decode(notas.cod_oper,6100,nvl(notas.vlr_operacao,0),0)) vlr_seguro
-                          ,count(distinct (decode(notas.cod_oper,6100,notas.num_seq))) qtd_vp_seguro
+                          ,count(distinct(decode(notas.cod_oper,6100,notas.num_seq))) qtd_vp_seguro
                    from ns_notas a
                         ,(select ns.num_seq,ns.cod_maquina,decode(nso.cod_oper,300,300,4300,300,6100,6100,302) cod_oper
                                  ,sum(nvl(nso.vlr_acrescimo,0) + nvl(nso.vlr_acrescimo_cob,0)) vlr_acrescimo
@@ -267,7 +275,7 @@ begin
                                   wqtdcpp := 0;
                                   wvlrcpp := 0;
                end;
-               -- Seleciona a quantidade de elegiveis (para calculo da conversao)
+               -- Seleciona a quantidade de elegiveis CRE (para calculo da conversao)
                begin
                     select count(distinct a.num_seq) qtd_venda_elegiveis
                     into wqtd_vp_elegiveis
@@ -288,8 +296,6 @@ begin
                     and trunc((months_between(b.dta_emissao, to_date(f.dta_nasc,'dd/mm/yyyy')))/12) >= 18
                     and trunc((months_between(b.dta_emissao, to_date(f.dta_nasc,'dd/mm/yyyy')))/12) <= 69
                     and b.cod_unidade = wcodunidade
-                    --and b.dta_emissao >= to_date(pi_dta_ini,'dd/mm/yyyy')
-                    --and b.dta_emissao <= to_date(pi_dta_fim,'dd/mm/yyyy')
                     and b.dta_emissao >= to_date(r_venda.dta_movimento,'dd/mm/yyyy')
                     and b.dta_emissao <= to_date(r_venda.dta_movimento,'dd/mm/yyyy')
                     and b.cod_cliente_milhagem is null
@@ -302,11 +308,79 @@ begin
                                   wqtd_vp_elegiveis := 0;
                end;
 
-               -- Calculo do % conversao do seguro
+               -- Calculo do % conversao do seguro CRE
                if (wqtd_vp_elegiveis = 0) or (wqtd_vp_elegiveis is null) then
-                  wperc_conversao := -666; --ERRO: elegiveis ZERADO -- r_venda.qtd_vp_seguro / 1;
+                  wperc_conversao := 0; --ERRO: elegiveis ZERADO
                else
                    wperc_conversao := r_venda.qtd_vp_seguro / wqtd_vp_elegiveis * 100;
+               end if;
+
+               -- Seleciona a quantidade de seguros CPP (para calculo da conversao)
+               begin
+                    select count(distinct (decode(a.cod_oper,6110,a.num_seq))) qtd_seguro
+                    into wqtd_seguro_cpp
+                    from ns_notas_operacoes a,
+                         ns_notas b,
+                         ge_grupos_unidades c
+                    where a.num_seq    = b.num_seq
+                    and b.cod_cliente_milhagem is null
+                    and a.cod_maquina = b.cod_maquina
+                    and a.cod_oper in (3000,3050,6110)
+                    and b.cod_emp     = 1
+                    and (b.tip_nota   = 3
+                    or (b.tip_nota    = 2
+                    and b.num_modelo  = 90))
+                    and b.ind_status  = 1
+                    and b.cod_unidade = c.cod_unidade
+                    and b.cod_unidade = r_venda.cod_unidade
+                    and to_date(b.dta_emissao,'dd/mm/yyyy') >= to_date(r_venda.dta_movimento,'dd/mm/yyyy')
+                    and to_date(b.dta_emissao,'dd/mm/yyyy') <= to_date(r_venda.dta_movimento,'dd/mm/yyyy')
+                    and not exists (select 1 from grz_lojas_unificadas_cia c
+                                    where b.cod_emp = c.cod_emp
+                                    and b.cod_unidade =c.cod_unidade_para);
+                    exception
+                             when no_data_found then
+                                  wqtd_seguro_cpp := 0;
+                end;
+
+               -- Seleciona a quantidade de elegiveis CPP (para calculo da conversao)
+               begin
+                    select count(distinct a.num_seq) qtd_venda_elegiveis
+                    into wqtd_elegiveis_cpp
+                    from (select sum(nvl(e.vlr_operacao,0)) vlr_operacao,
+                                 sum(nvl(e.vlr_entrada,0)) vlr_entrada,
+                                 e.num_seq, e.cod_maquina,
+                                 e.cod_oper
+                          from ns_notas_operacoes e
+                          where e.cod_oper in (3000,3050,6110)
+                          group by e.num_seq,
+                                   e.cod_maquina,
+                                   e.cod_oper) a,
+                         ns_notas b,
+                         ge_grupos_unidades c,
+                         ps_fisicas f
+                    where a.num_seq   = b.num_seq
+                    and a.cod_maquina = b.cod_maquina
+                    and b.cod_emp     = 1
+                    and b.ind_status  = 1
+                    and b.num_modelo  = 90
+                    and b.cod_cliente = f.cod_pessoa
+                    and trunc((months_between(b.dta_emissao, to_date(f.DTA_NASC,'dd/mm/yyyy')))/12) >= 18
+                    and trunc((months_between(b.dta_emissao, to_date(f.DTA_NASC,'dd/mm/yyyy')))/12) <= 69
+                    and b.cod_unidade = c.cod_unidade
+                    and b.cod_unidade = r_venda.cod_unidade
+                    and to_date(b.dta_emissao,'dd/mm/yyyy') >= to_date(r_venda.dta_movimento,'dd/mm/yyyy')
+                    and to_date(b.dta_emissao,'dd/mm/yyyy') <= to_date(r_venda.dta_movimento,'dd/mm/yyyy');
+                    exception
+                             when no_data_found then
+                                  wqtd_elegiveis_cpp := 0;
+               end;
+
+               -- Calculo do % conversao do seguro CPP
+               if (wqtd_elegiveis_cpp = 0) or (wqtd_elegiveis_cpp is null) then
+                  wperc_conversao_cpp := 0; --ERRO: elegiveis ZERADO
+               else
+                   wperc_conversao_cpp := wqtd_seguro_cpp / wqtd_elegiveis_cpp * 100;
                end if;
 
                if r_venda.vlr_venda > 0 or r_venda.qtd_negocio > 0 then
@@ -452,7 +526,6 @@ begin
                wcontrole:= r_venda.cod_regiao;
                wcontroleunidade := r_venda.cod_unidade;
 
-               --insert into grz_kpi_vendas_teste (dta_movimento,dia,mes,
                insert into grz_kpi_vendas (dta_movimento,dia,mes,
                                            ano,cod_rede,des_rede,
                                            cod_unidade,cod_regiao,des_regiao,
@@ -463,7 +536,8 @@ begin
                                            perc_acresc,vlr_seguro,perc_seguro,
                                            ind_nivel,cod_grupo_macro,des_grupo_macro,
                                            qtd_cpp,vlr_cpp,
-                                           qtd_vp_elegiveis,qtd_vp_seguro,perc_conversao)
+                                           qtd_vp_elegiveis,qtd_vp_seguro,perc_conversao,
+                                           qtd_elegiveis_cpp,qtd_seguro_cpp,perc_conversao_cpp)
                values (r_venda.dta_movimento,wdia,wmes,
                        wano,wcodrede, --r_venda.cod_rede
                        wdes_rede, --r_venda.des_rede
@@ -476,30 +550,39 @@ begin
                        r_venda.vlr_acrescimo,wperc_acresc,r_venda.vlr_seguro,
                        wperc_seguro,1,wcod_grupo_macro,
                        wdes_grupo_macro,wqtdcpp,wvlrcpp,
-                       wqtd_vp_elegiveis,r_venda.qtd_vp_seguro,wperc_conversao);
+                       wqtd_vp_elegiveis,r_venda.qtd_vp_seguro,wperc_conversao,
+                       wqtd_elegiveis_cpp,wqtd_seguro_cpp,wperc_conversao_cpp);
                exception
                         when dup_val_on_index then
-                             --update grz_kpi_vendas_teste
                              update grz_kpi_vendas
-                             set qtd_negocio       = qtd_negocio + r_venda.qtd_negocio
-                                 ,vlr_vd           = vlr_vd + r_venda.vlr_venda
-                                 ,ticket_medio     = ((vlr_vd + r_venda.vlr_venda)/(qtd_negocio +r_venda.qtd_negocio))
-                                 ,vlr_vd_whats     = vlr_vd_whats+ r_venda.vlr_venda_whats
-                                 ,perc_whats       = (((vlr_vd_whats + r_venda.vlr_venda_whats)*100)/(vlr_vd+r_venda.vlr_venda))
-                                 ,vlr_demost       = vlr_demost+ r_venda.vlr_demost
-                                 ,perc_demost      = (((vlr_demost+r_venda.vlr_demost)*100)/(vlr_vd+r_venda.vlr_venda))
-                                 ,vlr_vd_prazo     = vlr_vd_prazo+ r_venda.vlr_venda_prazo
-                                 ,perc_vd_prazo    = (((vlr_vd_prazo+r_venda.vlr_venda_prazo)*100)/(vlr_vd+r_venda.vlr_venda))
-                                 ,vlr_acresc       = vlr_acresc+ r_venda.vlr_acrescimo
-                                 ,perc_acresc      = (((vlr_acresc+r_venda.vlr_acrescimo)*100)/(vlr_vd_prazo+r_venda.vlr_venda_prazo))
-                                 ,vlr_seguro       = vlr_seguro +r_venda.vlr_seguro
-                                 ,perc_seguro      = (((vlr_seguro+r_venda.vlr_seguro)*100)/(vlr_vd_prazo+r_venda.vlr_venda_prazo))
-                                 ,ind_nivel        = 1
-                                 ,qtd_cpp          = qtd_cpp + wqtdcpp
-                                 ,vlr_cpp          = vlr_cpp + wvlrcpp
-                                 ,qtd_vp_elegiveis = wqtd_vp_elegiveis
-                                 ,qtd_vp_seguro    = r_venda.qtd_vp_seguro
-                                 ,perc_conversao   = wperc_conversao
+                             set qtd_negocio         = qtd_negocio + r_venda.qtd_negocio
+                                 ,vlr_vd             = vlr_vd + r_venda.vlr_venda
+                                 --,ticket_medio     = ((vlr_vd + r_venda.vlr_venda)/(iif((qtd_negocio+r_venda.qtd_negocio = 0),1,qtd_negocio+r_venda.qtd_negocio)))
+                                 ,ticket_medio       = ((vlr_vd + r_venda.vlr_venda)/(decode(qtd_negocio+r_venda.qtd_negocio,0,1,qtd_negocio+r_venda.qtd_negocio)))
+                                 ,vlr_vd_whats       = vlr_vd_whats+ r_venda.vlr_venda_whats
+                                 --,perc_whats       = (((vlr_vd_whats + r_venda.vlr_venda_whats)*100)/(vlr_vd+r_venda.vlr_venda))
+                                 ,perc_whats         = (((vlr_vd_whats + r_venda.vlr_venda_whats)*100)/(decode(vlr_vd+r_venda.vlr_venda,0,1,vlr_vd+r_venda.vlr_venda)))
+                                 ,vlr_demost         = vlr_demost+ r_venda.vlr_demost
+                                 --,perc_demost      = (((vlr_demost+r_venda.vlr_demost)*100)/(vlr_vd+r_venda.vlr_venda))
+                                 ,perc_demost        = (((vlr_demost+r_venda.vlr_demost)*100)/(decode(vlr_vd+r_venda.vlr_venda,0,1,vlr_vd+r_venda.vlr_venda)))
+                                 ,vlr_vd_prazo       = vlr_vd_prazo+ r_venda.vlr_venda_prazo
+                                 --,perc_vd_prazo    = (((vlr_vd_prazo+r_venda.vlr_venda_prazo)*100)/(vlr_vd+r_venda.vlr_venda))
+                                 ,perc_vd_prazo      = (((vlr_vd_prazo+r_venda.vlr_venda_prazo)*100)/(decode(vlr_vd+r_venda.vlr_venda,0,1,vlr_vd+r_venda.vlr_venda)))
+                                 ,vlr_acresc         = vlr_acresc+ r_venda.vlr_acrescimo
+                                 --,perc_acresc      = (((vlr_acresc+r_venda.vlr_acrescimo)*100)/(vlr_vd_prazo+r_venda.vlr_venda_prazo))
+                                 ,perc_acresc        = (((vlr_acresc+r_venda.vlr_acrescimo)*100)/(decode(vlr_vd_prazo+r_venda.vlr_venda_prazo,0,1,vlr_vd_prazo+r_venda.vlr_venda_prazo)))
+                                 ,vlr_seguro         = vlr_seguro +r_venda.vlr_seguro
+                                 --,perc_seguro      = (((vlr_seguro+r_venda.vlr_seguro)*100)/(vlr_vd_prazo+r_venda.vlr_venda_prazo))
+                                 ,perc_seguro        = (((vlr_seguro+r_venda.vlr_seguro)*100)/(decode(vlr_vd_prazo+r_venda.vlr_venda_prazo,0,1,vlr_vd_prazo+r_venda.vlr_venda_prazo)))
+                                 ,ind_nivel          = 1
+                                 ,qtd_cpp            = qtd_cpp + wqtdcpp
+                                 ,vlr_cpp            = vlr_cpp + wvlrcpp
+                                 ,qtd_vp_elegiveis   = wqtd_vp_elegiveis
+                                 ,qtd_vp_seguro      = r_venda.qtd_vp_seguro
+                                 ,perc_conversao     = wperc_conversao
+                                 ,qtd_elegiveis_cpp  = wqtd_elegiveis_cpp
+                                 ,qtd_seguro_cpp     = wqtd_seguro_cpp
+                                 ,perc_conversao_cpp = wperc_conversao_cpp
                              where cod_rede = wcodrede
                              and cod_unidade = wcodunidade
                              and dta_movimento = r_venda.dta_movimento ;
@@ -510,5 +593,5 @@ begin
 
           commit;
      end;
-end grz_rel_kpi_venda;
---end grz_rel_kpi_venda_teste;
+--end grz_rel_kpi_venda;
+end grz_rel_kpi_venda_teste;

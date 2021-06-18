@@ -111,134 +111,116 @@ begin
                    where exists (select 1 
                                  from ne_notas ne
                                       ,ne_notas_operacoes neo
-							 where neo.num_seq        = ne.num_seq
-							   and neo.cod_maquina    = ne.cod_maquina
-							   and neo.cod_oper       = 150
-							   and ne.ind_status      = 1
-			                   and ne.cod_emp         = nsd.cod_emp
-							   and ne.cod_unidade     = nsd.cod_unidade
-							   and ne.dta_recebimento = nsd.dta_emissao
-							   and ne.cod_pessoa_forn = nsd.cod_cliente)
-				               and nsod.num_seq = nsd.num_seq
-			                   and nsod.cod_maquina = nsd.cod_maquina
-							   and nsod.cod_oper in (300,302,305,4300,4302,4305)
-							   and nsd.cod_emp = 1
-							   and nsd.dta_emissao >= pi_dta_ini
-							   and nsd.dta_emissao <= pi_dta_fim
-							   and nsd.tip_nota in (2,3)
-							   and nsd.ind_status = 1
-			       group by nsd.num_seq,nsd.cod_maquina,decode(nsod.cod_oper,300,300,4300,300,302) ) venda_demo
-			,ge_grupos_unidades gu
-			,ge_grupos ge
-			,ps_pessoas p
-			,g1_cidades g1
-			,ge_unidades g
-			where g.cod_unidade = a.cod_unidade
-			and g1.cod_cidade = p.cod_cidade
-			and p.cod_pessoa = a.cod_unidade
-			and ge.cod_grupo = gu.cod_grupo
-			and gu.cod_unidade = a.cod_unidade
-			and gu.cod_emp    = pi_empresa
-			and gu.cod_grupo in (71010,71030,71040,71050,71070)
-			and gu.cod_unidade >= pi_UnidadeIni
-			and gu.cod_unidade <= pi_UnidadeFim
-			--and gu.cod_quebra <9999
-			and venda_demo.num_seq(+) = a.num_seq
-			and venda_demo.cod_maquina(+) = a.cod_maquina
-			and venda_whats.num_seq(+) = a.num_seq
-			and venda_whats.cod_maquina(+) = a.cod_maquina
-			and notas.num_seq = a.num_seq
-			and notas.cod_maquina = a.cod_maquina
-			and a.cod_emp = 1
-			and a.dta_emissao>= pi_dta_ini
-			and a.dta_emissao<=pi_dta_fim
-			and a.tip_nota in (2,3)
-			and a.ind_status = 1
-			/*and  exists (select 1 from  ge_grupos_unidades  c
-							where c.cod_unidade = a.cod_unidade
-                            and c.cod_grupo in (1912,1932,1942,1952,1972)
-									 )*/
-			having sum(nvl(notas.vlr_operacao,0)) > 0
-				group by  a.dta_emissao,
-            gu.cod_grupo
-			,gu.cod_quebra
-			,a.cod_unidade
-			,decode(g.cod_nivel2,810,'10',830,'30',840,'40',850,'50','870','70')
-			,decode(g.cod_nivel2,810,'GRZ',830,'PRM',840,'FRG',850,'TOT','GZT')
-			,g1.des_cidade
-			,g1.cod_uf
-			order by 4,1;
+                                 where neo.num_seq        = ne.num_seq
+                                 and neo.cod_maquina    = ne.cod_maquina
+                                 and neo.cod_oper       = 150
+                                 and ne.ind_status      = 1
+                                 and ne.cod_emp         = nsd.cod_emp
+                                 and ne.cod_unidade     = nsd.cod_unidade
+                                 and ne.dta_recebimento = nsd.dta_emissao
+                                 and ne.cod_pessoa_forn = nsd.cod_cliente)
+                   and nsod.num_seq = nsd.num_seq
+                   and nsod.cod_maquina = nsd.cod_maquina
+                   and nsod.cod_oper in (300,302,305,4300,4302,4305)
+                   and nsd.cod_emp = 1
+                   and nsd.dta_emissao >= pi_dta_ini
+                   and nsd.dta_emissao <= pi_dta_fim
+                   and nsd.tip_nota in (2,3)
+                   and nsd.ind_status = 1
+                   group by nsd.num_seq,nsd.cod_maquina,decode(nsod.cod_oper,300,300,4300,300,302) ) venda_demo
+                 ,ge_grupos_unidades gu
+                 ,ge_grupos ge
+                 ,ps_pessoas p
+                 ,g1_cidades g1
+                 ,ge_unidades g
+            where g.cod_unidade = a.cod_unidade
+            and g1.cod_cidade = p.cod_cidade
+            and p.cod_pessoa = a.cod_unidade
+            and ge.cod_grupo = gu.cod_grupo
+            and gu.cod_unidade = a.cod_unidade
+            and gu.cod_emp    = pi_empresa
+            and gu.cod_grupo in (71010,71030,71040,71050,71070)
+            and gu.cod_unidade >= pi_UnidadeIni
+            and gu.cod_unidade <= pi_UnidadeFim
+            --and gu.cod_quebra <9999
+            and venda_demo.num_seq(+) = a.num_seq
+            and venda_demo.cod_maquina(+) = a.cod_maquina
+            and venda_whats.num_seq(+) = a.num_seq
+            and venda_whats.cod_maquina(+) = a.cod_maquina
+            and notas.num_seq = a.num_seq
+            and notas.cod_maquina = a.cod_maquina
+            and a.cod_emp = 1
+            and a.dta_emissao>= pi_dta_ini
+            and a.dta_emissao<=pi_dta_fim
+            and a.tip_nota in (2,3)
+            and a.ind_status = 1
+            /*and  exists (select 1 from  ge_grupos_unidades  c
+                           where c.cod_unidade = a.cod_unidade
+                           and c.cod_grupo in (1912,1932,1942,1952,1972))*/
+            having sum(nvl(notas.vlr_operacao,0)) > 0
+            group by a.dta_emissao,
+                     gu.cod_grupo
+                     ,gu.cod_quebra
+                     ,a.cod_unidade
+                     ,decode(g.cod_nivel2,810,'10',830,'30',840,'40',850,'50','870','70')
+                     ,decode(g.cod_nivel2,810,'GRZ',830,'PRM',840,'FRG',850,'TOT','GZT')
+                     ,g1.des_cidade
+                     ,g1.cod_uf
+            order by 4,1;
+     r_venda c_venda%ROWTYPE;
 
-       r_venda c_venda%ROWTYPE;
+     begin /* Inicio da procedure principal */
+          wi := instr(pi_opcao, '#', 1, 1);
+          pi_empresa := to_number(substr(pi_opcao, 1,(wi-1)));
+          wf := instr(pi_opcao, '#', 1, 2);
+          pi_dta_ini := substr(pi_opcao,(wi+1),(wf-wi-1));
+          wi := wf;
+          wf := instr(pi_opcao, '#', 1, 3);
+          pi_dta_fim := substr(pi_opcao,(wi+1),(wf-wi-1));
+          wi := wf;
+          wf := instr(pi_opcao, '#', 1, 4);
+          pi_unidadeini := substr(pi_opcao,(wi+1),(wf-wi-1));
+          wi := wf;
+          wf := instr(pi_opcao, '#', 1, 5);
+          pi_unidadefim := substr(pi_opcao,(wi+1),(wf-wi-1));
 
+          wcontrole := 0;
+          wcontroleunidade := 0;
 
-          /**** Inicio da procedure principal ****/
-  BEGIN
+          begin
+               delete from grz_kpi_vendas
+               where dta_movimento >= pi_dta_ini
+               and dta_movimento <= pi_dta_fim;
+          end;
 
-           wi := INSTR(pi_opcao, '#', 1, 1);
-	       pi_empresa := TO_NUMBER(SUBSTR(pi_opcao, 1,(wi-1)));
-	       wf := INSTR(pi_opcao, '#', 1, 2);
-   	       pi_dta_ini := SUBSTR(pi_opcao,(wi+1),(wf-wi-1));
-           wi := wf;
-	       wf := INSTR(pi_opcao, '#', 1, 3);
-   	       pi_dta_fim := SUBSTR(pi_opcao,(wi+1),(wf-wi-1));
-           wi := wf;
-	       wf := INSTR(pi_opcao, '#', 1, 4);
-   	       pi_UnidadeIni := SUBSTR(pi_opcao,(wi+1),(wf-wi-1));
-           wi := wf;
-		   wf := INSTR(pi_opcao, '#', 1, 5);
-           pi_UnidadeFim := SUBSTR(pi_opcao,(wi+1),(wf-wi-1));
-
-       wControle := 0;
-	   wControleUnidade := 0;
-
-            begin
-    Delete from GRZ_KPI_VENDAS
-         where dta_movimento >= pi_dta_ini
-         and dta_movimento <= pi_dta_fim;
-           end;
-
-
-     OPEN c_venda;
-      FETCH c_venda INTO r_venda;
-       WHILE c_venda%FOUND LOOP
-
-      BEGIN
-
-            wDia := to_char(r_venda.dta_movimento ,'DD');
-            wMes      := to_char(r_venda.dta_movimento ,'MM');
-	        wAno      := to_char(r_venda.dta_movimento ,'YYYY');
-			wCodUnidade := r_venda.cod_unidade;
-			wCod_Regiao := r_venda.cod_regiao;
-
-
-
-
-
-			   Begin
-                select count((nsod.cod_oper))
-					  ,nvl(sum(nvl(nsod.vlr_operacao,0)),0)
-					  Into wQtdCPP
-					      ,wVlrCPP
-		     	   from ns_notas nsd
-				   ,ns_notas_operacoes nsod
-                	where  nsod.num_seq = nsd.num_seq
-			                   and nsod.cod_maquina = nsd.cod_maquina
-							   and nsod.cod_oper in (3000,3050)
-							   and nsd.cod_emp = 1
-                               and nsd.cod_unidade = r_venda.cod_unidade
-							   and nsd.dta_emissao >= r_venda.dta_movimento
-							   and nsd.dta_emissao <= r_venda.dta_movimento ;
-                 EXCEPTION
-                 WHEN NO_DATA_FOUND THEN
-
-				  wQtdCPP := 0;
-                  wVlrCPP := 0;
-                end;
-
-
-
-
+          open c_venda;
+          fetch c_venda into r_venda;
+          while c_venda%found loop
+          begin
+               wdia := to_char(r_venda.dta_movimento ,'dd');
+               wmes := to_char(r_venda.dta_movimento ,'mm');
+               wano := to_char(r_venda.dta_movimento ,'yyyy');
+               wcodunidade := r_venda.cod_unidade;
+               wcod_regiao := r_venda.cod_regiao;
+               begin
+                    select count((nsod.cod_oper))
+                           ,nvl(sum(nvl(nsod.vlr_operacao,0)),0)
+                    into wqtdcpp
+                         ,wvlrcpp
+                    from ns_notas nsd
+                         ,ns_notas_operacoes nsod
+                    where  nsod.num_seq = nsd.num_seq
+                    and nsod.cod_maquina = nsd.cod_maquina
+                    and nsod.cod_oper in (3000,3050)
+                    and nsd.cod_emp = 1
+                    and nsd.cod_unidade = r_venda.cod_unidade
+                    and nsd.dta_emissao >= r_venda.dta_movimento
+                    and nsd.dta_emissao <= r_venda.dta_movimento ;
+                    exception
+                             when no_data_found then
+                                  wqtdcpp := 0;
+                                  wvlrcpp := 0;
+               end;
 
 			  if r_venda.vlr_venda > 0 or r_venda.qtd_negocio > 0 then
 			   wTicket_medio := (r_venda.vlr_venda/r_venda.qtd_negocio);
