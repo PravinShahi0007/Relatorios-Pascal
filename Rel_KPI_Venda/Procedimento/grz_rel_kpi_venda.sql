@@ -24,8 +24,8 @@
   pi_Opcao - Parametros da insercao de dados.
   Parametros: Empresa#DataInicial#DataFinal#UnidadeInicial#UnidadeFinal#
 ------------------------------------------------------------------------*/
-create or replace procedure grz_rel_kpi_venda (pi_opcao in varchar2)
---create or replace procedure grz_rel_kpi_venda_teste (pi_opcao in varchar2)
+--create or replace procedure grz_rel_kpi_venda (pi_opcao in varchar2)
+create or replace procedure grz_rel_kpi_venda_teste (pi_opcao in varchar2)
 is
 begin
      declare
@@ -240,10 +240,10 @@ begin
           wcontroleunidade := 0;
 
           begin
-               --delete from grz_kpi_vendas_teste
                delete from grz_kpi_vendas
                where dta_movimento >= pi_dta_ini
-               and dta_movimento <= pi_dta_fim;
+               and dta_movimento <= pi_dta_fim
+               and cod_unidade between pi_UnidadeIni and pi_UnidadeFim;
           end;
 
           open c_venda;
@@ -256,6 +256,7 @@ begin
                wcodunidade := r_venda.cod_unidade;
                wcod_regiao := r_venda.cod_regiao;
 
+               -- Seleciona a quantidade e valor CPP
                begin
                     select count((nsod.cod_oper))
                            ,nvl(sum(nvl(nsod.vlr_operacao,0)),0)
@@ -267,6 +268,7 @@ begin
                     and nsod.cod_maquina = nsd.cod_maquina
                     and nsod.cod_oper in (3000,3050)
                     and nsd.cod_emp = 1
+                    and nsd.ind_status = 1
                     and nsd.cod_unidade = r_venda.cod_unidade
                     and nsd.dta_emissao >= r_venda.dta_movimento
                     and nsd.dta_emissao <= r_venda.dta_movimento;
@@ -275,6 +277,7 @@ begin
                                   wqtdcpp := 0;
                                   wvlrcpp := 0;
                end;
+
                -- Seleciona a quantidade de elegiveis CRE (para calculo da conversao)
                begin
                     select count(distinct a.num_seq) qtd_venda_elegiveis
@@ -315,33 +318,24 @@ begin
                    wperc_conversao := r_venda.qtd_vp_seguro / wqtd_vp_elegiveis * 100;
                end if;
 
-               -- Seleciona a quantidade de seguros CPP (para calculo da conversao)
+               -- Seleciona a quantidade de SEGURO CPP (para calculo da conversao)
                begin
-                    select count(distinct (decode(a.cod_oper,6110,a.num_seq))) qtd_seguro
+                    select count((nsod.cod_oper)) qtd_seguro
                     into wqtd_seguro_cpp
-                    from ns_notas_operacoes a,
-                         ns_notas b,
-                         ge_grupos_unidades c
-                    where a.num_seq    = b.num_seq
-                    and b.cod_cliente_milhagem is null
-                    and a.cod_maquina = b.cod_maquina
-                    and a.cod_oper in (3000,3050,6110)
-                    and b.cod_emp     = 1
-                    and (b.tip_nota   = 3
-                    or (b.tip_nota    = 2
-                    and b.num_modelo  = 90))
-                    and b.ind_status  = 1
-                    and b.cod_unidade = c.cod_unidade
-                    and b.cod_unidade = r_venda.cod_unidade
-                    and to_date(b.dta_emissao,'dd/mm/yyyy') >= to_date(r_venda.dta_movimento,'dd/mm/yyyy')
-                    and to_date(b.dta_emissao,'dd/mm/yyyy') <= to_date(r_venda.dta_movimento,'dd/mm/yyyy')
-                    and not exists (select 1 from grz_lojas_unificadas_cia c
-                                    where b.cod_emp = c.cod_emp
-                                    and b.cod_unidade = c.cod_unidade_para);
+                    from ns_notas nsd
+                         ,ns_notas_operacoes nsod
+                    where  nsod.num_seq = nsd.num_seq
+                    and nsod.cod_maquina = nsd.cod_maquina
+                    and nsod.cod_oper in (6110)
+                    and nsd.cod_emp = 1
+                    and nsd.ind_status = 1
+                    and nsd.cod_unidade = r_venda.cod_unidade
+                    and to_date(nsd.dta_emissao,'dd/mm/yyyy') >= to_date(r_venda.dta_movimento,'dd/mm/yyyy')
+                    and to_date(nsd.dta_emissao,'dd/mm/yyyy') <= to_date(r_venda.dta_movimento,'dd/mm/yyyy');
                     exception
                              when no_data_found then
                                   wqtd_seguro_cpp := 0;
-                end;
+               end;
 
                -- Seleciona a quantidade de elegiveis CPP (para calculo da conversao)
                begin
@@ -351,7 +345,7 @@ begin
                                  sum(nvl(e.vlr_entrada,0)) vlr_entrada,
                                  e.num_seq, e.cod_maquina,
                                  e.cod_oper
-                          from ns_notas_operacoes e
+                          from ns_notas_operacoes e  
                           where e.cod_oper in (3000,3050,6110)
                           group by e.num_seq,
                                    e.cod_maquina,
@@ -369,8 +363,8 @@ begin
                     and trunc((months_between(b.dta_emissao, to_date(f.DTA_NASC,'dd/mm/yyyy')))/12) <= 69
                     and b.cod_unidade = c.cod_unidade
                     and b.cod_unidade = r_venda.cod_unidade
-                    and to_date(b.dta_emissao,'dd/mm/yyyy') >= to_date(r_venda.dta_movimento,'dd/mm/yyyy')
-                    and to_date(b.dta_emissao,'dd/mm/yyyy') <= to_date(r_venda.dta_movimento,'dd/mm/yyyy');
+                    and b.dta_emissao >= to_date(r_venda.dta_movimento,'dd/mm/yyyy')
+                    and b.dta_emissao <= to_date(r_venda.dta_movimento,'dd/mm/yyyy');
                     exception
                              when no_data_found then
                                   wqtd_elegiveis_cpp := 0;
@@ -593,5 +587,5 @@ begin
 
           commit;
      end;
-end grz_rel_kpi_venda;
---end grz_rel_kpi_venda_teste;
+--end grz_rel_kpi_venda;
+end grz_rel_kpi_venda_teste;
