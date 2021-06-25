@@ -373,7 +373,7 @@ type
     pumMenu: TPopupMenu;
     mniSair: TMenuItem;
     pnlRodape: TPanel;
-    BitBtn1: TBitBtn;
+    btnSair: TBitBtn;
     fspGRZ_Rel_Pgto_AppxLoja_SP: TFDStoredProc;
     qryGeralDados: TFDQuery;
     procedure PreencheEstilos(Sender: TObject);

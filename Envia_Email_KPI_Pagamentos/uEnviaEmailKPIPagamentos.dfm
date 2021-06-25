@@ -26,7 +26,6 @@ object frmPrincipal: TfrmPrincipal
     Align = alClient
     BevelInner = bvLowered
     TabOrder = 0
-    ExplicitWidth = 296
     object lblMensagem: TLabel
       Left = 2
       Top = 82
@@ -75,7 +74,6 @@ object frmPrincipal: TfrmPrincipal
       Font.Style = [fsBold]
       ParentFont = False
       TabOrder = 0
-      ExplicitWidth = 292
     end
     object grpIntervalo: TGroupBox
       Left = 2
@@ -85,7 +83,6 @@ object frmPrincipal: TfrmPrincipal
       Align = alTop
       Caption = '[ Intervalo ]'
       TabOrder = 1
-      ExplicitWidth = 292
       object lblInicio: TLabel
         Left = 17
         Top = 22
@@ -129,8 +126,7 @@ object frmPrincipal: TfrmPrincipal
       Align = alClient
       BevelInner = bvLowered
       TabOrder = 2
-      ExplicitWidth = 292
-      object BitBtn1: TBitBtn
+      object btnSair: TBitBtn
         Left = 198
         Top = 2
         Width = 75
@@ -192,7 +188,6 @@ object frmPrincipal: TfrmPrincipal
         ParentFont = False
         TabOrder = 0
         OnClick = mniSairClick
-        ExplicitLeft = 215
       end
     end
   end
