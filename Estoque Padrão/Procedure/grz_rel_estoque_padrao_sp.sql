@@ -9,6 +9,12 @@
                              pi_codigo_fim, de 11 para 12 posicoes, devido a 
                              alteracao no item de 3 para 4 posicoes; Formatacao
                              do codigo-fonte
+  Antonio JUL/2021 Alteracao Alteracao no parametro mascara (estava fixo no codigo-fonte
+                             150; foi foi alterado para o parametro de entrada).
+                             Quando do nivel 5: alterado valor da variavel wqtd_casas 
+                             (controle da mascara)de 11 para 12 (posicoes na mascara) e 
+                             wqtd_casas1 de 15 para 20 posicoes.
+
   Parametros
   pi_Opcao - Parametros da geracao de dados.
   Parametros: Empresa#Grupo#PeriodoInicial#PeriodoFinal#DataRefencial#PeriodoDiretaInicial#
@@ -37,7 +43,7 @@ declare
        v_cur               integer;
        wi                  number;
        wf                  number;
-       wcompleto_ant       varchar2(11);
+       wcompleto_ant       varchar2(15);
        wcod_anteriores     varchar2(20);
        wcod_nivel          varchar2(20);
        wdes_nivel          varchar2(50);
@@ -131,7 +137,7 @@ declare
               and a.cod_emp = est.cod_emp(+)
               and a.cod_item = est.cod_item(+)
               and nvl(est.cod_unidade,0) = 0
-              and upper(ie.des_geral) = 'l'
+              and upper(ie.des_geral) = 'L'
               and ie.ind_inativo = 0
               and ie.ind_avulso = 0
               and nvl(a.qtd_est_min_i,0) > 0
@@ -148,8 +154,8 @@ declare
        r_est_padrao c_est_padrao%rowtype;
 
        cursor c_est_direta is
-              select substr(b.cod_completo,1,wQtd_Casas) cod_completo
-                     ,substr(b.cod_editado,1,wQtd_Casas1) cod_editado
+              select substr(b.cod_completo,1,wqtd_casas) cod_completo
+                     ,substr(b.cod_editado,1,wqtd_casas1) cod_editado
                      ,decode(pi_lista_unidade,1,decode(ge.cod_unidade,uni.cod_unidade_para,uni.cod_unidade_de,ge.cod_unidade),pi_grupo) cod_unidade
                      ,sum(nvl(d.qtd_distribuir,0)) qtd_diretas
                      ,(sum((nvl(i.qtd_sol_compra,0) * nvl(i.vlr_uni_compra,0))
@@ -186,19 +192,19 @@ declare
               and d.num_seq_item = i.num_seq_item
               and b.cod_mascara = pi_mascara
               and i.cod_item = b.cod_item
-              and b.Cod_Niv0    = '1'
+              and b.cod_niv0    = '1'
               and b.cod_completo >= pi_codigo_ini
               and b.cod_completo <= pi_codigo_fim
               and not exists (select 1 from grz_lojas_unificadas_cia t
                               where ge.cod_unidade = t.cod_unidade_para)
-              group by substr(b.cod_completo,1,wQtd_Casas)
-                       ,substr(b.cod_editado,1,wQtd_Casas1)
+              group by substr(b.cod_completo,1,wqtd_casas)
+                       ,substr(b.cod_editado,1,wqtd_casas1)
                        ,decode(pi_lista_unidade,1,decode(ge.cod_unidade,uni.cod_unidade_para,uni.cod_unidade_de,ge.cod_unidade),pi_grupo)
 
               union
 
-              select substr(b.cod_completo,1,wQtd_Casas) cod_completo
-                     ,substr(b.cod_editado,1,wQtd_Casas1) cod_editado
+              select substr(b.cod_completo,1,wqtd_casas) cod_completo
+                     ,substr(b.cod_editado,1,wqtd_casas1) cod_editado
                      ,decode(pi_lista_unidade,1,decode(ge.cod_unidade,uni.cod_unidade_para,uni.cod_unidade_de,ge.cod_unidade),pi_grupo) cod_unidade
                      ,sum(nvl(i.qtd_sol_compra,0)) qtd_diretas
                      ,(sum((nvl(i.qtd_sol_compra,0) * nvl(i.vlr_uni_compra,0))
@@ -217,7 +223,7 @@ declare
                             and p.num_seq_item   = i.num_seq_item
                             and p.cod_maquina    = i.cod_maquina
                             and p.num_seq        = i.num_seq)
-              and (1 = pi_recebido OR not exists (select 1
+              and (1 = pi_recebido or not exists (select 1
                                                   from ac_recebimentos_oc r
                                                   where r.num_seq_item = i.num_seq_item
                                                   and r.cod_maquina  = i.cod_maquina
@@ -236,15 +242,15 @@ declare
               and o.cod_maquina = i.cod_maquina
               and b.cod_mascara = pi_mascara
               and i.cod_item = b.cod_item
-              and b.Cod_Niv0    = '1'
+              and b.cod_niv0    = '1'
               and b.cod_completo >= pi_codigo_ini
               and b.cod_completo <= pi_codigo_fim
               and not exists (select 1 from grz_lojas_unificadas_cia t
                               where ge.cod_unidade = t.cod_unidade_para)
-             group by substr(b.cod_completo,1,wQtd_Casas)
-                      ,substr(b.cod_editado,1,wQtd_Casas1)
+             group by substr(b.cod_completo,1,wqtd_casas)
+                      ,substr(b.cod_editado,1,wqtd_casas1)
                       ,decode(pi_lista_unidade,1,decode(ge.cod_unidade,uni.cod_unidade_para,uni.cod_unidade_de,ge.cod_unidade),pi_grupo);
-       r_est_direta c_est_direta%ROWTYPE;
+       r_est_direta c_est_direta%rowtype;
 
        -- cursor pega totais dos niveis
        cursor c_niveis is
@@ -323,47 +329,47 @@ declare
             wf := instr(pi_opcao, '#', 1, 14);
             pi_usuario := substr(pi_opcao,(wi+1),(wf-wi-1));
 
-            -- Limpa a tabela temporaria
+            -- limpa a tabela temporaria
             delete from grzw_rel_estoque_padrao
             where upper(des_usuario) = upper(pi_usuario);
             commit;
 
             -- 1=rede 2=setor 3=grupo 4=subgrupo 5=item
             if (pi_nivel_mascara = 1) then
-               wQtd_Casas  := 2;
-               wQtd_Casas1 := 2;
-               wQtd_Casas2 := 0;
+               wqtd_casas  := 2;
+               wqtd_casas1 := 2;
+               wqtd_casas2 := 0;
             elsif (pi_nivel_mascara = 2) then
-                  wQtd_Casas  := 4;
-                  wQtd_Casas1 := 5;
-                  wQtd_Casas2 := 2;
+                  wqtd_casas  := 4;
+                  wqtd_casas1 := 5;
+                  wqtd_casas2 := 2;
             elsif (pi_nivel_mascara = 3) then
-                  wQtd_Casas  := 6;
-                  wQtd_Casas1 := 8;
-                  wQtd_Casas2 := 4;
+                  wqtd_casas  := 6;
+                  wqtd_casas1 := 8;
+                  wqtd_casas2 := 4;
             elsif (pi_nivel_mascara = 4) then
-                  wQtd_Casas  := 8;
-                  wQtd_Casas1 := 11;
-                  wQtd_Casas2 := 6;
+                  wqtd_casas  := 8;
+                  wqtd_casas1 := 11;
+                  wqtd_casas2 := 6;
             else
-                wQtd_Casas  := 11;
-                wQtd_Casas1 := 15;
-                wQtd_Casas2 := 8;
+                wqtd_casas  := 12; -- 11
+                wqtd_casas1 := 20; -- 15
+                wqtd_casas2 := 8;
             end if;
 
-            wCompleto_Ant := '00';
+            wcompleto_ant := '00';
 
             open c_est_venda;
             fetch c_est_venda into r_est_venda;
             while c_est_venda%found loop
             begin
-                 if (r_est_venda.cod_completo <> wCompleto_Ant) then
+                 if (r_est_venda.cod_completo <> wcompleto_ant) then
                     if (pi_nivel_mascara = 1) then
-                       wCod_Anteriores := '0';
-                       wCod_Nivel := substr(r_est_venda.cod_completo,1,2);
+                       wcod_anteriores := '0';
+                       wcod_nivel := substr(r_est_venda.cod_completo,1,2);
                     else
-                        wCod_Anteriores := substr(r_est_venda.cod_completo,1,wQtd_Casas2);
-                        wCod_Nivel      := substr(r_est_venda.COD_COMPLETO,(wQtd_Casas2 + 1),2);
+                        wcod_anteriores := substr(r_est_venda.cod_completo,1,wqtd_casas2);
+                        wcod_nivel      := substr(r_est_venda.cod_completo,(wqtd_casas2 + 1),2);
                     end if;
 
                     if (pi_nivel_mascara = 5) then
@@ -373,28 +379,28 @@ declare
                          from ie_itens
                          where cod_item = (select cod_item
                                            from ie_mascaras
-                                           where cod_mascara = 150
-                                          and cod_completo = r_est_venda.cod_completo);
+                                           where cod_mascara = pi_mascara
+                                           and cod_completo = r_est_venda.cod_completo);
                           exception
                                   when no_data_found then
-                                       wDes_nivel := 'SEM DESCRICAO';
+                                       wdes_nivel := 'SEM DESCRICAO-00';
                     end;
                     else
                     begin
                          select nvl(des_nivel,'X') des_nivel
-                         into wDes_nivel
+                         into wdes_nivel
                          from g3_niveis_cadastro
                           where cod_mascara = pi_mascara
                          and cod_formato = '1'
                          and seq_nivel   = pi_nivel_mascara
-                         and cod_anteriores = wCod_Anteriores
-                         and cod_nivel = wCod_Nivel;
+                         and cod_anteriores = wcod_anteriores
+                         and cod_nivel = wcod_nivel;
                          exception
                                   when no_data_found then
-                                       wDes_nivel := 'SEM DESCRICAO';
+                                       wdes_nivel := 'SEM DESCRICAO-01';
                     end;
                     end if;
-                    wCompleto_Ant := r_est_venda.cod_completo;
+                    wcompleto_ant := r_est_venda.cod_completo;
                  end if;
 
                  begin
@@ -404,7 +410,7 @@ declare
                       where cod_pessoa = r_est_venda.cod_unidade;
                       exception
                                when no_data_found then
-                                    wDes_Unidade := 'UNIDADE NAO CADASTRADA';
+                                    wdes_unidade := 'UNIDADE NAO CADASTRADA';
                  end;
 
                  begin
@@ -432,538 +438,506 @@ declare
                       group by des_quebra;
                       exception
                                when no_data_found then
-                                    wDes_Quebra_Regiao  := 'Quebra grupo unidades nao cadastrado';
+                                    wdes_quebra_regiao := 'Quebra grupo unidades nao cadastrado';
                  end;
 
-                 insert into GRZW_REL_ESTOQUE_PADRAO (DES_USUARIO,COD_NIVEL,DES_NIVEL,SEQ_NIVEL
-                                                      ,COD_EDITADO,DTA_REF,COD_UNIDADE,DES_UNIDADE
-                                                      ,QTD_VENDA,VLR_CUSTO,QTD_ESTOQUE,VLR_ESTOQUE
-                                                      ,QTD_ESTOQUE_PADRAO,VLR_ESTOQUE_PADRAO,QTD_DIRETAS
-                                                      ,VLR_DIRETAS,COD_REGIAO,DES_REGIAO)
-                 values (pi_usuario,r_est_venda.cod_completo,wDes_Nivel,pi_nivel_mascara
+                 insert into grzw_rel_estoque_padrao (des_usuario,cod_nivel,des_nivel,seq_nivel
+                                                      ,cod_editado,dta_ref,cod_unidade,des_unidade
+                                                      ,qtd_venda,vlr_custo,qtd_estoque,vlr_estoque
+                                                      ,qtd_estoque_padrao,vlr_estoque_padrao,qtd_diretas
+                                                      ,vlr_diretas,cod_regiao,des_regiao)
+                 values (pi_usuario,r_est_venda.cod_completo,wdes_nivel,pi_nivel_mascara
                          ,r_est_venda.cod_editado,pi_dta_ref,r_est_venda.cod_unidade
-                         ,wDes_Unidade,r_est_venda.qtd_venda,r_est_venda.vlr_custo
-                         ,0,0,0,0,0,0,wCod_Regiao,wDes_Quebra_Regiao);
+                         ,wdes_unidade,r_est_venda.qtd_venda,r_est_venda.vlr_custo
+                         ,0,0,0,0,0,0,wcod_regiao,wdes_quebra_regiao);
             end;
             fetch c_est_venda into r_est_venda;
             end loop;
             close c_est_venda;
             commit;
 
-	        wCompleto_Ant := '00';
-	        open c_est;
-                fetch c_est into r_est;
-                while c_est%found loop
-                begin
-		    if (r_est.cod_completo <> wCompleto_Ant) then
-		        if (pi_nivel_mascara = 1) then
- 	       	            wCod_Anteriores := '0';
- 	       	            wCod_Nivel      := substr(r_est.cod_completo,1,2);
-		        else
- 	       	            wCod_Anteriores := substr(r_est.cod_completo,1,wQtd_Casas2);
- 	       	            wCod_Nivel      := substr(r_est.COD_COMPLETO,(wQtd_Casas2 + 1),2);
-		        end if;
-		        if (pi_nivel_mascara = 5) then
-		                begin
-				   select des_item
-				     into wDes_nivel
-				     from ie_itens
-				    where cod_item = (select cod_item
-				                        from ie_mascaras
-				                       where cod_mascara = 150
-				                         and cod_completo = r_est.cod_completo);
-	      	         	  EXCEPTION
-			             WHEN NO_DATA_FOUND THEN
-	                        	wDes_nivel := 'SEM DESCRICAO';
-		                end;
-		        else
-	 		        Begin
-	     	       		   select nvl(des_nivel,'X') des_nivel
-	     	       		     into wDes_nivel
-				     from g3_niveis_cadastro
-				    Where cod_mascara = pi_mascara
-				      and cod_formato = '1'
-				      and seq_nivel   = pi_nivel_mascara
-	      			      and cod_anteriores = wCod_Anteriores
-	      			      and cod_nivel = wCod_Nivel;
-	      	         	  EXCEPTION
-			             WHEN NO_DATA_FOUND THEN
-	                        	wDes_nivel := 'SEM DESCRICAO';
-			        end;
-		        end if;
-		        wCompleto_Ant := r_est.cod_completo;
-		    end if;
-
- 	            Begin
-     	               select des_fantasia
-     	       	         into wDes_Unidade
-		         from ps_pessoas
-		        Where cod_pessoa = r_est.cod_unidade;
-      	               EXCEPTION
-		         WHEN NO_DATA_FOUND THEN
-                     	    wDes_Unidade := 'UNIDADE NAO CADASTRADA';
-		    end;
-
-			   Begin
-              select COD_GRUPO
-			        ,COD_QUEBRA
-     	       into wCod_Regiao
-				   ,wCodGrupo
-		        from ge_grupos_unidades
-                  where cod_emp    = 1
-		        and cod_unidade  = r_est_venda.cod_unidade
-				 and cod_grupo in (71010,71030,71040,71050,71070);
-      	               EXCEPTION
-		         WHEN NO_DATA_FOUND THEN
-                     	    wCod_Regiao := 0;
-							wCodGrupo := 0;
-                end;
-
-
-
-              Begin
-                select des_quebra
-                  into wDes_Quebra_Regiao
-                 from ge_grupos_quebra
-                  where cod_emp    = 1
-                   and cod_quebra = wCod_Regiao
-				   and cod_grupo = wCodGrupo
-				   group by des_quebra;
-                 EXCEPTION
-                 WHEN NO_DATA_FOUND THEN
-                 wDes_Quebra_Regiao  := 'Quebra grupo unidades n¿o cadastrado';
-
-                end;
-
-                    insert into GRZW_REL_ESTOQUE_PADRAO (DES_USUARIO
-                                                        ,COD_NIVEL
-                                                        ,DES_NIVEL
-                                                        ,SEQ_NIVEL
-                                                        ,COD_EDITADO
-                                                        ,DTA_REF
-                                                        ,COD_UNIDADE
-                                                        ,DES_UNIDADE
-                                                        ,QTD_VENDA
-                                                        ,VLR_CUSTO
-                                                        ,QTD_ESTOQUE
-                                                        ,VLR_ESTOQUE
-                                                        ,QTD_ESTOQUE_PADRAO
-                                                        ,VLR_ESTOQUE_PADRAO
-                                                        ,QTD_DIRETAS
-                                                        ,VLR_DIRETAS
-														,COD_REGIAO
-															 ,DES_REGIAO)
-                                                 values (pi_usuario
-                                                        ,r_est.cod_completo
-                                                        ,wDes_Nivel
-                                                        ,pi_nivel_mascara
-                                                        ,r_est.cod_editado
-                                                        ,pi_dta_ref
-                                                        ,r_est.cod_unidade
-                                                        ,wDes_Unidade
-                                                        ,0
-                                                        ,0
-                                                        ,r_est.qtd_estoque
-                                                        ,r_est.vlr_estoque
-                                                        ,0
-                                                        ,0
-                                                        ,0
-                                                        ,0
-														 ,wCod_Regiao
-				                                       ,wDes_Quebra_Regiao);
-        	end;
-        	fetch c_est into r_est;
-        	end loop;
-        	close c_est;
-        	commit;
-
-
-
-
-	        wCompleto_Ant := '00';
-	        open c_est_padrao;
-                fetch c_est_padrao into r_est_padrao;
-                while c_est_padrao%found loop
-                begin
-		    if (r_est_padrao.cod_completo <> wCompleto_Ant) then
-		        if (pi_nivel_mascara = 1) then
- 	       	            wCod_Anteriores := '0';
- 	       	            wCod_Nivel      := substr(r_est_padrao.cod_completo,1,2);
-		        else
- 	       	            wCod_Anteriores := substr(r_est_padrao.cod_completo,1,wQtd_Casas2);
- 	       	            wCod_Nivel      := substr(r_est_padrao.COD_COMPLETO,(wQtd_Casas2 + 1),2);
-		        end if;
-		        if (pi_nivel_mascara = 5) then
-		                begin
-				   select des_item
-				     into wDes_nivel
-				     from ie_itens
-				    where cod_item = (select cod_item
-				                        from ie_mascaras
-				                       where cod_mascara = 150
-				                         and cod_completo = r_est_padrao.cod_completo);
-	      	         	  EXCEPTION
-			             WHEN NO_DATA_FOUND THEN
-	                        	wDes_nivel := 'SEM DESCRICAO';
-		                end;
-		        else
-	 		        Begin
-	     	       		   select nvl(des_nivel,'X') des_nivel
-	     	       		     into wDes_nivel
-				     from g3_niveis_cadastro
-				    Where cod_mascara = pi_mascara
-				      and cod_formato = '1'
-				      and seq_nivel   = pi_nivel_mascara
-	      			      and cod_anteriores = wCod_Anteriores
-	      			      and cod_nivel = wCod_Nivel;
-	      	         	  EXCEPTION
-			             WHEN NO_DATA_FOUND THEN
-	                        	wDes_nivel := 'SEM DESCRICAO';
-			        end;
-		        end if;
-		        wCompleto_Ant := r_est_padrao.cod_completo;
-		    end if;
-
- 	            Begin
-     	               select des_fantasia
-     	       	         into wDes_Unidade
-		         from ps_pessoas
-		        Where cod_pessoa = r_est_padrao.cod_unidade;
-      	               EXCEPTION
-		         WHEN NO_DATA_FOUND THEN
-                     	    wDes_Unidade := 'UNIDADE NAO CADASTRADA';
-		    end;
-
-		    Begin
-              select COD_GRUPO
-			        ,COD_QUEBRA
-     	       into wCod_Regiao
-				   ,wCodGrupo
-		        from ge_grupos_unidades
-                  where cod_emp    = 1
-		        and cod_unidade  = r_est_venda.cod_unidade
-				 and cod_grupo in (71010,71030,71040,71050,71070);
-      	               EXCEPTION
-		         WHEN NO_DATA_FOUND THEN
-                     	    wCod_Regiao := 0;
-							wCodGrupo := 0;
-                end;
-
-
-
-              Begin
-                select des_quebra
-                  into wDes_Quebra_Regiao
-                 from ge_grupos_quebra
-                  where cod_emp    = 1
-                   and cod_quebra = wCod_Regiao
-				   and cod_grupo = wCodGrupo
-				   group by des_quebra;
-                 EXCEPTION
-                 WHEN NO_DATA_FOUND THEN
-                 wDes_Quebra_Regiao  := 'Quebra grupo unidades n¿o cadastrado';
-
-                end;
-
-                    insert into GRZW_REL_ESTOQUE_PADRAO (DES_USUARIO
-                                                        ,COD_NIVEL
-                                                        ,DES_NIVEL
-                                                        ,SEQ_NIVEL
-                                                        ,COD_EDITADO
-                                                        ,DTA_REF
-                                                        ,COD_UNIDADE
-                                                        ,DES_UNIDADE
-                                                        ,QTD_VENDA
-                                                        ,VLR_CUSTO
-                                                        ,QTD_ESTOQUE
-                                                        ,VLR_ESTOQUE
-                                                        ,QTD_ESTOQUE_PADRAO
-                                                        ,VLR_ESTOQUE_PADRAO
-                                                        ,QTD_DIRETAS
-                                                        ,VLR_DIRETAS
-														,COD_REGIAO
-															 ,DES_REGIAO)
-                                                 values (pi_usuario
-                                                        ,r_est_padrao.cod_completo
-                                                        ,wDes_Nivel
-                                                        ,pi_nivel_mascara
-                                                        ,r_est_padrao.cod_editado
-                                                        ,pi_dta_ref
-                                                        ,r_est_padrao.cod_unidade
-                                                        ,wDes_Unidade
-                                                        ,0
-                                                        ,0
-                                                        ,0
-                                                        ,0
-                                                        ,r_est_padrao.qtd_estoque_padrao
-                                                        ,r_est_padrao.vlr_estoque_padrao
-                                                        ,0
-                                                        ,0
-														,wCod_Regiao
-				                                         ,wDes_Quebra_Regiao);
-        	end;
-        	fetch c_est_padrao into r_est_padrao;
-        	end loop;
-        	close c_est_padrao;
-        	commit;
-
-
-	        wCompleto_Ant := '00';
-	        open c_est_direta;
-                fetch c_est_direta into r_est_direta;
-                while c_est_direta%found loop
-                begin
-		    if (r_est_direta.cod_completo <> wCompleto_Ant) then
-		        if (pi_nivel_mascara = 1) then
- 	       	            wCod_Anteriores := '0';
- 	       	            wCod_Nivel      := substr(r_est_direta.cod_completo,1,2);
-		        else
- 	       	            wCod_Anteriores := substr(r_est_direta.cod_completo,1,wQtd_Casas2);
- 	       	            wCod_Nivel      := substr(r_est_direta.COD_COMPLETO,(wQtd_Casas2 + 1),2);
-		        end if;
-		        if (pi_nivel_mascara = 5) then
-		                begin
-				   select des_item
-				     into wDes_nivel
-				     from ie_itens
-				    where cod_item = (select cod_item
-				                        from ie_mascaras
-				                       where cod_mascara = 150
-				                         and cod_completo = r_est_direta.cod_completo);
-	      	         	  EXCEPTION
-			             WHEN NO_DATA_FOUND THEN
-	                        	wDes_nivel := 'SEM DESCRICAO';
-		                end;
-		        else
-	 		        Begin
-	     	       		   select nvl(des_nivel,'X') des_nivel
-	     	       		     into wDes_nivel
-				     from g3_niveis_cadastro
-				    Where cod_mascara = pi_mascara
-				      and cod_formato = '1'
-				      and seq_nivel   = pi_nivel_mascara
-	      			      and cod_anteriores = wCod_Anteriores
-	      			      and cod_nivel = wCod_Nivel;
-	      	         	  EXCEPTION
-			             WHEN NO_DATA_FOUND THEN
-	                        	wDes_nivel := 'SEM DESCRICAO';
-			        end;
-		        end if;
-		        wCompleto_Ant := r_est_direta.cod_completo;
-		    end if;
-
- 	            Begin
-     	               select des_fantasia
-     	       	         into wDes_Unidade
-		         from ps_pessoas
-		        Where cod_pessoa = r_est_direta.cod_unidade;
-      	               EXCEPTION
-		         WHEN NO_DATA_FOUND THEN
-                     	    wDes_Unidade := 'UNIDADE NAO CADASTRADA';
-		    end;
-
-		    Begin
-              select COD_GRUPO
-			        ,COD_QUEBRA
-     	       into wCod_Regiao
-				   ,wCodGrupo
-		        from ge_grupos_unidades
-                  where cod_emp    = 1
-		        and cod_unidade  = r_est_venda.cod_unidade
-				 and cod_grupo in (71010,71030,71040,71050,71070);
-      	               EXCEPTION
-		         WHEN NO_DATA_FOUND THEN
-                     	    wCod_Regiao := 0;
-							wCodGrupo := 0;
-                end;
-
-
-
-              Begin
-                select des_quebra
-                  into wDes_Quebra_Regiao
-                 from ge_grupos_quebra
-                  where cod_emp    = 1
-                   and cod_quebra = wCod_Regiao
-				   and cod_grupo = wCodGrupo
-				   group by des_quebra;
-                 EXCEPTION
-                 WHEN NO_DATA_FOUND THEN
-                 wDes_Quebra_Regiao  := 'Quebra grupo unidades n¿o cadastrado';
-
-                end;
-
-                    insert into GRZW_REL_ESTOQUE_PADRAO (DES_USUARIO
-                                                        ,COD_NIVEL
-                                                        ,DES_NIVEL
-                                                        ,SEQ_NIVEL
-                                                        ,COD_EDITADO
-                                                        ,DTA_REF
-                                                        ,COD_UNIDADE
-                                                        ,DES_UNIDADE
-                                                        ,QTD_VENDA
-                                                        ,VLR_CUSTO
-                                                        ,QTD_ESTOQUE
-                                                        ,VLR_ESTOQUE
-                                                        ,QTD_ESTOQUE_PADRAO
-                                                        ,VLR_ESTOQUE_PADRAO
-                                                        ,QTD_DIRETAS
-                                                        ,VLR_DIRETAS
-														,COD_REGIAO
-															 ,DES_REGIAO)
-                                                 values (pi_usuario
-                                                        ,r_est_direta.cod_completo
-                                                        ,wDes_Nivel
-                                                        ,pi_nivel_mascara
-                                                        ,r_est_direta.cod_editado
-                                                        ,pi_dta_ref
-                                                        ,r_est_direta.cod_unidade
-                                                        ,wDes_Unidade
-                                                        ,0
-                                                        ,0
-                                                        ,0
-                                                        ,0
-                                                        ,0
-                                                        ,0
-                                                        ,r_est_direta.qtd_diretas
-                                                        ,r_est_direta.vlr_diretas
-														,wCod_Regiao
-				                                        ,wDes_Quebra_Regiao);
-        	end;
-        	fetch c_est_direta into r_est_direta;
-        	end loop;
-        	close c_est_direta;
-        	commit;
-
-
-	        wSeq_Nivel := pi_nivel_mascara;
-	        wNivel     := pi_nivel_mascara - 1;
-	        while wNivel > 0 loop
-	        begin
-		    if (wNivel = 1) then
-			wQtd_Casas  := 2;
-			wQtd_Casas1 := 2;
-			wQtd_Casas2 := 0;
-		    elsif (wNivel = 2) then
-			wQtd_Casas  := 4;
-			wQtd_Casas1 := 5;
-			wQtd_Casas2 := 2;
-		    elsif (wNivel = 3) then
-			wQtd_Casas  := 6;
-			wQtd_Casas1 := 8;
-			wQtd_Casas2 := 4;
-		    else
-		    	wQtd_Casas  := 8;
-		    	wQtd_Casas1 := 11;
-		    	wQtd_Casas2 := 6;
-		    end if;
-
-	            open c_niveis;
-                    fetch c_niveis into r_niveis;
-                    while c_niveis%found loop
+            wcompleto_ant := '00';
+            open c_est;
+            fetch c_est into r_est;
+            while c_est%found loop
+            begin
+                 if (r_est.cod_completo <> wcompleto_ant) then
+                    if (pi_nivel_mascara = 1) then
+                       wcod_anteriores := '0';
+                       wcod_nivel      := substr(r_est.cod_completo,1,2);
+                    else
+                        wcod_anteriores := substr(r_est.cod_completo,1,wqtd_casas2);
+                        wcod_nivel      := substr(r_est.cod_completo,(wqtd_casas2 + 1),2);
+                    end if;
+                    if (pi_nivel_mascara = 5) then
                     begin
-		         if (wNivel = 1) then
- 	       	             wCod_Anteriores := '0';
- 	       	             wCod_Nivel      := substr(r_niveis.COD_NIVEL,1,2);
-		         else
- 	       	             wCod_Anteriores := substr(r_niveis.COD_NIVEL,1,wQtd_Casas2);
- 	       	             wCod_Nivel      := substr(r_niveis.COD_NIVEL,(wQtd_Casas2 + 1),2);
-		         end if;
- 		         Begin
-     	       		      select nvl(des_nivel,'X') des_nivel
-     	       		        into wDes_nivel
-			        from g3_niveis_cadastro
-			       Where cod_mascara = pi_mascara
-			         and cod_formato = '1'
-			         and seq_nivel   = wNivel
-      			         and cod_anteriores = wCod_Anteriores
-      			         and cod_nivel = wCod_Nivel;
-      	         	   EXCEPTION
-		                WHEN NO_DATA_FOUND THEN
-                        	    wDes_nivel := 'SEM DESCRICAO';
-		         end;
-
-
-
-                    Begin
-              select COD_GRUPO
-			        ,COD_QUEBRA
-     	       into wCod_Regiao
-				   ,wCodGrupo
-		        from ge_grupos_unidades
-                  where cod_emp    = 1
-		        and cod_unidade  = r_est_venda.cod_unidade
-				 and cod_grupo in (71010,71030,71040,71050,71070);
-      	               EXCEPTION
-		         WHEN NO_DATA_FOUND THEN
-                     	    wCod_Regiao := 0;
-							wCodGrupo := 0;
-                end;
-
-
-
-              Begin
-                select des_quebra
-                  into wDes_Quebra_Regiao
-                 from ge_grupos_quebra
-                  where cod_emp    = 1
-                   and cod_quebra = wCod_Regiao
-				   and cod_grupo = wCodGrupo
-				   group by des_quebra;
-                 EXCEPTION
-                 WHEN NO_DATA_FOUND THEN
-                 wDes_Quebra_Regiao  := 'Quebra grupo unidades nao cadastrado';
-
-                end;
-
-
-                         insert into GRZW_REL_ESTOQUE_PADRAO (DES_USUARIO
-                                                             ,COD_NIVEL
-                                                             ,DES_NIVEL
-                                                             ,SEQ_NIVEL
-                                                             ,COD_EDITADO
-                                                             ,DTA_REF
-                                                             ,COD_UNIDADE
-                                                             ,DES_UNIDADE
-                                                             ,QTD_VENDA
-                                                             ,VLR_CUSTO
-                                                             ,QTD_ESTOQUE
-                                                             ,VLR_ESTOQUE
-                                                             ,QTD_ESTOQUE_PADRAO
-                                                             ,VLR_ESTOQUE_PADRAO
-                                                             ,QTD_DIRETAS
-                                                             ,VLR_DIRETAS
-															 ,COD_REGIAO
-															 ,DES_REGIAO)
-                                                      values (pi_usuario
-                                                             ,r_niveis.COD_NIVEL
-                                                             ,wDes_Nivel
-                                                             ,wNivel
-                                                             ,r_niveis.cod_editado
-                                                             ,r_niveis.DTA_REF
-                                                             ,r_niveis.cod_unidade
-                                                             ,r_niveis.DES_UNIDADE
-                                                             ,r_niveis.QTD_VENDA
-                                                             ,r_niveis.VLR_CUSTO
-                                                             ,r_niveis.QTD_ESTOQUE
-                                                             ,r_niveis.VLR_ESTOQUE
-                                                             ,r_niveis.QTD_ESTOQUE_PADRAO
-                                                             ,r_niveis.VLR_ESTOQUE_PADRAO
-                                                             ,r_niveis.QTD_DIRETAS
-                                                             ,r_niveis.VLR_DIRETAS
-															 ,wCod_Regiao
-				                                             ,wDes_Quebra_Regiao);
+                         select des_item
+                         into wdes_nivel
+                         from ie_itens
+                         where cod_item = (select cod_item
+                                           from ie_mascaras
+                                           where cod_mascara = pi_mascara
+                                           and cod_completo = r_est.cod_completo);
+                         exception
+                                  when no_data_found then
+                                       wdes_nivel := 'SEM DESCRICAO-02';
                     end;
-                    fetch c_niveis into r_niveis;
-                    end loop;
-                    close c_niveis;
-                    commit;
+                    else
+                    begin
+                         select nvl(des_nivel,'X') des_nivel
+                         into wdes_nivel
+                         from g3_niveis_cadastro
+                         where cod_mascara = pi_mascara
+                         and cod_formato = '1'
+                         and seq_nivel   = pi_nivel_mascara
+                         and cod_anteriores = wcod_anteriores
+                         and cod_nivel = wcod_nivel;
+                         exception
+                         when no_data_found then
+                              wdes_nivel := 'SEM DESCRICAO-03';
+                    end;
+                    end if;
+                    wcompleto_ant := r_est.cod_completo;
+                 end if;
 
-		    wSeq_Nivel := wSeq_Nivel - 1;
-		    wNivel     := wNivel - 1;
-                end;
-                end loop;
+                 begin
+                      select des_fantasia
+                      into wdes_unidade
+                      from ps_pessoas
+                      where cod_pessoa = r_est.cod_unidade;
+                      exception
+                               when no_data_found then
+                                    wdes_unidade := 'UNIDADE NAO CADASTRADA';
+                 end;
+
+                 begin
+                      select cod_grupo
+                             ,cod_quebra
+                      into wcod_regiao
+                           ,wcodgrupo
+                      from ge_grupos_unidades
+                      where cod_emp    = 1
+                      and cod_unidade  = r_est_venda.cod_unidade
+                      and cod_grupo in (71010,71030,71040,71050,71070);
+                      exception
+                               when no_data_found then
+                                    wcod_regiao := 0;
+                                    wcodgrupo := 0;
+                 end;
+
+                 begin
+                      select des_quebra
+                      into wdes_quebra_regiao
+                      from ge_grupos_quebra
+                      where cod_emp    = 1
+                      and cod_quebra = wcod_regiao
+                      and cod_grupo = wcodgrupo
+                      group by des_quebra;
+                      exception
+                               when no_data_found then
+                                    wdes_quebra_regiao := 'Quebra grupo unidades nao cadastrado';
+                 end;
+
+                 insert into grzw_rel_estoque_padrao (des_usuario
+                                                      ,cod_nivel
+                                                      ,des_nivel
+                                                      ,seq_nivel
+                                                      ,cod_editado
+                                                      ,dta_ref
+                                                      ,cod_unidade
+                                                      ,des_unidade
+                                                      ,qtd_venda
+                                                      ,vlr_custo
+                                                      ,qtd_estoque
+                                                      ,vlr_estoque
+                                                      ,qtd_estoque_padrao
+                                                      ,vlr_estoque_padrao
+                                                      ,qtd_diretas
+                                                      ,vlr_diretas
+                                                      ,cod_regiao
+                                                      ,des_regiao)
+                 values (pi_usuario
+                         ,r_est.cod_completo
+                         ,wdes_nivel
+                         ,pi_nivel_mascara
+                         ,r_est.cod_editado
+                         ,pi_dta_ref
+                         ,r_est.cod_unidade
+                         ,wdes_unidade
+                         ,0,0
+                         ,r_est.qtd_estoque
+                         ,r_est.vlr_estoque
+                         ,0,0,0,0
+                         ,wcod_regiao
+                         ,wdes_quebra_regiao);
+            end; -- while c_est%found loop
+            fetch c_est into r_est;
+            end loop; -- while c_est%found loop
+            close c_est;
+            commit;
+
+            wcompleto_ant := '00';
+            open c_est_padrao;
+            fetch c_est_padrao into r_est_padrao;
+            while c_est_padrao%found loop
+            begin
+                 if (r_est_padrao.cod_completo <> wcompleto_ant) then
+                    if (pi_nivel_mascara = 1) then
+                       wcod_anteriores := '0';
+                       wcod_nivel      := substr(r_est_padrao.cod_completo,1,2);
+                    else
+                        wcod_anteriores := substr(r_est_padrao.cod_completo,1,wqtd_casas2);
+                        wcod_nivel      := substr(r_est_padrao.cod_completo,(wqtd_casas2 + 1),2);
+                    end if;
+                    if (pi_nivel_mascara = 5) then
+                    begin
+                         select des_item
+                         into wdes_nivel
+                         from ie_itens
+                         where cod_item = (select cod_item
+                                           from ie_mascaras
+                                           where cod_mascara = pi_mascara
+                                           and cod_completo = r_est_padrao.cod_completo);
+                         exception
+                                  when no_data_found then
+                                       wdes_nivel := 'SEM DESCRICAO-04';
+                    end;
+                    else
+                    begin
+                         select nvl(des_nivel,'X') des_nivel
+                         into wdes_nivel
+                         from g3_niveis_cadastro
+                         where cod_mascara = pi_mascara
+                         and cod_formato = '1'
+                         and seq_nivel   = pi_nivel_mascara
+                         and cod_anteriores = wcod_anteriores
+                         and cod_nivel = wcod_nivel;
+                         exception
+                                  when no_data_found then
+                                       wdes_nivel := 'SEM DESCRICAO-05';
+                    end;
+                    end if;
+                    wcompleto_ant := r_est_padrao.cod_completo;
+                 end if;
+
+                 begin
+                      select des_fantasia
+                      into wdes_unidade
+                      from ps_pessoas
+                      where cod_pessoa = r_est_padrao.cod_unidade;
+                      exception
+                               when no_data_found then
+                                    wdes_unidade := 'UNIDADE NAO CADASTRADA';
+                 end;
+
+                 begin
+                      select cod_grupo
+                             ,cod_quebra
+                      into wcod_regiao
+                           ,wcodgrupo
+                      from ge_grupos_unidades
+                      where cod_emp    = 1
+                      and cod_unidade  = r_est_venda.cod_unidade
+                      and cod_grupo in (71010,71030,71040,71050,71070);
+                      exception
+                               when no_data_found then
+                                    wcod_regiao := 0;
+                                    wcodgrupo := 0;
+                 end;
+
+                 begin
+                      select des_quebra
+                      into wdes_quebra_regiao
+                      from ge_grupos_quebra
+                      where cod_emp    = 1
+                      and cod_quebra = wcod_regiao
+                      and cod_grupo = wcodgrupo
+                      group by des_quebra;
+                      exception
+                               when no_data_found then
+                                    wdes_quebra_regiao := 'Quebra grupo unidades nao cadastrado';
+                 end;
+
+                 insert into grzw_rel_estoque_padrao (des_usuario
+                                                      ,cod_nivel
+                                                      ,des_nivel
+                                                      ,seq_nivel
+                                                      ,cod_editado
+                                                      ,dta_ref
+                                                      ,cod_unidade
+                                                      ,des_unidade
+                                                      ,qtd_venda
+                                                      ,vlr_custo
+                                                      ,qtd_estoque
+                                                      ,vlr_estoque
+                                                      ,qtd_estoque_padrao
+                                                      ,vlr_estoque_padrao
+                                                      ,qtd_diretas
+                                                      ,vlr_diretas
+                                                      ,cod_regiao
+                                                      ,des_regiao)
+                 values (pi_usuario
+                         ,r_est_padrao.cod_completo
+                         ,wdes_nivel
+                         ,pi_nivel_mascara
+                         ,r_est_padrao.cod_editado
+                         ,pi_dta_ref
+                         ,r_est_padrao.cod_unidade
+                         ,wdes_unidade
+                         ,0,0,0,0
+                         ,r_est_padrao.qtd_estoque_padrao
+                         ,r_est_padrao.vlr_estoque_padrao
+                         ,0,0
+                         ,wcod_regiao
+                         ,wdes_quebra_regiao);
+            end; -- while c_est_padrao%found loop
+            fetch c_est_padrao into r_est_padrao;
+            end loop; -- while c_est_padrao%found loop
+            close c_est_padrao;
+            commit;
+
+            wcompleto_ant := '00';
+            open c_est_direta;
+            fetch c_est_direta into r_est_direta;
+            while c_est_direta%found loop
+            begin
+                 if (r_est_direta.cod_completo <> wcompleto_ant) then
+                    if (pi_nivel_mascara = 1) then
+                       wcod_anteriores := '0';
+                       wcod_nivel      := substr(r_est_direta.cod_completo,1,2);
+                    else
+                        wcod_anteriores := substr(r_est_direta.cod_completo,1,wqtd_casas2);
+                        wcod_nivel      := substr(r_est_direta.cod_completo,(wqtd_casas2 + 1),2);
+                    end if;
+                    if (pi_nivel_mascara = 5) then
+                    begin
+                         select des_item
+                         into wdes_nivel
+                         from ie_itens
+                         where cod_item = (select cod_item
+                                           from ie_mascaras
+                                          where cod_mascara = pi_mascara
+                                          and cod_completo = r_est_direta.cod_completo);
+                         exception
+                                  when no_data_found then
+                                       wdes_nivel := 'SEM DESCRICAO-06';
+                    end;
+                    else
+                    begin
+                         select nvl(des_nivel,'X') des_nivel
+                         into wdes_nivel
+                         from g3_niveis_cadastro
+                         where cod_mascara = pi_mascara
+                         and cod_formato = '1'
+                         and seq_nivel   = pi_nivel_mascara
+                         and cod_anteriores = wcod_anteriores
+                         and cod_nivel = wcod_nivel;
+                         exception
+                                  when no_data_found then
+                                       wdes_nivel := 'SEM DESCRICAO-07';
+                    end;
+                    end if;
+                    wcompleto_ant := r_est_direta.cod_completo;
+                 end if;
+
+                 begin
+                      select des_fantasia
+                      into wdes_unidade
+                      from ps_pessoas
+                      where cod_pessoa = r_est_direta.cod_unidade;
+                      exception
+                               when no_data_found then
+                                    wdes_unidade := 'UNIDADE NAO CADASTRADA';
+                 end;
+
+                 begin
+                      select cod_grupo
+                             ,cod_quebra
+                      into wcod_regiao
+                           ,wcodgrupo
+                      from ge_grupos_unidades
+                      where cod_emp    = 1
+                      and cod_unidade  = r_est_venda.cod_unidade
+                      and cod_grupo in (71010,71030,71040,71050,71070);
+                      exception
+                               when no_data_found then
+                                    wcod_regiao := 0;
+                                    wcodgrupo := 0;
+                 end;
+
+                 begin
+                      select des_quebra
+                      into wdes_quebra_regiao
+                      from ge_grupos_quebra
+                      where cod_emp    = 1
+                      and cod_quebra = wcod_regiao
+                      and cod_grupo = wcodgrupo
+                      group by des_quebra;
+                      exception
+                               when no_data_found then
+                                    wdes_quebra_regiao := 'Quebra grupo unidades nao cadastrado';
+                 end;
+
+                 insert into grzw_rel_estoque_padrao (des_usuario
+                                                      ,cod_nivel
+                                                      ,des_nivel
+                                                      ,seq_nivel
+                                                      ,cod_editado
+                                                      ,dta_ref
+                                                      ,cod_unidade
+                                                      ,des_unidade
+                                                      ,qtd_venda
+                                                      ,vlr_custo
+                                                      ,qtd_estoque
+                                                      ,vlr_estoque
+                                                      ,qtd_estoque_padrao
+                                                      ,vlr_estoque_padrao
+                                                      ,qtd_diretas
+                                                      ,vlr_diretas
+                                                      ,cod_regiao
+                                                      ,des_regiao)
+                 values (pi_usuario
+                         ,r_est_direta.cod_completo
+                         ,wdes_nivel
+                         ,pi_nivel_mascara
+                         ,r_est_direta.cod_editado
+                         ,pi_dta_ref
+                         ,r_est_direta.cod_unidade
+                         ,wdes_unidade
+                         ,0,0,0,0,0,0
+                         ,r_est_direta.qtd_diretas
+                         ,r_est_direta.vlr_diretas
+                         ,wcod_regiao
+                         ,wdes_quebra_regiao);
+            end; -- while c_est_direta%found loop
+            fetch c_est_direta into r_est_direta;
+            end loop; -- while c_est_direta%found loop
+            close c_est_direta;
+            commit;
+
+            wseq_nivel := pi_nivel_mascara;
+            wnivel     := pi_nivel_mascara - 1;
+            while wnivel > 0 loop
+            begin
+                 if (wnivel = 1) then
+                    wqtd_casas  := 2;
+                    wqtd_casas1 := 2;
+                    wqtd_casas2 := 0;
+                 elsif (wnivel = 2) then
+                       wqtd_casas  := 4;
+                       wqtd_casas1 := 5;
+                       wqtd_casas2 := 2;
+                 elsif (wnivel = 3) then
+                       wqtd_casas  := 6;
+                       wqtd_casas1 := 8;
+                       wqtd_casas2 := 4;
+                 else
+                     wqtd_casas  := 8;
+                     wqtd_casas1 := 11;
+                     wqtd_casas2 := 6;
+                end if;
+
+                open c_niveis;
+                fetch c_niveis into r_niveis;
+                while c_niveis%found loop
+                begin
+                     if (wnivel = 1) then
+                        wcod_anteriores := '0';
+                        wcod_nivel      := substr(r_niveis.cod_nivel,1,2);
+                     else
+                         wcod_anteriores := substr(r_niveis.cod_nivel,1,wqtd_casas2);
+                         wcod_nivel      := substr(r_niveis.cod_nivel,(wqtd_casas2 + 1),2);
+                     end if;
+
+                     begin
+                          select nvl(des_nivel,'X') des_nivel
+                          into wdes_nivel
+                          from g3_niveis_cadastro
+                          where cod_mascara = pi_mascara
+                          and cod_formato = '1'
+                          and seq_nivel   = wnivel
+                          and cod_anteriores = wcod_anteriores
+                          and cod_nivel = wcod_nivel;
+                          exception
+                          when no_data_found then
+                               wdes_nivel := 'SEM DESCRICAO-08';
+                     end;
+
+                     begin
+                          select cod_grupo
+                                 ,cod_quebra
+                          into wcod_regiao
+                               ,wcodgrupo
+                          from ge_grupos_unidades
+                          where cod_emp    = 1
+                          and cod_unidade  = r_est_venda.cod_unidade
+                          and cod_grupo in (71010,71030,71040,71050,71070);
+                          exception
+                                   when no_data_found then
+                                        wcod_regiao := 0;
+                                        wcodgrupo := 0;
+                     end;
+
+                     begin
+                          select des_quebra
+                          into wdes_quebra_regiao
+                          from ge_grupos_quebra
+                          where cod_emp    = 1
+                          and cod_quebra = wcod_regiao
+                          and cod_grupo = wcodgrupo
+                          group by des_quebra;
+                          exception
+                                   when no_data_found then
+                                        wdes_quebra_regiao := 'Quebra grupo unidades nao cadastrado';
+                     end;
+
+
+                     insert into grzw_rel_estoque_padrao (des_usuario
+                                                          ,cod_nivel
+                                                          ,des_nivel
+                                                          ,seq_nivel
+                                                          ,cod_editado
+                                                          ,dta_ref
+                                                          ,cod_unidade
+                                                          ,des_unidade
+                                                          ,qtd_venda
+                                                          ,vlr_custo
+                                                          ,qtd_estoque
+                                                          ,vlr_estoque
+                                                          ,qtd_estoque_padrao
+                                                          ,vlr_estoque_padrao
+                                                          ,qtd_diretas
+                                                          ,vlr_diretas
+                                                          ,cod_regiao
+                                                          ,des_regiao)
+                     values (pi_usuario
+                             ,r_niveis.cod_nivel
+                             ,wdes_nivel
+                             ,wnivel
+                             ,r_niveis.cod_editado
+                             ,r_niveis.dta_ref
+                             ,r_niveis.cod_unidade
+                             ,r_niveis.des_unidade
+                             ,r_niveis.qtd_venda
+                             ,r_niveis.vlr_custo
+                             ,r_niveis.qtd_estoque
+                             ,r_niveis.vlr_estoque
+                             ,r_niveis.qtd_estoque_padrao
+                             ,r_niveis.vlr_estoque_padrao
+                             ,r_niveis.qtd_diretas
+                             ,r_niveis.vlr_diretas
+                             ,wcod_regiao
+                             ,wdes_quebra_regiao);
+                end; -- while c_niveis%found loop
+                fetch c_niveis into r_niveis;
+                end loop; -- while c_niveis%found loop
+                close c_niveis;
                 commit;
 
-  END;
-END GRZ_REL_ESTOQUE_PADRAO_SP;
+                wSeq_Nivel := wSeq_Nivel - 1;
+                wNivel     := wNivel - 1;
+            end; -- while wnivel > 0 loop
+            end loop; -- while wnivel > 0 loop
+            commit;
+       end;
+end grz_rel_estoque_padrao_sp;
