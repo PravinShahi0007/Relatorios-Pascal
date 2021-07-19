@@ -287,6 +287,7 @@ object frmGeraKPI: TfrmGeraKPI
       'Password=nl'
       'DriverID=Ora')
     Connected = True
+    LoginPrompt = False
     Left = 203
     Top = 4
   end

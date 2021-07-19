@@ -19,6 +19,8 @@
                              modificacao da procedure GRZ_REL_KPI_VENDAS
                              para selecionar os valores (seguro e elegiveis)
                              para calcular conversao do seguro.
+  Antonio JUL/2021 Alteracao Correcao do SQL de quebra por grupo, deixando fixo
+  Jaisson                    o grupo 71070
 
   Parametros
   pi_Opcao - Parametros da insercao de dados.
@@ -218,7 +220,7 @@ begin
           dbms_sql.close_cursor(v_cur);
 
           v_cur := dbms_sql.open_cursor;
-          dbms_sql.parse(v_cur,'alter session set NLS_NUMERIC_CHARACTERS = '',.''',dbms_sql.native);
+          dbms_sql.parse(v_cur,'alter session set nls_numeric_characters = '',.''',dbms_sql.native);
           v_result := dbms_sql.execute(v_cur);
           dbms_sql.close_cursor(v_cur);
 
@@ -471,6 +473,7 @@ begin
                        from ge_grupos_quebra
                        where cod_emp    = 1
                        --and cod_grupo  = r_venda.cod_grupo
+                       and cod_grupo in (71070)
                        and cod_quebra = wcod_regiaonova
                        group by des_quebra;
                        exception
@@ -485,8 +488,8 @@ begin
                         from ge_grupos_quebra
                         where cod_emp    = 1
                         --and cod_grupo  = r_venda.cod_grupo
-                        and cod_quebra = wcod_regiao
-                        group by des_quebra;
+                        and cod_grupo in (71070)
+                        and cod_quebra = wcod_regiao;
                         exception
                                  when no_data_found then
                                       wdes_quebra := 'Quebra grupo unidades nao cadastrado';
