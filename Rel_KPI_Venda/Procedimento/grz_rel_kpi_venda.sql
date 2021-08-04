@@ -21,13 +21,14 @@
                              para calcular conversao do seguro.
   Antonio JUL/2021 Alteracao Correcao do SQL de quebra por grupo, deixando fixo
   Jaisson                    o grupo 71070
+  Antonio          Alteracao Performace: Retirada da funcao to_date() dos campos
+                             data (originados de tabelas ou cursores)
 
   Parametros
   pi_Opcao - Parametros da insercao de dados.
   Parametros: Empresa#DataInicial#DataFinal#UnidadeInicial#UnidadeFinal#
 ------------------------------------------------------------------------*/
 create or replace procedure grz_rel_kpi_venda (pi_opcao in varchar2)
---create or replace procedure grz_rel_kpi_venda_teste (pi_opcao in varchar2)
 is
 begin
      declare
@@ -298,11 +299,15 @@ begin
                     and b.cod_emp     = pi_empresa
                     and b.ind_status  = 1
                     and b.cod_cliente = f.cod_pessoa
-                    and trunc((months_between(b.dta_emissao, to_date(f.dta_nasc,'dd/mm/yyyy')))/12) >= 18
-                    and trunc((months_between(b.dta_emissao, to_date(f.dta_nasc,'dd/mm/yyyy')))/12) <= 69
+                    --and trunc((months_between(b.dta_emissao, to_date(f.dta_nasc,'dd/mm/yyyy')))/12) >= 18
+                    --and trunc((months_between(b.dta_emissao, to_date(f.dta_nasc,'dd/mm/yyyy')))/12) <= 69
+                    and ((months_between(b.dta_emissao, f.dta_nasc))/12) >= 18
+                    and ((months_between(b.dta_emissao, f.dta_nasc))/12) <= 69
                     and b.cod_unidade = wcodunidade
-                    and b.dta_emissao >= to_date(r_venda.dta_movimento,'dd/mm/yyyy')
-                    and b.dta_emissao <= to_date(r_venda.dta_movimento,'dd/mm/yyyy')
+                    --and b.dta_emissao >= to_date(r_venda.dta_movimento,'dd/mm/yyyy')
+                    --and b.dta_emissao <= to_date(r_venda.dta_movimento,'dd/mm/yyyy')
+                    and b.dta_emissao >= r_venda.dta_movimento
+                    and b.dta_emissao <= r_venda.dta_movimento
                     and b.cod_cliente_milhagem is null
                     and exists (select 1 from cr_notas_origem cr
                                 where b.num_seq   = cr.num_nota
@@ -332,8 +337,10 @@ begin
                     and nsd.cod_emp = 1
                     and nsd.ind_status = 1
                     and nsd.cod_unidade = r_venda.cod_unidade
-                    and to_date(nsd.dta_emissao,'dd/mm/yyyy') >= to_date(r_venda.dta_movimento,'dd/mm/yyyy')
-                    and to_date(nsd.dta_emissao,'dd/mm/yyyy') <= to_date(r_venda.dta_movimento,'dd/mm/yyyy');
+                    --and to_date(nsd.dta_emissao,'dd/mm/yyyy') >= to_date(r_venda.dta_movimento,'dd/mm/yyyy')
+                    --and to_date(nsd.dta_emissao,'dd/mm/yyyy') <= to_date(r_venda.dta_movimento,'dd/mm/yyyy');
+                    and nsd.dta_emissao >= r_venda.dta_movimento
+                    and nsd.dta_emissao <= r_venda.dta_movimento;
                     exception
                              when no_data_found then
                                   wqtd_seguro_cpp := 0;
@@ -359,14 +366,18 @@ begin
                     and a.cod_maquina = b.cod_maquina
                     and b.cod_emp     = 1
                     and b.ind_status  = 1
-                    and b.num_modelo  = 90
+                    and b.num_modelo  = '90'
                     and b.cod_cliente = f.cod_pessoa
-                    and trunc((months_between(b.dta_emissao, to_date(f.DTA_NASC,'dd/mm/yyyy')))/12) >= 18
-                    and trunc((months_between(b.dta_emissao, to_date(f.DTA_NASC,'dd/mm/yyyy')))/12) <= 69
+                    --and trunc((months_between(b.dta_emissao, to_date(f.dta_nasc,'dd/mm/yyyy')))/12) >= 18
+                    --and trunc((months_between(b.dta_emissao, to_date(f.dta_nasc,'dd/mm/yyyy')))/12) <= 69
+                    and trunc(months_between(b.dta_emissao, f.dta_nasc)/12) >= 18
+                    and trunc(months_between(b.dta_emissao, f.dta_nasc)/12) <= 69
                     and b.cod_unidade = c.cod_unidade
                     and b.cod_unidade = r_venda.cod_unidade
-                    and b.dta_emissao >= to_date(r_venda.dta_movimento,'dd/mm/yyyy')
-                    and b.dta_emissao <= to_date(r_venda.dta_movimento,'dd/mm/yyyy');
+                    --and b.dta_emissao >= to_date(r_venda.dta_movimento,'dd/mm/yyyy')
+                    --and b.dta_emissao <= to_date(r_venda.dta_movimento,'dd/mm/yyyy');
+                    and b.dta_emissao >= r_venda.dta_movimento
+                    and b.dta_emissao <= r_venda.dta_movimento;
                     exception
                              when no_data_found then
                                   wqtd_elegiveis_cpp := 0;
@@ -591,4 +602,3 @@ begin
           commit;
      end;
 end grz_rel_kpi_venda;
---end grz_rel_kpi_venda_teste;
