@@ -103,7 +103,7 @@ declare
               and b.cod_completo >= pi_codigo_ini
               and b.cod_completo <= pi_codigo_fim
               and ge.cod_unidade = uni.cod_unidade_de(+)
-              and decode(ge.cod_unidade,uni.cod_unidade_de,uni.cod_unidade_para,ge.cod_unidade)    = a.cod_unidade
+              and decode(ge.cod_unidade,uni.cod_unidade_de,uni.cod_unidade_para,ge.cod_unidade) = a.cod_unidade
               and a.dta_mvto = pi_dta_ref
               and a.cod_emp = ge.cod_emp
               and ge.cod_grupo = pi_grupo
