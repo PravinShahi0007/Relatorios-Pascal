@@ -2,68 +2,68 @@ create or replace procedure grz_rel_margem_lojas_dia2_sp (pi_opcao in varchar2)
 is
 begin
 declare
-       v_result                    integer;
-       v_cur                       integer;
-       pi_empresa                  number;
-       pi_grupo                    number;
-       pi_dta_ini                  varchar2(10);
-       pi_dta_fim                  varchar2(10);
-       pi_dta_comp_ini             varchar2(10);
-       pi_dta_comp_fim             varchar2(10);
-       pi_mascara                  number;
-       pi_rede                     varchar2(02);
-       pi_codigo_ini               varchar2(12);
-       pi_codigo_fim               varchar2(12);
-       pi_nivel_mascara            number;
-       pi_lista_unidade            number;
-       pi_desc_devolucao           number;
-       pi_totais                   number;
-       pi_usuario                  varchar2(30);
-       pi_unidade_ini              number;
-       pi_unidade_fim              number;
+       v_result                  integer;
+       v_cur                     integer;
+       pi_empresa                number;
+       pi_grupo                  number;
+       pi_dta_ini                varchar2(10);
+       pi_dta_fim                varchar2(10);
+       pi_dta_comp_ini           varchar2(10);
+       pi_dta_comp_fim           varchar2(10);
+       pi_mascara                number;
+       pi_rede                   varchar2(02);
+       pi_codigo_ini             varchar2(12);
+       pi_codigo_fim             varchar2(12);
+       pi_nivel_mascara          number;
+       pi_lista_unidade          number;
+       pi_desc_devolucao         number;
+       pi_totais                 number;
+       pi_usuario                varchar2(30);
+       pi_unidade_ini            number;
+       pi_unidade_fim            number;
 
-       wi                          number;
-       wf                          number;
-       wcompleto                   varchar2(20);
-       wcompleto_ant               varchar2(20);
-       weditado                    varchar2(20);
-       wcod_anteriores             varchar2(20);
-       wcod_nivel                  varchar2(20);
-       wdes_nivel                  varchar2(50);
-       wdes_grupo                  varchar2(50);
-       wdes_quebra                 varchar2(50);
-       wdes_unidade                varchar2(50);
-       woper_devolucoes            varchar2(50);
-       wcod_quebra                 number;
-       wqtd_casas                  number;
-       wqtd_casas1                 number;
-       wqtd_casas2                 number;
-       wseq_nivel                  number;
-       wnivel                      number;
-       wnivel_t                    number;
-       wmargem                     number(18,2);
-       wvlr_venda_liq              number(18,2);
-       wvlr_venda_liq_ant          number(18,2);
-       wcresc_qtd                  number(10,2);
-       wcresc_venda                number(10,2);
-       wcresc_venda_liq            number(10,2);
-       wtot_qtd_venda_rede         number(18,2);
-       wtot_vlr_venda_rede         number(18,2);
-       wtot_vlr_venda_liq_rede     number(18,2);
-       wpart_qtd_venda_nivel       number(5,2);
-       wpart_vlr_venda_nivel       number(15,2);
-       wpart_vlr_venda_liq_nivel   number(5,2);
-       wpart_qtd_venda_rede        number(5,2);
-       wpart_vlr_venda_rede        number(5,2);
-       wpart_vlr_venda_liq_rede    number(5,2);
-       wpart_qtd_venda_geral       number(5,2);
-       wpart_vlr_venda_geral       number(5,2);
-       wpart_vlr_venda_liq_geral   number(5,2);
-       wdta_ref                    varchar2(10);
-       wcod_grupo                  number;
-       wvlrtestador                number(20,2);
+       wi                        number;
+       wf                        number;
+       wcompleto                 varchar2(20);
+       wcompleto_ant             varchar2(20);
+       weditado                  varchar2(20);
+       wcod_anteriores           varchar2(20);
+       wcod_nivel                varchar2(20);
+       wdes_nivel                varchar2(50);
+       wdes_grupo                varchar2(50);
+       wdes_quebra               varchar2(50);
+       wdes_unidade              varchar2(50);
+       woper_devolucoes          varchar2(50);
+       wcod_quebra               number;
+       wqtd_casas                number;
+       wqtd_casas1               number;
+       wqtd_casas2               number;
+       wseq_nivel                number;
+       wnivel                    number;
+       wnivel_t                  number;
+       wmargem                   number(18,2);
+       wvlr_venda_liq            number(18,2);
+       wvlr_venda_liq_ant        number(18,2);
+       wcresc_qtd                number(10,2);
+       wcresc_venda              number(10,2);
+       wcresc_venda_liq          number(10,2);
+       wtot_qtd_venda_rede       number(18,2);
+       wtot_vlr_venda_rede       number(18,2);
+       wtot_vlr_venda_liq_rede   number(18,2);
+       wpart_qtd_venda_nivel     number(5,2);
+       wpart_vlr_venda_nivel     number(15,2);
+       wpart_vlr_venda_liq_nivel number(5,2);
+       wpart_qtd_venda_rede      number(5,2);
+       wpart_vlr_venda_rede      number(5,2);
+       wpart_vlr_venda_liq_rede  number(5,2);
+       wpart_qtd_venda_geral     number(5,2);
+       wpart_vlr_venda_geral     number(5,2);
+       wpart_vlr_venda_liq_geral number(5,2);
+       wdta_ref                  varchar2(10);
+       wcod_grupo                number;
+       wvlrtestador              number(20,2);
 
-       saida                       exception;
+       saida                     exception;
 
 
        -- cursor pega os valores
@@ -78,7 +78,7 @@ declare
                      ,sum(decode(a.tip_lancamento,2,nvl(d.vlr_pis,0),1,(nvl(a.vlr_pis,0) * -1),0)) vlr_pis
                      ,sum(decode(a.tip_lancamento,2,nvl(d.vlr_cofins,0),1,(nvl(a.vlr_cofins,0) * -1),0)) vlr_cofins
                      ,sum(decode(a.tip_lancamento,2,nvl(a.vlr_medio_emp,0),1,(nvl(a.vlr_medio_emp,0) * -1),0)) vlr_custo
-                     ,sum(decode(es.ind_saldo,'s',decode(a.tip_lancamento,2,nvl(a.vlr_presente,0),1,((nvl(a.vlr_total,0)) * -1),0),0)) vlr_venda_saldo
+                     ,sum(decode(es.ind_saldo,'S',decode(a.tip_lancamento,2,nvl(a.vlr_presente,0),1,((nvl(a.vlr_total,0)) * -1),0),0)) vlr_venda_saldo
               from ce_diarios a
                    ,ie_mascaras c
                    ,ns_itens d
@@ -783,598 +783,580 @@ declare
             wf := instr(pi_opcao, '#', 1, 17);
             pi_unidade_fim := to_number(substr(pi_opcao,(wi+1),(wf-wi-1)));
 
-   	       /**** Limpa a tabela temporaria ****/
-	       DELETE FROM GRZW_REL_DESCONTOS_LOJAS_NL
-	       WHERE upper(Des_Usuario) = upper(pi_Usuario);
-	       COMMIT;
+            -- Limpa a tabela temporaria
+            delete from grzw_rel_descontos_lojas_nl
+            where upper(des_usuario) = upper(pi_usuario);
+            commit;
 
- 		Begin
-     	            select des_grupo
-     	       	      into wDes_Grupo
-		      from ge_grupos
-		     Where cod_emp = pi_empresa
-		       and cod_grupo = pi_grupo;
-      	           EXCEPTION
-		      WHEN NO_DATA_FOUND THEN
-                       	wDes_Grupo := 'GRUPO DE UNIDADES NAO CADASTRADO';
-		end;
+       begin
+            select des_grupo
+            into wdes_grupo
+            from ge_grupos
+            where cod_emp = pi_empresa
+            and cod_grupo = pi_grupo;
+            exception
+                     when no_data_found then
+                          wdes_grupo := 'GRUPO DE UNIDADES NAO CADASTRADO';
+       end;
 
-	      /****  1=REDE   2=SETOR   3=GRUPO   4=SUBGRUPO 5=ITEM  ****/
-		if (pi_nivel_mascara = 1) then
-			wQtd_Casas  := 2;
-			wQtd_Casas1 := 2;
-			wQtd_Casas2 := 0;
-		elsif (pi_nivel_mascara = 2) then
-			wQtd_Casas  := 4;
-			wQtd_Casas1 := 5;
-			wQtd_Casas2 := 2;
-		elsif (pi_nivel_mascara = 3) then
-			wQtd_Casas  := 6;
-			wQtd_Casas1 := 8;
-			wQtd_Casas2 := 4;
-        elsif (pi_nivel_mascara = 4) then
-			wQtd_Casas  := 8;
-			wQtd_Casas1 := 11;
-			wQtd_Casas2 := 6;
-			else
-			wQtd_Casas  := 12; --11;
-			wQtd_Casas1 := 20; --15;
-			wQtd_Casas2 := 8;
+       -- 1=REDE, 2=SETOR, 3=GRUPO, 4=SUBGRUPO e 5=ITEM
+       if (pi_nivel_mascara = 1) then
+          wqtd_casas  := 2;
+          wqtd_casas1 := 2;
+          wqtd_casas2 := 0;
+       elsif (pi_nivel_mascara = 2) then
+             wqtd_casas  := 4;
+             wqtd_casas1 := 5;
+             wqtd_casas2 := 2;
+       elsif (pi_nivel_mascara = 3) then
+             wqtd_casas  := 6;
+             wqtd_casas1 := 8;
+             wqtd_casas2 := 4;
+       elsif (pi_nivel_mascara = 4) then
+             wqtd_casas  := 8;
+             wqtd_casas1 := 11;
+             wqtd_casas2 := 6;
+       else
+           wqtd_casas  := 12; --11;
+           wqtd_casas1 := 20; --15;
+           wqtd_casas2 := 8;
+       end if;
 
-		end if;
+       woper_devolucoes := '';
+       if (pi_desc_devolucao = 1) then
+          woper_devolucoes := '7106';
+       end if;
 
-		wOper_Devolucoes := '';
+       wcompleto_ant := '00';
 
-		if (pi_Desc_Devolucao = 1) then
-	            wOper_Devolucoes := '7106';
-	    end if;
+       open c_itens;
+       fetch c_itens into r_itens;
+       while c_itens%found loop
+       begin
+            wcompleto := substr(r_itens.cod_completo,1,wqtd_casas);
+            weditado  := substr(r_itens.cod_editado,1,wqtd_casas1);
 
-	        wCompleto_Ant := '00';
+            if (wCompleto <> wCompleto_Ant) then
+               if (pi_nivel_mascara = 1) then
+                  wCod_Anteriores := '0';
+                  wCod_Nivel      := substr(r_itens.COD_COMPLETO,1,2);
+               else
+                   wCod_Anteriores := substr(r_itens.COD_COMPLETO,1,wQtd_Casas2);
+                   wCod_Nivel      := substr(r_itens.COD_COMPLETO,(wQtd_Casas2 + 1),2);
+               end if;
 
-	       open c_itens;
-               fetch c_itens into r_itens;
-               while c_itens%found loop
+               if (pi_nivel_mascara = 5) then
                begin
-
-
- 	       	    wCompleto := substr(r_itens.COD_COMPLETO,1,wQtd_Casas);
- 	       	    wEditado  := substr(r_itens.COD_EDITADO,1,wQtd_Casas1);
-
-		    if (wCompleto <> wCompleto_Ant) then
-		        if (pi_nivel_mascara = 1) then
- 	       	            wCod_Anteriores := '0';
- 	       	            wCod_Nivel      := substr(r_itens.COD_COMPLETO,1,2);
-		        else
- 	       	            wCod_Anteriores := substr(r_itens.COD_COMPLETO,1,wQtd_Casas2);
- 	       	            wCod_Nivel      := substr(r_itens.COD_COMPLETO,(wQtd_Casas2 + 1),2);
-		        end if;
-
-		        if (pi_nivel_mascara = 5) then
-		        BEGIN
- 		            select nvl(a.des_item,'X') des_nivel
-		              into wDes_nivel
-		              from ie_itens a, ie_mascaras b
-                             where a.cod_item = b.cod_item
-                               and a.cod_gu = 1
-                               and b.cod_mascara = pi_mascara
-                               and b.cod_completo = r_itens.COD_COMPLETO;
-		      	     EXCEPTION
-			      	  WHEN NO_DATA_FOUND THEN
-			       	   	wDes_nivel := 'SEM DESCRICAO';
-		        end;
-                        else
-     	       	        begin
-     	       	            select nvl(des_nivel,'X') des_nivel
-     	       	     	      into wDes_nivel
-			      from g3_niveis_cadastro
-		             Where cod_mascara = pi_mascara
-			       and cod_formato = '1'
-			       and seq_nivel   = pi_nivel_mascara
-      			       and cod_anteriores = wCod_Anteriores
-      			       and cod_nivel = wCod_Nivel;
-      			    EXCEPTION
-			         WHEN NO_DATA_FOUND THEN
-			              wDes_nivel := 'SEM DESCRICAO';
-
-      	      	        end;
-      	      	        end if;
-
-		        wCompleto_Ant := wCompleto;
-		    end if;
-
-		   if pi_lista_unidade = 1 then
- 		        Begin
-     	       		   select des_fantasia
-     	       		     into wDes_Unidade
-			     from ps_pessoas
-			    Where cod_pessoa = r_itens.cod_unidade;
-      	         	  EXCEPTION
-		             WHEN NO_DATA_FOUND THEN
-                        	wDes_Unidade := 'UNIDADE NAO CADASTRADA';
-		        end;
-
- 		        Begin
-     	       		   select a.cod_quebra
-     	       		         ,b.des_quebra
-     	       		     into wCod_Quebra
-     	       		         ,wDes_Quebra
-			     from ge_grupos_unidades a
-			         ,ge_grupos_quebra b
-			    Where a.cod_emp = b.cod_emp
-			      and a.cod_grupo = b.cod_grupo
-			      and a.cod_quebra = b.cod_quebra
-			      and a.cod_unidade = r_itens.cod_unidade
-			      and a.cod_grupo = pi_grupo
-			      and a.cod_emp = pi_empresa;
-      	         	  EXCEPTION
-		             WHEN NO_DATA_FOUND THEN
-                        	wCod_Quebra := 0;
-                        	wDes_Quebra := 'DESCRICAO QUEBRA NAO CADASTRADA';
-		        end;
-                    else
-		        wCod_Quebra  := 0;
-		        wDes_Quebra  := '';
-		        wDes_Unidade := '';
-                    end if;
-
-               /* REV comentado pois nÂ¿o precisara colocar neste relatorio
-                   if ((pi_lista_unidade = 1) and (pi_nivel_mascara = 1)) then
-                    begin
-                    	select sum(nvl(es.VLR_ESTOQUE_ANT,0)) vlr_est_ant
-                              ,sum(nvl(es.VLR_MEDIO_EMP,0)) vlr_medio_emp
-                              ,sum(nvl(es.vlr_custo,0)) vlr_custo_rev
-                          Into wVLR_ESTOQUE_ANT
-                              ,wVLR_MEDIO_EMP
-                              ,wVLR_CUSTO_REV
-                          from ie_mascaras c
-                              ,es_0124_ce_estmedio es
-                         where es.cod_item      = c.cod_item
-                           and c.cod_mascara    = pi_mascara
-	                   and c.cod_completo  >= pi_codigo_ini
-	                   and c.cod_completo  <= pi_codigo_fim
-                           and es.cod_unidade   = r_itens.cod_unidade
-                           and es.dta_mvto      = to_date( '01/'||substr(pi_Dta_Ini,4,7) , 'dd/mm/yyyy');
-                     EXCEPTION
-		          WHEN NO_DATA_FOUND THEN
-                               wVLR_ESTOQUE_ANT := 0;
-                               wVLR_MEDIO_EMP   := 0;
-                               wVLR_CUSTO_REV   := 0;
-                    end;
-                   elsif (pi_lista_unidade = 1) then
-                    begin
-                    	select sum(nvl(es.VLR_ESTOQUE_ANT,0)) vlr_est_ant
-                              ,sum(nvl(es.VLR_MEDIO_EMP,0)) vlr_medio_emp
-                              ,sum(nvl(es.vlr_custo,0)) vlr_custo_rev
-                          Into wVLR_ESTOQUE_ANT
-                              ,wVLR_MEDIO_EMP
-                              ,wVLR_CUSTO_REV
-                          from ie_mascaras c
-                              ,es_0124_ce_estmedio es
-                         where es.cod_item      = c.cod_item
-                           and c.cod_mascara    = pi_mascara
-	                   and c.cod_completo  >= to_char(rpad(r_itens.COD_COMPLETO,11,'0'))
-	                   and c.cod_completo  <= to_char(rpad(r_itens.COD_COMPLETO,11,'9'))
-                           and es.cod_unidade   = r_itens.cod_unidade
-                           and es.dta_mvto      = to_date( '01/'||substr(pi_Dta_Ini,4,7) , 'dd/mm/yyyy');
-                     EXCEPTION
-		          WHEN NO_DATA_FOUND THEN
-                               wVLR_ESTOQUE_ANT := 0;
-                               wVLR_MEDIO_EMP   := 0;
-                               wVLR_CUSTO_REV   := 0;
-                    end;
-                   end if; */
-
-        	    wVlr_Venda_Liq := nvl(r_itens.vlr_venda,0) - nvl(r_itens.vlr_icms,0) - nvl(r_itens.vlr_pis,0) - nvl(r_itens.vlr_cofins,0);
-		    if nvl(wVlr_Venda_Liq,0) > 0 then
-        	        wMargem := Round(((nvl(wVlr_Venda_Liq,0) -
-      			           nvl(r_itens.Vlr_Custo,0)) /
-                  	           nvl(wVlr_Venda_Liq,0) * 100),1);
-                    else
-		         wMargem := 0;
-		    end if;
-
-                    insert into GRZW_REL_DESCONTOS_LOJAS_NL(DES_USUARIO
-                   	                                 ,COD_NIVEL
-                   	                                 ,DTA_REF
-                   	                                 ,SEQ_NIVEL
-                   	                                 ,COD_GRUPO
-                   	                                 ,COD_QUEBRA
-                   	                                 ,COD_UNIDADE
-                   	                                 ,VLR_VENDA
-                   	                                 ,VLR_VENDA_LIQ
-                   	                                 ,VLR_CUSTO
-                   	                                 ,VLR_IMPRESSO_VDA
-                   	                                 ,VLR_VENDA_TOTAL
-                   	                                 ,VLR_VENDA_LISTA
-                   	                                 ,VLR_DESCONTO
-                   	                                 ,VLR_DCTO_PRECO
-                   	                                 ,VLR_DCTO_TOTAL
-                   	                                 ,PER_DESCONTO
-                   	                                 ,PER_DCTO_PRECO
-                   	                                 ,PER_DCTO_TOTAL
-                   	                                 ,VLR_DEVOLUCAO
-                   	                                 ,PER_DEVOLUCAO
-                   	                                 ,VLR_INVENTARIO
-                   	                                 ,PER_INVENTARIO
-                   	                                 ,QTD_VENDA
-                   	                                 ,QTD_DEVOLUCAO
-                   	                                 ,QTD_INVENTARIO
-                   	                                 ,COD_EDITADO
-                   	                                 ,DES_NIVEL
-                   	                                 ,DES_GRUPO
-                   	                                 ,DES_QUEBRA
-                   	                                 ,DES_UNIDADE
-                   	                                 ,VLR_VENDA_SALDO
-							)
-						values (pi_usuario
-                                                  	,wCompleto
-                                                  	,r_itens.dta_lancamento
-                                                  	,pi_nivel_mascara
-                                                  	,pi_grupo
-                                                  	,wCod_Quebra
-                                                  	,r_itens.cod_unidade
-                                                  	,nvl(r_itens.vlr_venda,0)
-                                                  	,wVlr_Venda_Liq
-                                                  	,nvl(r_itens.vlr_custo,0)
-                                                  	,0
-                                                  	,0
-                                                  	,0
-                                                  	,0
-                                                  	,0
-                                                  	,0
-                                                  	,wMargem
-                                                  	,0
-                                                  	,0
-                                                  	,0
-                                                  	,0
-                                                  	,0
-                                                  	,0
-                                                  	,nvl(r_itens.qtd_venda,0)
-                                                  	,0
-                                                  	,0
-                                                  	,wEditado
-                                                  	,wDes_nivel
-                                                  	,wDes_Grupo
-                                                  	,wDes_Quebra
-                                                  	,wDes_Unidade
-                                                  	,nvl(r_itens.vlr_venda_saldo,0)
-                                                  	);
-        	end;
-        	fetch c_itens into r_itens;
-        	end loop;
-        	close c_itens;
-        	commit;
-
-
-	       wSeq_Nivel := pi_nivel_mascara;
-	       wNivel     := pi_nivel_mascara - 1;
-	       while wNivel > 0 loop
-	       begin
-		    if (wNivel = 1) then
-			wQtd_Casas  := 2;
-			wQtd_Casas1 := 2;
-			wQtd_Casas2 := 0;
-		    elsif (wNivel = 2) then
-			wQtd_Casas  := 4;
-			wQtd_Casas1 := 5;
-			wQtd_Casas2 := 2;
-		    elsif (wNivel = 3) then
-			wQtd_Casas  := 6;
-			wQtd_Casas1 := 8;
-			wQtd_Casas2 := 4;
-			elsif (wNivel = 4) then
-			wQtd_Casas  := 8;
-			wQtd_Casas1 := 11;
-			wQtd_Casas2 := 6;
-			else
-			wQtd_Casas  := 12; --11;
-			wQtd_Casas1 := 20; --15;
-			wQtd_Casas2 := 8;
-
-			end if;
-
-	            open c_niveis;
-                    fetch c_niveis into r_niveis;
-                    while c_niveis%found loop
-                    begin
-		         if (wNivel = 1) then
- 	       	             wCod_Anteriores := '0';
- 	       	             wCod_Nivel      := substr(r_niveis.COD_NIVEL,1,2);
-		         else
- 	       	             wCod_Anteriores := substr(r_niveis.COD_NIVEL,1,wQtd_Casas2);
- 	       	             wCod_Nivel      := substr(r_niveis.COD_NIVEL,(wQtd_Casas2 + 1),2);
-		         end if;
- 		         Begin
-     	       		      select nvl(des_nivel,'X') des_nivel
-     	       		        into wDes_nivel
-			        from g3_niveis_cadastro
-			       Where cod_mascara = pi_mascara
-			         and cod_formato = '1'
-			         and seq_nivel   = wNivel
-      			         and cod_anteriores = wCod_Anteriores
-      			         and cod_nivel = wCod_Nivel;
-      	         	   EXCEPTION
-		                WHEN NO_DATA_FOUND THEN
-						BEGIN
-						select nvl(a.des_item,'X') des_nivel
-							into wDes_nivel
-					from ie_itens a, ie_mascaras b
+                    select nvl(a.des_item,'X') des_nivel
+                    into wdes_nivel
+                    from ie_itens a, ie_mascaras b
                     where a.cod_item = b.cod_item
-					   and a.cod_gu = 1
-                       and b.cod_mascara = pi_mascara
-                       and b.cod_completo = r_itens.COD_COMPLETO;
-                   EXCEPTION
-               WHEN NO_DATA_FOUND THEN
-                         wDes_nivel := 'SEM DESCRICAO';
-						END;
-
-				end;
-
-
-
-        	    wVlr_Venda_Liq := nvl(r_niveis.vlr_venda_liq,0);
-		    if nvl(wVlr_Venda_Liq,0) > 0 then
-        	        wMargem := Round(((nvl(wVlr_Venda_Liq,0) -
-      			           nvl(r_niveis.Vlr_Custo,0)) /
-                  	           nvl(wVlr_Venda_Liq,0) * 100),1);
-                    else
-		         wMargem := 0;
-		    end if;
-
-                    insert into GRZW_REL_DESCONTOS_LOJAS_NL(DES_USUARIO
-                   	                                 ,COD_NIVEL
-                   	                                 ,DTA_REF
-                   	                                 ,SEQ_NIVEL
-                   	                                 ,COD_GRUPO
-                   	                                 ,COD_QUEBRA
-                   	                                 ,COD_UNIDADE
-                   	                                 ,VLR_VENDA
-                   	                                 ,VLR_VENDA_LIQ
-                   	                                 ,VLR_CUSTO
-                   	                                 ,VLR_IMPRESSO_VDA
-                   	                                 ,VLR_VENDA_TOTAL
-                   	                                 ,VLR_VENDA_LISTA
-                   	                                 ,VLR_DESCONTO
-                   	                                 ,VLR_DCTO_PRECO
-                   	                                 ,VLR_DCTO_TOTAL
-                   	                                 ,PER_DESCONTO
-                   	                                 ,PER_DCTO_PRECO
-                   	                                 ,PER_DCTO_TOTAL
-                   	                                 ,VLR_DEVOLUCAO
-                   	                                 ,PER_DEVOLUCAO
-                   	                                 ,VLR_INVENTARIO
-                   	                                 ,PER_INVENTARIO
-                   	                                 ,QTD_VENDA
-                   	                                 ,QTD_DEVOLUCAO
-                   	                                 ,QTD_INVENTARIO
-                   	                                 ,COD_EDITADO
-                   	                                 ,DES_NIVEL
-                   	                                 ,DES_GRUPO
-                   	                                 ,DES_QUEBRA
-                   	                                 ,DES_UNIDADE
-                   	                                 ,VLR_VENDA_SALDO
-							)
-						values (pi_usuario
-                                                  	,r_niveis.COD_NIVEL
-                                                  	,r_niveis.dta_ref
-                                                  	,wNivel
-                                                  	,r_niveis.cod_grupo
-                                                  	,r_niveis.cod_quebra
-                                                  	,r_niveis.cod_unidade
-                                                  	,r_niveis.vlr_venda
-                                                  	,r_niveis.vlr_venda_liq
-                                                  	,r_niveis.vlr_custo
-                                                  	,0
-                                                  	,0
-                                                  	,0
-                                                  	,r_niveis.vlr_desconto
-                                                  	,0
-                                                  	,0
-                                                  	,wMargem
-                                                  	,0
-                                                  	,0
-                                                  	,0
-                                                  	,0
-                                                  	,0
-                                                  	,0
-                                                  	,r_niveis.qtd_venda
-                                                  	,0
-                                                  	,0
-                                                  	,r_niveis.cod_editado
-                                                  	,wDes_nivel
-                                                  	,r_niveis.des_grupo
-                                                  	,r_niveis.des_quebra
-                                                  	,r_niveis.des_unidade
-                                                  	,r_niveis.vlr_venda_saldo
-                                                  	);
-                    end;
-                    fetch c_niveis into r_niveis;
-                    end loop;
-                    close c_niveis;
-                    commit;
-
-		    wSeq_Nivel := wSeq_Nivel - 1;
-		    wNivel     := wNivel - 1;
+                    and a.cod_gu = 1
+                    and b.cod_mascara = pi_mascara
+                    and b.cod_completo = r_itens.cod_completo;
+                    exception
+                             when no_data_found then
+                                  wdes_nivel := 'SEM DESCRICAO';
                end;
-               end loop;
-               commit;
-
-               wNivel := pi_nivel_mascara;
-               while wNivel > 0 loop
+               else
                begin
-	            open c_tot_nivel;
-                    fetch c_tot_nivel into r_tot_nivel;
-                    while c_tot_nivel%found loop
-                    begin
-               	        begin
-                            update grzw_rel_descontos_lojas_nl a
-                               set vlr_tot_venda_nivel = r_tot_nivel.vlr_venda_nivel
-                             where upper(des_usuario) = upper(pi_usuario)
-                               and cod_nivel = r_tot_nivel.cod_nivel
-                               and dta_ref = r_tot_nivel.dta_ref
-                               and seq_nivel = wNivel
-                               and cod_grupo = r_tot_nivel.cod_grupo;
-                              -- and cod_quebra = r_tot_nivel.cod_quebra;
-               	        end;
-                    end;
-                    fetch c_tot_nivel into r_tot_nivel;
-                    end loop;
-                    close c_tot_nivel;
-                    commit;
+                    select nvl(des_nivel,'X') des_nivel
+                    into wdes_nivel
+                    from g3_niveis_cadastro
+                    where cod_mascara = pi_mascara
+                    and cod_formato = '1'
+                    and seq_nivel   = pi_nivel_mascara
+                    and cod_anteriores = wcod_anteriores
+                    and cod_nivel = wcod_nivel;
+                    exception
+                    when no_data_found then
+                         wdes_nivel := 'SEM DESCRICAO';
+               end;
+               end if;
 
-	            open c_tot_nivel_dta;
-                    fetch c_tot_nivel_dta into r_tot_nivel_dta;
-                    while c_tot_nivel_dta%found loop
-                    begin
-               	        begin
-                            update grzw_rel_descontos_lojas_nl a
-                               set vlr_tot_venda_nivel_dta = r_tot_nivel_dta.vlr_venda_nivel_dta
-                             where upper(des_usuario) = upper(pi_usuario)
-                               and cod_nivel = r_tot_nivel_dta.cod_nivel
-                               and seq_nivel = wNivel
-                               and cod_grupo = r_tot_nivel_dta.cod_grupo
-                               and cod_quebra = r_tot_nivel_dta.cod_quebra;
-               	        end;
-                    end;
-                    fetch c_tot_nivel_dta into r_tot_nivel_dta;
-                    end loop;
-                    close c_tot_nivel_dta;
-                    commit;
+               wcompleto_ant := wcompleto;
+            end if;
 
-	            open c_tot_rede;
-                    fetch c_tot_rede into r_tot_rede;
-                    while c_tot_rede%found loop
-                    begin
-               	       begin
-                           update grzw_rel_descontos_lojas_nl a
-                              set vlr_tot_venda_rede = r_tot_rede.vlr_venda_rede
-                            where upper(des_usuario) = upper(pi_usuario)
-                              and cod_nivel = r_tot_rede.cod_nivel
-                              and dta_ref = r_tot_rede.dta_ref
-                              and seq_nivel = wNivel
-                              and cod_grupo = r_tot_rede.cod_grupo;
-               	       end;
-                    end;
-                    fetch c_tot_rede into r_tot_rede;
-                    end loop;
-                    close c_tot_rede;
-                    commit;
+            if pi_lista_unidade = 1 then
+            begin
+                 select des_fantasia
+                 into wdes_unidade
+                 from ps_pessoas
+                 where cod_pessoa = r_itens.cod_unidade;
+                 exception
+                          when no_data_found then
+                               wdes_unidade := 'UNIDADE NAO CADASTRADA';
 
-	            open c_tot_rede_dta;
-                    fetch c_tot_rede_dta into r_tot_rede_dta;
-                    while c_tot_rede_dta%found loop
-                    begin
-               	       begin
-                           update grzw_rel_descontos_lojas_nl a
-                              set vlr_tot_venda_rede_dta = r_tot_rede_dta.vlr_venda_rede_dta
-                            where upper(des_usuario) = upper(pi_usuario)
-                              and cod_nivel = r_tot_rede_dta.cod_nivel
-                              and seq_nivel = wNivel
-                              and cod_grupo = r_tot_rede_dta.cod_grupo;
-               	       end;
-                    end;
-                    fetch c_tot_rede_dta into r_tot_rede_dta;
-                    end loop;
-                    close c_tot_rede_dta;
-                    commit;
+                 select a.cod_quebra
+                        ,b.des_quebra
+                 into wcod_quebra
+                      ,wdes_quebra
+                 from ge_grupos_unidades a
+                      ,ge_grupos_quebra b
+                 where a.cod_emp = b.cod_emp
+                 and a.cod_grupo = b.cod_grupo
+                 and a.cod_quebra = b.cod_quebra
+                 and a.cod_unidade = r_itens.cod_unidade
+                 and a.cod_grupo = pi_grupo
+                 and a.cod_emp = pi_empresa;
+                 exception
+                          when no_data_found then
+                               wcod_quebra := 0;
+                               wdes_quebra := 'DESCRICAO QUEBRA NAO CADASTRADA';
+            end;
+            else
+                wCod_Quebra  := 0;
+                wDes_Quebra  := '';
+                wDes_Unidade := ''
+            end if;
 
+            /* REV comentado pois nao precisara colocar neste relatorio
+            if ((pi_lista_unidade = 1) and (pi_nivel_mascara = 1)) then
+            begin
+                 select sum(nvl(es.vlr_estoque_ant,0)) vlr_est_ant
+                        ,sum(nvl(es.vlr_medio_emp,0)) vlr_medio_emp
+                        ,sum(nvl(es.vlr_custo,0)) vlr_custo_rev
+                 into wvlr_estoque_ant
+                      ,wvlr_medio_emp
+                      ,wvlr_custo_rev
+                 from ie_mascaras c
+                      ,es_0124_ce_estmedio es
+                 where es.cod_item  = c.cod_item
+                 and c.cod_mascara  = pi_mascara
+                 and c.cod_completo >= pi_codigo_ini
+                 and c.cod_completo <= pi_codigo_fim
+                 and es.cod_unidade = r_itens.cod_unidade
+                 and es.dta_mvto    = to_date( '01/'||substr(pi_dta_ini,4,7) , 'dd/mm/yyyy');
+                 exception
+                          when no_data_found then
+                               wvlr_estoque_ant := 0;
+                               wvlr_medio_emp   := 0;
+                               wvlr_custo_rev   := 0;
+            end;
+            elsif (pi_lista_unidade = 1) then
+            begin
+                 select sum(nvl(es.vlr_estoque_ant,0)) vlr_est_ant
+                        ,sum(nvl(es.vlr_medio_emp,0)) vlr_medio_emp
+                        ,sum(nvl(es.vlr_custo,0)) vlr_custo_rev
+                 into wvlr_estoque_ant
+                      ,wvlr_medio_emp
+                      ,wvlr_custo_rev
+                 from ie_mascaras c
+                      ,es_0124_ce_estmedio es
+                 where es.cod_item  = c.cod_item
+                 and c.cod_mascara  = pi_mascara
+                 and c.cod_completo >= to_char(rpad(r_itens.cod_completo,11,'0'))
+                 and c.cod_completo <= to_char(rpad(r_itens.cod_completo,11,'9'))
+                 and es.cod_unidade = r_itens.cod_unidade
+                 and es.dta_mvto    = to_date('01/'||substr(pi_dta_ini,4,7),'dd/mm/yyyy');
+                 exception
+                          when no_data_found then
+                               wvlr_estoque_ant := 0;
+                               wvlr_medio_emp   := 0;
+                               wvlr_custo_rev   := 0;
+            end;
+            end if;*/
 
-                    wNivel_T := wNivel - 1;
-                    if (wNivel_T = 0) then
-                    	wNivel_T := 1;
-                    end if;
+            wvlr_venda_liq := nvl(r_itens.vlr_venda,0) - nvl(r_itens.vlr_icms,0) - nvl(r_itens.vlr_pis,0) - nvl(r_itens.vlr_cofins,0);
+            if nvl(wvlr_venda_liq,0) > 0 then
+               wmargem := round(((nvl(wvlr_venda_liq,0) -
+               nvl(r_itens.vlr_custo,0)) /
+               nvl(wvlr_venda_liq,0) * 100),1);
+            else
+                wmargem := 0;
+            end if;
 
-		    if (wNivel_T = 1) then
-			wQtd_Casas  := 2;
-		    elsif (wNivel_T = 2) then
-		        wQtd_Casas  := 4;
-		    elsif (wNivel_T = 3) then
-		        wQtd_Casas  := 6;
+            insert into grzw_rel_descontos_lojas_nl(des_usuario
+                                                    ,cod_nivel,dta_ref
+                                                    ,seq_nivel
+                                                    ,cod_grupo
+                                                    ,cod_quebra
+                                                    ,cod_unidade
+                                                    ,vlr_venda
+                                                    ,vlr_venda_liq
+                                                    ,vlr_custo
+                                                    ,vlr_impresso_vda
+                                                    ,vlr_venda_total
+                                                    ,vlr_venda_lista
+                                                    ,vlr_desconto
+                                                    ,vlr_dcto_preco
+                                                    ,vlr_dcto_total
+                                                    ,per_desconto
+                                                    ,per_dcto_preco
+                                                    ,per_dcto_total
+                                                    ,vlr_devolucao
+                                                    ,per_devolucao
+                                                    ,vlr_inventario
+                                                    ,per_inventario
+                                                    ,qtd_venda
+                                                    ,qtd_devolucao
+                                                    ,qtd_inventario
+                                                    ,cod_editado
+                                                    ,des_nivel
+                                                    ,des_grupo
+                                                    ,des_quebra
+                                                    ,des_unidade
+                                                    ,vlr_venda_saldo)
+            values (pi_usuario
+                    ,wcompleto
+                    ,r_itens.dta_lancamento
+                    ,pi_nivel_mascara
+                    ,pi_grupo
+                    ,wcod_quebra
+                    ,r_itens.cod_unidade
+                    ,nvl(r_itens.vlr_venda,0)
+                    ,wvlr_venda_liq
+                    ,nvl(r_itens.vlr_custo,0)
+                    ,0
+                    ,0
+                    ,0
+                    ,0
+                    ,0
+                    ,0
+                    ,wmargem
+                    ,0
+                    ,0
+                    ,0
+                    ,0
+                    ,0
+                    ,0
+                    ,nvl(r_itens.qtd_venda,0)
+                    ,0
+                    ,0
+                    ,weditado
+                    ,wdes_nivel
+                    ,wdes_grupo
+                    ,wdes_quebra
+                    ,wdes_unidade
+                    ,nvl(r_itens.vlr_venda_saldo,0));
+       end; -- while c_itens%found loop
+       fetch c_itens into r_itens;
+       end loop;
+       close c_itens;
+       commit;
+
+       wseq_nivel := pi_nivel_mascara;
+       wnivel     := pi_nivel_mascara - 1;
+       while wnivel > 0 loop
+       begin
+            if (wnivel = 1) then
+               wqtd_casas  := 2;
+               wqtd_casas1 := 2;
+               wqtd_casas2 := 0;
+            elsif (wnivel = 2) then
+                  wqtd_casas  := 4;
+                  wqtd_casas1 := 5;
+                  wqtd_casas2 := 2;
+            elsif (wnivel = 3) then
+                  wqtd_casas  := 6;
+                  wqtd_casas1 := 8;
+                  wqtd_casas2 := 4;
+            elsif (wnivel = 4) then
+                  wqtd_casas  := 8;
+                  wqtd_casas1 := 11;
+                  wqtd_casas2 := 6;
+            else
+                wqtd_casas  := 12; --11;
+                wqtd_casas1 := 20; --15;
+                wqtd_casas2 := 8;
+            end if;
+
+            open c_niveis;
+            fetch c_niveis into r_niveis;
+            while c_niveis%found loop
+            begin
+                 if (wnivel = 1) then
+                    wcod_anteriores := '0';
+                    wcod_nivel      := substr(r_niveis.cod_nivel,1,2);
+                 else
+                     wcod_anteriores := substr(r_niveis.cod_nivel,1,wqtd_casas2);
+                     wcod_nivel      := substr(r_niveis.cod_nivel,(wqtd_casas2 + 1),2);
+                 end if;
+                 begin
+                      select nvl(des_nivel,'X') des_nivel
+                      into wdes_nivel
+                      from g3_niveis_cadastro
+                      where cod_mascara = pi_mascara
+                      and cod_formato = '1'
+                      and seq_nivel   = wnivel
+                      and cod_anteriores = wcod_anteriores
+                      and cod_nivel = wcod_nivel;
+                      exception
+                               when no_data_found then
+                               begin
+                                    select nvl(a.des_item,'X') des_nivel
+                                    into wdes_nivel
+                                    from ie_itens a, ie_mascaras b
+                                    where a.cod_item = b.cod_item
+                                    and a.cod_gu = 1
+                                    and b.cod_mascara = pi_mascara
+                                    and b.cod_completo = r_itens.cod_completo;
+                                    exception
+                                             when no_data_found then
+                                                  wdes_nivel := 'SEM DESCRICAO';
+                               end;
+                 end;
+
+                 wvlr_venda_liq := nvl(r_niveis.vlr_venda_liq,0);
+                 if nvl(wvlr_venda_liq,0) > 0 then
+                    wmargem := round(((nvl(wvlr_venda_liq,0) -
+                               nvl(r_niveis.vlr_custo,0)) /
+                               nvl(wvlr_venda_liq,0) * 100),1);
+                 else
+                     wmargem := 0;
+                 end if;
+
+                 insert into grzw_rel_descontos_lojas_nl(des_usuario
+                                                         ,cod_nivel
+                                                         ,dta_ref
+                                                         ,seq_nivel
+                                                         ,cod_grupo
+                                                         ,cod_quebra
+                                                         ,cod_unidade
+                                                         ,vlr_venda
+                                                         ,vlr_venda_liq
+                                                         ,vlr_custo
+                                                         ,vlr_impresso_vda
+                                                         ,vlr_venda_total
+                                                         ,vlr_venda_lista
+                                                         ,vlr_desconto
+                                                         ,vlr_dcto_preco
+                                                         ,vlr_dcto_total
+                                                         ,per_desconto
+                                                         ,per_dcto_preco
+                                                         ,per_dcto_total
+                                                         ,vlr_devolucao
+                                                         ,per_devolucao
+                                                         ,vlr_inventario
+                                                         ,per_inventario
+                                                         ,qtd_venda
+                                                         ,qtd_devolucao
+                                                         ,qtd_inventario
+                                                         ,cod_editado
+                                                         ,des_nivel
+                                                         ,des_grupo
+                                                         ,des_quebra
+                                                         ,des_unidade
+                                                         ,vlr_venda_saldo)
+                 values (pi_usuario
+                         ,r_niveis.COD_NIVEL
+                         ,r_niveis.dta_ref
+                         ,wNivel
+                         ,r_niveis.cod_grupo
+                         ,r_niveis.cod_quebra
+                         ,r_niveis.cod_unidade
+                         ,r_niveis.vlr_venda
+                         ,r_niveis.vlr_venda_liq
+                         ,r_niveis.vlr_custo
+                         ,0
+                         ,0
+                         ,0
+                         ,r_niveis.vlr_desconto
+                         ,0
+                         ,0
+                         ,wMargem
+                         ,0
+                         ,0
+                         ,0
+                         ,0
+                         ,0
+                         ,0
+                         ,r_niveis.qtd_venda
+                         ,0
+                         ,0
+                         ,r_niveis.cod_editado
+                         ,wDes_nivel
+                         ,r_niveis.des_grupo
+                         ,r_niveis.des_quebra
+                         ,r_niveis.des_unidade
+                         ,r_niveis.vlr_venda_saldo);
+            end; -- while c_niveis%found loop
+            fetch c_niveis into r_niveis;
+            end loop;
+            close c_niveis;
+            commit;
+
+            wSeq_Nivel := wSeq_Nivel - 1;
+            wNivel     := wNivel - 1;
+       end;
+       end loop; -- while wnivel > 0 loop
+       commit;
+
+       wNivel := pi_nivel_mascara;
+       while wNivel > 0 loop
+       begin
+            open c_tot_nivel;
+            fetch c_tot_nivel into r_tot_nivel;
+            while c_tot_nivel%found loop
+            begin
+                 begin
+                      update grzw_rel_descontos_lojas_nl a
+                      set vlr_tot_venda_nivel = r_tot_nivel.vlr_venda_nivel
+                      where upper(des_usuario) = upper(pi_usuario)
+                      and cod_nivel = r_tot_nivel.cod_nivel
+                      and dta_ref = r_tot_nivel.dta_ref
+                      and seq_nivel = wNivel
+                      and cod_grupo = r_tot_nivel.cod_grupo;
+                      -- and cod_quebra = r_tot_nivel.cod_quebra;
+                 end;
+            end;
+            fetch c_tot_nivel into r_tot_nivel;
+            end loop; -- while c_tot_nivel%found loop
+            close c_tot_nivel;
+            commit;
+
+            open c_tot_nivel_dta;
+            fetch c_tot_nivel_dta into r_tot_nivel_dta;
+            while c_tot_nivel_dta%found loop
+            begin
+                 begin
+                      update grzw_rel_descontos_lojas_nl a
+                      set vlr_tot_venda_nivel_dta = r_tot_nivel_dta.vlr_venda_nivel_dta
+                      where upper(des_usuario) = upper(pi_usuario)
+                      and cod_nivel = r_tot_nivel_dta.cod_nivel
+                      and seq_nivel = wNivel
+                      and cod_grupo = r_tot_nivel_dta.cod_grupo
+                      and cod_quebra = r_tot_nivel_dta.cod_quebra;
+                 end;
+            end;
+            fetch c_tot_nivel_dta into r_tot_nivel_dta;
+            end loop; -- while c_tot_nivel_dta%found loop
+            close c_tot_nivel_dta;
+            commit;
+
+            open c_tot_rede;
+            fetch c_tot_rede into r_tot_rede;
+            while c_tot_rede%found loop
+            begin
+                 begin
+                      update grzw_rel_descontos_lojas_nl a
+                      set vlr_tot_venda_rede = r_tot_rede.vlr_venda_rede
+                      where upper(des_usuario) = upper(pi_usuario)
+                      and cod_nivel = r_tot_rede.cod_nivel
+                      and dta_ref = r_tot_rede.dta_ref
+                      and seq_nivel = wNivel
+                      and cod_grupo = r_tot_rede.cod_grupo;
+                 end;
+            end;
+            fetch c_tot_rede into r_tot_rede;
+            end loop; -- while c_tot_rede%found loop
+            close c_tot_rede;
+            commit;
+
+            open c_tot_rede_dta;
+            fetch c_tot_rede_dta into r_tot_rede_dta;
+            while c_tot_rede_dta%found loop
+            begin
+                 begin
+                      update grzw_rel_descontos_lojas_nl a
+                      set vlr_tot_venda_rede_dta = r_tot_rede_dta.vlr_venda_rede_dta
+                      where upper(des_usuario) = upper(pi_usuario)
+                      and cod_nivel = r_tot_rede_dta.cod_nivel
+                      and seq_nivel = wNivel
+                      and cod_grupo = r_tot_rede_dta.cod_grupo;
+                 end;
+            end;
+            fetch c_tot_rede_dta into r_tot_rede_dta;
+            end loop; -- while c_tot_rede_dta%found loop
+            close c_tot_rede_dta;
+            commit;
+
+            wNivel_T := wNivel - 1;
+            if (wNivel_T = 0) then
+               wNivel_T := 1;
+            end if;
+
+            if (wNivel_T = 1) then
+               wQtd_Casas  := 2;
+            elsif (wNivel_T = 2) then
+                  wQtd_Casas  := 4;
+            elsif (wNivel_T = 3) then
+                  wQtd_Casas  := 6;
             elsif (wNivel_T = 4) then
-		        wQtd_Casas  := 8;
-				else
-				wQtd_Casas  := 12; --11;
-		    end if;
+                  wQtd_Casas  := 8;
+            else
+                wQtd_Casas  := 12; --11;
+            end if;
 
-	            open c_tot_geral;
-                    fetch c_tot_geral into r_tot_geral;
-                    while c_tot_geral%found loop
-                    begin
-               	       begin
-                           update grzw_rel_descontos_lojas_nl a
-                              set vlr_tot_venda_geral = r_tot_geral.vlr_venda_geral
-                            where upper(des_usuario) = upper(pi_usuario)
-                              and substr(cod_nivel,1,wQtd_Casas) = r_tot_geral.cod_nivel
-                              and dta_ref = r_tot_geral.dta_ref
-                              and seq_nivel = wNivel
-                              and cod_grupo = r_tot_geral.cod_grupo
-                              and cod_quebra = r_tot_geral.cod_quebra
-                              and cod_unidade = r_tot_geral.cod_unidade;
-               	       end;
-                    end;
-                    fetch c_tot_geral into r_tot_geral;
-                    end loop;
-                    close c_tot_geral;
-                    commit;
+            open c_tot_geral;
+            fetch c_tot_geral into r_tot_geral;
+            while c_tot_geral%found loop
+            begin
+                 begin
+                      update grzw_rel_descontos_lojas_nl a
+                      set vlr_tot_venda_geral = r_tot_geral.vlr_venda_geral
+                      where upper(des_usuario) = upper(pi_usuario)
+                      and substr(cod_nivel,1,wQtd_Casas) = r_tot_geral.cod_nivel
+                      and dta_ref = r_tot_geral.dta_ref
+                      and seq_nivel = wNivel
+                      and cod_grupo = r_tot_geral.cod_grupo
+                      and cod_quebra = r_tot_geral.cod_quebra
+                      and cod_unidade = r_tot_geral.cod_unidade;
+                 end;
+            end;
+            fetch c_tot_geral into r_tot_geral;
+            end loop; -- while c_tot_geral%found loop
+            close c_tot_geral;
+            commit;
 
-	            open c_tot_geral_grupo;
-                    fetch c_tot_geral_grupo into r_tot_geral_grupo;
-                    while c_tot_geral_grupo%found loop
-                    begin
-               	       begin
-                           update grzw_rel_descontos_lojas_nl a
-                              set vlr_tot_geral_grupo_venda = r_tot_geral_grupo.vlr_venda_geral_grupo
-                            where upper(des_usuario) = upper(pi_usuario)
-                              and substr(cod_nivel,1,wQtd_Casas) = r_tot_geral_grupo.cod_nivel
-                              and dta_ref = r_tot_geral_grupo.dta_ref
-                              and seq_nivel = wNivel
-                              and cod_grupo = r_tot_geral_grupo.cod_grupo
-                              and cod_quebra = r_tot_geral_grupo.cod_quebra;
-               	       end;
-                    end;
-                    fetch c_tot_geral_grupo into r_tot_geral_grupo;
-                    end loop;
-                    close c_tot_geral_grupo;
-                    commit;
+            open c_tot_geral_grupo;
+            fetch c_tot_geral_grupo into r_tot_geral_grupo;
+            while c_tot_geral_grupo%found loop
+            begin
+                 begin
+                      update grzw_rel_descontos_lojas_nl a
+                      set vlr_tot_geral_grupo_venda = r_tot_geral_grupo.vlr_venda_geral_grupo
+                      where upper(des_usuario) = upper(pi_usuario)
+                      and substr(cod_nivel,1,wQtd_Casas) = r_tot_geral_grupo.cod_nivel
+                      and dta_ref = r_tot_geral_grupo.dta_ref
+                      and seq_nivel = wNivel
+                      and cod_grupo = r_tot_geral_grupo.cod_grupo
+                      and cod_quebra = r_tot_geral_grupo.cod_quebra;
+                 end;
+            end;
+            fetch c_tot_geral_grupo into r_tot_geral_grupo;
+            end loop; -- while c_tot_geral_grupo%found loop
+            close c_tot_geral_grupo;
+            commit;
 
-	            open c_tot_geral_dta;
-                    fetch c_tot_geral_dta into r_tot_geral_dta;
-                    while c_tot_geral_dta%found loop
-                    begin
-               	       begin
-                           update grzw_rel_descontos_lojas_nl a
-                              set vlr_tot_venda_geral_dta = r_tot_geral_dta.vlr_venda_geral_dta
-                            where upper(des_usuario) = upper(pi_usuario)
-                              and substr(cod_nivel,1,wQtd_Casas) = r_tot_geral_dta.cod_nivel
-                              and seq_nivel = wNivel
-                              and cod_grupo = r_tot_geral_dta.cod_grupo
-                              and cod_quebra = r_tot_geral_dta.cod_quebra
-                              and cod_unidade = r_tot_geral_dta.cod_unidade;
-               	       end;
-                    end;
-                    fetch c_tot_geral_dta into r_tot_geral_dta;
-                    end loop;
-                    close c_tot_geral_dta;
-                    commit;
+            open c_tot_geral_dta;
+            fetch c_tot_geral_dta into r_tot_geral_dta;
+            while c_tot_geral_dta%found loop
+            begin
+                 begin
+                      update grzw_rel_descontos_lojas_nl a
+                      set vlr_tot_venda_geral_dta = r_tot_geral_dta.vlr_venda_geral_dta
+                      where upper(des_usuario) = upper(pi_usuario)
+                      and substr(cod_nivel,1,wQtd_Casas) = r_tot_geral_dta.cod_nivel
+                      and seq_nivel = wNivel
+                      and cod_grupo = r_tot_geral_dta.cod_grupo
+                      and cod_quebra = r_tot_geral_dta.cod_quebra
+                      and cod_unidade = r_tot_geral_dta.cod_unidade;
+                 end;
+            end;
+            fetch c_tot_geral_dta into r_tot_geral_dta;
+            end loop; -- while c_tot_geral_dta%found loop
+            close c_tot_geral_dta;
+            commit;
 
-	            open c_tot_geral_grupo_dta;
-                    fetch c_tot_geral_grupo_dta into r_tot_geral_grupo_dta;
-                    while c_tot_geral_grupo_dta%found loop
-                    begin
-               	       begin
-                           update grzw_rel_descontos_lojas_nl a
-                              set vlr_venda_geral_grupo_dta = r_tot_geral_grupo_dta.vlr_venda_geral_grupo_dta
-                            where upper(des_usuario) = upper(pi_usuario)
-                              and substr(cod_nivel,1,wQtd_Casas) = r_tot_geral_grupo_dta.cod_nivel
-                              and seq_nivel = wNivel
-                              and cod_grupo = r_tot_geral_grupo_dta.cod_grupo
-                              and cod_quebra = r_tot_geral_grupo_dta.cod_quebra;
-               	       end;
-                    end;
-                    fetch c_tot_geral_grupo_dta into r_tot_geral_grupo_dta;
-                    end loop;
-                    close c_tot_geral_grupo_dta;
-                    commit;
+            open c_tot_geral_grupo_dta;
+            fetch c_tot_geral_grupo_dta into r_tot_geral_grupo_dta;
+            while c_tot_geral_grupo_dta%found loop
+            begin
+                 begin
+                      update grzw_rel_descontos_lojas_nl a
+                      set vlr_venda_geral_grupo_dta = r_tot_geral_grupo_dta.vlr_venda_geral_grupo_dta
+                      where upper(des_usuario) = upper(pi_usuario)
+                      and substr(cod_nivel,1,wQtd_Casas) = r_tot_geral_grupo_dta.cod_nivel
+                      and seq_nivel = wNivel
+                      and cod_grupo = r_tot_geral_grupo_dta.cod_grupo
+                      and cod_quebra = r_tot_geral_grupo_dta.cod_quebra;
+                 end;
+            end;
+            fetch c_tot_geral_grupo_dta into r_tot_geral_grupo_dta;
+            end loop; -- while c_tot_geral_grupo_dta%found loop
+            close c_tot_geral_grupo_dta;
+            commit;
 
 	            open c_tot_geral_total;
                     fetch c_tot_geral_total into r_tot_geral_total;
