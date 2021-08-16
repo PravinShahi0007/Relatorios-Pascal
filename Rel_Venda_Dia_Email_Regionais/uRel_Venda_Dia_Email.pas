@@ -145,7 +145,7 @@ begin
      qryEmailRegional.SQL.Text := ' select cod_regiao, email_regional '+
                                   ' from grz_email_regional '+
                                   ' where cod_regiao >= 8701 '+
-                                  ' and cod_regiao <= 8725  ';
+                                  ' and cod_regiao <= 8725 ';
 
      qryEmailRegional.Active := true;
 
