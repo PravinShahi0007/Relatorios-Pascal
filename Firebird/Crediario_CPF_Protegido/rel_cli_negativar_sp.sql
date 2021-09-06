@@ -66,11 +66,17 @@ begin
          and b.ind_prestacao = 0
          and b.dta_vencimento >= :dta_neg_ini
          and b.dta_vencimento <= :dta_neg_fim
+         and exists (select 1
+                     from cre_cobranca_clientes c
+                     where a.cod_emp = c.cod_emp
+                     and a.cod_cliente = c.cod_cliente
+                     and c.ind_status = 0
+                     and c.dta_validade >= current_date)
          order by a.des_cliente,b.cod_contrato,b.dta_vencimento,b.num_parcela
          into :wcod_cliente,:wdes_cliente,:wcnpj_cpf,
               :wtip_pessoa,:wdta_cadastro,:wcod_unidade,:wcontrato,
-              :wdta_venda,:wnum_parcela,:wdta_vencimento,:wval_prestacao,:
-              wtip_plano_vp,:wcod_compl,:wcpf_escondido
+              :wdta_venda,:wnum_parcela,:wdta_vencimento,:wval_prestacao,
+              :wtip_plano_vp,:wcod_compl,:wcpf_escondido
      do
      begin
           select a.des_fone_resid,
