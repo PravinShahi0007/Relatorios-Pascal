@@ -1,6 +1,6 @@
-COMMIT WORK;
-SET AUTODDL OFF;
-SET TERM ^ ;
+commit work;
+set autoddl off;
+set term ^ ;
 
 create or alter procedure rel_cli_preventiva_sp
 (

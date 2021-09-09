@@ -1,309 +1,332 @@
-COMMIT WORK;
-SET AUTODDL OFF;
-SET TERM ^ ;
+commit work;
+set autoddl off;
+set term ^ ;
 
-/* Stored procedures */
-
-CREATE PROCEDURE "REL_PGTO_CLI_FAIXAS_SP" 
+create procedure rel_pgto_cli_faixas_sp
 (
-  "ICOD_EMP" NUMERIC(3, 0),
-  "ICOD_UNIDADE" NUMERIC(4, 0),
-  "ICOD_CLIENTE_INICIAL" NUMERIC(14, 0),
-  "ICOD_CLIENTE_FINAL" NUMERIC(14, 0),
-  "IDTA_INICIAL" DATE,
-  "IDTA_FINAL" DATE,
-  "INUM_EQUIPAMENTO_INICIAL" NUMERIC(2, 0),
-  "INUM_EQUIPAMENTO_FINAL" NUMERIC(2, 0),
-  "ICOD_UNI_CLI" NUMERIC(3, 0),
-  "ICOD_FUNC_INI" NUMERIC(4, 0),
-  "ICOD_FUNC_FIM" NUMERIC(4, 0),
-  "IFAIXA" NUMERIC(1, 0),
-  "ITIPCONTRATO" NUMERIC(1, 0)
+ icod_emp                 numeric(3,0),
+ icod_unidade             numeric(4,0),
+ icod_cliente_inicial     numeric(14,0),
+ icod_cliente_final       numeric(14,0),
+ idta_inicial             date,
+ idta_final               date,
+ inum_equipamento_inicial numeric(2,0),
+ inum_equipamento_final   numeric(2,0),
+ icod_uni_cli             numeric(3,0),
+ icod_func_ini            numeric(4,0),
+ icod_func_fim            numeric(4,0),
+ ifaixa                   numeric(1,0),
+ itipcontrato             numeric(1,0)
 )
-RETURNS
+returns
 (
-  "IDES_NOME" VARCHAR(50),
-  "ICOD_CLIENTE" NUMERIC(14, 0),
-  "IDTA_MOVIMENTO" DATE,
-  "ICOD_CONTRATO" NUMERIC(11, 0),
-  "IDTA_VENCIMENTO" DATE,
-  "IVLR_PRESTACAO" NUMERIC(15, 2),
-  "IFUNC_RECEBIMENTO" NUMERIC(4, 0),
-  "INUM_PARCELA" NUMERIC(3, 0),
-  "ICOD_UNI_CAD" NUMERIC(4, 0),
-  "INUMFAIXA" NUMERIC(1, 0),
-  "IDESFAIXA" VARCHAR(50),
-  "ICONTRATO" VARCHAR(3)
+ ides_nome         varchar(50),
+ icod_cliente      numeric(14,0),
+ idta_movimento    date,
+ icod_contrato     numeric(11,0),
+ idta_vencimendto   date,
+ ivlr_prestacao    numeric(15,2),
+ ifunc_recebimento numeric(4,0),
+ inum_parcela      numeric(3,0),
+ icod_uni_cad      numeric(4,0),
+ inumfaixa         numeric(1,0),
+ idesfaixa         varchar(50),
+ icontrato         varchar(3)
 )
-AS
-BEGIN EXIT; END ^
+as
+begin exit; end ^
 
 
-ALTER PROCEDURE "REL_PGTO_CLI_FAIXAS_SP" 
+alter procedure rel_pgto_cli_faixas_sp
 (
-  "ICOD_EMP" NUMERIC(3, 0),
-  "ICOD_UNIDADE" NUMERIC(4, 0),
-  "ICOD_CLIENTE_INICIAL" NUMERIC(14, 0),
-  "ICOD_CLIENTE_FINAL" NUMERIC(14, 0),
-  "IDTA_INICIAL" DATE,
-  "IDTA_FINAL" DATE,
-  "INUM_EQUIPAMENTO_INICIAL" NUMERIC(2, 0),
-  "INUM_EQUIPAMENTO_FINAL" NUMERIC(2, 0),
-  "ICOD_UNI_CLI" NUMERIC(3, 0),
-  "ICOD_FUNC_INI" NUMERIC(4, 0),
-  "ICOD_FUNC_FIM" NUMERIC(4, 0),
-  "IFAIXA" NUMERIC(1, 0),
-  "ITIPCONTRATO" NUMERIC(1, 0)
+ icod_emp                 numeric(3,0),
+ icod_unidade             numeric(4,0),
+ icod_cliente_inicial     numeric(14,0),
+ icod_cliente_final       numeric(14,0),
+ idta_inicial             date,
+ idta_final               date,
+ inum_equipamento_inicial numeric(2,0),
+ inum_equipamento_final   numeric(2,0),
+ icod_uni_cli             numeric(3,0),
+ icod_func_ini            numeric(4,0),
+ icod_func_fim            numeric(4,0),
+ ifaixa                   numeric(1,0),
+ itipcontrato             numeric(1,0)
 )
-RETURNS
+returns
 (
-  "IDES_NOME" VARCHAR(50),
-  "ICOD_CLIENTE" NUMERIC(14, 0),
-  "IDTA_MOVIMENTO" DATE,
-  "ICOD_CONTRATO" NUMERIC(11, 0),
-  "IDTA_VENCIMENTO" DATE,
-  "IVLR_PRESTACAO" NUMERIC(15, 2),
-  "IFUNC_RECEBIMENTO" NUMERIC(4, 0),
-  "INUM_PARCELA" NUMERIC(3, 0),
-  "ICOD_UNI_CAD" NUMERIC(4, 0),
-  "INUMFAIXA" NUMERIC(1, 0),
-  "IDESFAIXA" VARCHAR(50),
-  "ICONTRATO" VARCHAR(3)
+ ides_nome         varchar(50),
+ icod_cliente      numeric(14,0),
+ idta_movimento    date,
+ icod_contrato     numeric(11,0),
+ idta_vencimento   date,
+ ivlr_prestacao    numeric(15,2),
+ ifunc_recebimento numeric(4,0),
+ inum_parcela      numeric(3,0),
+ icod_uni_cad      numeric(4,0),
+ inumfaixa         numeric(1,0),
+ idesfaixa         varchar(50),
+ icontrato         varchar(3)
 )
-AS
-DECLARE VARIABLE CONTRATO_CPP VARCHAR(3);
-DECLARE VARIABLE CONTRATO_CRE VARCHAR(3);
-BEGIN
-  /* 1= LP, 2=PRÃ‰ LP, 3=ResÃ­duo, 4=PA, 5=Preventiva, 6=Pagamento Ant, 7=Pag outras redes, 0=TODAS  */
-  /* 1=CRE, 2=CPP, 0=TODOS */
-  IF (ITIPCONTRATO = 0) THEN
-  BEGIN
-       CONTRATO_CRE = 'CRE';
-       CONTRATO_CPP = 'CPP';
-  END
-  ELSE IF (ITIPCONTRATO = 1) THEN
-  BEGIN
-	CONTRATO_CRE = 'CRE';
-	CONTRATO_CPP = 'CRE';
-  END
-  ELSE IF (ITIPCONTRATO = 2) THEN
-  BEGIN
-       CONTRATO_CRE = 'CPP';
-       CONTRATO_CPP = 'CPP';
-  END
-  IF ((IFAIXA = 1) OR (IFAIXA = 0)) THEN
-	BEGIN
-	FOR SELECT A.COD_CLIENTE,A.DTA_MOVIMENTO,A.COD_CONTRATO,A.DTA_VENCIMENTO,A.VLR_PRESTACAO,A.COD_TIPO_RECBTO,A.NUM_PARCELA,
-	       B.DES_CLIENTE,B.COD_UNIDADE, '1' AS NUMFAIXA, 'LP - LUCROS E PERDAS' AS DESFAIXA,A.COD_COMPL
-	  FROM (CRE_RECEBIMENTOS A LEFT OUTER JOIN CRE_CLIENTES B ON( A.COD_EMP = B.COD_EMP AND
-								      A.COD_CLIENTE = B.COD_CLIENTE))
-	 WHERE (A.COD_EMP=:ICOD_EMP)AND
-	       (A.COD_UNIDADE=:ICOD_UNIDADE)AND
-	       (A.COD_CLIENTE BETWEEN :ICOD_CLIENTE_INICIAL AND :ICOD_CLIENTE_FINAL)AND
-	       (A.DTA_MOVIMENTO BETWEEN :IDTA_INICIAL AND :IDTA_FINAL)AND
-	       (A.NUM_EQUIPAMENTO BETWEEN :INUM_EQUIPAMENTO_INICIAL AND :INUM_EQUIPAMENTO_FINAL)AND
-	       (A.COD_TIPO_RECBTO BETWEEN :ICOD_FUNC_INI AND :ICOD_FUNC_FIM) AND
-	       ((A.DTA_MOVIMENTO - A.DTA_VENCIMENTO) > 0) AND
-	       ((SELECT SDIF_MES FROM RETORNA_MES_SP(A.DTA_VENCIMENTO,A.DTA_MOVIMENTO)) >= 7) AND
-	       (A.COD_COMPL = :CONTRATO_CRE OR A.COD_COMPL = :CONTRATO_CPP) AND
-	       (B.COD_UNIDADE = :ICOD_UNIDADE) AND
-	       (B.DES_CLIENTE IS NOT NULL)
-	 ORDER BY 10, 8, 4, 3
-	 INTO ICOD_CLIENTE,IDTA_MOVIMENTO,ICOD_CONTRATO,IDTA_VENCIMENTO,IVLR_PRESTACAO,IFUNC_RECEBIMENTO,
-	      INUM_PARCELA,IDES_NOME,ICOD_UNI_CAD,INUMFAIXA,IDESFAIXA,ICONTRATO DO
-	    BEGIN
-	       IF (ICOD_UNI_CLI = 9999) THEN
-		   SUSPEND;
-	       ELSE
-		 IF ((ICOD_UNI_CLI = 0) AND
-		    (ICOD_UNI_CAD IS NULL)) THEN
-		     SUSPEND;
-	    END
-   END
-   IF ((IFAIXA = 2) OR (IFAIXA = 0)) THEN
-	   BEGIN
-	   FOR SELECT A.COD_CLIENTE,A.DTA_MOVIMENTO,A.COD_CONTRATO,A.DTA_VENCIMENTO,A.VLR_PRESTACAO,A.COD_TIPO_RECBTO,A.NUM_PARCELA,
-		       B.DES_CLIENTE,B.COD_UNIDADE, '2' AS NUMFAIXA, 'PRÃ‰ LP - PRÃ‰ LUCROS E PERDAS' AS DESFAIXA,A.COD_COMPL
-		  FROM (CRE_RECEBIMENTOS A LEFT OUTER JOIN CRE_CLIENTES B ON( A.COD_EMP = B.COD_EMP AND
-									      A.COD_CLIENTE = B.COD_CLIENTE))
-		 WHERE (A.COD_EMP=:ICOD_EMP)AND
-		       (A.COD_UNIDADE=:ICOD_UNIDADE)AND
-		       (A.COD_CLIENTE BETWEEN :ICOD_CLIENTE_INICIAL AND :ICOD_CLIENTE_FINAL)AND
-		       (A.DTA_MOVIMENTO BETWEEN :IDTA_INICIAL AND :IDTA_FINAL)AND
-		       (A.NUM_EQUIPAMENTO BETWEEN :INUM_EQUIPAMENTO_INICIAL AND :INUM_EQUIPAMENTO_FINAL)AND
-		       (A.COD_TIPO_RECBTO BETWEEN :ICOD_FUNC_INI AND :ICOD_FUNC_FIM) AND
-		       ((A.DTA_MOVIMENTO - A.DTA_VENCIMENTO) > 0) AND
-	       	       ((SELECT SDIF_MES FROM RETORNA_MES_SP(A.DTA_VENCIMENTO,A.DTA_MOVIMENTO)) = 6) AND
-		       (A.COD_COMPL = :CONTRATO_CRE OR A.COD_COMPL = :CONTRATO_CPP) AND
-		       (B.COD_UNIDADE = :ICOD_UNIDADE) AND
-		       (B.DES_CLIENTE IS NOT NULL)
-		 ORDER BY 10, 8, 4, 3
-		 INTO ICOD_CLIENTE,IDTA_MOVIMENTO,ICOD_CONTRATO,IDTA_VENCIMENTO,IVLR_PRESTACAO,IFUNC_RECEBIMENTO,
-		      INUM_PARCELA,IDES_NOME,ICOD_UNI_CAD,INUMFAIXA,IDESFAIXA,ICONTRATO DO
-	    BEGIN
-	       IF (ICOD_UNI_CLI = 9999) THEN
-		   SUSPEND;
-	       ELSE
-		 IF ((ICOD_UNI_CLI = 0) AND
-		    (ICOD_UNI_CAD IS NULL)) THEN
-		     SUSPEND;
-	    END
-   END
-   IF ((IFAIXA = 3) OR (IFAIXA = 0)) THEN
-	   BEGIN
-	   FOR SELECT A.COD_CLIENTE,A.DTA_MOVIMENTO,A.COD_CONTRATO,A.DTA_VENCIMENTO,A.VLR_PRESTACAO,A.COD_TIPO_RECBTO,A.NUM_PARCELA,
-		       B.DES_CLIENTE,B.COD_UNIDADE, '3' AS NUMFAIXA, 'RESÃDUO' AS DESFAIXA,A.COD_COMPL
-		  FROM (CRE_RECEBIMENTOS A LEFT OUTER JOIN CRE_CLIENTES B ON( A.COD_EMP = B.COD_EMP AND
-									      A.COD_CLIENTE = B.COD_CLIENTE))
-		 WHERE (A.COD_EMP=:ICOD_EMP)AND
-		       (A.COD_UNIDADE=:ICOD_UNIDADE)AND
-		       (A.COD_CLIENTE BETWEEN :ICOD_CLIENTE_INICIAL AND :ICOD_CLIENTE_FINAL)AND
-		       (A.DTA_MOVIMENTO BETWEEN :IDTA_INICIAL AND :IDTA_FINAL)AND
-		       (A.NUM_EQUIPAMENTO BETWEEN :INUM_EQUIPAMENTO_INICIAL AND :INUM_EQUIPAMENTO_FINAL)AND
-		       (A.COD_TIPO_RECBTO BETWEEN :ICOD_FUNC_INI AND :ICOD_FUNC_FIM) AND
-		       ((A.DTA_MOVIMENTO - A.DTA_VENCIMENTO) > 0) AND
-	       	       ((SELECT SDIF_MES FROM RETORNA_MES_SP(A.DTA_VENCIMENTO,A.DTA_MOVIMENTO)) <= 5) AND
-	       	        ((SELECT SDIF_MES FROM RETORNA_MES_SP(A.DTA_VENCIMENTO,A.DTA_MOVIMENTO)) >= 2) AND
-		       (A.COD_COMPL = :CONTRATO_CRE OR A.COD_COMPL = :CONTRATO_CPP) AND
-		       (B.COD_UNIDADE = :ICOD_UNIDADE) AND
-		       (B.DES_CLIENTE IS NOT NULL)
-		 ORDER BY 10, 8, 4, 3
-		 INTO ICOD_CLIENTE,IDTA_MOVIMENTO,ICOD_CONTRATO,IDTA_VENCIMENTO,IVLR_PRESTACAO,IFUNC_RECEBIMENTO,
-		      INUM_PARCELA,IDES_NOME,ICOD_UNI_CAD,INUMFAIXA,IDESFAIXA,ICONTRATO DO
-	    BEGIN
-	       IF (ICOD_UNI_CLI = 9999) THEN
-		   SUSPEND;
-	       ELSE
-		 IF ((ICOD_UNI_CLI = 0) AND
-		    (ICOD_UNI_CAD IS NULL)) THEN
-		     SUSPEND;
-	    END
-   END
-   IF ((IFAIXA = 4) OR (IFAIXA = 0)) THEN
-	BEGIN
-	   FOR SELECT A.COD_CLIENTE,A.DTA_MOVIMENTO,A.COD_CONTRATO,A.DTA_VENCIMENTO,A.VLR_PRESTACAO,A.COD_TIPO_RECBTO,A.NUM_PARCELA,
-		       B.DES_CLIENTE,B.COD_UNIDADE, '4' AS NUMFAIXA, 'PA - PERIODO DE ALERTA' AS DESFAIXA,A.COD_COMPL
-		  FROM (CRE_RECEBIMENTOS A LEFT OUTER JOIN CRE_CLIENTES B ON( A.COD_EMP = B.COD_EMP AND
-									      A.COD_CLIENTE = B.COD_CLIENTE))
-		 WHERE (A.COD_EMP=:ICOD_EMP)AND
-		       (A.COD_UNIDADE=:ICOD_UNIDADE)AND
-		       (A.COD_CLIENTE BETWEEN :ICOD_CLIENTE_INICIAL AND :ICOD_CLIENTE_FINAL)AND
-		       (A.DTA_MOVIMENTO BETWEEN :IDTA_INICIAL AND :IDTA_FINAL)AND
-		       (A.NUM_EQUIPAMENTO BETWEEN :INUM_EQUIPAMENTO_INICIAL AND :INUM_EQUIPAMENTO_FINAL)AND
-		       (A.COD_TIPO_RECBTO BETWEEN :ICOD_FUNC_INI AND :ICOD_FUNC_FIM) AND
-		       ((A.DTA_MOVIMENTO - A.DTA_VENCIMENTO) > 0) AND
-	       	       ((SELECT SDIF_MES FROM RETORNA_MES_SP(A.DTA_VENCIMENTO,A.DTA_MOVIMENTO)) = 1) AND
-		       (A.COD_COMPL = :CONTRATO_CRE OR A.COD_COMPL = :CONTRATO_CPP) AND
-		       (B.COD_UNIDADE = :ICOD_UNIDADE) AND
-		       (B.DES_CLIENTE IS NOT NULL)
-		 ORDER BY 10, 8, 4, 3
-		 INTO ICOD_CLIENTE,IDTA_MOVIMENTO,ICOD_CONTRATO,IDTA_VENCIMENTO,IVLR_PRESTACAO,IFUNC_RECEBIMENTO,
-		      INUM_PARCELA,IDES_NOME,ICOD_UNI_CAD,INUMFAIXA,IDESFAIXA,ICONTRATO DO
-	    BEGIN
-	       IF (ICOD_UNI_CLI = 9999) THEN
-		   SUSPEND;
-	       ELSE
-		 IF ((ICOD_UNI_CLI = 0) AND
-		    (ICOD_UNI_CAD IS NULL)) THEN
-		     SUSPEND;
-	    END
-   END
-   IF ((IFAIXA = 5) OR (IFAIXA = 0)) THEN
-	BEGIN
-	   FOR SELECT A.COD_CLIENTE,A.DTA_MOVIMENTO,A.COD_CONTRATO,A.DTA_VENCIMENTO,A.VLR_PRESTACAO,A.COD_TIPO_RECBTO,A.NUM_PARCELA,
-		       B.DES_CLIENTE,B.COD_UNIDADE, '5' AS NUMFAIXA, 'PREVENTIVA' AS DESFAIXA,A.COD_COMPL
-		  FROM (CRE_RECEBIMENTOS A LEFT OUTER JOIN CRE_CLIENTES B ON( A.COD_EMP = B.COD_EMP AND
-									      A.COD_CLIENTE = B.COD_CLIENTE))
-		 WHERE (A.COD_EMP=:ICOD_EMP)AND
-		       (A.COD_UNIDADE=:ICOD_UNIDADE)AND
-		       (A.COD_CLIENTE BETWEEN :ICOD_CLIENTE_INICIAL AND :ICOD_CLIENTE_FINAL)AND
-		       (A.DTA_MOVIMENTO BETWEEN :IDTA_INICIAL AND :IDTA_FINAL)AND
-		       (A.NUM_EQUIPAMENTO BETWEEN :INUM_EQUIPAMENTO_INICIAL AND :INUM_EQUIPAMENTO_FINAL)AND
-		       (A.COD_TIPO_RECBTO BETWEEN :ICOD_FUNC_INI AND :ICOD_FUNC_FIM) AND
-	       	       ((SELECT SDIF_MES FROM RETORNA_MES_SP(A.DTA_VENCIMENTO,A.DTA_MOVIMENTO)) = 0) AND
-		       (A.COD_COMPL = :CONTRATO_CRE OR A.COD_COMPL = :CONTRATO_CPP) AND
-		       (B.COD_UNIDADE = :ICOD_UNIDADE) AND
-		       (B.DES_CLIENTE IS NOT NULL)
-		 ORDER BY 10, 8, 4, 3
-		 INTO ICOD_CLIENTE,IDTA_MOVIMENTO,ICOD_CONTRATO,IDTA_VENCIMENTO,IVLR_PRESTACAO,IFUNC_RECEBIMENTO,
-		      INUM_PARCELA,IDES_NOME,ICOD_UNI_CAD,INUMFAIXA,IDESFAIXA,ICONTRATO DO
-	    BEGIN
-	       IF (ICOD_UNI_CLI = 9999) THEN
-		   SUSPEND;
-	       ELSE
-		 IF ((ICOD_UNI_CLI = 0) AND
-		    (ICOD_UNI_CAD IS NULL)) THEN
-		     SUSPEND;
-	    END
-   END
-   IF ((IFAIXA = 6) OR (IFAIXA = 0)) THEN
-	BEGIN
-	  FOR SELECT A.COD_CLIENTE,A.DTA_MOVIMENTO,A.COD_CONTRATO,A.DTA_VENCIMENTO,A.VLR_PRESTACAO,A.COD_TIPO_RECBTO,A.NUM_PARCELA,
-	       B.DES_CLIENTE,B.COD_UNIDADE, '6' AS NUMFAIXA, 'PAGAMENTO ANTECIPADO' AS DESFAIXA,A.COD_COMPL
-	  FROM (CRE_RECEBIMENTOS A LEFT OUTER JOIN CRE_CLIENTES B ON( A.COD_EMP = B.COD_EMP AND
-								      A.COD_CLIENTE = B.COD_CLIENTE))
-	 WHERE (A.COD_EMP=:ICOD_EMP)AND
-	       (A.COD_UNIDADE=:ICOD_UNIDADE)AND
-	       (A.COD_CLIENTE BETWEEN :ICOD_CLIENTE_INICIAL AND :ICOD_CLIENTE_FINAL)AND
-	       (A.DTA_MOVIMENTO BETWEEN :IDTA_INICIAL AND :IDTA_FINAL)AND
-	       (A.NUM_EQUIPAMENTO BETWEEN :INUM_EQUIPAMENTO_INICIAL AND :INUM_EQUIPAMENTO_FINAL)AND
-	       (A.COD_TIPO_RECBTO BETWEEN :ICOD_FUNC_INI AND :ICOD_FUNC_FIM) AND
-	       ((A.DTA_MOVIMENTO - A.DTA_VENCIMENTO) < 0) AND
-	       ((SELECT SDIF_MES FROM RETORNA_MES_SP(A.DTA_VENCIMENTO,A.DTA_MOVIMENTO)) >= 1) AND
-	       (A.COD_COMPL = :CONTRATO_CRE OR A.COD_COMPL = :CONTRATO_CPP) AND
-	       (B.COD_UNIDADE = :ICOD_UNIDADE) AND
-	       (B.DES_CLIENTE IS NOT NULL)
-	 ORDER BY 10, 8, 4, 3
-	 INTO ICOD_CLIENTE,IDTA_MOVIMENTO,ICOD_CONTRATO,IDTA_VENCIMENTO,IVLR_PRESTACAO,IFUNC_RECEBIMENTO,
-	      INUM_PARCELA,IDES_NOME,ICOD_UNI_CAD,INUMFAIXA,IDESFAIXA,ICONTRATO DO
-	   BEGIN
-	      IF (ICOD_UNI_CLI = 9999) THEN
-	   SUSPEND;
-	      ELSE
-	 IF ((ICOD_UNI_CLI = 0) AND
-	    (ICOD_UNI_CAD IS NULL)) THEN
-	     SUSPEND;
-	   END
-   END
-   IF ((IFAIXA = 7) OR (IFAIXA = 0)) THEN
-	BEGIN
-	   FOR SELECT A.COD_CLIENTE,A.DTA_MOVIMENTO,A.COD_CONTRATO,A.DTA_VENCIMENTO,A.VLR_PRESTACAO,A.COD_TIPO_RECBTO,A.NUM_PARCELA,
-		       B.DES_CLIENTE,B.COD_UNIDADE, '7' AS NUMFAIXA, 'PAGAMENTO DE OUTRAS REDES E LOJAS' AS DESFAIXA,A.COD_COMPL
-		  FROM (CRE_RECEBIMENTOS A LEFT OUTER JOIN CRE_CLIENTES B ON( A.COD_EMP = B.COD_EMP AND
-									      A.COD_CLIENTE = B.COD_CLIENTE))
-		 WHERE (A.COD_EMP=:ICOD_EMP)AND
-		       (A.COD_UNIDADE=:ICOD_UNIDADE)AND
-		       (A.COD_CLIENTE BETWEEN :ICOD_CLIENTE_INICIAL AND :ICOD_CLIENTE_FINAL)AND
-		       (A.DTA_MOVIMENTO BETWEEN :IDTA_INICIAL AND :IDTA_FINAL)AND
-		       (A.NUM_EQUIPAMENTO BETWEEN :INUM_EQUIPAMENTO_INICIAL AND :INUM_EQUIPAMENTO_FINAL)AND
-		       (A.COD_TIPO_RECBTO BETWEEN :ICOD_FUNC_INI AND :ICOD_FUNC_FIM) AND
-		       (B.DES_CLIENTE IS NULL OR B.COD_UNIDADE <> :ICOD_UNIDADE) AND
-		       (A.COD_COMPL = :CONTRATO_CRE OR A.COD_COMPL = :CONTRATO_CPP)
-		 ORDER BY 10, 8, 4, 3
-		 INTO ICOD_CLIENTE,IDTA_MOVIMENTO,ICOD_CONTRATO,IDTA_VENCIMENTO,IVLR_PRESTACAO,IFUNC_RECEBIMENTO,
-		      INUM_PARCELA,IDES_NOME,ICOD_UNI_CAD,INUMFAIXA,IDESFAIXA,ICONTRATO DO
-	    BEGIN
-		IF(IDES_NOME IS NULL)THEN
-		BEGIN
-		  IF(IFUNC_RECEBIMENTO = 509)THEN
-		     IDES_NOME = 'RECEBIMENTOS DIVERSOS';
-		  ELSE
-		    IF(IFUNC_RECEBIMENTO = 505)THEN
-		       IDES_NOME = 'CLIENTE DE OUTRA REDE';
-		    ELSE
-		      IDES_NOME = 'CLIENTE DE OUTRA LOJA';
-	       END
-	       IF (ICOD_UNI_CLI = 9999) THEN
-		   SUSPEND;
-	       ELSE
-		 IF ((ICOD_UNI_CLI = 0) AND
-		    (ICOD_UNI_CAD IS NULL)) THEN
-		     SUSPEND;
-	    END
-   END
-END
- ^
+as
+  declare variable contrato_cpp varchar(3);
+  declare variable contrato_cre varchar(3);
+begin
+     /* 1= lp, 2=pré lp, 3=resíduo, 4=pa, 5=preventiva, 6=pagamento ant, 7=pag outras redes, 0=todas  */
+     /* 1=cre, 2=cpp, 0=todos */
+     if (itipcontrato = 0) then
+     begin
+          contrato_cre = 'CRE';
+          contrato_cpp = 'CPP';
+     end
+     else
+         if (itipcontrato = 1) then
+         begin
+              contrato_cre = 'CRE';
+              contrato_cpp = 'CRE';
+         end
+         else
+             if (itipcontrato = 2) then
+             begin
+                  contrato_cre = 'CPP';
+                  contrato_cpp = 'CPP';
+             end
 
-SET TERM ; ^
-COMMIT WORK;
-SET AUTODDL ON;
+         if ((ifaixa = 1) or (ifaixa = 0)) then
+         begin
+              for select a.cod_cliente,a.dta_movimento,a.cod_contrato,
+                         a.dta_vencimento,a.vlr_prestacao,a.cod_tipo_recbto,
+                         a.num_parcela,b.des_cliente,b.cod_unidade,'1' as numfaixa,
+                         'LP - LUCROS E PERDAS' as desfaixa,a.cod_compl
+                  from (cre_recebimentos a
+                        left outer join cre_clientes b
+                        on( a.cod_emp = b.cod_emp and a.cod_cliente = b.cod_cliente))
+                  where (a.cod_emp = :icod_emp) and
+                        (a.cod_unidade = :icod_unidade) and
+                        (a.cod_cliente between :icod_cliente_inicial and :icod_cliente_final) and
+                        (a.dta_movimento between :idta_inicial and :idta_final) and
+                        (a.num_equipamento between :inum_equipamento_inicial and :inum_equipamento_final) and
+                        (a.cod_tipo_recbto between :icod_func_ini and :icod_func_fim) and
+                        ((a.dta_movimento - a.dta_vencimento) > 0) and
+                        ((select sdif_mes from retorna_mes_sp(a.dta_vencimento,a.dta_movimento)) >= 7) and
+                        (a.cod_compl = :contrato_cre or a.cod_compl = :contrato_cpp) and
+                        (b.cod_unidade = :icod_unidade) and
+                        (b.des_cliente is not null)
+                  order by 10, 8, 4, 3
+                  into icod_cliente,idta_movimento,icod_contrato,idta_vencimento,
+                       ivlr_prestacao,ifunc_recebimento,inum_parcela,ides_nome,
+                       icod_uni_cad,inumfaixa,idesfaixa,icontrato do
+              begin
+                   if (icod_uni_cli = 9999) then
+                      suspend;
+                   else
+                       if ((icod_uni_cli = 0) and (icod_uni_cad is null)) then
+                          suspend;
+              end
+         end
+
+     if ((ifaixa = 2) or (ifaixa = 0)) then
+     begin
+          for select a.cod_cliente,a.dta_movimento,a.cod_contrato,a.dta_vencimento,
+                     a.vlr_prestacao,a.cod_tipo_recbto,a.num_parcela,b.des_cliente,
+                     b.cod_unidade,'2' as numfaixa,'PRE LP - PRE LUCROS E PERDAS' as desfaixa,
+                     a.cod_compl
+              from (cre_recebimentos a
+                    left outer join cre_clientes b
+                    on( a.cod_emp = b.cod_emp and a.cod_cliente = b.cod_cliente))
+              where (a.cod_emp = :icod_emp) and
+                    (a.cod_unidade = :icod_unidade) and
+                    (a.cod_cliente between :icod_cliente_inicial and :icod_cliente_final) and
+                    (a.dta_movimento between :idta_inicial and :idta_final) and
+                    (a.num_equipamento between :inum_equipamento_inicial and :inum_equipamento_final) and
+                    (a.cod_tipo_recbto between :icod_func_ini and :icod_func_fim) and
+                    ((a.dta_movimento - a.dta_vencimento) > 0) and
+                    ((select sdif_mes from retorna_mes_sp(a.dta_vencimento,a.dta_movimento)) = 6) and
+                    (a.cod_compl = :contrato_cre or a.cod_compl = :contrato_cpp) and
+                    (b.cod_unidade = :icod_unidade) and
+                    (b.des_cliente is not null)
+              order by 10, 8, 4, 3
+              into icod_cliente,idta_movimento,icod_contrato,idta_vencimento,
+                   ivlr_prestacao,ifunc_recebimento,inum_parcela,ides_nome,
+                   icod_uni_cad,inumfaixa,idesfaixa,icontrato do
+          begin
+               if (icod_uni_cli = 9999) then
+                   suspend;
+               else
+                   if ((icod_uni_cli = 0) and (icod_uni_cad is null)) then
+                      suspend;
+          end
+     end
+
+     if ((ifaixa = 3) or (ifaixa = 0)) then
+     begin
+          for select a.cod_cliente,a.dta_movimento,a.cod_contrato,a.dta_vencimento,
+                     a.vlr_prestacao,a.cod_tipo_recbto,a.num_parcela,b.des_cliente,
+                     b.cod_unidade,'3' as numfaixa,'RESIDUO' as desfaixa,a.cod_compl
+              from (cre_recebimentos a
+                    left outer join cre_clientes b
+                    on (a.cod_emp = b.cod_emp and a.cod_cliente = b.cod_cliente))
+              where (a.cod_emp = :icod_emp)
+              and (a.cod_unidade = :icod_unidade)
+              and (a.cod_cliente between :icod_cliente_inicial and :icod_cliente_final)
+              and (a.dta_movimento between :idta_inicial and :idta_final)
+              and (a.num_equipamento between :inum_equipamento_inicial and :inum_equipamento_final)
+              and (a.cod_tipo_recbto between :icod_func_ini and :icod_func_fim)
+              and ((a.dta_movimento - a.dta_vencimento) > 0)
+              and ((select sdif_mes from retorna_mes_sp(a.dta_vencimento,a.dta_movimento)) <= 5)
+              and ((select sdif_mes from retorna_mes_sp(a.dta_vencimento,a.dta_movimento)) >= 2)
+              and (a.cod_compl = :contrato_cre or a.cod_compl = :contrato_cpp)
+              and (b.cod_unidade = :icod_unidade)
+              and (b.des_cliente is not null)
+              order by 10, 8, 4, 3
+              into icod_cliente,idta_movimento,icod_contrato,idta_vencimento,ivlr_prestacao,ifunc_recebimento,
+                   inum_parcela,ides_nome,icod_uni_cad,inumfaixa,idesfaixa,icontrato do
+          begin
+               if (icod_uni_cli = 9999) then
+                  suspend;
+               else
+                   if ((icod_uni_cli = 0) and (icod_uni_cad is null)) then
+                      suspend;
+          end
+     end
+
+     if ((ifaixa = 4) or (ifaixa = 0)) then
+     begin
+          for select a.cod_cliente,a.dta_movimento,a.cod_contrato,a.dta_vencimento,
+                     a.vlr_prestacao,a.cod_tipo_recbto,a.num_parcela,
+                     b.des_cliente,b.cod_unidade,'4' as numfaixa,
+                     'PA - PERIODO DE ALERTA' as desfaixa,a.cod_compl
+              from (cre_recebimentos a
+                    left outer join cre_clientes b
+                    on (a.cod_emp = b.cod_emp and a.cod_cliente = b.cod_cliente))
+              where (a.cod_emp = :icod_emp)
+              and (a.cod_unidade = :icod_unidade)
+              and (a.cod_cliente between :icod_cliente_inicial and :icod_cliente_final)
+              and (a.dta_movimento between :idta_inicial and :idta_final)
+              and (a.num_equipamento between :inum_equipamento_inicial and :inum_equipamento_final)
+              and (a.cod_tipo_recbto between :icod_func_ini and :icod_func_fim)
+              and ((a.dta_movimento - a.dta_vencimento) > 0)
+              and ((select sdif_mes from retorna_mes_sp(a.dta_vencimento,a.dta_movimento)) = 1)
+              and (a.cod_compl = :contrato_cre or a.cod_compl = :contrato_cpp)
+              and (b.cod_unidade = :icod_unidade)
+              and (b.des_cliente is not null)
+              order by 10, 8, 4, 3
+              into icod_cliente,idta_movimento,icod_contrato,idta_vencimento,ivlr_prestacao,ifunc_recebimento,
+                   inum_parcela,ides_nome,icod_uni_cad,inumfaixa,idesfaixa,icontrato do
+          begin
+               if (icod_uni_cli = 9999) then
+                  suspend;
+               else
+                   if ((icod_uni_cli = 0) and (icod_uni_cad is null)) then
+                      suspend;
+          end
+     end
+
+     if ((ifaixa = 5) or (ifaixa = 0)) then
+     begin
+          for select a.cod_cliente,a.dta_movimento,a.cod_contrato,a.dta_vencimento,
+                     a.vlr_prestacao,a.cod_tipo_recbto,a.num_parcela,
+                     b.des_cliente,b.cod_unidade,'5' as numfaixa,
+                     'PREVENTIVA' as desfaixa,a.cod_compl
+              from (cre_recebimentos a
+                    left outer join cre_clientes b
+                    on (a.cod_emp = b.cod_emp and a.cod_cliente = b.cod_cliente))
+              where (a.cod_emp = :icod_emp)
+              and (a.cod_unidade = :icod_unidade)
+              and (a.cod_cliente between :icod_cliente_inicial and :icod_cliente_final)
+              and (a.dta_movimento between :idta_inicial and :idta_final)
+              and (a.num_equipamento between :inum_equipamento_inicial and :inum_equipamento_final)
+              and (a.cod_tipo_recbto between :icod_func_ini and :icod_func_fim)
+              and ((select sdif_mes from retorna_mes_sp(a.dta_vencimento,a.dta_movimento)) = 0)
+              and (a.cod_compl = :contrato_cre or a.cod_compl = :contrato_cpp)
+              and (b.cod_unidade = :icod_unidade)
+              and (b.des_cliente is not null)
+              order by 10,8,4,3
+              into icod_cliente,idta_movimento,icod_contrato,idta_vencimento,
+                   ivlr_prestacao,ifunc_recebimento,inum_parcela,ides_nome,
+                   icod_uni_cad,inumfaixa,idesfaixa,icontrato do
+          begin
+               if (icod_uni_cli = 9999) then
+                  suspend;
+               else
+                   if ((icod_uni_cli = 0) and (icod_uni_cad is null)) then
+                      suspend;
+          end
+     end
+
+     if ((ifaixa = 6) or (ifaixa = 0)) then
+     begin
+          for select a.cod_cliente,a.dta_movimento,a.cod_contrato,a.dta_vencimento,
+                     a.vlr_prestacao,a.cod_tipo_recbto,a.num_parcela,b.des_cliente,
+                     b.cod_unidade,'6' as numfaixa,'PAGAMENTO ANTECIPADO' as desfaixa,a.cod_compl
+              from (cre_recebimentos a
+                    left outer join cre_clientes b
+                    on (a.cod_emp = b.cod_emp and a.cod_cliente = b.cod_cliente))
+              where (a.cod_emp = :icod_emp)
+              and (a.cod_unidade = :icod_unidade)
+              and (a.cod_cliente between :icod_cliente_inicial and :icod_cliente_final)
+              and (a.dta_movimento between :idta_inicial and :idta_final)
+              and (a.num_equipamento between :inum_equipamento_inicial and :inum_equipamento_final)
+              and (a.cod_tipo_recbto between :icod_func_ini and :icod_func_fim)
+              and ((a.dta_movimento - a.dta_vencimento) < 0)
+              and ((select sdif_mes from retorna_mes_sp(a.dta_vencimento,a.dta_movimento)) >= 1)
+              and (a.cod_compl = :contrato_cre or a.cod_compl = :contrato_cpp)
+              and (b.cod_unidade = :icod_unidade)
+              and (b.des_cliente is not null)
+              order by 10,8,4,3
+              into icod_cliente,idta_movimento,icod_contrato,idta_vencimento,
+                   ivlr_prestacao,ifunc_recebimento,inum_parcela,ides_nome,
+                   icod_uni_cad,inumfaixa,idesfaixa,icontrato do
+          begin
+               if (icod_uni_cli = 9999) then
+                  suspend;
+               else
+                   if ((icod_uni_cli = 0) and (icod_uni_cad is null)) then
+                      suspend;
+          end
+     end
+
+     if ((ifaixa = 7) or (ifaixa = 0)) then
+     begin
+          for select a.cod_cliente,a.dta_movimento,a.cod_contrato,a.dta_vencimento,
+                     a.vlr_prestacao,a.cod_tipo_recbto,a.num_parcela,
+                     b.des_cliente,b.cod_unidade,'7' as numfaixa,
+                     'PAGAMENTO DE OUTRAS REDES E LOJAS' as desfaixa,a.cod_compl
+              from (cre_recebimentos a
+                    left outer join cre_clientes b
+                    on( a.cod_emp = b.cod_emp and a.cod_cliente = b.cod_cliente))
+              where (a.cod_emp=:icod_emp)
+              and (a.cod_unidade=:icod_unidade)
+              and (a.cod_cliente between :icod_cliente_inicial and :icod_cliente_final)
+              and (a.dta_movimento between :idta_inicial and :idta_final)
+              and (a.num_equipamento between :inum_equipamento_inicial and :inum_equipamento_final)
+              and (a.cod_tipo_recbto between :icod_func_ini and :icod_func_fim)
+              and (b.des_cliente is null or b.cod_unidade <> :icod_unidade)
+              and (a.cod_compl = :contrato_cre or a.cod_compl = :contrato_cpp)
+              order by 10,8,4,3
+              into icod_cliente,idta_movimento,icod_contrato,idta_vencimento,
+                   ivlr_prestacao,ifunc_recebimento,inum_parcela,ides_nome,
+                   icod_uni_cad,inumfaixa,idesfaixa,icontrato do
+          begin
+               if(ides_nome is null) then
+               begin
+                    if (ifunc_recebimento = 509) then
+                       ides_nome = 'RECEBIMENTOS DIVERSOS';
+                    else
+                        if (ifunc_recebimento = 505) then
+                           ides_nome = 'CLIENTE DE OUTRA REDE';
+                        else
+                            ides_nome = 'CLIENTE DE OUTRA LOJA';
+               end
+               if (icod_uni_cli = 9999) then
+                  suspend;
+               else
+                   if ((icod_uni_cli = 0) and (icod_uni_cad is null)) then
+                      suspend;
+          end
+     end
+end ^
+
+set term ; ^
+commit work;
+set autoddl on;
