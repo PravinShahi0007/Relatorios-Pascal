@@ -1,440 +1,404 @@
-COMMIT WORK;
-SET AUTODDL OFF;
-SET TERM ^ ;
+commit work;
+set autoddl off;
+set term ^ ;
 
-/* Stored procedures */
-
-CREATE PROCEDURE "REL_CLI_PREVENTIVA_SP" 
+create or alter procedure rel_cli_preventiva_sp
 (
-  "COD_EMP" NUMERIC(3, 0),
-  "COD_UNIDADE" NUMERIC(4, 0),
-  "DTA_INICIAL" DATE,
-  "DTA_FINAL" DATE,
-  "NRO_COMPRA_INI" NUMERIC(5, 0),
-  "NRO_COMPRA_FIM" NUMERIC(5, 0),
-  "VLR_PROX_INI" NUMERIC(15, 2),
-  "VLR_PROX_FIM" NUMERIC(15, 2),
-  "IORDER" NUMERIC(1, 0),
-  "MDA_INI" NUMERIC(5, 0),
-  "MDA_FIM" NUMERIC(5, 0),
-  "PERFIL_INI" NUMERIC(4, 0),
-  "PERFIL_FIM" NUMERIC(4, 0)
+ cod_emp        numeric(3,0),
+ cod_unidade    numeric(4,0),
+ dta_inicial    date,
+ dta_final      date,
+ nro_compra_ini numeric(5,0),
+ nro_compra_fim numeric(5,0),
+ vlr_prox_ini   numeric(15,2),
+ vlr_prox_fim   numeric(15,2),
+ iorder         numeric(1,0),
+ mda_ini        numeric(5,0),
+ mda_fim        numeric(5,0),
+ perfil_ini     numeric(4,0),
+ perfil_fim     numeric(4,0)
 )
-RETURNS
+returns
 (
-  "COD_CLIENTE" NUMERIC(14, 0),
-  "DES_CLIENTE" VARCHAR(40),
-  "DTA_CADASTRO" DATE,
-  "DES_FONE_RESID" VARCHAR(15),
-  "DES_FONE_COMERC" VARCHAR(15),
-  "QTD_COMPRAS_VP" NUMERIC(5, 0),
-  "DES_FONE_CELULAR2" VARCHAR(15),
-  "DES_FONE_AUT" VARCHAR(15),
-  "QTD_MAIOR_ATRASO" NUMERIC(5, 0),
-  "DTA_VENCIMENTO" DATE,
-  "QTD_PARCELAS" NUMERIC(3, 0),
-  "TIP_PLANO_VP" VARCHAR(6),
-  "NUM_PARCELA" NUMERIC(3, 0),
-  "VLR_PRESTACAO" NUMERIC(15, 2),
-  "COD_CONTRATO" NUMERIC(11, 0),
-  "DTA_VENDA" DATE,
-  "DES_FONE_CELULAR" VARCHAR(15),
-  "NUM_MDA" NUMERIC(5, 0),
-  "COD_PERFIL_CLI" NUMERIC(4, 0),
-  "COD_COMPL" VARCHAR(3),
-  "DTA_VENC_ORDEM" DATE,
-  "DTA_AGENDAMENTO" DATE
+ cod_cliente       numeric(14,0),
+ des_cliente       varchar(40),
+ dta_cadastro      date,
+ des_fone_resid    varchar(15),
+ des_fone_comerc   varchar(15),
+ qtd_compras_vp    numeric(5,0),
+ des_fone_celular2 varchar(15),
+ des_fone_aut      varchar(15),
+ qtd_maior_atraso  numeric(5,0),
+ dta_vencimento    date,
+ qtd_parcelas      numeric(3,0),
+ tip_plano_vp      varchar(6),
+ num_parcela       numeric(3,0),
+ vlr_prestacao     numeric(15,2),
+ cod_contrato      numeric(11,0),
+ dta_venda         date,
+ des_fone_celular  varchar(15),
+ num_mda           numeric(5,0),
+ cod_perfil_cli    numeric(4,0),
+ cod_compl         varchar(3),
+ dta_venc_ordem    date,
+ dta_agendamento   date
 )
-AS
-BEGIN EXIT; END ^
+as
+  declare variable contador numeric(3);
+  declare variable cod_cliente_ant numeric(8,0);
+begin
+     cod_cliente_ant = 0;
+     if (iorder = 1) then /* nome */
+     begin
+          for select cod_cliente
+                     ,dta_vencimento
+                     ,qtd_parcelas
+                     ,tip_plano_vp
+                     ,num_parcela
+                     ,vlr_prestacao
+                     ,cod_contrato
+                     ,dta_venda
+                     ,cod_compl
+              from cre_contas_receber
+              where cod_emp = :cod_emp
+              and cod_unidade = :cod_unidade
+              and dta_vencimento >= :dta_inicial
+              and dta_vencimento <= :dta_final
+              and ind_prestacao = 0
+              and vlr_prestacao >= :vlr_prox_ini
+              and vlr_prestacao <= :vlr_prox_fim
+              and not exists (select 1 from cre_cli_agenda b
+                              where b.cod_emp = cre_contas_receber.cod_emp
+                              and b.cod_unidade = cre_contas_receber.cod_unidade
+                              and b.cod_cliente = cre_contas_receber.cod_cliente
+                              and b.dta_agendamento >= current_date)
+              into :cod_cliente,:dta_vencimento,:qtd_parcelas,:tip_plano_vp,
+                   :num_parcela,:vlr_prestacao,:cod_contrato,:dta_venda,:cod_compl do
+          begin
+               for select a.des_cliente
+                         ,a.dta_cadastro
+                         ,a.des_telefone
+                         ,d.des_fone_comerc
+                         ,d.des_fone_celular
+                         ,d.des_fone_celular2
+                         ,b.qtd_compras_vp
+                         ,b.qtd_maior_atraso
+                         ,b.num_mda
+                         ,b.cod_perfil_cli
+                   from cre_clientes a
+                        ,cre_clientes_cr d
+                        ,cre_saldos_cli b
+                   where a.cod_emp = d.cod_emp
+                   and a.cod_cliente = d.cod_cliente
+                   and a.cod_emp = b.cod_emp
+                   and a.cod_cliente = b.cod_cliente
+                   and b.qtd_compras_vp >= :nro_compra_ini
+                   and b.qtd_compras_vp <= :nro_compra_fim
+                   and a.cod_emp = :cod_emp
+                   and a.cod_cliente = :cod_cliente
+                   and b.num_mda >= :mda_ini
+                   and b.num_mda <= :mda_fim
+                   and b.cod_perfil_cli >= :perfil_ini
+                   and b.cod_perfil_cli <= :perfil_fim
+                   into :des_cliente,:dta_cadastro,:des_fone_resid,:des_fone_comerc,
+                        :des_fone_celular,:des_fone_celular2,:qtd_compras_vp,
+                        :qtd_maior_atraso,:num_mda,:cod_perfil_cli do
+               begin
+                    for select des_telefone
+                        from cre_pessoa_autorizada
+                        where cod_emp = :cod_emp
+                        and cod_cliente = :cod_cliente
+                        into :des_fone_aut do
+                    begin
+                         contador = 0;
+                         begin
+                              select count(1)
+                              from cre_contas_receber
+                              where cod_emp = :cod_emp
+                              and cod_cliente = :cod_cliente
+                              and cod_contrato = :cod_contrato
+                              and dta_vencimento < :dta_inicial
+                              and ind_prestacao = 0
+                              into :contador;
+                              when sqlcode -104 do
+                                   contador = 0;
+                         end
+                         if (contador = 0) then
+                         begin
+                              suspend;
+                         end
+                    end
+               end
+          end
+     end
+     else
+         if (iorder = 2) then /* qtd compras */
+         begin
+              for select cod_cliente
+                         ,dta_vencimento
+                         ,qtd_parcelas
+                         ,tip_plano_vp
+                         ,num_parcela
+                         ,vlr_prestacao
+                         ,cod_contrato
+                         ,dta_venda
+                         ,cod_compl
+                  from cre_contas_receber
+                  where cod_emp = :cod_emp
+                  and cod_unidade = :cod_unidade
+                  and dta_vencimento >= :dta_inicial
+                  and dta_vencimento <= :dta_final
+                  and ind_prestacao = 0
+                  and vlr_prestacao >= :vlr_prox_ini
+                  and vlr_prestacao <= :vlr_prox_fim
+                  and not exists (select 1 from cre_cli_agenda b
+                                  where b.cod_emp = cre_contas_receber.cod_emp
+                                  and b.cod_unidade = cre_contas_receber.cod_unidade
+                                  and b.cod_cliente = cre_contas_receber.cod_cliente
+                                  and b.dta_agendamento >= current_date)
+                  into :cod_cliente,:dta_vencimento,:qtd_parcelas,:tip_plano_vp,
+                       :num_parcela,:vlr_prestacao,:cod_contrato,:dta_venda,:cod_compl do
+              begin
+                   for select a.des_cliente
+                              ,a.dta_cadastro
+                              ,a.des_telefone
+                              ,d.des_fone_comerc
+                              ,d.des_fone_celular
+                              ,d.des_fone_celular2
+                              ,b.qtd_compras_vp
+                              ,b.qtd_maior_atraso
+                              ,b.num_mda
+                              ,b.cod_perfil_cli
+                       from cre_clientes a
+                            ,cre_clientes_cr d
+                            ,cre_saldos_cli b
+                       where a.cod_emp = d.cod_emp
+                       and a.cod_cliente = d.cod_cliente
+                       and a.cod_emp = b.cod_emp
+                       and a.cod_cliente = b.cod_cliente
+                       and b.qtd_compras_vp >= :nro_compra_ini
+                       and b.qtd_compras_vp <= :nro_compra_fim
+                       and a.cod_emp = :cod_emp
+                       and a.cod_cliente = :cod_cliente
+                       and b.num_mda >= :mda_ini
+                       and b.num_mda <= :mda_fim
+                       and b.cod_perfil_cli >= :perfil_ini
+                       and b.cod_perfil_cli <= :perfil_fim
+                       into :des_cliente,:dta_cadastro,:des_fone_resid,:des_fone_comerc,
+                            :des_fone_celular,:des_fone_celular2,:qtd_compras_vp,
+                            :qtd_maior_atraso,:num_mda,:cod_perfil_cli do
+                   begin
+                        for select des_telefone
+                            from cre_pessoa_autorizada
+                            where cod_emp = :cod_emp
+                            and cod_cliente = :cod_cliente
+                            into :des_fone_aut do
+                        begin
+                             contador = 0;
+                             begin
+                                  select count(1)
+                                  from cre_contas_receber
+                                  where cod_emp = :cod_emp
+                                  and cod_cliente = :cod_cliente
+                                  and cod_contrato = :cod_contrato
+                                  and dta_vencimento < :dta_inicial
+                                  and ind_prestacao = 0
+                                  into :contador;
+                                  when sqlcode -104 do
+                                       contador = 0;
+                             end
+                             if (contador = 0) then
+                             begin
+                                  suspend;
+                             end
+                        end
+                   end
+              end
+         end
+         else
+             if (iorder = 3) then /* vencimento */
+             begin
+                  for select cod_cliente
+                             ,dta_vencimento
+                             ,qtd_parcelas
+                             ,tip_plano_vp
+                             ,num_parcela
+                             ,vlr_prestacao
+                             ,cod_contrato
+                             ,dta_venda
+                             ,cod_compl
+                      from cre_contas_receber
+                      where cod_emp = :cod_emp
+                      and cod_unidade = :cod_unidade
+                      and dta_vencimento >= :dta_inicial
+                      and dta_vencimento <= :dta_final
+                      and ind_prestacao = 0
+                      and vlr_prestacao >= :vlr_prox_ini
+                      and vlr_prestacao <= :vlr_prox_fim
+                      and not exists (select 1 from cre_cli_agenda b
+                                      where b.cod_emp = cre_contas_receber.cod_emp
+                                      and b.cod_unidade = cre_contas_receber.cod_unidade
+                                      and b.cod_cliente = cre_contas_receber.cod_cliente
+                                      and b.dta_agendamento >= current_date)
+                      into :cod_cliente,:dta_vencimento,:qtd_parcelas,:tip_plano_vp,
+                           :num_parcela,:vlr_prestacao,:cod_contrato,:dta_venda,:cod_compl do
+                  begin
+                       for select a.des_cliente
+                                  ,a.dta_cadastro
+                                  ,a.des_telefone
+                                  ,d.des_fone_comerc
+                                  ,d.des_fone_celular
+                                  ,d.des_fone_celular2
+                                  ,b.qtd_compras_vp
+                                  ,b.qtd_maior_atraso
+                                  ,b.num_mda
+                                  ,b.cod_perfil_cli
+                           from cre_clientes a
+                                ,cre_clientes_cr d
+                                ,cre_saldos_cli b
+                           where a.cod_emp = d.cod_emp
+                           and a.cod_cliente = d.cod_cliente
+                           and a.cod_emp = b.cod_emp
+                           and a.cod_cliente = b.cod_cliente
+                           and b.qtd_compras_vp >= :nro_compra_ini
+                           and b.qtd_compras_vp <= :nro_compra_fim
+                           and a.cod_emp = :cod_emp
+                           and a.cod_cliente = :cod_cliente
+                           and b.num_mda >= :mda_ini
+                           and b.num_mda <= :mda_fim
+                           and b.cod_perfil_cli >= :perfil_ini
+                           and b.cod_perfil_cli <= :perfil_fim
+                           into :des_cliente,:dta_cadastro,:des_fone_resid,
+                                :des_fone_comerc,:des_fone_celular,:des_fone_celular2,
+                                :qtd_compras_vp,:qtd_maior_atraso,
+                                :num_mda,:cod_perfil_cli do
+                       begin
+                            for select des_telefone
+                                from cre_pessoa_autorizada
+                                where cod_emp = :cod_emp
+                                and cod_cliente = :cod_cliente
+                                into :des_fone_aut do
+                            begin
+                                 if (cod_cliente = cod_cliente_ant) then
+                                 begin
+                                      dta_venc_ordem = dta_venc_ordem;
+                                 end
+                                 else
+                                 begin
+                                      dta_venc_ordem = dta_vencimento;
+                                      cod_cliente_ant = cod_cliente;
+                                 end
+                                 contador = 0;
+                                 begin
+                                      select count(1)
+                                      from cre_contas_receber
+                                      where cod_emp = :cod_emp
+                                      and cod_cliente = :cod_cliente
+                                      and cod_contrato = :cod_contrato
+                                      and dta_vencimento < :dta_inicial
+                                      and ind_prestacao = 0
+                                      into :contador;
+                                      when sqlcode -104 do
+                                           contador = 0;
+                                 end
+                                 if (contador = 0) then
+                                 begin
+                                      suspend;
+                                 end
+                                 else
+                                 begin
+                                      cod_cliente_ant = 0;
+                                 end
+                            end
+                       end
+                  end
+             end
+             else
+                 if (iorder = 4) then /* mda */
+                 begin
+                      for select cod_cliente
+                                 ,dta_vencimento
+                                 ,qtd_parcelas
+                                 ,tip_plano_vp
+                                 ,num_parcela
+                                 ,vlr_prestacao
+                                 ,cod_contrato
+                                 ,dta_venda
+                                 ,cod_compl
+                          from cre_contas_receber
+                          where cod_emp = :cod_emp
+                          and cod_unidade = :cod_unidade
+                          and dta_vencimento >= :dta_inicial
+                          and dta_vencimento <= :dta_final
+                          and ind_prestacao = 0
+                          and vlr_prestacao >= :vlr_prox_ini
+                          and vlr_prestacao <= :vlr_prox_fim
+                          and not exists (select 1 from cre_cli_agenda b
+                                          where b.cod_emp = cre_contas_receber.cod_emp
+                                          and b.cod_unidade = cre_contas_receber.cod_unidade
+                                          and b.cod_cliente = cre_contas_receber.cod_cliente
+                                          and b.dta_agendamento >= current_date)
+                          into :cod_cliente,:dta_vencimento,:qtd_parcelas,:tip_plano_vp,
+                               :num_parcela,:vlr_prestacao,:cod_contrato,:dta_venda,:cod_compl do
+                      begin
+                           for select a.des_cliente
+                                      ,a.dta_cadastro
+                                      ,a.des_telefone
+                                      ,d.des_fone_comerc
+                                      ,d.des_fone_celular
+                                      ,d.des_fone_celular2
+                                      ,b.qtd_compras_vp
+                                      ,b.qtd_maior_atraso
+                                      ,b.num_mda
+                                      ,b.cod_perfil_cli
+                               from cre_clientes a
+                                    ,cre_clientes_cr d
+                                    ,cre_saldos_cli b
+                               where a.cod_emp = d.cod_emp
+                               and a.cod_cliente = d.cod_cliente
+                               and a.cod_emp = b.cod_emp
+                               and a.cod_cliente = b.cod_cliente
+                               and b.qtd_compras_vp >= :nro_compra_ini
+                               and b.qtd_compras_vp <= :nro_compra_fim
+                               and a.cod_emp = :cod_emp
+                               and a.cod_cliente = :cod_cliente
+                               and b.num_mda >= :mda_ini
+                               and b.num_mda <= :mda_fim
+                               and b.cod_perfil_cli >= :perfil_ini
+                               and b.cod_perfil_cli <= :perfil_fim
+                               into :des_cliente,:dta_cadastro,:des_fone_resid,
+                                    :des_fone_comerc,:des_fone_celular,:des_fone_celular2,
+                                    :qtd_compras_vp,:qtd_maior_atraso,:num_mda,:cod_perfil_cli do
+                           begin
+                                for select des_telefone
+                                    from cre_pessoa_autorizada
+                                    where cod_emp = :cod_emp
+                                    and cod_cliente = :cod_cliente
+                                    into :des_fone_aut do
+                                begin
+                                     contador = 0;
+                                     begin
+                                          select count(1)
+                                          from cre_contas_receber
+                                          where cod_emp = :cod_emp
+                                          and cod_cliente = :cod_cliente
+                                          and cod_contrato = :cod_contrato
+                                          and dta_vencimento < :dta_inicial
+                                          and ind_prestacao = 0
+                                          into :contador;
+                                          when sqlcode -104 do
+                                               contador = 0;
+                                     end
+                                     if (contador = 0) then
+                                     begin
+                                          suspend;
+                                     end
+                                end
+                           end
+                      end
+                 end
+end ^
 
-
-ALTER PROCEDURE "REL_CLI_PREVENTIVA_SP" 
-(
-  "COD_EMP" NUMERIC(3, 0),
-  "COD_UNIDADE" NUMERIC(4, 0),
-  "DTA_INICIAL" DATE,
-  "DTA_FINAL" DATE,
-  "NRO_COMPRA_INI" NUMERIC(5, 0),
-  "NRO_COMPRA_FIM" NUMERIC(5, 0),
-  "VLR_PROX_INI" NUMERIC(15, 2),
-  "VLR_PROX_FIM" NUMERIC(15, 2),
-  "IORDER" NUMERIC(1, 0),
-  "MDA_INI" NUMERIC(5, 0),
-  "MDA_FIM" NUMERIC(5, 0),
-  "PERFIL_INI" NUMERIC(4, 0),
-  "PERFIL_FIM" NUMERIC(4, 0)
-)
-RETURNS
-(
-  "COD_CLIENTE" NUMERIC(14, 0),
-  "DES_CLIENTE" VARCHAR(40),
-  "DTA_CADASTRO" DATE,
-  "DES_FONE_RESID" VARCHAR(15),
-  "DES_FONE_COMERC" VARCHAR(15),
-  "QTD_COMPRAS_VP" NUMERIC(5, 0),
-  "DES_FONE_CELULAR2" VARCHAR(15),
-  "DES_FONE_AUT" VARCHAR(15),
-  "QTD_MAIOR_ATRASO" NUMERIC(5, 0),
-  "DTA_VENCIMENTO" DATE,
-  "QTD_PARCELAS" NUMERIC(3, 0),
-  "TIP_PLANO_VP" VARCHAR(6),
-  "NUM_PARCELA" NUMERIC(3, 0),
-  "VLR_PRESTACAO" NUMERIC(15, 2),
-  "COD_CONTRATO" NUMERIC(11, 0),
-  "DTA_VENDA" DATE,
-  "DES_FONE_CELULAR" VARCHAR(15),
-  "NUM_MDA" NUMERIC(5, 0),
-  "COD_PERFIL_CLI" NUMERIC(4, 0),
-  "COD_COMPL" VARCHAR(3),
-  "DTA_VENC_ORDEM" DATE,
-  "DTA_AGENDAMENTO" DATE
-)
-AS
-DECLARE VARIABLE CONTADOR NUMERIC(3);
-DECLARE VARIABLE COD_CLIENTE_ANT NUMERIC(8,0);
-BEGIN
-COD_CLIENTE_ANT = 0;
-     IF (IORDER = 1 )THEN/*NOME*/
-     BEGIN
-       FOR SELECT COD_CLIENTE
-                 ,DTA_VENCIMENTO
-                 ,QTD_PARCELAS
-                 ,TIP_PLANO_VP
-                 ,NUM_PARCELA
-                 ,VLR_PRESTACAO
-                 ,COD_CONTRATO
-                 ,DTA_VENDA
-                 ,COD_COMPL
-             FROM CRE_CONTAS_RECEBER
-            WHERE COD_EMP = :COD_EMP
-              AND COD_UNIDADE = :COD_UNIDADE
-              AND DTA_VENCIMENTO >= :DTA_INICIAL
-              AND DTA_VENCIMENTO <= :DTA_FINAL
-              AND IND_PRESTACAO = 0
-              AND VLR_PRESTACAO >= :VLR_PROX_INI
-              AND VLR_PRESTACAO <= :VLR_PROX_FIM
-              AND NOT EXISTS (SELECT 1 FROM CRE_CLI_AGENDA B
-                                WHERE B.COD_EMP = CRE_CONTAS_RECEBER.COD_EMP
-                                  AND B.COD_UNIDADE = CRE_CONTAS_RECEBER.COD_UNIDADE
-                                  AND B.COD_CLIENTE = CRE_CONTAS_RECEBER.COD_CLIENTE
-                                  AND B.DTA_AGENDAMENTO >= CURRENT_DATE)
-             INTO :COD_CLIENTE,:DTA_VENCIMENTO,:QTD_PARCELAS,:TIP_PLANO_VP,
-                  :NUM_PARCELA,:VLR_PRESTACAO,:COD_CONTRATO,:DTA_VENDA,:COD_COMPL
-         DO BEGIN
-               FOR SELECT A.DES_CLIENTE
-                         ,A.DTA_CADASTRO
-                         ,A.DES_TELEFONE
-                         ,D.DES_FONE_COMERC
-                         ,D.DES_FONE_CELULAR
-                         ,D.DES_FONE_CELULAR2
-                         ,B.QTD_COMPRAS_VP
-                         ,B.QTD_MAIOR_ATRASO
-                         ,B.NUM_MDA
-                         ,B.COD_PERFIL_CLI
-                     FROM CRE_CLIENTES A
-                         ,CRE_CLIENTES_CR D
-                         ,CRE_SALDOS_CLI B
-                    WHERE A.COD_EMP = D.COD_EMP
-                      AND A.COD_CLIENTE = D.COD_CLIENTE
-                      AND A.COD_EMP = B.COD_EMP
-                      AND A.COD_CLIENTE = B.COD_CLIENTE
-                      AND B.QTD_COMPRAS_VP >= :NRO_COMPRA_INI
-                      AND B.QTD_COMPRAS_VP <= :NRO_COMPRA_FIM
-                      AND A.COD_EMP = :COD_EMP
-                      AND A.COD_CLIENTE = :COD_CLIENTE
-                      AND B.NUM_MDA >= :MDA_INI
-                      AND B.NUM_MDA <= :MDA_FIM
-                      AND B.COD_PERFIL_CLI >= :PERFIL_INI
-                      AND B.COD_PERFIL_CLI <= :PERFIL_FIM
-                      INTO :DES_CLIENTE,:DTA_CADASTRO,:DES_FONE_RESID,:DES_FONE_COMERC,:DES_FONE_CELULAR,:DES_FONE_CELULAR2,
-                          :QTD_COMPRAS_VP,:QTD_MAIOR_ATRASO,:NUM_MDA,:COD_PERFIL_CLI
-               DO BEGIN
-                 FOR SELECT DES_TELEFONE FROM CRE_PESSOA_AUTORIZADA
-                  WHERE COD_EMP = :COD_EMP
-                    AND COD_CLIENTE = :COD_CLIENTE
-                    INTO :DES_FONE_AUT
-               DO BEGIN
-                    CONTADOR = 0;
-                    BEGIN
-                       SELECT COUNT(1)
-                         FROM CRE_CONTAS_RECEBER
-                        WHERE COD_EMP = :COD_EMP
-                          AND COD_CLIENTE = :COD_CLIENTE
-                          AND COD_CONTRATO = :COD_CONTRATO
-                          AND DTA_VENCIMENTO < :DTA_INICIAL
-                          AND IND_PRESTACAO = 0
-                         INTO :CONTADOR;
-                       WHEN SQLCODE -104 DO
-                           CONTADOR = 0;
-                    END
-                    IF (CONTADOR = 0) THEN
-                    BEGIN
-                       SUSPEND;
-                    END
-                  END
-                  END
-            END
-     END ELSE
-     IF (IORDER = 2 )THEN/*QTD COMPRAS*/
-     BEGIN
-       FOR SELECT COD_CLIENTE
-                 ,DTA_VENCIMENTO
-                 ,QTD_PARCELAS
-                 ,TIP_PLANO_VP
-                 ,NUM_PARCELA
-                 ,VLR_PRESTACAO
-                 ,COD_CONTRATO
-                 ,DTA_VENDA
-                 ,COD_COMPL
-             FROM CRE_CONTAS_RECEBER
-            WHERE COD_EMP = :COD_EMP
-              AND COD_UNIDADE = :COD_UNIDADE
-              AND DTA_VENCIMENTO >= :DTA_INICIAL
-              AND DTA_VENCIMENTO <= :DTA_FINAL
-              AND IND_PRESTACAO = 0
-              AND VLR_PRESTACAO >= :VLR_PROX_INI
-              AND VLR_PRESTACAO <= :VLR_PROX_FIM
-              AND NOT EXISTS (SELECT 1 FROM CRE_CLI_AGENDA B
-                                WHERE B.COD_EMP = CRE_CONTAS_RECEBER.COD_EMP
-                                  AND B.COD_UNIDADE = CRE_CONTAS_RECEBER.COD_UNIDADE
-                                  AND B.COD_CLIENTE = CRE_CONTAS_RECEBER.COD_CLIENTE
-                                  AND B.DTA_AGENDAMENTO >= CURRENT_DATE)
-             INTO :COD_CLIENTE,:DTA_VENCIMENTO,:QTD_PARCELAS,:TIP_PLANO_VP,
-                  :NUM_PARCELA,:VLR_PRESTACAO,:COD_CONTRATO,:DTA_VENDA,:COD_COMPL
-         DO BEGIN
-               FOR SELECT A.DES_CLIENTE
-                         ,A.DTA_CADASTRO
-                         ,A.DES_TELEFONE
-                         ,D.DES_FONE_COMERC
-                         ,D.DES_FONE_CELULAR
-                         ,D.DES_FONE_CELULAR2
-                         ,B.QTD_COMPRAS_VP
-                         ,B.QTD_MAIOR_ATRASO
-                         ,B.NUM_MDA
-                         ,B.COD_PERFIL_CLI
-                     FROM CRE_CLIENTES A
-                         ,CRE_CLIENTES_CR D
-                         ,CRE_SALDOS_CLI B
-                    WHERE A.COD_EMP = D.COD_EMP
-                      AND A.COD_CLIENTE = D.COD_CLIENTE
-                      AND A.COD_EMP = B.COD_EMP
-                      AND A.COD_CLIENTE = B.COD_CLIENTE
-                      AND B.QTD_COMPRAS_VP >= :NRO_COMPRA_INI
-                      AND B.QTD_COMPRAS_VP <= :NRO_COMPRA_FIM
-                      AND A.COD_EMP = :COD_EMP
-                      AND A.COD_CLIENTE = :COD_CLIENTE
-                      AND B.NUM_MDA >= :MDA_INI
-                      AND B.NUM_MDA <= :MDA_FIM
-                      AND B.COD_PERFIL_CLI >= :PERFIL_INI
-                      AND B.COD_PERFIL_CLI <= :PERFIL_FIM
-                     INTO :DES_CLIENTE,:DTA_CADASTRO,:DES_FONE_RESID,:DES_FONE_COMERC,:DES_FONE_CELULAR,:DES_FONE_CELULAR2,
-                          :QTD_COMPRAS_VP,:QTD_MAIOR_ATRASO,:NUM_MDA,:COD_PERFIL_CLI
-              DO BEGIN
-                FOR  SELECT DES_TELEFONE FROM CRE_PESSOA_AUTORIZADA
-                  WHERE COD_EMP = :COD_EMP
-                    AND COD_CLIENTE = :COD_CLIENTE
-                    INTO :DES_FONE_AUT
-               DO BEGIN
-                    CONTADOR = 0;
-                    BEGIN
-                       SELECT COUNT(1)
-                         FROM CRE_CONTAS_RECEBER
-                        WHERE COD_EMP = :COD_EMP
-                          AND COD_CLIENTE = :COD_CLIENTE
-                          AND COD_CONTRATO = :COD_CONTRATO
-                          AND DTA_VENCIMENTO < :DTA_INICIAL
-                          AND IND_PRESTACAO = 0
-                         INTO :CONTADOR;
-                       WHEN SQLCODE -104 DO
-                           CONTADOR = 0;
-                    END
-                    IF (CONTADOR = 0) THEN
-                    BEGIN
-                       SUSPEND;
-                    END
-                  END
-                 END
-            END
-     END ELSE
-     IF (IORDER = 3 )THEN/*VENCIMENTO*/
-     BEGIN
-       FOR SELECT COD_CLIENTE
-                 ,DTA_VENCIMENTO
-                 ,QTD_PARCELAS
-                 ,TIP_PLANO_VP
-                 ,NUM_PARCELA
-                 ,VLR_PRESTACAO
-                 ,COD_CONTRATO
-                 ,DTA_VENDA
-                 ,COD_COMPL
-             FROM CRE_CONTAS_RECEBER
-            WHERE COD_EMP = :COD_EMP
-              AND COD_UNIDADE = :COD_UNIDADE
-              AND DTA_VENCIMENTO >= :DTA_INICIAL
-              AND DTA_VENCIMENTO <= :DTA_FINAL
-              AND IND_PRESTACAO = 0
-              AND VLR_PRESTACAO >= :VLR_PROX_INI
-              AND VLR_PRESTACAO <= :VLR_PROX_FIM
-              AND NOT EXISTS (SELECT 1 FROM CRE_CLI_AGENDA B
-                                WHERE B.COD_EMP = CRE_CONTAS_RECEBER.COD_EMP
-                                  AND B.COD_UNIDADE = CRE_CONTAS_RECEBER.COD_UNIDADE
-                                  AND B.COD_CLIENTE = CRE_CONTAS_RECEBER.COD_CLIENTE
-                                  AND B.DTA_AGENDAMENTO >= CURRENT_DATE)
-             INTO :COD_CLIENTE,:DTA_VENCIMENTO,:QTD_PARCELAS,:TIP_PLANO_VP,
-                  :NUM_PARCELA,:VLR_PRESTACAO,:COD_CONTRATO,:DTA_VENDA,:COD_COMPL
-         DO BEGIN
-               FOR SELECT A.DES_CLIENTE
-                         ,A.DTA_CADASTRO
-                         ,A.DES_TELEFONE
-                         ,D.DES_FONE_COMERC
-                         ,D.DES_FONE_CELULAR
-                         ,D.DES_FONE_CELULAR2
-                         ,B.QTD_COMPRAS_VP
-                         ,B.QTD_MAIOR_ATRASO
-                         ,B.NUM_MDA
-                         ,B.COD_PERFIL_CLI
-                     FROM CRE_CLIENTES A
-                         ,CRE_CLIENTES_CR D
-                         ,CRE_SALDOS_CLI B
-                    WHERE A.COD_EMP = D.COD_EMP
-                      AND A.COD_CLIENTE = D.COD_CLIENTE
-                      AND A.COD_EMP = B.COD_EMP
-                      AND A.COD_CLIENTE = B.COD_CLIENTE
-                      AND B.QTD_COMPRAS_VP >= :NRO_COMPRA_INI
-                      AND B.QTD_COMPRAS_VP <= :NRO_COMPRA_FIM
-                      AND A.COD_EMP = :COD_EMP
-                      AND A.COD_CLIENTE = :COD_CLIENTE
-                      AND B.NUM_MDA >= :MDA_INI
-                      AND B.NUM_MDA <= :MDA_FIM
-                      AND B.COD_PERFIL_CLI >= :PERFIL_INI
-                      AND B.COD_PERFIL_CLI <= :PERFIL_FIM
-                     INTO :DES_CLIENTE,:DTA_CADASTRO,:DES_FONE_RESID,:DES_FONE_COMERC,:DES_FONE_CELULAR,:DES_FONE_CELULAR2,
-                          :QTD_COMPRAS_VP,:QTD_MAIOR_ATRASO,:NUM_MDA, :COD_PERFIL_CLI
-                DO BEGIN
-                FOR  SELECT DES_TELEFONE FROM CRE_PESSOA_AUTORIZADA
-                      WHERE COD_EMP = :COD_EMP
-                       AND COD_CLIENTE = :COD_CLIENTE
-                       INTO :DES_FONE_AUT
-               DO BEGIN
-                IF (COD_CLIENTE = COD_CLIENTE_ANT) THEN
-              		BEGIN
-              		      DTA_VENC_ORDEM = DTA_VENC_ORDEM;
-              		END
-              	   ELSE
-              	   	BEGIN
-              	   		DTA_VENC_ORDEM = DTA_VENCIMENTO;
-              	   		COD_CLIENTE_ANT = COD_CLIENTE;
-              	   	END
-                    CONTADOR = 0;
-                    BEGIN
-                       SELECT COUNT(1)
-                         FROM CRE_CONTAS_RECEBER
-                        WHERE COD_EMP = :COD_EMP
-                          AND COD_CLIENTE = :COD_CLIENTE
-                          AND COD_CONTRATO = :COD_CONTRATO
-                          AND DTA_VENCIMENTO < :DTA_INICIAL
-                          AND IND_PRESTACAO = 0
-                         INTO :CONTADOR;
-                       WHEN SQLCODE -104 DO
-                           CONTADOR = 0;
-                    END
-                    IF (CONTADOR = 0) THEN
-                    	BEGIN
-                      		SUSPEND;
-                    	END
-                    ELSE
-                    	BEGIN
-                    		COD_CLIENTE_ANT = 0;
-                    	END
-                 END
-                END
-           END
-     END ELSE
-     IF (IORDER = 4 )THEN/*MDA*/
-     BEGIN
-       FOR SELECT COD_CLIENTE
-                 ,DTA_VENCIMENTO
-                 ,QTD_PARCELAS
-                 ,TIP_PLANO_VP
-                 ,NUM_PARCELA
-                 ,VLR_PRESTACAO
-                 ,COD_CONTRATO
-                 ,DTA_VENDA
-                 ,COD_COMPL
-             FROM CRE_CONTAS_RECEBER
-            WHERE COD_EMP = :COD_EMP
-              AND COD_UNIDADE = :COD_UNIDADE
-              AND DTA_VENCIMENTO >= :DTA_INICIAL
-              AND DTA_VENCIMENTO <= :DTA_FINAL
-              AND IND_PRESTACAO = 0
-              AND VLR_PRESTACAO >= :VLR_PROX_INI
-              AND VLR_PRESTACAO <= :VLR_PROX_FIM
-              AND NOT EXISTS (SELECT 1 FROM CRE_CLI_AGENDA B
-                                WHERE B.COD_EMP = CRE_CONTAS_RECEBER.COD_EMP
-                                  AND B.COD_UNIDADE = CRE_CONTAS_RECEBER.COD_UNIDADE
-                                  AND B.COD_CLIENTE = CRE_CONTAS_RECEBER.COD_CLIENTE
-                                  AND B.DTA_AGENDAMENTO >= CURRENT_DATE)
-             INTO :COD_CLIENTE,:DTA_VENCIMENTO,:QTD_PARCELAS,:TIP_PLANO_VP,
-                  :NUM_PARCELA,:VLR_PRESTACAO,:COD_CONTRATO,:DTA_VENDA,:COD_COMPL
-         DO BEGIN
-               FOR SELECT A.DES_CLIENTE
-                         ,A.DTA_CADASTRO
-                         ,A.DES_TELEFONE
-                         ,D.DES_FONE_COMERC
-                         ,D.DES_FONE_CELULAR
-                         ,D.DES_FONE_CELULAR2
-                         ,B.QTD_COMPRAS_VP
-                         ,B.QTD_MAIOR_ATRASO
-                         ,B.NUM_MDA
-                         ,B.COD_PERFIL_CLI
-                     FROM CRE_CLIENTES A
-                         ,CRE_CLIENTES_CR D
-                         ,CRE_SALDOS_CLI B
-                    WHERE A.COD_EMP = D.COD_EMP
-                      AND A.COD_CLIENTE = D.COD_CLIENTE
-                      AND A.COD_EMP = B.COD_EMP
-                      AND A.COD_CLIENTE = B.COD_CLIENTE
-                      AND B.QTD_COMPRAS_VP >= :NRO_COMPRA_INI
-                      AND B.QTD_COMPRAS_VP <= :NRO_COMPRA_FIM
-                      AND A.COD_EMP = :COD_EMP
-                      AND A.COD_CLIENTE = :COD_CLIENTE
-                      AND B.NUM_MDA >= :MDA_INI
-                      AND B.NUM_MDA <= :MDA_FIM
-                      AND B.COD_PERFIL_CLI >= :PERFIL_INI
-                      AND B.COD_PERFIL_CLI <= :PERFIL_FIM
-                     INTO :DES_CLIENTE,:DTA_CADASTRO,:DES_FONE_RESID,:DES_FONE_COMERC,:DES_FONE_CELULAR,:DES_FONE_CELULAR2,
-                          :QTD_COMPRAS_VP,:QTD_MAIOR_ATRASO,:NUM_MDA,:COD_PERFIL_CLI
-               DO BEGIN
-                FOR SELECT DES_TELEFONE FROM CRE_PESSOA_AUTORIZADA
-                  WHERE COD_EMP = :COD_EMP
-                    AND COD_CLIENTE = :COD_CLIENTE
-                    INTO :DES_FONE_AUT
-               DO BEGIN
-                    CONTADOR = 0;
-                    BEGIN
-                       SELECT COUNT(1)
-                         FROM CRE_CONTAS_RECEBER
-                        WHERE COD_EMP = :COD_EMP
-                          AND COD_CLIENTE = :COD_CLIENTE
-                          AND COD_CONTRATO = :COD_CONTRATO
-                          AND DTA_VENCIMENTO < :DTA_INICIAL
-                          AND IND_PRESTACAO = 0
-                         INTO :CONTADOR;
-                       WHEN SQLCODE -104 DO
-                           CONTADOR = 0;
-                    END
-                    IF (CONTADOR = 0) THEN
-                    BEGIN
-                       SUSPEND;
-                    END
-                  END
-                END
-            END
-     END
-END
- ^
-
-SET TERM ; ^
-COMMIT WORK;
-SET AUTODDL ON;
+set term ; ^
+commit work;
+set autoddl on;

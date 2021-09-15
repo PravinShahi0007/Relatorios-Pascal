@@ -1,258 +1,232 @@
-COMMIT WORK;
-SET AUTODDL OFF;
-SET TERM ^ ;
+commit work;
+set autoddl off;
+set term ^ ;
 
-/* Stored procedures */
-
-CREATE PROCEDURE "REL_ANIVERSARIANTES_SP" 
+create or alter procedure rel_aniversariantes_sp
 (
-  "COD_EMP" NUMERIC(3, 0),
-  "COD_UNIDADE" NUMERIC(4, 0),
-  "MES" NUMERIC(2, 0),
-  "DIA_INI" NUMERIC(2, 0),
-  "DIA_FIM" NUMERIC(2, 0),
-  "SITU" NUMERIC(1, 0),
-  "DTA_COMPRA_INI" DATE,
-  "DTA_COMPRA_FIM" DATE,
-  "PERFIL_INI" NUMERIC(2, 0),
-  "PERFIL_FIM" NUMERIC(2, 0),
-  "TIP_CLI" NUMERIC(1, 0)
+ cod_emp        numeric(3,0),
+ cod_unidade    numeric(4,0),
+ mes            numeric(2,0),
+ dia_ini        numeric(2,0),
+ dia_fim        numeric(2,0),
+ situ           numeric(1,0),
+ dta_compra_ini date,
+ dta_compra_fim date,
+ perfil_ini     numeric(2,0),
+ perfil_fim     numeric(2,0),
+ tip_cli        numeric(1,0)
 )
-RETURNS
+returns
 (
-  "COD_CLIENTE" NUMERIC(14, 0),
-  "DES_CLIENTE" VARCHAR(60),
-  "DES_ENDERECO" VARCHAR(60),
-  "DES_BAIRRO" VARCHAR(60),
-  "DES_CIDADE" VARCHAR(60),
-  "DES_TELEFONE" VARCHAR(20),
-  "DES_FONE_CELULAR" VARCHAR(20),
-  "DES_FONE_CELULAR2" VARCHAR(20),
-  "DES_FONE_COMERC" VARCHAR(20),
-  "DES_OBS" VARCHAR(100),
-  "DES_SEXO" VARCHAR(15),
-  "DES_PROFISSAO" VARCHAR(40),
-  "DTA_COMPRA" DATE,
-  "COD_PERFIL" NUMERIC(3, 0),
-  "DTA_NASCTO" DATE,
-  "DIA_NASCTO" NUMERIC(4, 0),
-  "IDADE" NUMERIC(5, 0),
-  "TIP_DES_CLIENTE" VARCHAR(3)
+ cod_cliente       numeric(14,0),
+ des_cliente       varchar(60),
+ des_endereco      varchar(60),
+ des_bairro        varchar(60),
+ des_cidade        varchar(60),
+ des_telefone      varchar(20),
+ des_fone_celular  varchar(20),
+ des_fone_celular2 varchar(20),
+ des_fone_comerc   varchar(20),
+ des_obs           varchar(100),
+ des_sexo          varchar(15),
+ des_profissao     varchar(40),
+ dta_compra        date,
+ cod_perfil        numeric(3,0),
+ dta_nascto        date,
+ dia_nascto        numeric(4,0),
+ idade             numeric(5,0),
+ tip_des_cliente   varchar(3)
 )
-AS
-BEGIN EXIT; END ^
+as
+  declare variable cod_cidade numeric(10,0);
+  declare variable sexo numeric(1);
+  declare variable cod_profissao numeric(4,0);
+  declare variable retorno numeric(1);
+  declare variable tip_cliente numeric(1);
+  declare variable mes_nascto numeric(2,0);
+  declare variable ano_nascto numeric(4,0);
+  declare variable dia_atual numeric(2,0);
+  declare variable mes_atual numeric(2,0);
+  declare variable ano_atual numeric(4,0);
+begin
+     for select cod_cliente
+                ,des_cliente
+                ,tip_sexo
+                ,des_endereco
+                ,des_bairro
+                ,cod_cidade
+                ,dta_nascto
+                ,cod_profissao
+                ,des_telefone
+                ,des_fone_celular
+                ,tip_cliente
+         from cre_clientes
+         where cod_emp = :cod_emp
+         and cod_unidade = :cod_unidade
+         and (extract(month from dta_nascto) = :mes)
+         and (extract(day from dta_nascto) between :dia_ini and :dia_fim)
+         and not (lpad(coalesce(des_telefone,'0'),15,'0') <= '000000000000000'
+         and lpad(coalesce(des_fone_celular,'0'),15,'0') <= '000000000000000')
+         order by extract(day from dta_nascto),des_cliente
+         into cod_cliente,des_cliente,sexo,des_endereco,des_bairro,cod_cidade
+              ,dta_nascto,cod_profissao,des_telefone,des_fone_celular,tip_cliente do
+     begin
+          select des_cidade
+          from ger_cidades
+          where cod_cidade = :cod_cidade
+          into des_cidade;
 
+          select des_profissao
+          from ger_profissoes
+          where cod_profissao = :cod_profissao
+          into des_profissao;
 
-ALTER PROCEDURE "REL_ANIVERSARIANTES_SP" 
-(
-  "COD_EMP" NUMERIC(3, 0),
-  "COD_UNIDADE" NUMERIC(4, 0),
-  "MES" NUMERIC(2, 0),
-  "DIA_INI" NUMERIC(2, 0),
-  "DIA_FIM" NUMERIC(2, 0),
-  "SITU" NUMERIC(1, 0),
-  "DTA_COMPRA_INI" DATE,
-  "DTA_COMPRA_FIM" DATE,
-  "PERFIL_INI" NUMERIC(2, 0),
-  "PERFIL_FIM" NUMERIC(2, 0),
-  "TIP_CLI" NUMERIC(1, 0)
-)
-RETURNS
-(
-  "COD_CLIENTE" NUMERIC(14, 0),
-  "DES_CLIENTE" VARCHAR(60),
-  "DES_ENDERECO" VARCHAR(60),
-  "DES_BAIRRO" VARCHAR(60),
-  "DES_CIDADE" VARCHAR(60),
-  "DES_TELEFONE" VARCHAR(20),
-  "DES_FONE_CELULAR" VARCHAR(20),
-  "DES_FONE_CELULAR2" VARCHAR(20),
-  "DES_FONE_COMERC" VARCHAR(20),
-  "DES_OBS" VARCHAR(100),
-  "DES_SEXO" VARCHAR(15),
-  "DES_PROFISSAO" VARCHAR(40),
-  "DTA_COMPRA" DATE,
-  "COD_PERFIL" NUMERIC(3, 0),
-  "DTA_NASCTO" DATE,
-  "DIA_NASCTO" NUMERIC(4, 0),
-  "IDADE" NUMERIC(5, 0),
-  "TIP_DES_CLIENTE" VARCHAR(3)
-)
-AS
-DECLARE VARIABLE COD_CIDADE NUMERIC(10,0);
-  DECLARE VARIABLE SEXO NUMERIC(1);
-  DECLARE VARIABLE COD_PROFISSAO NUMERIC(4,0);
-  DECLARE VARIABLE RETORNO NUMERIC(1);
-  DECLARE VARIABLE TIP_CLIENTE NUMERIC(1);
-  DECLARE VARIABLE MES_NASCTO NUMERIC(2,0);
-  DECLARE VARIABLE ANO_NASCTO NUMERIC(4,0);
-  DECLARE VARIABLE DIA_ATUAL NUMERIC(2,0);
-  DECLARE VARIABLE MES_ATUAL NUMERIC(2,0);
-  DECLARE VARIABLE ANO_ATUAL NUMERIC(4,0);
-BEGIN
-   FOR SELECT COD_CLIENTE
-             ,DES_CLIENTE
-             ,TIP_SEXO
-             ,DES_ENDERECO
-             ,DES_BAIRRO
-             ,COD_CIDADE
-             ,DTA_NASCTO
-             ,COD_PROFISSAO
-             ,DES_TELEFONE
-             ,DES_FONE_CELULAR
-             ,TIP_CLIENTE
-         FROM CRE_CLIENTES
-        WHERE COD_EMP = :COD_EMP
-          AND COD_UNIDADE = :COD_UNIDADE
-          AND (EXTRACT(MONTH FROM DTA_NASCTO) = :MES)
-          AND (EXTRACT(DAY FROM DTA_NASCTO) BETWEEN :DIA_INI AND :DIA_FIM)
-          AND NOT (LPAD(COALESCE(DES_TELEFONE,'0'),15,'0') <= '000000000000000'
-               AND LPAD(COALESCE(DES_FONE_CELULAR,'0'),15,'0') <= '000000000000000')
-        ORDER BY EXTRACT(DAY FROM DTA_NASCTO)
-                ,DES_CLIENTE
-   INTO
-       COD_CLIENTE,DES_CLIENTE,SEXO,DES_ENDERECO,DES_BAIRRO,COD_CIDADE
-      ,DTA_NASCTO,COD_PROFISSAO,DES_TELEFONE,DES_FONE_CELULAR,TIP_CLIENTE
-   DO BEGIN
-      SELECT DES_CIDADE FROM GER_CIDADES WHERE COD_CIDADE = :COD_CIDADE INTO DES_CIDADE;
-      SELECT DES_PROFISSAO FROM GER_PROFISSOES WHERE COD_PROFISSAO = :COD_PROFISSAO INTO DES_PROFISSAO;
-      DES_FONE_CELULAR2 = '';
-      DES_FONE_COMERC = '';
-      COD_PERFIL = 0;
-      DTA_COMPRA = null;
-      DES_OBS = null;
-      IF(TIP_CLIENTE = 1) THEN
-      BEGIN
-      	 TIP_DES_CLIENTE = 'VV';
-      END
-      ELSE IF(TIP_CLIENTE = 2)THEN
-      BEGIN
-      	 TIP_DES_CLIENTE = 'VP';
-         SELECT DES_FONE_CELULAR2
-               ,DES_FONE_COMERC
-           FROM CRE_CLIENTES_CR
-          WHERE COD_EMP = :COD_EMP
-            AND COD_CLIENTE = :COD_CLIENTE
-           INTO DES_FONE_CELULAR2
-               ,DES_FONE_COMERC;
-         SELECT DES_COMENTARIO
-           FROM CRE_COMENTARIOS_CLI
-          WHERE COD_EMP = :COD_EMP
-            AND COD_CLIENTE = :COD_CLIENTE
-            AND NUM_SEQ = 10
-           INTO DES_OBS;
-         SELECT COD_PERFIL_CLI
-               ,CASE WHEN COALESCE(DTA_ULT_COMPRA_VV,'0') > COALESCE(DTA_ULT_COMPRA_VP,'0') THEN
-             	        DTA_ULT_COMPRA_VV
-                   ELSE DTA_ULT_COMPRA_VP END AS DTA_COMPRA
-           FROM CRE_SALDOS_CLI
-          WHERE COD_EMP = :COD_EMP
-            AND COD_CLIENTE = :COD_CLIENTE
-            AND (DTA_ULT_COMPRA_VV BETWEEN :DTA_COMPRA_INI AND :DTA_COMPRA_FIM
-              OR DTA_ULT_COMPRA_VP BETWEEN :DTA_COMPRA_INI AND :DTA_COMPRA_FIM)
-           INTO COD_PERFIL
-               ,DTA_COMPRA;
-         IF(COD_PERFIL is null)THEN COD_PERFIL = 0;
-      END
-      DIA_ATUAL = EXTRACT(DAY FROM CURRENT_DATE);
-      MES_ATUAL = EXTRACT(MONTH FROM CURRENT_DATE);
-      ANO_ATUAL = EXTRACT(YEAR FROM CURRENT_DATE);
-      DIA_NASCTO = EXTRACT(DAY FROM DTA_NASCTO);
-      MES_NASCTO = EXTRACT(MONTH FROM DTA_NASCTO);
-      ANO_NASCTO = EXTRACT(YEAR FROM DTA_NASCTO);
-      IDADE = ANO_ATUAL - ANO_NASCTO;
-      IF ((MES_ATUAL < MES_NASCTO) OR ((MES_ATUAL = MES_NASCTO)AND(DIA_ATUAL < DIA_NASCTO))) THEN
-      BEGIN
-      	 IDADE = IDADE - 1;
-      END
-      IF (((DTA_COMPRA is null)AND(TIP_CLIENTE = 1)) OR (DTA_COMPRA is not null)) THEN
-      BEGIN
-	 IF(SEXO=1)THEN
-	    DES_SEXO='M';
-         ELSE IF(SEXO=2)THEN
-      	    DES_SEXO='F';
-      	 IF ((COD_PERFIL >= PERFIL_INI)AND(COD_PERFIL <= PERFIL_FIM))THEN
-      	 BEGIN  
-            RETORNO=0;
-            EXECUTE PROCEDURE VERIFICA_L_CLIENTE_SP :COD_EMP,:COD_UNIDADE,COD_CLIENTE RETURNING_VALUES :RETORNO;
-            IF(RETORNO > 0)THEN
-            BEGIN
-               IF (TIP_CLI = 0) THEN
-               BEGIN
-                  IF(SITU = 0)THEN
-                  BEGIN
-                     SUSPEND;
-                  END
-                  IF(SITU = 1)THEN
-                  BEGIN
-                     IF(SEXO=1)THEN
-                     BEGIN
-                        SUSPEND;
-                     END
-                  END
-                  IF(SITU = 2)THEN
-                  BEGIN
-                     IF(SEXO=2)THEN
-                     BEGIN
-                        SUSPEND;
-                     END
-                  END
-               END 
-               IF (TIP_CLI = 1) THEN
-               BEGIN
-                  IF (TIP_CLIENTE = 1) THEN
-                  BEGIN
-                     IF(SITU = 0)THEN
-                     BEGIN
-                        SUSPEND;
-                     END
-                     IF(SITU = 1)THEN
-                     BEGIN
-                        IF(SEXO=1)THEN
-                        BEGIN
-                           SUSPEND;
-                        END
-                     END
-                     IF(SITU = 2)THEN
-                     BEGIN
-                        IF(SEXO=2)THEN
-                        BEGIN
-                           SUSPEND;
-                        END
-                     END
-                  END
-               END
-               IF (TIP_CLI = 2) THEN
-               BEGIN
-                  IF (TIP_CLIENTE = 2) THEN
-                  BEGIN
-                     IF(SITU = 0)THEN
-                     BEGIN
-                        SUSPEND;
-                     END
-                     IF(SITU = 1)THEN
-                     BEGIN
-                        IF(SEXO=1)THEN
-                        BEGIN
-                           SUSPEND;
-                        END
-                     END
-                     IF(SITU = 2)THEN
-                     BEGIN
-                        IF(SEXO=2)THEN
-                        BEGIN
-                           SUSPEND;
-                        END
-                     END
-                  END
-               END
-            END
-         END
-      END
-   END
-END
- ^
+          des_fone_celular2 = '';
+          des_fone_comerc = '';
+          cod_perfil = 0;
+          dta_compra = null;
+          des_obs = null;
 
-SET TERM ; ^
-COMMIT WORK;
-SET AUTODDL ON;
+          if (tip_cliente = 1) then
+          begin
+               tip_des_cliente = 'VV';
+          end
+          else
+              if (tip_cliente = 2) then
+              begin
+                   tip_des_cliente = 'VP';
+
+                   select des_fone_celular2
+                          ,des_fone_comerc
+                   from cre_clientes_cr
+                   where cod_emp = :cod_emp
+                   and cod_cliente = :cod_cliente
+                   into des_fone_celular2,des_fone_comerc;
+
+                   select des_comentario
+                   from cre_comentarios_cli
+                   where cod_emp = :cod_emp
+                   and cod_cliente = :cod_cliente
+                   and num_seq = 10
+                   into des_obs;
+
+                   select cod_perfil_cli
+                          ,case 
+                               when coalesce(dta_ult_compra_vv,'0') > coalesce(dta_ult_compra_vp,'0') then
+                                    dta_ult_compra_vv
+                           else dta_ult_compra_vp end as dta_compra
+                   from cre_saldos_cli
+                   where cod_emp = :cod_emp
+                   and cod_cliente = :cod_cliente
+                   and (dta_ult_compra_vv between :dta_compra_ini and :dta_compra_fim
+                   or dta_ult_compra_vp between :dta_compra_ini and :dta_compra_fim)
+                   into cod_perfil,dta_compra;
+
+                   if (cod_perfil is null) then cod_perfil = 0;
+              end
+
+          dia_atual = extract(day from current_date);
+          mes_atual = extract(month from current_date);
+          ano_atual = extract(year from current_date);
+          dia_nascto = extract(day from dta_nascto);
+          mes_nascto = extract(month from dta_nascto);
+          ano_nascto = extract(year from dta_nascto);
+          idade = ano_atual - ano_nascto;
+          if ((mes_atual < mes_nascto) or ((mes_atual = mes_nascto) and (dia_atual < dia_nascto))) then
+          begin
+               idade = idade - 1;
+          end
+
+          if (((dta_compra is null)and(tip_cliente = 1)) or (dta_compra is not null)) then
+          begin
+               if (sexo = 1) then
+                  des_sexo = 'M';
+               else
+                   if (sexo = 2) then
+                      des_sexo = 'F';
+               if ((cod_perfil >= perfil_ini) and (cod_perfil <= perfil_fim)) then
+               begin  
+                    retorno = 0;
+                    execute procedure verifica_l_cliente_sp :cod_emp,:cod_unidade,cod_cliente returning_values :retorno;
+                    if (retorno > 0) then
+                    begin
+                         if (tip_cli = 0) then
+                         begin
+                              if (situ = 0) then
+                              begin
+                                   suspend;
+                              end
+                              if (situ = 1) then
+                              begin
+                                   if (sexo = 1) then
+                                   begin
+                                        suspend;
+                                   end
+                              end
+                              if (situ = 2) then
+                              begin
+                                   if (sexo = 2) then
+                                   begin
+                                        suspend;
+                                   end
+                              end
+                         end
+
+                         if (tip_cli = 1) then
+                         begin
+                              if (tip_cliente = 1) then
+                              begin
+                                   if (situ = 0) then
+                                   begin
+                                        suspend;
+                                   end
+                                   if (situ = 1) then
+                                   begin
+                                        if (sexo = 1) then
+                                        begin
+                                             suspend;
+                                        end
+                                   end
+                                   if (situ = 2) then
+                                   begin
+                                        if (sexo = 2) then
+                                        begin
+                                             suspend;
+                                        end
+                                   end
+                              end
+                         end
+
+                         if (tip_cli = 2) then
+                         begin
+                              if (tip_cliente = 2) then
+                              begin
+                                   if (situ = 0) then
+                                   begin
+                                        suspend;
+                                   end
+                                   if (situ = 1) then
+                                   begin
+                                        if (sexo = 1) then
+                                        begin
+                                             suspend;
+                                        end
+                                   end
+                                   if(situ = 2)then
+                                   begin
+                                        if (sexo = 2) then
+                                        begin
+                                             suspend;
+                                        end
+                                   end
+                              end
+                         end
+                    end
+               end
+          end
+     end
+end ^
+
+set term ; ^
+commit work;
+set autoddl on;
