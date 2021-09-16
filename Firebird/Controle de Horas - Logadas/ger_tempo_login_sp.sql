@@ -1,11 +1,11 @@
 /*------------------------------------------------------------------------
-  Procedure.: ger_tempo_login_sp
-  Empresa...: Grazziotin S/A
-  Finalidade: Manutencao da tabela GER_TEMPO_LOGIN. Tabela que contem dados
-              do controle de horas logadas pelo(s) operador(es) do SISLOG.
+ Procedure.: ger_tempo_login_sp
+ Empresa...: Grazziotin S/A
+ Finalidade: Manutencao da tabela GER_TEMPO_LOGIN. Tabela que contem dados
+             do controle de horas logadas pelo(s) operador(es) do SISLOG.
 
-  Autor   Data     Operacao  Descricao
-  Antonio SET/2021 Criacao
+ Autor   Data     Operacao  Descricao
+ Antonio SET/2021 Criacao
 ------------------------------------------------------------------------*/
 commit work;
 set autoddl off;
