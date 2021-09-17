@@ -54,72 +54,72 @@ begin
             wvenda_elegiveis_anoant     number(18,2);
             wqtd_venda_elegiveis_anoant number;
 
-            cursor c_seguro is
-                   select c.cod_grupo -- Select Dani Cre
-                          ,c.cod_quebra
-                          ,b.cod_unidade
-                          ,sum(decode(a.cod_oper,300,0,4300,0,6100,0,6200,0,nvl(a.vlr_operacao,0) - nvl(a.vlr_entrada,0))) vlr_venda
-                          ,count(distinct (decode(a.cod_oper,302,a.num_seq,305,a.num_seq,4302,a.num_seq,4305,a.num_seq))) qtd_venda
-                          ,nvl(sum(decode(a.cod_oper,6100,nvl(a.vlr_operacao,0),6200,nvl(a.vlr_operacao,0),0)),0)  vlr_seguro
-                          ,count(distinct (decode(a.cod_oper,6100,a.num_seq,6200,a.num_seq))) qtd_seguro
-                   from ns_notas_operacoes a,
-                        ns_notas b,
-                        ge_grupos_unidades c
-                   where a.num_seq = b.num_seq
-                   and b.cod_cliente_milhagem is null
-                   and b.cod_cliente_milhagem is null
-                   and b.cod_emp     = 1
-                   and (b.tip_nota   = 3
-                   or ((b.tip_nota   = 2
-                   and b.num_modelo  = 65)
-                   or (b.tip_nota    = 2
-                   and b.num_modelo  = 90)))
-                   and b.ind_status  = 1
-                   and b.cod_unidade = c.cod_unidade
-                   and c.cod_grupo   = pi_grupo
-                   and b.cod_unidade >= 0
-                   and b.cod_unidade <= 9999
-                   and b.dta_emissao >= pi_dta_ini
-                   and b.dta_emissao <= pi_dta_fim
-                   and not exists (select 1 from  grz_lojas_unificadas_cia c
-                                   where b.cod_emp = c.cod_emp
-                                   and b.cod_unidade =c.cod_unidade_para)
-                   and 'CRE' = pi_cpp
-                   group by c.cod_grupo,c.cod_quebra, b.cod_unidade
+     cursor c_seguro is
+            select c.cod_grupo -- Select Dani Cre
+                   ,c.cod_quebra
+                   ,b.cod_unidade
+                   ,sum(decode(a.cod_oper,300,0,4300,0,6100,0,6200,0,nvl(a.vlr_operacao,0) - nvl(a.VLR_ENTRADA,0))) vlr_venda
+                   ,count(distinct (decode(a.cod_oper,302,a.num_seq,305,a.num_seq,4302,a.num_seq,4305,a.num_seq))) qtd_venda
+                   ,nvl(sum(decode(a.cod_oper,6100,nvl(a.vlr_operacao,0),6200,nvl(a.vlr_operacao,0),0)),0)  vlr_seguro
+                   ,count(distinct (decode(a.cod_oper,6100,a.num_seq,6200,a.num_seq))) qtd_seguro
+            from ns_notas_operacoes a,
+                 ns_notas b,
+                 ge_grupos_unidades c
+            where a.num_seq = b.num_seq
+            and b.cod_cliente_milhagem is null
+            and b.cod_cliente_milhagem is null
+            and b.cod_emp     = 1
+            and (b.tip_nota   = 3
+            or ((b.tip_nota   = 2
+            and b.num_modelo  = 65)
+            or (b.tip_nota    = 2
+            and b.num_modelo  = 90)))
+            and b.ind_status  = 1
+            and b.cod_unidade = c.cod_unidade
+            and c.cod_grupo   = pi_grupo
+            and b.cod_unidade >= 0
+            and b.cod_unidade <= 9999
+            and b.dta_emissao >= pi_dta_ini
+            and b.dta_emissao <= pi_dta_fim
+            and not exists (select 1 from  grz_lojas_unificadas_cia  c
+                            where  b.cod_emp = c.cod_emp
+                            and b.COD_UNIDADE =c.COD_UNIDADE_PARA)
+            and 'CRE' = pi_cpp
+            group by c.cod_grupo,c.cod_quebra, b.cod_unidade
 
-                   union
+            UNION
 
-                   select c.cod_grupo -- Select CPP Jaisson
-                          ,c.cod_quebra
-                          ,b.cod_unidade
-                          ,sum(decode(a.cod_oper,6110,0,6210,0,nvl(a.vlr_operacao,0) - nvl(a.vlr_entrada,0))) vlr_venda
-                          ,count(distinct (decode(a.cod_oper,3000,a.num_seq,3050,a.num_seq))) qtd_venda
-                          ,nvl(sum(decode(a.cod_oper,6110,nvl(a.vlr_operacao,0),6210,nvl(a.vlr_operacao,0),0)),0)  vlr_seguro
-                          ,count(distinct (decode(a.cod_oper,6110,a.num_seq,6210,a.num_seq))) qtd_seguro
-                   from ns_notas_operacoes a,
-                        ns_notas b,
-                        ge_grupos_unidades c
-                   where a.num_seq = b.num_seq
-                   and b.cod_cliente_milhagem is null
-                   and a.cod_maquina = b.cod_maquina
-                   and a.cod_oper in (3000,3050,6110,6210)
-                   and b.cod_emp     = 1
-                   and (b.tip_nota   = 3
-                   or (b.tip_nota    = 2
-                   and b.num_modelo  = 90))
-                   and b.ind_status  = 1
-                   and b.cod_unidade = c.cod_unidade
-                   and c.cod_grupo   = pi_grupo
-                   and b.cod_unidade >= 0
-                   and b.cod_unidade <= 9999
-                   and b.dta_emissao >= pi_dta_ini
-                   and b.dta_emissao <= pi_dta_fim
-                   and not exists (select 1 from  grz_lojas_unificadas_cia c
-                                   where b.cod_emp = c.cod_emp
-                                   and b.cod_unidade = c.cod_unidade_para)
-                   and 'CPP' = pi_cpp
-                   group by c.cod_grupo,c.cod_quebra, b.cod_unidade;
-            r_seguro c_seguro%rowtype;
+            select c.cod_grupo -- Select CPP Jaisson
+                   ,c.cod_quebra
+                   ,b.cod_unidade
+                   ,sum(decode(a.cod_oper,6110,0,6210,0,nvl(a.vlr_operacao,0) - nvl(a.VLR_ENTRADA,0))) vlr_venda
+                   ,count(distinct (decode(a.cod_oper,3000,a.num_seq,3050,a.num_seq))) qtd_venda
+                   ,nvl(sum(decode(a.cod_oper,6110,nvl(a.vlr_operacao,0),6210,nvl(a.vlr_operacao,0),0)),0)  vlr_seguro
+                   ,count(distinct (decode(a.cod_oper,6110,a.num_seq,6210,a.num_seq))) qtd_seguro
+            from ns_notas_operacoes a,
+                 ns_notas b,
+                 ge_grupos_unidades c
+            where a.num_seq = b.num_seq
+            and b.cod_cliente_milhagem is null
+            and a.cod_maquina = b.cod_maquina
+            and a.cod_oper in (3000,3050,6110,6210)
+            and b.cod_emp     = 1
+            and (b.tip_nota   = 3
+            or (b.tip_nota    = 2
+            and b.num_modelo  = 90))
+            and b.ind_status  = 1
+            and b.cod_unidade = c.cod_unidade
+            and c.cod_grupo   = pi_grupo
+            and b.cod_unidade >= 0
+            and b.cod_unidade <= 9999
+            and b.dta_emissao >= pi_dta_ini
+            and b.dta_emissao <= pi_dta_fim
+            and not exists (select 1 from  grz_lojas_unificadas_cia  c
+                            where  b.cod_emp = c.cod_emp
+                            and b.COD_UNIDADE =c.COD_UNIDADE_PARA)
+            and 'CPP' = pi_cpp
+            group by c.cod_grupo,c.cod_quebra, b.cod_unidade;
+     r_seguro c_seguro%rowtype;
 
 /* Inicio da procedure principal */
 begin
@@ -133,34 +133,34 @@ begin
      v_result := dbms_sql.execute(v_cur);
      dbms_sql.close_cursor(v_cur);
 
-     wi := INSTR(pi_opcao, '#', 1, 1);
-     pi_empresa := TO_NUMBER(SUBSTR(pi_opcao, 1,(wi-1)));
-     wf := INSTR(pi_opcao, '#', 1, 2);
-     pi_grupo := TO_NUMBER(SUBSTR(pi_opcao,(wi+1),(wf-wi-1)));
+     wi := instr(pi_opcao, '#', 1, 1);
+     pi_empresa := to_number(substr(pi_opcao, 1,(wi-1)));
+     wf := instr(pi_opcao, '#', 1, 2);
+     pi_grupo := to_number(substr(pi_opcao,(wi+1),(wf-wi-1)));
      wi := wf;
-     wf := INSTR(pi_opcao, '#', 1, 3);
-     pi_dta_ini := SUBSTR(pi_opcao,(wi+1),(wf-wi-1));
+     wf := instr(pi_opcao, '#', 1, 3);
+     pi_dta_ini := substr(pi_opcao,(wi+1),(wf-wi-1));
      wi := wf;
-     wf := INSTR(pi_opcao, '#', 1, 4);
-     pi_dta_fim := SUBSTR(pi_opcao,(wi+1),(wf-wi-1));
+     wf := instr(pi_opcao, '#', 1, 4);
+     pi_dta_fim := substr(pi_opcao,(wi+1),(wf-wi-1));
      wi := wf;
-     wf := INSTR(pi_opcao, '#', 1, 5);
-     pi_dta_iniAno := SUBSTR(pi_opcao,(wi+1),(wf-wi-1));
+     wf := instr(pi_opcao, '#', 1, 5);
+     pi_dta_iniano := substr(pi_opcao,(wi+1),(wf-wi-1));
      wi := wf;
-     wf := INSTR(pi_opcao, '#', 1, 6);
-     pi_dta_fimAno := SUBSTR(pi_opcao,(wi+1),(wf-wi-1));
+     wf := instr(pi_opcao, '#', 1, 6);
+     pi_dta_fimano := substr(pi_opcao,(wi+1),(wf-wi-1));
      wi := wf;
-     wf := INSTR(pi_opcao, '#', 1, 7);
-     pi_dta_iniMes := SUBSTR(pi_opcao,(wi+1),(wf-wi-1));
+     wf := instr(pi_opcao, '#', 1, 7);
+     pi_dta_inimes := substr(pi_opcao,(wi+1),(wf-wi-1));
      wi := wf;
-     wf := INSTR(pi_opcao, '#', 1, 8);
-     pi_dta_fimMes := SUBSTR(pi_opcao,(wi+1),(wf-wi-1));
+     wf := instr(pi_opcao, '#', 1, 8);
+     pi_dta_fimmes := substr(pi_opcao,(wi+1),(wf-wi-1));
      wi := wf;
-     wf := INSTR(pi_opcao, '#', 1, 9);
-     pi_usuario := SUBSTR(pi_opcao,(wi+1),(wf-wi-1));
+     wf := instr(pi_opcao, '#', 1, 9);
+     pi_usuario := substr(pi_opcao,(wi+1),(wf-wi-1));
      wi := wf;
-     wf := INSTR(pi_opcao, '#', 1, 10);
-     pi_cpp := SUBSTR(pi_opcao,(wi+1),(wf-wi-1));
+     wf := instr(pi_opcao, '#', 1, 10);
+     pi_cpp := substr(pi_opcao,(wi+1),(wf-wi-1));
 
      /* Limpa a tabela temporaria */
      delete from grzw_rel_seguro
@@ -186,7 +186,6 @@ begin
           wqtd_venda           := r_seguro.qtd_venda;
           wvlr_venda_seguro    := r_seguro.vlr_seguro;
           wqtd_seguro          := r_seguro.qtd_seguro;
-
           begin
                select des_fantasia
                into wdes_unidade
@@ -194,25 +193,25 @@ begin
                where cod_pessoa = r_seguro.cod_unidade;
                exception
                         when no_data_found then
-                             wdes_unidade := 'Unidade nao cadastrada';
+                             wdes_unidade := 'Unidade nÃ£o cadastrada';
           end;
 
           begin
                select des_quebra
                into wdes_quebra
                from ge_grupos_quebra
-               where cod_emp  = pi_empresa
+               where cod_emp    = pi_empresa
                and cod_grupo  = r_seguro.cod_grupo
                and cod_quebra = r_seguro.cod_quebra;
                exception
                         when no_data_found then
-                             wdes_quebra := 'Quebra grupo unidades nao cadastrado';
+                             wdes_quebra := 'Quebra grupo unidades nÃ£o cadastrado';
           end;
 
-          -- Alterado
-          if pi_cpp = 'CPP' then
+          --Alterado
+          if pi_CPP = 'CPP' then
           begin
-               select nvl(sum(nvl(nc.vlr_ressarcido,0)),0)vlr_cancelamento
+               select nvl(sum(nvl(nc.vlr_ressarcido,0)),0) vlr_cancelamento
                       ,count(distinct nc.num_seq) qtd_cancelados
                into wvlr_cancelamento
                     ,wqtd_cancelados
@@ -229,8 +228,8 @@ begin
                and dta_cancelamento < pi_dta_fim +1;
                exception
                         when no_data_found then
-                             wvlr_cancelamento := 0;
-                             wqtd_cancelados   := 0;
+                             wvlr_cancelamento  := 0;
+                             wqtd_cancelados    := 0;
           end;
           elsif pi_CPP = 'CRE' then
           begin
@@ -245,59 +244,55 @@ begin
                and op.num_seq = t.num_seq
                and op.cod_maquina = t.cod_maquina
                and op.cod_oper in (6100,6200)
-               and t.cod_unidade = r_seguro.cod_unidade
+               and t.cod_unidade =	 r_seguro.cod_unidade
                and dta_cancelamento >= pi_dta_ini
                and dta_cancelamento < pi_dta_fim+1;
                exception
                         when no_data_found then
-                             wvlr_cancelamento := 0;
-                             wqtd_cancelados   := 0;
+                             wvlr_cancelamento  := 0;
+                             wqtd_cancelados    := 0;
           end;
           end if;
 
-		if pi_CPP = 'CPP' then
-           -- vlr venda elegiveis e qtd elegiveis
-            begin
-		       select nvl(sum(nvl(a.vlr_operacao,0)) - sum(nvl(a.VLR_ENTRADA,0)),0) vlr_venda_elegiveis
-               ,count(distinct a.num_seq) qtd_venda_elegiveis
-                   into wVenda_Elegiveis,
-				         wQtd_Venda_Elegiveis
-               from (select sum(nvl(e.vlr_operacao,0)) vlr_operacao, sum(nvl(e.vlr_entrada,0)) vlr_entrada, e.num_seq, e.cod_maquina, e.cod_oper
-			          from ns_notas_operacoes e
-                     where e.cod_oper in (3000,3050,6110,6210)
-                     group by e.num_seq, e.cod_maquina, e.cod_oper) a,
-                 ns_notas b,
-                 ge_grupos_unidades c,
-                 ps_fisicas f
-				 where a.num_seq    = b.num_seq
-				 and a.cod_maquina  = b.cod_maquina
-				 and b.cod_emp      = 1
-				 and b.ind_status   = 1
-
-				 and b.num_modelo    = 90 --
-
-
-				 and b.cod_cliente  = f.cod_pessoa
-				 and trunc((months_between(b.dta_emissao, to_date(f.DTA_NASC,'dd/mm/yyyy')))/12) >= 18
-				 and trunc((months_between(b.dta_emissao, to_date(f.DTA_NASC,'dd/mm/yyyy')))/12) <= 69
-				 and b.cod_unidade  = c.cod_unidade
-				 and c.cod_grupo    = pi_grupo
-				 and b.cod_unidade = r_seguro.cod_unidade
-				 and b.dta_emissao >= pi_dta_ini
-				 and b.dta_emissao <= pi_dta_fim;
-			--	 and exists (select 1 from cr_notas_origem cr  --Alterado
-			--				   where b.num_seq      = cr.num_nota
-			--					   and b.cod_maquina  = cr.cod_maquina
-			--					   and cr.num_parcela > 2);
-			   EXCEPTION
-                 WHEN NO_DATA_FOUND THEN
-
-				  wVenda_Elegiveis := 0;
-				  wQtd_Venda_Elegiveis := 0;
-            end;
-		elsif pi_CPP = 'CRE' then
-
-			begin
+          if pi_CPP = 'CPP' then -- vlr venda elegiveis e qtd elegiveis
+          begin
+                select nvl(sum(nvl(a.vlr_operacao,0)) - sum(nvl(a.vlr_entrada,0)),0) vlr_venda_elegiveis
+                       ,count(distinct a.num_seq) qtd_venda_elegiveis
+                into wvenda_elegiveis,
+                     wqtd_venda_elegiveis
+                from (select sum(nvl(e.vlr_operacao,0)) vlr_operacao
+                             ,sum(nvl(e.vlr_entrada,0)) vlr_entrada
+                             ,e.num_seq, e.cod_maquina, e.cod_oper
+                      from ns_notas_operacoes e
+                      where e.cod_oper in (3000,3050)
+                      group by e.num_seq, e.cod_maquina, e.cod_oper) a,
+                     ns_notas b,
+                     ge_grupos_unidades c,
+                     ps_fisicas f
+                where a.num_seq   = b.num_seq
+                and a.cod_maquina = b.cod_maquina
+                and b.cod_emp     = 1
+                and b.ind_status  = 1
+                and b.tip_nota    = 3
+                and b.cod_cliente = f.cod_pessoa
+                and trunc((months_between(b.dta_emissao, to_date(f.dta_nasc,'dd/mm/yyyy')))/12) >= 18
+                and trunc((months_between(b.dta_emissao, to_date(f.dta_nasc,'dd/mm/yyyy')))/12) <= 69
+                and b.cod_unidade = c.cod_unidade
+                and c.cod_grupo   = pi_grupo
+                and b.cod_unidade = r_seguro.cod_unidade
+                and b.dta_emissao >= pi_dta_ini
+                and b.dta_emissao <= pi_dta_fim;
+                --and exists (select 1 from cr_notas_origem cr  --alterado
+                --where b.num_seq   = cr.num_nota
+                --and b.cod_maquina = cr.cod_maquina
+                --and cr.num_parcela > 2);
+                exception
+                         when no_data_found then
+                              wvenda_elegiveis := 0;
+                              wqtd_venda_elegiveis := 0;
+          end;
+          elsif pi_cpp = 'CRE' then
+          begin
 		       select nvl(sum(nvl(a.vlr_operacao,0)) - sum(nvl(a.VLR_ENTRADA,0)),0) vlr_venda_elegiveis
                ,count(distinct a.num_seq) qtd_venda_elegiveis
                    into wVenda_Elegiveis,
@@ -509,7 +504,7 @@ begin
 				         wQtd_Venda_Elegiveis_MesAnt
                from (select sum(nvl(e.vlr_operacao,0)) vlr_operacao, sum(nvl(e.vlr_entrada,0)) vlr_entrada, e.num_seq, e.cod_maquina, e.cod_oper
 			          from ns_notas_operacoes e
-                     where e.cod_oper in (3000,3050,6110,6210) --Se colocar so cod_oper do cpp da erro
+                     where e.cod_oper in (3000,3050) --Se colocar so cod_oper do cpp da erro
     				 --where e.cod_oper in (302,305,4302,4305,3000,3050,6110) --Se colocar so cod_oper do cpp da erro
                      group by e.num_seq, e.cod_maquina, e.cod_oper) a,
                  ns_notas b,
@@ -517,6 +512,7 @@ begin
                  ps_fisicas f
 				where a.num_seq      = b.num_seq
 				 and a.cod_maquina  = b.cod_maquina
+                 and b.tip_nota     = 3
 				 and b.cod_emp      = 1
 				and b.ind_status   = 1
 				 and b.cod_cliente  = f.cod_pessoa
@@ -766,6 +762,7 @@ begin
                  ps_fisicas f
 				where a.num_seq      = b.num_seq
 				 and a.cod_maquina  = b.cod_maquina
+                 and b.tip_nota     = 3
 				 and b.cod_emp      = 1
 				and b.ind_status   = 1
 				 and b.cod_cliente  = f.cod_pessoa
@@ -799,6 +796,7 @@ begin
                  ps_fisicas f
 				where a.num_seq      = b.num_seq
 				 and a.cod_maquina  = b.cod_maquina
+                 and b.tip_nota     = 3
 				 and b.cod_emp      = 1
 				and b.ind_status   = 1
 				 and b.cod_cliente  = f.cod_pessoa
