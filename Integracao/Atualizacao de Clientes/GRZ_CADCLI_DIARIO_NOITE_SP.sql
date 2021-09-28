@@ -1,281 +1,286 @@
-CREATE OR REPLACE PROCEDURE GRZ_CADCLI_DIARIO_NOITE_SP
---CREATE OR REPLACE PROCEDURE GRZCADCLIDIARIONOITESP_TESTE
-  IS
-  BEGIN
-  DECLARE
-    iCount                  NUMBER;
-    v_result                integer;
-    v_cur                   integer;
+create or replace procedure grz_cadcli_diario_noite_sp
+--create or replace procedure grzcadclidiarionoitesp_teste
+is
+begin
+     declare icount                  number;
+             v_result                integer;
+             v_cur                   integer;
 
-    wCod_Reduzido           NUMBER;
-    wErro                   NUMBER;
-    wData                   VARCHAR2(20);
-    wDta_mvto               DATE;
-    wTabela                 VARCHAR2(50);
-    wSqlcode                VARCHAR2(2000);
-    wPI_WHERE               VARCHAR2(100);
-    wPI_OPCAO               VARCHAR2(200);
-    wPO_ERRO                VARCHAR2(100);
-    wTodasRedes             VARCHAR2(15);
-    wDta_nasc_nl            VARCHAR2(100);
-    wNum_cpf_nl             VARCHAR2(100);
-    wDes_mae_nl             VARCHAR2(100);
-    wNum_cgc_nl             VARCHAR2(100);
-    wDta_fundacao_nl        VARCHAR2(100);
-    wNum_insc_est_nl        VARCHAR2(100);
-    wAtividade_Cli          VARCHAR2(04);
-    wLimite_Cli             NUMBER;
-    wCod_Unidade_Cli_NL     NUMBER;
-    wDtaAfastamentoLj       VARCHAR2(10);
-    wInd_Emite_Cartao       NUMBER; -- variavel de controle de cart¿es
-    wNum_Reemissao_Cartao   NUMBER;
-    wTem_Cartao_Adic        NUMBER;
-    wTemObsLoja             NUMBER;
-    wExisteFone             NUMBER;
-	wDia_Da_Semana          NUMBER;
+             wcod_reduzido           number;
+             werro                   number;
+             wdata                   varchar2(20);
+             wdta_mvto               date;
+             wtabela                 varchar2(50);
+             wsqlcode                varchar2(2000);
+             wpi_where               varchar2(100);
+             wpi_opcao               varchar2(200);
+             wpo_erro                varchar2(100);
+             wtodasredes             varchar2(15);
+             wdta_nasc_nl            varchar2(100);
+             wnum_cpf_nl             varchar2(100);
+             wdes_mae_nl             varchar2(100);
+             wnum_cgc_nl             varchar2(100);
+             wdta_fundacao_nl        varchar2(100);
+             wnum_insc_est_nl        varchar2(100);
+             watividade_cli          varchar2(04);
+             wlimite_cli             number;
+             wcod_unidade_cli_nl     number;
+             wdtaafastamentolj       varchar2(10);
+             wind_emite_cartao       number; -- variavel de controle de cart¿es
+             wnum_reemissao_cartao   number;
+             wtem_cartao_adic        number;
+             wtemobsloja             number;
+             wexistefone             number;
+             wdia_da_semana          number;
 
+             --registro ai_ps_pessoas - 10
+             wnum_rede               varchar2(100);
+             --wcod_pesso            varchar2(100);
+             wdes_pessoa             varchar2(100);
+             wcod_regiao             varchar2(100);
+             wcod_atividade          varchar2(100);
+             wdes_fantasia           varchar2(100);
+             wdes_endereco           varchar2(100);
+             wdes_ponto_referencia   varchar2(100);
+             wdes_bairro             varchar2(100);
+             wnum_cep                varchar2(100);
+             wdes_email              varchar2(100);
+             wcod_negativacao        varchar2(100);
+             wcod_negativacao_serasa varchar2(100);
+             wdes_pessoa_nl          varchar2(100);
 
-    --registro ai_ps_pessoas - 10
-    wNum_rede               VARCHAR2(100);
-    --wCod_pessoa             VARCHAR2(100);
-    wDes_pessoa             VARCHAR2(100);
-    wCod_regiao             VARCHAR2(100);
-    wCod_atividade          VARCHAR2(100);
-    wDes_fantasia           VARCHAR2(100);
-    wDes_endereco           VARCHAR2(100);
-    wDes_ponto_referencia   VARCHAR2(100);
-    wDes_bairro             VARCHAR2(100);
-    wNum_cep                VARCHAR2(100);
-    wDes_email              VARCHAR2(100);
-	wCod_Negativacao        VARCHAR2(100);
-	wCod_Negativacao_Serasa VARCHAR2(100);
-	wDes_pessoa_nl          VARCHAR2(100);
+             --registro ai_ps_clientes - 20
+             wcod_classe_venda       varchar2(100);
+             wcod_cond_pgto          varchar2(100);
 
-    --registro ai_ps_clientes - 20
-    wCod_classe_venda       VARCHAR2(100);
-    wCod_cond_pgto          VARCHAR2(100);
+             --registro ai_ps_fisicas - 30
+             wdta_nasc               varchar2(100);
+             wnum_cpf                varchar2(100);
+             wvlr_aluguel            varchar2(100);
+             wvlr_renda              varchar2(100);
+             wdes_conjuge            varchar2(100);
+             wdes_pai                varchar2(100);
+             wdes_mae                varchar2(100);
 
-    --registro ai_ps_fisicas - 30
-    wDta_nasc               VARCHAR2(100);
-    wNum_cpf                VARCHAR2(100);
-    wVlr_aluguel            VARCHAR2(100);
-    wVlr_renda              VARCHAR2(100);
-    wDes_conjuge            VARCHAR2(100);
-    wDes_pai                VARCHAR2(100);
-    wDes_mae            VARCHAR2(100);
+             --registro ai_ps_juridicas - 35
+             wnum_insc_est           varchar2(100);
+             wnum_cgc                varchar2(100);
+             wdta_fundacao           varchar2(100);
 
-    --registro ai_ps_juridicas - 35
-    WNUM_INSC_EST                   VARCHAR2(100);
-    wNum_cgc                        VARCHAR2(100);
-    wDta_fundacao                   VARCHAR2(100);
+             --registro ai_ps_telefones - 50
+             wnum_seq                varchar2(100);
+             wnum_fone               varchar2(100);
+             wdes_fone               varchar2(100);
 
+             --registro ai_ps_prof_clientes - 65
+             wdes_emp                varchar2(100);
+             wvlr_salario            varchar2(100);
+             wcod_funcao             varchar2(100);
+             wcompl_endereco         varchar2(100);
+             wcod_cidade_empresa     varchar2(100);
+             wnum_end_empresa        varchar2(100);
+             wtip_funcao             varchar2(100);
 
-    --registro ai_ps_telefones - 50
-    wNum_seq                VARCHAR2(100);
-    wNum_fone               VARCHAR2(100);
-    wDes_fone               VARCHAR2(100);
+             --registro ai_ps_ref_clientes - 70
+             wdes_ref                varchar2(100);
 
-    --registro ai_ps_prof_clientes - 65
-    wDes_emp                VARCHAR2(100);
-    wVlr_salario            VARCHAR2(100);
-    wCod_funcao             VARCHAR2(100);
-	wCompl_endereco   VARCHAR2(100);
-	wCod_cidade_empresa VARCHAR2(100);
-	wNum_end_empresa VARCHAR2(100);
-	wTip_Funcao VARCHAR2(100);
+             --registro ai_ps_cartoes - 75
+             wdes_imp                varchar2(100);
+             wnum_reemissao          varchar2(100);
+             wind_emite              varchar2(100);
+             wdta_nasc_cartao        varchar2(100);
+             wdta_validade           varchar2(100);
+             wdta_fechamento         varchar2(100);
+             wcod_situacao           varchar2(100);
+             wcod_cartao             varchar2(100);
+             wcod_tipo_cartao        varchar2(100);
+             wdta_solicitacao        varchar2(100);
+             wdta_remessa_cartao     varchar2(100);
 
-    --registro ai_ps_ref_clientes - 70
-    wDes_ref                VARCHAR2(100);
+             --registro ai_ps_cartoes_adicionais - 80
+             wnum_adic               varchar2(100);
+             wdes_parentesco         varchar2(100);
+             wnome_adicional         varchar2(50);
 
-    --registro ai_ps_cartoes - 75
-    wDes_imp                VARCHAR2(100);
-    wNum_reemissao          VARCHAR2(100);
-    wInd_emite              VARCHAR2(100);
-    wDta_nasc_cartao        VARCHAR2(100);
-    wDta_validade           VARCHAR2(100);
-    wDta_fechamento         VARCHAR2(100);
-    wCod_situacao           VARCHAR2(100);
-    wCod_Cartao             VARCHAR2(100);
-    wCod_Tipo_Cartao        VARCHAR2(100);
-    wDta_Solicitacao        VARCHAR2(100);
-    wDta_Remessa_Cartao     VARCHAR2(100);
+             --registro ai_ps_observacoes - 85
+             wcod_obs                varchar2(100);
+             wdta_obs                varchar2(100);
+             wdes_resp               varchar2(100);
+             wtxt_obs                varchar2(100);
 
-    --registro ai_ps_cartoes_adicionais - 80
-    wNum_adic               VARCHAR2(100);
-    wDes_parentesco         VARCHAR2(100);
-    wNome_Adicional         VARCHAR2(50);
+             --registro ai_ps_colunas - 90
+             wseq_coluna             varchar2(100);
+             wvlr_coluna             varchar2(100);
 
-    --registro ai_ps_observacoes - 85
-    wCod_obs                VARCHAR2(100);
-    wDta_obs                VARCHAR2(100);
-    wDes_resp               VARCHAR2(100);
-    wTxt_obs                VARCHAR2(100);
+             --registro ai_ps_comentarios - 95
+             wseq_comentario         varchar2(100);
+             wdes_comentario         varchar2(100);
 
-    --registro ai_ps_colunas - 90
-    wSeq_coluna             VARCHAR2(100);
-    wVlr_coluna             VARCHAR2(100);
+             --registro ai_ps_mascaras - 110
+             wcod_completo           varchar2(100);
+             wcod_editado            varchar2(100);
+             wcod_niv1               varchar2(100);
+             wcod_niv2               varchar2(100);
 
-    --registro ai_ps_comentarios - 95
-    wSeq_comentario         VARCHAR2(100);
-    wDes_comentario         VARCHAR2(100);
+             --registro ai_ps_pessoas_r900 - 900 
+             wcodemp                varchar2(100);  
+             wind_valida_unidade    varchar2(100);  
+             wind_atualiza_bloqueio varchar2(100);
+             wind_inc_controle      varchar2(100);
 
-    --registro ai_ps_mascaras - 110
-    wCod_completo           VARCHAR2(100);
-    wCod_editado            VARCHAR2(100);
-    wCod_niv1               VARCHAR2(100);
-    wCod_niv2               VARCHAR2(100);
+     -- rotina diaria que roda os clientes novos seta 
+     -- o ind_processado para 4 para saber que o cliente ja
+     -- existia, entao precisamos buscar este cliente tbm
+     cursor c_clientes_diario is
+            select *
+            from grz_lojas_clientes_diario a
+            where a.num_rede  >= 00
+            and a.num_rede    <= 99
+            and a.num_rede    <> 70
+            and a.num_loja    >= 0
+            and a.num_loja    <= 9999
+            --and (a.num_loja in (53,44,97,158)
+            --or a.num_rede   in (40,50,10))
+            and a.dta_mvto    = trunc(sysdate)
+            --and a.cod_cliente in (96995890000)
+            and (a.ind_processado is null 
+            or a.ind_processado = 4)
+            and not exists (select 1
+                            from grz_lojas_clientes_controle b
+                            where a.num_rede  = b.num_rede
+                            and a.num_loja    = b.num_loja
+                            and a.cod_cliente = b.cod_cliente
+                            and a.dta_mvto    = b.dta_mvto)
+            --and rownum <= 500
+            order by a.num_rede, a.num_loja;
+     r_clientes_diario c_clientes_diario%rowtype;
 
-	---- registro AI_PS_PESSOAS_R900 - 900 
-	wCodEmp                VARCHAR2(100);  
-	wIND_VALIDA_UNIDADE    VARCHAR2(100);  
-	wIND_ATUALIZA_BLOQUEIO VARCHAR2(100);
-    wIND_INC_CONTROLE      VARCHAR2(100);
+     cursor c_verifica_pessoa is
+            select t.cod_pessoa
+                   ,m.cod_completo
+             from ps_clientes t
+                   ,ps_mascaras m
+                   ,ps_pessoas p
+             where t.cod_pessoa = m.cod_pessoa
+             and m.cod_pessoa = p.cod_pessoa
+             and m.cod_mascara = 50
+             and (instr(','||wtodasredes||',' , ','||m.cod_niv1||',') > 0)
+             and (exists (select 1
+                          from ps_fisicas f
+                          where t.cod_pessoa = f.cod_pessoa
+                          and f.num_cpf = r_clientes_diario.num_cpf_cnpj)
+                  or exists (select 1
+                             from ps_juridicas j
+                             where t.cod_pessoa = j.cod_pessoa
+                             and j.num_cgc = r_clientes_diario.num_cpf_cnpj))
+             order by t.cod_classe_venda, p.dta_afastamento desc;
+     r_verifica_pessoa c_verifica_pessoa%rowtype;
 
-    -- rotina diaria que roda os clientes novos seta o ind_processado para 4 para saber que o cliente j¿ existia, ent¿o precisamos buscar este cliente tbm
-    CURSOR c_clientes_diario IS
-             select *
-                   from grz_lojas_clientes_diario a
-                  where a.num_rede       >= 00
-                    and a.num_rede       <= 99
-                    and a.num_rede       <> 70
-                    and a.num_loja       >= 0
-                    and a.num_loja       <= 9999
-                    --and (a.num_loja       in (53,44,97,158)
-                    -- or a.num_rede        in (40,50,10))
-                    and a.dta_mvto        = trunc(sysdate)
-                    --and a.cod_cliente in (96995890000)
-                    and (a.ind_processado is null 
-                    or a.ind_processado = 4)
-                    and not exists (select 1 from grz_lojas_clientes_controle b
-                                     where a.num_rede    = b.num_rede
-                                       and a.num_loja    = b.num_loja
-                                       and a.cod_cliente = b.cod_cliente
-                                       and a.dta_mvto    = b.dta_mvto)
-                    --and rownum <= 500
-                  order by a.num_rede, a.num_loja;
-    r_clientes_diario c_clientes_diario%ROWTYPE;
+     cursor c_geracao_fisicas is
+            select * from ai_ps_fisicas a
+            where a.dta_transacao = wdta_mvto
+            and a.num_cpf = r_clientes_diario.num_cpf_cnpj
+            and a.tip_status_transacao = 1;
+     r_geracao_fisicas c_geracao_fisicas%rowtype;
 
-      CURSOR c_verifica_pessoa IS
-             SELECT T.COD_PESSOA
-                   ,M.COD_COMPLETO
-             FROM PS_CLIENTES T
-                   ,PS_MASCARAS M
-                   ,PS_PESSOAS P
-              WHERE T.COD_PESSOA = M.COD_PESSOA
-                AND M.COD_PESSOA = P.COD_PESSOA
-                AND M.COD_MASCARA = 50
-                and (INSTR(','||wTodasRedes||',' , ','||M.cod_niv1||',') > 0)
-                AND (EXISTS (SELECT 1 FROM PS_FISICAS F
-                                     WHERE T.COD_PESSOA = F.COD_PESSOA
-                                       AND F.NUM_CPF = r_clientes_diario.NUM_CPF_CNPJ)
-                 OR  EXISTS (SELECT 1 FROM PS_JURIDICAS J
-                                     WHERE T.COD_PESSOA = J.COD_PESSOA
-                                       AND J.NUM_CGC    = r_clientes_diario.NUM_CPF_CNPJ))
-              ORDER BY T.COD_CLASSE_VENDA, P.DTA_AFASTAMENTO DESC;
-      r_verifica_pessoa c_verifica_pessoa%ROWTYPE;
-	  
-	  CURSOR c_geracao_fisicas IS
-	  select * from ai_ps_fisicas a
-       where a.dta_transacao = wDta_Mvto
-	     and a.num_cpf = r_clientes_diario.num_cpf_cnpj
-         and a.tip_status_transacao = 1;
-      r_geracao_fisicas c_geracao_fisicas%ROWTYPE;
-	  
-	  CURSOR c_geracao_juridicas IS
-	  select * from ai_ps_juridicas a
-       where a.dta_transacao = wDta_Mvto
-	     and a.num_cgc = r_clientes_diario.num_cpf_cnpj
-         and a.tip_status_transacao = 1;
-      r_geracao_juridicas c_geracao_juridicas%ROWTYPE;	  
+     cursor c_geracao_juridicas is
+            select * from ai_ps_juridicas a
+            where a.dta_transacao = wdta_mvto
+            and a.num_cgc = r_clientes_diario.num_cpf_cnpj
+            and a.tip_status_transacao = 1;
+     r_geracao_juridicas c_geracao_juridicas%rowtype;	  
 
-      BEGIN
-         v_cur := dbms_sql.open_cursor;
-         dbms_sql.parse(v_cur,'alter session set nls_date_format= "dd/mm/rrrr"',dbms_sql.native);
-         v_result := dbms_sql.execute(v_cur);
-         dbms_sql.close_cursor(v_cur);
+BEGIN
+     v_cur := dbms_sql.open_cursor;
+     dbms_sql.parse(v_cur,'alter session set nls_date_format= "dd/mm/rrrr"',dbms_sql.native);
+     v_result := dbms_sql.execute(v_cur);
+     dbms_sql.close_cursor(v_cur);
 
+     v_cur := dbms_sql.open_cursor;
+     dbms_sql.parse(v_cur,'alter session set nls_numeric_characters = '',.''',dbms_sql.native);
+     v_result := dbms_sql.execute(v_cur);
+     dbms_sql.close_cursor(v_cur);
 
-             --- busca clientes novos - sislog
-         OPEN c_clientes_diario;
-         FETCH c_clientes_diario INTO r_clientes_diario;
-         WHILE c_clientes_diario%FOUND LOOP
-         BEGIN
-		      wNum_Cgc := '';
-			  wNum_cpf := '';
+     --- busca clientes novos - sislog
+     open c_clientes_diario;
+     fetch c_clientes_diario into r_clientes_diario;
+     while c_clientes_diario%found loop
+     begin
+          wNum_Cgc := '';
+          wNum_cpf := '';
 
+          if (r_clientes_diario.num_rede = 70) then
+             wNum_rede := lPad(to_char(r_clientes_diario.cod_emp_cadastro),2,'0');
+          else
+              wNum_rede := lPad(to_char(r_clientes_diario.num_rede),2,'0');
+          end if;
+          --wCod_Completo := lpad(wNum_rede,2,'0')||lpad(to_char(r_clientes_diario.cod_cliente),8,'0');
+          wCod_Completo := lpad(wNum_rede,2,'0')||lpad(to_char(r_clientes_diario.cod_cartao_cliente),12,'0');
 
-              if (r_clientes_diario.num_rede = 70) then
-                  wNum_rede := lPad(to_char(r_clientes_diario.cod_emp_cadastro),2,'0');
-              else
-                  wNum_rede := lPad(to_char(r_clientes_diario.num_rede),2,'0');
-              end if;
-            --wCod_Completo := lpad(wNum_rede,2,'0')||lpad(to_char(r_clientes_diario.cod_cliente),8,'0');
-              wCod_Completo := lpad(wNum_rede,2,'0')||lpad(to_char(r_clientes_diario.cod_cartao_cliente),12,'0');
+          wCod_Reduzido := '';
+          wTabela := '';
+          wsqlcode := '';
 
-              wCod_Reduzido := '';
-              wTabela := '';
-              wsqlcode := '';
+          /*begin
+                 select cod_pessoa
+                        into wcod_reduzido
+                        from ps_mascaras
+                        where cod_mascara  = 50
+                        and cod_completo = wcod_completo;
+                 exception
+                          when no_data_found then
+                               wcod_reduzido := '';
+          end;*/
 
-               /* begin
-         SELECT COD_PESSOA
-                 INTO wCod_Reduzido
-                 FROM PS_MASCARAS
-                WHERE COD_MASCARA  = 50
-                  AND COD_COMPLETO = wCod_Completo;
-                   EXCEPTION
-                      WHEN NO_DATA_FOUND THEN
-                          wCod_Reduzido := '';
-          end; */
+          if r_clientes_diario.num_rede = 70 then
+             wtodasredes := '10,30,40,50';
+          else
+              wtodasredes := r_clientes_diario.num_rede;
+          end if;
 
-              if r_clientes_diario.NUM_REDE = 70 then
-                 wTodasRedes := '10,30,40,50';
-              else
-                 wTodasRedes := r_clientes_diario.NUM_REDE;
-              end if;
-
-              if (r_clientes_diario.COD_PESSOA is not null) and (r_clientes_diario.NUM_REDE = 70) then
-               begin
-                   SELECT T.COD_PESSOA
-                         ,A.COD_COMPLETO
-                     INTO wCod_Reduzido
-                         ,wCod_Completo
-                     FROM PS_CLIENTES T, PS_MASCARAS A
-                              WHERE T.COD_PESSOA = A.COD_PESSOA
-                                AND A.COD_MASCARA = 50
-                                AND T.COD_PESSOA = r_clientes_diario.COD_PESSOA
-                                AND (EXISTS (SELECT 1 FROM PS_FISICAS F
-                                              WHERE T.COD_PESSOA = F.COD_PESSOA
-                                                AND F.NUM_CPF = r_clientes_diario.NUM_CPF_CNPJ)
-                                 OR  EXISTS (SELECT 1 FROM PS_JURIDICAS J
-                                              WHERE T.COD_PESSOA = J.COD_PESSOA
-                                                AND J.NUM_CGC    = r_clientes_diario.NUM_CPF_CNPJ))
-                                AND ROWNUM = 1;
-                     exception
-                      WHEN NO_DATA_FOUND THEN
-                               wCod_Reduzido := '';
-              end;
-              elsif (r_clientes_diario.COD_PESSOA is not null) then
-               begin
-                   SELECT T.COD_PESSOA
-                         ,A.COD_COMPLETO
-                     INTO wCod_Reduzido
-                         ,wCod_Completo
-                     FROM PS_CLIENTES T, PS_MASCARAS A
-                              WHERE T.COD_PESSOA = A.COD_PESSOA
-                                AND A.COD_MASCARA = 50
-                                AND A.COD_NIV1 = r_clientes_diario.NUM_REDE
-                                AND T.COD_PESSOA = r_clientes_diario.COD_PESSOA
-                                AND (EXISTS (SELECT 1 FROM PS_FISICAS F
-                                              WHERE T.COD_PESSOA = F.COD_PESSOA
-                                                AND F.NUM_CPF = r_clientes_diario.NUM_CPF_CNPJ)
-                                 OR  EXISTS (SELECT 1 FROM PS_JURIDICAS J
-                                              WHERE T.COD_PESSOA = J.COD_PESSOA
-                                                AND J.NUM_CGC    = r_clientes_diario.NUM_CPF_CNPJ));
-                     exception
-                      WHEN NO_DATA_FOUND THEN
-                            wCod_Reduzido := '';
-              end;
-              end if;
+          if (r_clientes_diario.cod_pessoa is not null) and (r_clientes_diario.num_rede = 70) then
+          begin
+               select t.cod_pessoa
+                      ,a.cod_completo
+               into wcod_reduzido
+                    ,wcod_completo
+               from ps_clientes t, ps_mascaras a
+               where t.cod_pessoa = a.cod_pessoa
+               and a.cod_mascara = 50
+               and t.cod_pessoa = r_clientes_diario.cod_pessoa
+               and (exists (select 1 from ps_fisicas f
+                            where t.cod_pessoa = f.cod_pessoa
+                            and f.num_cpf = r_clientes_diario.num_cpf_cnpj)
+                            or  exists (select 1 from ps_juridicas j
+                                        where t.cod_pessoa = j.cod_pessoa
+                                        and j.num_cgc    = r_clientes_diario.num_cpf_cnpj))
+               and rownum = 1;
+               exception
+                        when no_data_found then
+                             wcod_reduzido := '';
+          end;
+          elsif (r_clientes_diario.cod_pessoa is not null) then
+          begin
+               select t.cod_pessoa
+                      ,a.cod_completo
+               into wcod_reduzido
+                    ,wcod_completo
+               from ps_clientes t, ps_mascaras a
+               where t.cod_pessoa = a.cod_pessoa
+               and a.cod_mascara = 50
+               and a.cod_niv1 = r_clientes_diario.num_rede
+               and t.cod_pessoa = r_clientes_diario.cod_pessoa
+               and (exists (select 1 from ps_fisicas f
+                            where t.cod_pessoa = f.cod_pessoa
+                            and f.num_cpf = r_clientes_diario.num_cpf_cnpj)
+                            or  exists (select 1 from ps_juridicas j
+                                        where t.cod_pessoa = j.cod_pessoa
+                                        and j.num_cgc    = r_clientes_diario.num_cpf_cnpj));
+               exception
+                        when no_data_found then
+                             wcod_reduzido := '';
+          end;
+          end if;
 
               if (wCod_Reduzido is null) then
               begin

@@ -1,129 +1,102 @@
-COMMIT WORK;
-SET AUTODDL OFF;
-SET TERM ^ ;
+commit work;
+set autoddl off;
+set term ^ ;
 
-/* Stored procedures */
-
-CREATE PROCEDURE "REL_CREDITO_DOBRO_SP" 
+create or alter procedure rel_credito_dobro_sp
 (
-  "COD_EMP" NUMERIC(3, 0),
-  "COD_UNIDADE" NUMERIC(4, 0),
-  "COD_PERFIL_INI" NUMERIC(3, 0),
-  "COD_PERFIL_FIM" NUMERIC(3, 0),
-  "SELECAO" NUMERIC(10, 0),
-  "DTA_INI" DATE,
-  "DTA_FIM" DATE,
-  "OP_REL" NUMERIC(1, 0),
-  "LIMITE" NUMERIC(4, 0)
+ cod_emp        numeric(3,0),
+ cod_unidade    numeric(4,0),
+ cod_perfil_ini numeric(3,0),
+ cod_perfil_fim numeric(3,0),
+ selecao        numeric(10,0),
+ dta_ini        date,
+ dta_fim        date,
+ op_rel         numeric(1,0),
+ limite         numeric(4,0)
 )
-RETURNS
+returns
 (
-  "COD_CLIENTE" NUMERIC(14, 0),
-  "DES_CLIENTE" VARCHAR(50),
-  "NUM_CPF_CNPJ" NUMERIC(14, 0),
-  "DES_FONE_RESID" VARCHAR(15),
-  "DES_FONE_CELULAR" VARCHAR(15),
-  "DES_FONE_COMERC" VARCHAR(15),
-  "COD_PERFIL_CLI" NUMERIC(3, 0),
-  "VLR_LIMITE" NUMERIC(18, 2),
-  "ICOMPROU" NUMERIC(3, 0)
+ cod_cliente      numeric(14,0),
+ des_cliente      varchar(50),
+ num_cpf_cnpj     numeric(14,0),
+ des_fone_resid   varchar(15),
+ des_fone_celular varchar(15),
+ des_fone_comerc  varchar(15),
+ cod_perfil_cli   numeric(3,0),
+ vlr_limite       numeric(18,2),
+ icomprou         numeric(3,0)
 )
-AS
-BEGIN EXIT; END ^
+as
+begin
+     for select a.cod_cliente,
+                a.des_cliente,
+                a.num_cpf_cnpj,
+                b.des_fone_resid,
+                b.des_fone_celular,
+                b.des_fone_comerc,
+                c.cod_perfil_cli,
+                b.vlr_limite
+         from cre_clientes a
+              ,cre_clientes_cr b
+              ,cre_saldos_cli c
+              ,cre_selecao_cli d
+         where a.cod_emp=b.cod_emp
+         and a.cod_emp = c.cod_emp
+         and a.cod_emp = :cod_emp
+         and a.cod_unidade = :cod_unidade
+         and a.cod_cliente= b.cod_cliente
+         and a.cod_cliente = c.cod_cliente
+         and d.num_selecao = :selecao
+         and a.cod_emp = d.cod_emp
+         and a.cod_cliente = d.cod_cliente
+         and c.cod_perfil_cli >= :cod_perfil_ini
+         and c.cod_perfil_cli <= :cod_perfil_fim
+         and b.vlr_limite > :limite
+         into cod_cliente,
+              des_cliente,
+              num_cpf_cnpj,
+              des_fone_resid,
+              des_fone_celular,
+              des_fone_comerc,
+              cod_perfil_cli,
+              vlr_limite do
+     begin
+          if (op_rel = 0) then
+             suspend;
+          else
+              if (op_rel = 1) then
+              begin
+                   icomprou =0;
+                   select coalesce(count(1),0)
+                   from est_cupons e
+                   where e.cod_emp = :cod_emp
+                   and e.cod_unidade = :cod_unidade
+                   and e.dta_movimento between :dta_ini and :dta_fim
+                   and e.cod_cliente = :cod_cliente
+                   into icomprou;
 
+                   if (icomprou < 1) then
+                      suspend;
+              end
+              else
+                  if (op_rel = 2) then
+                  begin
+                      icomprou = 0;
 
-ALTER PROCEDURE "rel_credito_dobro_sp" 
-(
-  "COD_EMP" NUMERIC(3, 0),
-  "COD_UNIDADE" NUMERIC(4, 0),
-  "COD_PERFIL_INI" NUMERIC(3, 0),
-  "COD_PERFIL_FIM" NUMERIC(3, 0),
-  "SELECAO" NUMERIC(10, 0),
-  "DTA_INI" DATE,
-  "DTA_FIM" DATE,
-  "OP_REL" NUMERIC(1, 0),
-  "LIMITE" NUMERIC(4, 0)
-)
-RETURNS
-(
-  "COD_CLIENTE" NUMERIC(14, 0),
-  "DES_CLIENTE" VARCHAR(50),
-  "NUM_CPF_CNPJ" NUMERIC(14, 0),
-  "DES_FONE_RESID" VARCHAR(15),
-  "DES_FONE_CELULAR" VARCHAR(15),
-  "DES_FONE_COMERC" VARCHAR(15),
-  "COD_PERFIL_CLI" NUMERIC(3, 0),
-  "VLR_LIMITE" NUMERIC(18, 2),
-  "ICOMPROU" NUMERIC(3, 0)
-)
-AS
---DECLARE VARIABLE ICOMPROU NUMERIC(1,0);
-BEGIN
-    FOR SELECT A.COD_CLIENTE,
-               A.DES_CLIENTE,
-               A.NUM_CPF_CNPJ,
-               B.DES_FONE_RESID,
-               B.DES_FONE_CELULAR,
-               B.DES_FONE_COMERC,
-               C.COD_PERFIL_CLI,
-               B.VLR_LIMITE
-          FROM CRE_CLIENTES A
-              ,CRE_CLIENTES_CR B
-              ,CRE_SALDOS_CLI C
-              ,CRE_SELECAO_CLI D
-         WHERE A.COD_EMP=B.COD_EMP
-           AND A.COD_EMP = C.COD_EMP
-           AND A.COD_EMP = :COD_EMP
-           AND A.COD_UNIDADE = :COD_UNIDADE
-           AND A.COD_CLIENTE= B.COD_CLIENTE
-           AND A.COD_CLIENTE = C.COD_CLIENTE
-           AND D.NUM_SELECAO = :SELECAO
-           AND A.COD_EMP = D.COD_EMP
-           AND A.COD_CLIENTE = D.COD_CLIENTE
-           AND C.COD_PERFIL_CLI >= :COD_PERFIL_INI
-           AND C.COD_PERFIL_CLI <= :COD_PERFIL_FIM
-           AND B.VLR_LIMITE > :LIMITE
-          INTO COD_CLIENTE,
-               DES_CLIENTE,
-               NUM_CPF_CNPJ,
-               DES_FONE_RESID,
-               DES_FONE_CELULAR,
-               DES_FONE_COMERC,
-               COD_PERFIL_CLI,
-               VLR_LIMITE
-    DO BEGIN
-       IF (OP_REL = 0) THEN
-       	   SUSPEND;
-       ELSE
-       IF (OP_REL = 1) THEN
-        BEGIN
-     	   ICOMPROU =0;
-           SELECT coalesce(count(1),0)
-             FROM EST_CUPONS E
-            WHERE E.COD_EMP = :COD_EMP
-              AND E.COD_UNIDADE = :COD_UNIDADE
-              AND E.DTA_MOVIMENTO BETWEEN :DTA_INI AND :DTA_FIM
-              AND E.COD_CLIENTE = :COD_CLIENTE
-             INTO ICOMPROU;
-           IF (ICOMPROU < 1) THEN
-              SUSPEND;
-       END ELSE IF (OP_REL = 2) THEN
-       	        BEGIN
-       	            ICOMPROU =0;
-                    SELECT coalesce(count(1),0)
-                      FROM EST_CUPONS E
-                     WHERE E.COD_EMP = :COD_EMP
-                       AND E.COD_UNIDADE = :COD_UNIDADE
-                       AND E.DTA_MOVIMENTO BETWEEN :DTA_INI AND :DTA_FIM
-                       AND E.COD_CLIENTE = :COD_CLIENTE
-                      INTO ICOMPROU;
-                    IF (ICOMPROU > 0) THEN
-                        SUSPEND;
-       	        END
-     END
-END
- ^
+                      select coalesce(count(1),0)
+                      from est_cupons e
+                      where e.cod_emp = :cod_emp
+                      and e.cod_unidade = :cod_unidade
+                      and e.dta_movimento between :dta_ini and :dta_fim
+                      and e.cod_cliente = :cod_cliente
+                      into icomprou;
 
-SET TERM ; ^
-COMMIT WORK;
-SET AUTODDL ON;
+                      if (icomprou > 0) then
+                         suspend;
+                  end
+     end
+end ^
+
+set term ; ^
+commit work;
+set autoddl on;

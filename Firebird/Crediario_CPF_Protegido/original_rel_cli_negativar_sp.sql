@@ -1,122 +1,87 @@
-COMMIT WORK;
-SET AUTODDL OFF;
-SET TERM ^ ;
+ commit work;
+set autoddl off;
+set term ^ ;
 
-/* Stored procedures */
-
-CREATE PROCEDURE "REL_CLI_NEGATIVAR_SP" 
+create or alter procedure rel_cli_negativar_sp
 (
-  "COD_EMP" NUMERIC(3, 0),
-  "COD_UNIDADE" NUMERIC(4, 0),
-  "DTA_NEG_INI" DATE,
-  "DTA_NEG_FIM" DATE
+ cod_emp     numeric(3,0),
+ cod_unidade numeric(4,0),
+ dta_neg_ini date,
+ dta_neg_fim date
 )
-RETURNS
+returns
 (
-  "WCOD_CLIENTE" NUMERIC(14, 0),
-  "WDES_CLIENTE" VARCHAR(40),
-  "WCNPJ_CPF" NUMERIC(14, 0),
-  "WTIP_PESSOA" NUMERIC(1, 0),
-  "WDTA_CADASTRO" DATE,
-  "WCOD_UNIDADE" NUMERIC(4, 0),
-  "WCONTRATO" NUMERIC(11, 0),
-  "WDTA_VENDA" DATE,
-  "WNUM_PARCELA" NUMERIC(3, 0),
-  "WDTA_VENCIMENTO" DATE,
-  "WVAL_PRESTACAO" NUMERIC(15, 2),
-  "WTIP_PLANO_VP" VARCHAR(6),
-  "WCOD_COMPL" VARCHAR(3),
-  "WDES_FONE" VARCHAR(15),
-  "WVLR_LIMITE" NUMERIC(15, 2),
-  "WQTD_COMPRAS" NUMERIC(5, 0),
-  "WSALDO" NUMERIC(15, 2),
-  "WDTA_MAIOR_ATRASO" DATE,
-  "WIND_SPC" NUMERIC(1, 0)
+ wcod_cliente      numeric(14,0),
+ wdes_cliente      varchar(40),
+ wcnpj_cpf         numeric(14,0),
+ wtip_pessoa       numeric(1,0),
+ wdta_cadastro     date,
+ wcod_unidade      numeric(4,0),
+ wcontrato         numeric(11,0),
+ wdta_venda        date,
+ wnum_parcela      numeric(3,0),
+ wdta_vencimento   date,
+ wval_prestacao    numeric(15,2),
+ wtip_plano_vp     varchar(6),
+ wcod_compl        varchar(3),
+ wdes_fone         varchar(15),
+ wvlr_limite       numeric(15,2),
+ wqtd_compras      numeric(5,0),
+ wsaldo            numeric(15,2),
+ wdta_maior_atraso date,
+ wind_spc          numeric(1,0)
 )
-AS
-BEGIN EXIT; END ^
+as
+  declare variable retorno numeric(3);
+begin
+     for select a.cod_cliente,
+                a.des_cliente,
+                a.num_cpf_cnpj,
+                a.tip_pessoa,
+                a.dta_cadastro,
+                b.cod_unidade,
+                b.cod_contrato,
+                b.dta_venda,
+                b.num_parcela,
+                b.dta_vencimento,
+                b.vlr_prestacao,
+                b.tip_plano_vp,
+                b.cod_compl
+         from cre_clientes a,
+              cre_contas_receber b
+         where a.cod_emp = b.cod_emp
+         and a.cod_cliente = b.cod_cliente
+         and a.cod_unidade = :cod_unidade
+         and b.ind_prestacao = 0
+         and b.dta_vencimento >= :dta_neg_ini
+         and b.dta_vencimento <= :dta_neg_fim
+         order by a.des_cliente,b.cod_contrato,b.dta_vencimento,b.num_parcela
+         into :wcod_cliente,:wdes_cliente,:wcnpj_cpf,
+              :wtip_pessoa,:wdta_cadastro,:wcod_unidade,:wcontrato,
+              :wdta_venda,:wnum_parcela,:wdta_vencimento,:wval_prestacao,:wtip_plano_vp,:wcod_compl do
+     begin
+          select a.des_fone_resid,
+                 a.vlr_limite,
+                 b.qtd_compras_vp,
+                 b.vlr_saldo,
+                 b.dta_maior_atraso,
+                 b.ind_spc
+          from cre_clientes_cr a,
+               cre_saldos_cli b
+          where a.cod_emp = b.cod_emp
+          and a.cod_cliente = b.cod_cliente
+          and a.cod_emp = :cod_emp
+          and a.cod_cliente = :wcod_cliente
+          into :wdes_fone, :wvlr_limite, :wqtd_compras, :wsaldo, :wdta_maior_atraso,:wind_spc;
 
+          if (:wind_spc is null) then wind_spc = 0;
+          if (:wind_spc = 0) then
+          begin
+               suspend;
+          end
+     end
+end ^
 
-ALTER PROCEDURE "REL_CLI_NEGATIVAR_SP" 
-(
-  "COD_EMP" NUMERIC(3, 0),
-  "COD_UNIDADE" NUMERIC(4, 0),
-  "DTA_NEG_INI" DATE,
-  "DTA_NEG_FIM" DATE
-)
-RETURNS
-(
-  "WCOD_CLIENTE" NUMERIC(14, 0),
-  "WDES_CLIENTE" VARCHAR(40),
-  "WCNPJ_CPF" NUMERIC(14, 0),
-  "WTIP_PESSOA" NUMERIC(1, 0),
-  "WDTA_CADASTRO" DATE,
-  "WCOD_UNIDADE" NUMERIC(4, 0),
-  "WCONTRATO" NUMERIC(11, 0),
-  "WDTA_VENDA" DATE,
-  "WNUM_PARCELA" NUMERIC(3, 0),
-  "WDTA_VENCIMENTO" DATE,
-  "WVAL_PRESTACAO" NUMERIC(15, 2),
-  "WTIP_PLANO_VP" VARCHAR(6),
-  "WCOD_COMPL" VARCHAR(3),
-  "WDES_FONE" VARCHAR(15),
-  "WVLR_LIMITE" NUMERIC(15, 2),
-  "WQTD_COMPRAS" NUMERIC(5, 0),
-  "WSALDO" NUMERIC(15, 2),
-  "WDTA_MAIOR_ATRASO" DATE,
-  "WIND_SPC" NUMERIC(1, 0)
-)
-AS
-DECLARE VARIABLE RETORNO NUMERIC(3);
-BEGIN
-      FOR SELECT A.COD_CLIENTE,
-                 A.DES_CLIENTE,
-                 A.NUM_CPF_CNPJ,
-                 A.TIP_PESSOA,
-                 A.DTA_CADASTRO,
-                 B.COD_UNIDADE,
-                 B.COD_CONTRATO,
-                 B.DTA_VENDA,
-                 B.NUM_PARCELA,
-                 B.DTA_VENCIMENTO,
-                 B.VLR_PRESTACAO,
-                 B.TIP_PLANO_VP,
-                 B.COD_COMPL
-            FROM CRE_CLIENTES A,
-                 CRE_CONTAS_RECEBER B
-           WHERE A.COD_EMP = B.COD_EMP
-             AND A.COD_CLIENTE = B.COD_CLIENTE
-             AND A.COD_UNIDADE = :COD_UNIDADE
-             AND B.IND_PRESTACAO = 0
-             AND B.DTA_VENCIMENTO >= :DTA_NEG_INI
-             AND B.DTA_VENCIMENTO <= :DTA_NEG_FIM
-           ORDER BY A.DES_CLIENTE,B.COD_CONTRATO,B.DTA_VENCIMENTO,B.NUM_PARCELA
-            INTO :WCOD_CLIENTE,:WDES_CLIENTE,:WCNPJ_CPF,
-                 :WTIP_PESSOA,:WDTA_CADASTRO,:WCOD_UNIDADE,:WCONTRATO,
-                 :WDTA_VENDA,:WNUM_PARCELA,:WDTA_VENCIMENTO,:WVAL_PRESTACAO,:WTIP_PLANO_VP,:WCOD_COMPL
-        DO BEGIN
-                 SELECT A.DES_FONE_RESID,
-                 	A.VLR_LIMITE,
-                        B.QTD_COMPRAS_VP,
-                        B.VLR_SALDO,
-                        B.DTA_MAIOR_ATRASO,
-                        B.IND_SPC
-                   FROM CRE_CLIENTES_CR A,
-                        CRE_SALDOS_CLI B
-                  WHERE A.COD_EMP = B.COD_EMP
-                    AND A.COD_CLIENTE = B.COD_CLIENTE
-                    AND A.COD_EMP = :COD_EMP
-                    AND A.COD_CLIENTE = :WCOD_CLIENTE
-                   INTO :WDES_FONE, :WVLR_LIMITE, :WQTD_COMPRAS, :WSALDO, :WDTA_MAIOR_ATRASO,:WIND_SPC;
-                     IF (:WIND_SPC IS NULL) THEN WIND_SPC = 0;
-                     IF (:WIND_SPC = 0) THEN
-                     BEGIN
-                        SUSPEND;
-                     END
-           END
-END
- ^
-
-SET TERM ; ^
-COMMIT WORK;
-SET AUTODDL ON;
+set term ; ^
+commit work;
+set autoddl on;
