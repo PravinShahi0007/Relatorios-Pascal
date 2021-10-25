@@ -1,56 +1,132 @@
 object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
   Left = 0
   Top = 0
-  Caption = 'Relatorio_Venda_dia_Email'
-  ClientHeight = 234
-  ClientWidth = 331
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  Caption = 'Relat'#243'rio Venda Dia Email....'
+  ClientHeight = 477
+  ClientWidth = 372
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  KeyPreview = True
   OldCreateOrder = False
+  Position = poScreenCenter
+  OnActivate = FormActivate
   OnCreate = FormCreate
-  OnKeyDown = FormKeyDown
   PixelsPerInch = 96
   TextHeight = 13
-  object btnImprimir: TBitBtn
-    Left = 225
-    Top = 135
-    Width = 90
-    Height = 25
-    Caption = '&Gerar'
-    NumGlyphs = 2
+  object pnlRodape: TPanel
+    Left = 0
+    Top = 443
+    Width = 372
+    Height = 34
+    Align = alBottom
+    BevelInner = bvLowered
     TabOrder = 0
-    OnClick = btnImprimirClick
+    object btnGerar: TBitBtn
+      Left = 307
+      Top = 2
+      Width = 63
+      Height = 30
+      Align = alRight
+      Caption = '&Gerar'
+      NumGlyphs = 2
+      TabOrder = 0
+      OnClick = btnGerarClick
+    end
+    object chbEMailTeste: TCheckBox
+      Left = 2
+      Top = 2
+      Width = 160
+      Height = 30
+      Align = alLeft
+      Caption = '390186@grazziotin.com.br'
+      TabOrder = 1
+      Visible = False
+    end
   end
-  object FDConnection1: TFDConnection
+  object pnlFundo: TPanel
+    Left = 0
+    Top = 0
+    Width = 372
+    Height = 443
+    Align = alClient
+    BevelInner = bvLowered
+    TabOrder = 1
+    object grdEmailRegional: TDBGrid
+      Left = 2
+      Top = 2
+      Width = 368
+      Height = 439
+      Align = alClient
+      DataSource = dtsEmailRegional
+      DrawingStyle = gdsGradient
+      Options = [dgTitles, dgIndicator, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+      TabOrder = 0
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'Tahoma'
+      TitleFont.Style = []
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'COD_REGIAO'
+          Title.Caption = 'Regi'#227'o'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'EMAIL_REGIONAL'
+          Title.Caption = 'E-Mail'
+          Width = 278
+          Visible = True
+        end>
+    end
+  end
+  object fdcEmail: TFDConnection
     Params.Strings = (
       'Database=192.168.200.110:1522/GRZPROD'
       'User_Name=nl'
       'Password=nl'
       'DriverID=Ora')
-    Connected = True
     LoginPrompt = False
-    Left = 42
-    Top = 14
+    Left = 34
+    Top = 286
   end
   object FDPhysOracleDriverLink1: TFDPhysOracleDriverLink
     DriverID = 'NL'
     VendorLib = 'oci.dll'
-    Left = 42
-    Top = 62
+    Left = 34
+    Top = 374
   end
-  object dtsRelVenda: TDataSource
-    DataSet = qryRelVenda
-    Left = 136
-    Top = 15
+  object ACBrMail1: TACBrMail
+    Host = 'smtp.office365.com'
+    Port = '587'
+    SetSSL = False
+    SetTLS = True
+    Priority = MP_high
+    Attempts = 3
+    DefaultCharset = UTF_8
+    IDECharset = CP1252
+    Left = 32
+    Top = 328
+  end
+  object qryDta: TFDQuery
+    Connection = fdcEmail
+    SQL.Strings = (
+      'select max(dta_movimento) dta_movimento'
+      'from grazz.vda_venda_ano'
+      'where dta_movimento <= trunc(sysdate)'
+      'and vlr_venda_diaria > 0')
+    Left = 72
+    Top = 287
   end
   object qryRelVenda: TFDQuery
-    Active = True
-    Connection = FDConnection1
+    Connection = fdcEmail
     SQL.Strings = (
       'SELECT * FROM grazz.VDA_VENDA_Ano a'
       'Where a.cod_emp = 10'
@@ -61,18 +137,13 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
       '                   where a.cod_emp     = t.cod_emp_para'
       '                     and a.cod_unidade = t.cod_unidade_para)'
       'ORDER BY cod_emp, cod_unidade, ano, dta_movimento')
-    Left = 128
-    Top = 80
+    Left = 161
+    Top = 288
   end
-  object qryDta: TFDQuery
-    Connection = FDConnection1
-    SQL.Strings = (
-      'select max(dta_movimento) dta_movimento'
-      '  from grazz.vda_venda_ano'
-      ' where dta_movimento <= trunc(sysdate)'
-      '   and vlr_venda_diaria > 0')
-    Left = 152
-    Top = 136
+  object dtsRelVenda: TDataSource
+    DataSet = qryRelVenda
+    Left = 161
+    Top = 335
   end
   object pprVda_Venda_Temp: TppReport
     AutoStop = False
@@ -86,7 +157,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     PrinterSetup.DocumentName = 'Report'
     PrinterSetup.Duplex = dpNone
     PrinterSetup.Orientation = poLandscape
-    PrinterSetup.PaperName = 'A4 (210 x 297 mm)'
+    PrinterSetup.PaperName = 'A4 210 x 297 mm'
     PrinterSetup.PrinterName = 'Default'
     PrinterSetup.SaveDeviceSettings = False
     PrinterSetup.mmMarginBottom = 6350
@@ -95,7 +166,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     PrinterSetup.mmMarginTop = 6350
     PrinterSetup.mmPaperHeight = 210000
     PrinterSetup.mmPaperWidth = 297000
-    PrinterSetup.PaperSize = 9
+    PrinterSetup.PaperSize = 120
     AllowPrintToFile = True
     ArchiveFileName = '($MyDocuments)\ReportArchive.raf'
     DeviceType = 'Screen'
@@ -140,9 +211,9 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     XLSSettings.Subject = 'Report'
     XLSSettings.Title = 'Report'
     XLSSettings.WorksheetName = 'Report'
-    Left = 228
-    Top = 10
-    Version = '20.04'
+    Left = 124
+    Top = 378
+    Version = '20.0'
     mmColumnWidth = 94765
     DataPipelineName = 'pplVda_Venda_Temp'
     object prbCab: TppHeaderBand
@@ -727,7 +798,6 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
       DataPipelineName = 'pplVda_Venda_Temp'
       NewFile = False
       object prbCabecalho: TppGroupHeaderBand
-        BeforePrint = prbCabecalhoBeforePrint
         Background.Brush.Style = bsClear
         Border.mmPadding = 0
         mmBottomOffset = 0
@@ -1578,348 +1648,35 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
   object pplVda_Venda_Temp: TppDBPipeline
     DataSource = dtsRelVenda
     UserName = 'lVda_Venda_Temp'
-    Left = 233
-    Top = 66
-    object pplVda_Venda_TempppField1: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'COD_EMP'
-      FieldName = 'COD_EMP'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 0
-      Position = 0
-    end
-    object pplVda_Venda_TempppField2: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'COD_UNIDADE'
-      FieldName = 'COD_UNIDADE'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 6
-      Position = 1
-    end
-    object pplVda_Venda_TempppField3: TppField
-      FieldAlias = 'DTA_MOVIMENTO'
-      FieldName = 'DTA_MOVIMENTO'
-      FieldLength = 0
-      DataType = dtDateTime
-      DisplayWidth = 18
-      Position = 2
-    end
-    object pplVda_Venda_TempppField4: TppField
-      FieldAlias = 'DIA'
-      FieldName = 'DIA'
-      FieldLength = 2
-      DisplayWidth = 2
-      Position = 3
-    end
-    object pplVda_Venda_TempppField5: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'MES'
-      FieldName = 'MES'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 5
-      Position = 4
-    end
-    object pplVda_Venda_TempppField6: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'ANO'
-      FieldName = 'ANO'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 5
-      Position = 5
-    end
-    object pplVda_Venda_TempppField7: TppField
-      FieldAlias = 'DES_UNIDADE'
-      FieldName = 'DES_UNIDADE'
-      FieldLength = 50
-      DisplayWidth = 50
-      Position = 6
-    end
-    object pplVda_Venda_TempppField8: TppField
-      FieldAlias = 'DES_EMPRESA'
-      FieldName = 'DES_EMPRESA'
-      FieldLength = 50
-      DisplayWidth = 50
-      Position = 7
-    end
-    object pplVda_Venda_TempppField9: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'COD_REGIAO'
-      FieldName = 'COD_REGIAO'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 5
-      Position = 8
-    end
-    object pplVda_Venda_TempppField10: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'VLR_VENDA_DIARIA'
-      FieldName = 'VLR_VENDA_DIARIA'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 16
-      Position = 9
-    end
-    object pplVda_Venda_TempppField11: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'PER_CRESC_VDA_DIA'
-      FieldName = 'PER_CRESC_VDA_DIA'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 10
-      Position = 10
-    end
-    object pplVda_Venda_TempppField12: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'VLR_VENDA_ACUMULADA'
-      FieldName = 'VLR_VENDA_ACUMULADA'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 16
-      Position = 11
-    end
-    object pplVda_Venda_TempppField13: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'PER_CRESC_VDA_ACUM'
-      FieldName = 'PER_CRESC_VDA_ACUM'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 10
-      Position = 12
-    end
-    object pplVda_Venda_TempppField14: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'VLR_VENDA_SEMANA'
-      FieldName = 'VLR_VENDA_SEMANA'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 16
-      Position = 13
-    end
-    object pplVda_Venda_TempppField15: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'PER_CRESC_VDA_SEMANA'
-      FieldName = 'PER_CRESC_VDA_SEMANA'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 10
-      Position = 14
-    end
-    object pplVda_Venda_TempppField16: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'VLR_ORCADO_DIA'
-      FieldName = 'VLR_ORCADO_DIA'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 16
-      Position = 15
-    end
-    object pplVda_Venda_TempppField17: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'PER_CRESC_ORCADO'
-      FieldName = 'PER_CRESC_ORCADO'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 10
-      Position = 16
-    end
-    object pplVda_Venda_TempppField18: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'VLR_ORCADO_MES'
-      FieldName = 'VLR_ORCADO_MES'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 16
-      Position = 17
-    end
-    object pplVda_Venda_TempppField19: TppField
-      FieldAlias = 'DIA_DA_SEMANA'
-      FieldName = 'DIA_DA_SEMANA'
-      FieldLength = 20
-      DisplayWidth = 20
-      Position = 18
-    end
-    object pplVda_Venda_TempppField20: TppField
-      FieldAlias = 'DIAIMPRESSO'
-      FieldName = 'DIAIMPRESSO'
-      FieldLength = 2
-      DisplayWidth = 2
-      Position = 19
-    end
-    object pplVda_Venda_TempppField21: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'VLR_ACUMULADO_ANO'
-      FieldName = 'VLR_ACUMULADO_ANO'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 16
-      Position = 20
-    end
-    object pplVda_Venda_TempppField22: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'PER_CRESC_ANO'
-      FieldName = 'PER_CRESC_ANO'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 10
-      Position = 21
-    end
-    object pplVda_Venda_TempppField23: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'VLR_MARGEM'
-      FieldName = 'VLR_MARGEM'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 16
-      Position = 22
-    end
-    object pplVda_Venda_TempppField24: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'VLR_CUSTO'
-      FieldName = 'VLR_CUSTO'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 16
-      Position = 23
-    end
-    object pplVda_Venda_TempppField25: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'VLR_VENDA_LIQ'
-      FieldName = 'VLR_VENDA_LIQ'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 16
-      Position = 24
-    end
-    object pplVda_Venda_TempppField26: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'VLR_MARGEM_ACUM'
-      FieldName = 'VLR_MARGEM_ACUM'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 16
-      Position = 25
-    end
-    object pplVda_Venda_TempppField27: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'VLR_CUSTO_ACUM'
-      FieldName = 'VLR_CUSTO_ACUM'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 16
-      Position = 26
-    end
-    object pplVda_Venda_TempppField28: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'VLR_VENDA_LIQ_ACUM'
-      FieldName = 'VLR_VENDA_LIQ_ACUM'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 16
-      Position = 27
-    end
-    object pplVda_Venda_TempppField29: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'QTD_CLIENTES_NOVOS'
-      FieldName = 'QTD_CLIENTES_NOVOS'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 11
-      Position = 28
-    end
-    object pplVda_Venda_TempppField30: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'QTD_ORCADO_CARTOES'
-      FieldName = 'QTD_ORCADO_CARTOES'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 10
-      Position = 29
-    end
-    object pplVda_Venda_TempppField31: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'QTD_ACUM_ANO_CARTOES'
-      FieldName = 'QTD_ACUM_ANO_CARTOES'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 10
-      Position = 30
-    end
-    object pplVda_Venda_TempppField32: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'PER_CRESC_ANO_CART'
-      FieldName = 'PER_CRESC_ANO_CART'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 10
-      Position = 31
-    end
-    object pplVda_Venda_TempppField33: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'PER_CRESC_ORC_CART'
-      FieldName = 'PER_CRESC_ORC_CART'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 10
-      Position = 32
-    end
-    object pplVda_Venda_TempppField34: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'IND_NIVEL'
-      FieldName = 'IND_NIVEL'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 2
-      Position = 33
-    end
-    object pplVda_Venda_TempppField35: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'COD_CIDADE'
-      FieldName = 'COD_CIDADE'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 6
-      Position = 34
-    end
-    object pplVda_Venda_TempppField36: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'COD_MACRO'
-      FieldName = 'COD_MACRO'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 5
-      Position = 35
-    end
-    object pplVda_Venda_TempppField37: TppField
-      FieldAlias = 'DES_MACRO'
-      FieldName = 'DES_MACRO'
-      FieldLength = 50
-      DisplayWidth = 50
-      Position = 36
-    end
+    Left = 161
+    Top = 378
   end
-  object ACBrMail1: TACBrMail
-    Host = '127.0.0.1'
-    Port = '25'
-    SetSSL = False
-    SetTLS = False
-    Attempts = 3
-    DefaultCharset = UTF_8
-    IDECharset = CP1252
-    Left = 40
-    Top = 112
+  object dtsEmailRegional: TDataSource
+    AutoEdit = False
+    DataSet = qryEmailRegional
+    Left = 128
+    Top = 334
   end
   object qryEmailRegional: TFDQuery
-    Connection = FDConnection1
+    Connection = fdcEmail
     SQL.Strings = (
-      'select cod_regiao, email_regional '
+      'select cod_regiao,email_regional '
       'from grz_email_regional '
       'where cod_regiao >= 8701 '
-      'and cod_regiao <= 8725  ')
-    Left = 104
-    Top = 191
+      'and cod_regiao <= 8725 '
+      'order by email_regional')
+    Left = 128
+    Top = 287
+    object qryEmailRegionalCOD_REGIAO: TBCDField
+      FieldName = 'COD_REGIAO'
+      Origin = 'COD_REGIAO'
+      Precision = 4
+      Size = 0
+    end
+    object qryEmailRegionalEMAIL_REGIONAL: TStringField
+      FieldName = 'EMAIL_REGIONAL'
+      Origin = 'EMAIL_REGIONAL'
+      Size = 60
+    end
   end
 end

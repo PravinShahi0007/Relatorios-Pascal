@@ -111,10 +111,10 @@ type
     ppParameterList1: TppParameterList;
     ACBrMail1: TACBrMail;
     pnlRodape: TPanel;
-    btnImprimir: TBitBtn;
+    btnGerar: TBitBtn;
     procedure PreencheEstilos(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure btnImprimirClick(Sender: TObject);
+    procedure btnGerarClick(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure prbCabecalhoBeforePrint(Sender: TObject);
     procedure prbDetalheBeforePrint(Sender: TObject);
@@ -130,11 +130,11 @@ type
 
 var
   frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email;
-  dDataIni, dDataFin       : TDateTime;
-  iNumero : integer;
-  sDataMax : string;
-  iArqIni : tIniFile;
-  sEmail,sAssunto,sEmailFrom,sUserName,sPassword,sNome,sCopia_oculta:STRING;
+  dDataIni, dDataFin: TDateTime;
+  iNumero: Integer;
+  sDataMax: String;
+  iArqIni: TIniFile;
+  sEmail,sAssunto,sEmailFrom,sUserName,sPassword,sNome,sCopia_oculta: String;
 
 implementation
 
@@ -169,7 +169,7 @@ begin
      TStyleManager.TrySetStyle(aEstilos[iEstilos]);
 end;
 
-procedure TfrmRel_Venda_dia_Email.btnImprimirClick(Sender: TObject);
+procedure TfrmRel_Venda_dia_Email.btnGerarClick(Sender: TObject);
 var
     sMes, sAno, sDia, sDt_Inicial, sDt_Final, sSQL, sCaminhoArquivo,
     sNomeArquivo, sDiretorio: String;
@@ -252,8 +252,10 @@ procedure TfrmRel_Venda_dia_Email.FormCreate(Sender: TObject);
 begin
      PreencheEstilos(Sender);
      try
-        FDConnection1.Params.UserName := 'grazz';
-        FDConnection1.Params.Password := 'grazz';
+        //FDConnection1.Params.UserName := 'grazz';
+        //FDConnection1.Params.Password := 'grazz';
+        FDConnection1.Params.UserName := 'nl';
+        FDConnection1.Params.Password := 'nl';
         FDConnection1.Connected := True;
      except
            on E:EDatabaseError do
@@ -271,7 +273,7 @@ begin
         sDataMax := qryDta.FieldByName('dta_movimento').AsString
      else
          sDataMax := DateToStr(date - 1);
-     btnImprimirClick(Sender);
+     btnGerarClick(Sender);
 end;
 
 procedure TfrmRel_Venda_dia_Email.FormKeyDown(Sender: TObject; var Key: Word;

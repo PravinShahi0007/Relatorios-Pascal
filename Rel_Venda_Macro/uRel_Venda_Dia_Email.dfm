@@ -26,9 +26,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     Align = alBottom
     BevelInner = bvLowered
     TabOrder = 0
-    ExplicitTop = 145
-    ExplicitWidth = 249
-    object btnImprimir: TBitBtn
+    object btnGerar: TBitBtn
       Left = 179
       Top = 2
       Width = 78
@@ -37,17 +35,15 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
       Caption = '&Gerar'
       NumGlyphs = 2
       TabOrder = 0
-      OnClick = btnImprimirClick
-      ExplicitLeft = 169
+      OnClick = btnGerarClick
     end
   end
   object FDConnection1: TFDConnection
     Params.Strings = (
-      'Database=192.168.200.110:1521/GRZPROD'
+      'Database=192.168.200.110:1522/GRZPROD'
       'User_Name=nl'
       'Password=nl'
       'DriverID=Ora')
-    Connected = True
     LoginPrompt = False
     Left = 42
     Top = 6
@@ -64,7 +60,6 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     Top = 6
   end
   object qryRelVenda: TFDQuery
-    Active = True
     Connection = FDConnection1
     SQL.Strings = (
       'SELECT * FROM grazz.VDA_VENDA_Ano a'
@@ -110,7 +105,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     PrinterSetup.mmMarginTop = 6350
     PrinterSetup.mmPaperHeight = 210000
     PrinterSetup.mmPaperWidth = 297000
-    PrinterSetup.PaperSize = 9
+    PrinterSetup.PaperSize = 120
     AllowPrintToFile = True
     ArchiveFileName = '($MyDocuments)\ReportArchive.raf'
     DeviceType = 'Screen'

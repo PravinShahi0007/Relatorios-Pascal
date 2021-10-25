@@ -67,6 +67,7 @@ begin
             wqtd_elegiveis_cpp  number(12,0);
             wqtd_seguro_cpp     number(12,0);
             wperc_conversao_cpp number(18,2);
+            wVlrAcrescimo       number(18,2);
             wgztstorerede       number;
             wgztstoreunidade    number;
             wgztstoreunidadede  number;
@@ -90,13 +91,14 @@ begin
                           ,sum(decode(notas.cod_oper,6100,0,nvl(notas.vlr_operacao,0))) vlr_venda
                           ,sum(nvl(venda_whats.vlr_vda_whats,0)) vlr_venda_whats
                           ,sum(nvl(venda_demo.vlr_vda_demo,0) )vlr_demost
-                          ,sum(decode(notas.cod_oper,302,(nvl(notas.vlr_operacao,0) - 
+                          ,sum(decode(notas.cod_oper,302,(nvl(notas.vlr_operacao,0) -
                                                           nvl(notas.vlr_entrada,0)),0)) vlr_venda_prazo
                           ,sum(decode(notas.cod_oper,302,nvl(notas.vlr_acrescimo,0),0)) vlr_acrescimo
                           ,sum(decode(notas.cod_oper,6100,nvl(notas.vlr_operacao,0),0)) vlr_seguro
-                          ,count(distinct(decode(notas.cod_oper,6100,notas.num_seq))) qtd_vp_seguro
+                          ,sum(decode(notas.cod_oper,6200,nvl(notas.vlr_operacao,0),0)) vlr_seguro_novo
+                          ,count(distinct(decode(notas.cod_oper,6100,notas.num_seq,6200,notas.num_seq))) qtd_vp_seguro
                    from ns_notas a
-                        ,(select ns.num_seq,ns.cod_maquina,decode(nso.cod_oper,300,300,4300,300,6100,6100,302) cod_oper
+                        ,(select ns.num_seq,ns.cod_maquina,decode(nso.cod_oper,300,300,4300,300,6100,6100,6200,6200,302) cod_oper
                                  ,sum(nvl(nso.vlr_acrescimo,0) + nvl(nso.vlr_acrescimo_cob,0)) vlr_acrescimo
                                  ,sum(nvl(nso.vlr_operacao,0)) vlr_operacao
                                  ,sum(nvl(nso.vlr_entrada,0)) vlr_entrada
@@ -104,14 +106,14 @@ begin
                                ,ns_notas_operacoes nso
                           where nso.num_seq = ns.num_seq
                           and nso.cod_maquina = ns.cod_maquina
-                          and nso.cod_oper in (300,302,305,4300,4302,4305,6100)
+                          and nso.cod_oper in (300,302,305,4300,4302,4305,6100,6200)
                           and ns.cod_emp = 1
                           and ns.dta_emissao >= pi_dta_ini
                           and ns.dta_emissao <= pi_dta_fim
                           and ns.tip_nota in (2,3)
                           and ns.ind_status = 1
                           group by ns.num_seq,ns.cod_maquina,
-                                   decode(nso.cod_oper,300,300,4300,300,6100,6100,302)) notas
+                                   decode(nso.cod_oper,300,300,4300,300,6100,6100,6200,6200,302)) notas
                         ,(select nsw.num_seq,nsw.cod_maquina
                                  ,sum(nvl(nsow.vlr_operacao,0)) vlr_vda_whats
                           from ns_notas nsw
@@ -150,7 +152,7 @@ begin
                                  ,sum(nvl(nsod.vlr_operacao,0)) vlr_vda_demo
                           from ns_notas nsd
                                ,ns_notas_operacoes nsod
-                          where exists (select 1 
+                          where exists (select 1
                                         from ne_notas ne
                                              ,ne_notas_operacoes neo
                                         where neo.num_seq      = ne.num_seq
@@ -354,7 +356,7 @@ begin
                                  sum(nvl(e.vlr_entrada,0)) vlr_entrada,
                                  e.num_seq, e.cod_maquina,
                                  e.cod_oper
-                          from ns_notas_operacoes e  
+                          from ns_notas_operacoes e
                           where e.cod_oper in (3000,3050,6110)
                           group by e.num_seq,
                                    e.cod_maquina,
@@ -414,8 +416,13 @@ begin
                    wperc_vd_prazo :=0;
                end if;
 
-               if r_venda.vlr_acrescimo > 0 or r_venda.vlr_venda_prazo > 0 then
-                  wperc_acresc := ((r_venda.vlr_acrescimo*100)/r_venda.vlr_venda_prazo);
+               wVlrAcrescimo := r_venda.vlr_acrescimo - r_venda.vlr_seguro_novo;
+               if wVlrAcrescimo < 0 then
+                  wVlrAcrescimo := 0;
+               end if;
+
+               if wVlrAcrescimo > 0 or r_venda.vlr_venda_prazo > 0 then
+                  wperc_acresc := ((wVlrAcrescimo*100)/r_venda.vlr_venda_prazo);
                else
                    wperc_acresc :=0;
                end if;
@@ -555,7 +562,7 @@ begin
                        r_venda.qtd_negocio,r_venda.vlr_venda,wticket_medio,
                        r_venda.vlr_venda_whats,wperc_whats,r_venda.vlr_demost,
                        wperc_demost,r_venda.vlr_venda_prazo,wperc_vd_prazo,
-                       r_venda.vlr_acrescimo,wperc_acresc,r_venda.vlr_seguro,
+                       wVlrAcrescimo,wperc_acresc,r_venda.vlr_seguro+nvl(r_venda.vlr_seguro_novo,0),
                        wperc_seguro,1,wcod_grupo_macro,
                        wdes_grupo_macro,wqtdcpp,wvlrcpp,
                        wqtd_vp_elegiveis,r_venda.qtd_vp_seguro,wperc_conversao,
@@ -576,10 +583,10 @@ begin
                                  ,vlr_vd_prazo       = vlr_vd_prazo+ r_venda.vlr_venda_prazo
                                  --,perc_vd_prazo    = (((vlr_vd_prazo+r_venda.vlr_venda_prazo)*100)/(vlr_vd+r_venda.vlr_venda))
                                  ,perc_vd_prazo      = (((vlr_vd_prazo+r_venda.vlr_venda_prazo)*100)/(decode(vlr_vd+r_venda.vlr_venda,0,1,vlr_vd+r_venda.vlr_venda)))
-                                 ,vlr_acresc         = vlr_acresc+ r_venda.vlr_acrescimo
+                                 ,vlr_acresc         = vlr_acresc+ wVlrAcrescimo
                                  --,perc_acresc      = (((vlr_acresc+r_venda.vlr_acrescimo)*100)/(vlr_vd_prazo+r_venda.vlr_venda_prazo))
                                  ,perc_acresc        = (((vlr_acresc+r_venda.vlr_acrescimo)*100)/(decode(vlr_vd_prazo+r_venda.vlr_venda_prazo,0,1,vlr_vd_prazo+r_venda.vlr_venda_prazo)))
-                                 ,vlr_seguro         = vlr_seguro +r_venda.vlr_seguro
+                                 ,vlr_seguro         = vlr_seguro +r_venda.vlr_seguro + nvl(r_venda.vlr_seguro_novo,0)
                                  --,perc_seguro      = (((vlr_seguro+r_venda.vlr_seguro)*100)/(vlr_vd_prazo+r_venda.vlr_venda_prazo))
                                  ,perc_seguro        = (((vlr_seguro+r_venda.vlr_seguro)*100)/(decode(vlr_vd_prazo+r_venda.vlr_venda_prazo,0,1,vlr_vd_prazo+r_venda.vlr_venda_prazo)))
                                  ,ind_nivel          = 1
