@@ -128,90 +128,71 @@ uses uFunc, ufuncoes;
 
 procedure TfrmRel_Venda_dia_Email.btnImprimirClick(Sender: TObject);
 var
-    sMes, sAno, sParametros, sUsuario,
-    sDia, sDt_Inicial, sDt_Final, sSQL, sCodEmp,sCaminhoArquivo,sNomeArquivo : String;
-    Size : Cardinal;
+   sMes,sAno,sParametros,sUsuario,sDia,sDt_Inicial,sDt_Final,sSQL,sCodEmp,
+        sCaminhoArquivo,sNomeArquivo: String;
+   Size: Cardinal;
+   bEnvio: Boolean;
+   iTentativas: Integer;
 begin
-     
-
      sCaminhoArquivo := 'c:\Rel_Venda_Dia_Email\';
-
-
      sMes  := copy(DateToStr(Date-1),4,2);
      sAno  := copy(DateToStr(Date-1),7,4);
 
-
-    { if copy(DateToStr(Date),1,2) = '01' then
-     begin
-       sMes := PadLeft(IntToStr(StrToInt(sMes)-1),2,'0');
-       if StrToInt(sMes) < 1 then
-       begin
-          sMes := '12';
-          sAno := IntToStr(StrToInt(sAno)-1);
-       end;
-     end;}
-
-
-
-
      sSQL := '';
-     sSQL := 'SELECT * FROM VDA_VENDA_Ano '+
-             ' Where cod_unidade > 9000 '+
-             '   and ano >= '+sAno+' - 2 '+
-             '   and mes = '+sMes+
-             ' ORDER BY decode(cod_emp,999,0,cod_emp), decode(cod_unidade,9999,0,cod_unidade), ano, dta_movimento ';
-
-     //data inicial
-
+     sSQL := 'select * from vda_venda_ano '+
+             ' where cod_unidade > 9000 '+
+             ' and ano >= '+sAno+' - 2 '+
+             ' and mes = '+sMes+
+             ' order by decode(cod_emp,999,0,cod_emp), decode(cod_unidade,9999,0,cod_unidade), ano, dta_movimento ';
 
      sDia := '01';
-
      sDt_Inicial  := PadLeft(sDia+'/'+sMes+'/'+sAno,8,'0');
-
      sDt_Final  := PadLeft(sDia+'/'+sMes+'/'+sAno,8,'0');
-
      prlMes.Caption := 'Mês/Ano - '+sMes+'/'+sAno;
      prlEmissao.Caption := 'Emissão - '+DateToStr(Date());
 
-
      if qryRelVenda.Active then
-         qryRelVenda.Active := false;
-
+        qryRelVenda.Active := false;
      qryRelVenda.SQL.Clear;
      qryRelVenda.SQL.Add(sSQL);
 
      if not qryRelVenda.Active then
-     begin
-          qryRelVenda.open;
-     end;
-   //  pprVda_Venda_Temp.PrintReport;
+        qryRelVenda.open;
 
-              sNomeArquivo := 'VendasPorDia_'+Elimina_Caracteres(DateToStr(date),'/','')+'.pdf';
-              pprVda_Venda_Temp.AllowPrintToFile := True;
-              pprVda_Venda_Temp.DeviceType := 'PDF';
-              pprVda_Venda_Temp.ShowPrintDialog := False;
-   //           pprVda_Venda_Temp.SaveAsTemplate := True;
-   //           pprVda_Venda_Temp.SavePrinterSetup := True;
-              pprVda_Venda_Temp.TextFileName := sCaminhoArquivo+sNomeArquivo;
-   //           pprVda_Venda_Temp.ArchiveFileName := 'C:\rel_est_padrao_'+AllTrim(edtGrupo.Text)+'.pdf';
-              pprVda_Venda_Temp.Print;
+     sNomeArquivo := 'VendasPorDia_'+Elimina_Caracteres(DateToStr(date),'/','')+'.pdf';
+     pprVda_Venda_Temp.AllowPrintToFile := True;
+     pprVda_Venda_Temp.DeviceType := 'PDF';
+     pprVda_Venda_Temp.ShowPrintDialog := False;
+     pprVda_Venda_Temp.TextFileName := sCaminhoArquivo+sNomeArquivo;
+     pprVda_Venda_Temp.Print;
 
+     iTentativas := 0;
+     repeat
+           bEnvio := True;
+           Inc(iTentativas);
+           try
+              ACBrMail1.Clear;
+              ACBrMail1.ClearAttachments;
+              ACBrMail1.SMTP.Reset;
 
-       ACBrMail1.From := sEmailFrom;
-       ACBrMail1.FromName := sNome;
-       ACBrMail1.Host := 'smtp.office365.com';
-       ACBrMail1.Username := sUserName;
-       ACBrMail1.Password := sPassword;
-       ACBrMail1.Port := '587';
-       ACBrMail1.AddAddress(sEmail,'');
-       ACBrMail1.AddBCC(sCopia_oculta);
-       ACBrMail1.Subject := sAssunto;
-       ACBrMail1.IsHTML := True;
-       ACBrMail1.Body.Text :=  '';
-       AcbrMail1.SetTLS := True;
-       ACBrMail1.AddAttachment(sCaminhoArquivo+sNomeArquivo);
-       ACBrMail1.Send;
-
+              ACBrMail1.From := sEmailFrom;
+              ACBrMail1.FromName := sNome;
+              ACBrMail1.Host := 'smtp.office365.com';
+              ACBrMail1.Username := sUserName;
+              ACBrMail1.Password := sPassword;
+              ACBrMail1.Port := '587';
+              ACBrMail1.AddAddress(sEmail,'');
+              ACBrMail1.AddBCC(sCopia_oculta);
+              ACBrMail1.Subject := sAssunto;
+              ACBrMail1.IsHTML := True;
+              ACBrMail1.Body.Text :=  '';
+              AcbrMail1.SetTLS := True;
+              ACBrMail1.AddAttachment(sCaminhoArquivo+sNomeArquivo);
+              ACBrMail1.Send;
+           except
+                 bEnvio := False;
+           end;
+     until (bEnvio);
 end;
 
 procedure TfrmRel_Venda_dia_Email.FormCreate(Sender: TObject);
@@ -314,33 +295,29 @@ end;
 
 procedure TfrmRel_Venda_dia_Email.CarregaParametros;
 var
- sDiretorio: string;
+   sDiretorio: string;
 begin
-   try
-  //sDiretorio := GetCurrentDir;
-  sDiretorio :='C:\Rel_Venda_Dia_Email';
-  iArqIni := TIniFile.Create(sDiretorio+'\config.ini');
-  sEmail := iArqIni.ReadString('EMAIL','EMAIL','');
-  sAssunto := iArqIni.ReadString('EMAIL FROM','Assunto','');
-  sEmailFrom := iArqIni.ReadString('EMAIL FROM','Endereco','');
-  sUserName := iArqIni.ReadString('EMAIL FROM','UserName','');
-  sPassword := iArqIni.ReadString('EMAIL FROM','Password','');
-  sNome := iArqIni.ReadString('EMAIL FROM','Nome','');
-  sCopia_oculta :=  iArqIni.ReadString('EMAIL FROM','copia_oculta','');
+     try
+        //sDiretorio := GetCurrentDir;
+        sDiretorio :='C:\Rel_Venda_Dia_Email';
+        iArqIni := TIniFile.Create(sDiretorio+'\config.ini');
+        sEmail := iArqIni.ReadString('EMAIL','EMAIL','');
+        sAssunto := iArqIni.ReadString('EMAIL FROM','Assunto','');
+        sEmailFrom := iArqIni.ReadString('EMAIL FROM','Endereco','');
+        sUserName := iArqIni.ReadString('EMAIL FROM','UserName','');
+        sPassword := iArqIni.ReadString('EMAIL FROM','Password','');
+        sNome := iArqIni.ReadString('EMAIL FROM','Nome','');
+        sCopia_oculta :=  iArqIni.ReadString('EMAIL FROM','copia_oculta','');
+        iArqINI.Free;
+     except
+           ShowMessage('Erro: Não carregou arquivo de configuração.'+chr(13)+
+                       'Verifique!!!!'+chr(13)+
+                       sDiretorio+'\config.ini');
+           Application.Terminate;
+           Exit;
+     end;
 
-
-  iArqINI.Free;
-
- except
-  ShowMessage('Erro: Não carregou arquivo de configuração.'+chr(13)+
-             'Verifique!!!!'+chr(13)+
-             sDiretorio+'\config.ini');
-  Application.Terminate;
-  exit;
- end;
-
- LimpaPdf;
-
+     LimpaPdf;
 end;
 
 procedure TfrmRel_Venda_dia_Email.LimpaPdf;

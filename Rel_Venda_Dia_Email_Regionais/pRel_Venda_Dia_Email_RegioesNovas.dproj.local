@@ -8,10 +8,10 @@
     <Transaction>2020/12/03 09:16:52.000.377,=C:\Users\390186\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
     <Transaction>2020/12/03 11:13:07.000.489,=C:\Users\390186\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
     <Transaction>2021/10/20 16:28:19.000.079,=\\grzfiles\users\390186\Meus Documentos\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2021/10/20 16:29:40.000.782,\\grzfiles\users\390186\Meus Documentos\Embarcadero\Studio\Projects\Unit1.dfm=\\grzfiles\users\390186\Desktop\Email\uRel_Venda_Dia_Email.dfm</Transaction>
-    <Transaction>2021/10/20 16:29:40.000.782,\\grzfiles\users\390186\Meus Documentos\Embarcadero\Studio\Projects\Unit1.pas=\\grzfiles\users\390186\Desktop\Email\uRel_Venda_Dia_Email.pas</Transaction>
-    <Transaction>2021/10/20 16:30:00.000.938,\\grzfiles\users\390186\Meus Documentos\Embarcadero\Studio\Projects\Project1.dproj=\\grzfiles\users\390186\Desktop\Email\pRel_Venda_Dia_Email_RegioesNovas.dproj</Transaction>
-    <Transaction>2021/10/20 16:44:35.000.408,=\\grzfiles\users\390186\Desktop\Email\uFunc.pas</Transaction>
+    <Transaction>2021/10/20 16:29:40.000.782,\\grzfiles\users\390186\Desktop\Email\uRel_Venda_Dia_Email.dfm=\\grzfiles\users\390186\Meus Documentos\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2021/10/20 16:29:40.000.782,\\grzfiles\users\390186\Desktop\Email\uRel_Venda_Dia_Email.pas=\\grzfiles\users\390186\Meus Documentos\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2021/10/20 16:30:00.000.938,\\grzfiles\users\390186\Desktop\Email\pRel_Venda_Dia_Email_RegioesNovas.dproj=\\grzfiles\users\390186\Meus Documentos\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
     <Transaction>2021/10/20 16:44:35.000.430,=\\grzfiles\users\390186\Desktop\Email\ufuncoes.pas</Transaction>
+    <Transaction>2021/10/20 16:44:35.000.408,=\\grzfiles\users\390186\Desktop\Email\uFunc.pas</Transaction>
   </Transactions>
 </BorlandProject>

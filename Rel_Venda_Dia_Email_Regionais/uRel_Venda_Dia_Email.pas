@@ -110,12 +110,14 @@ type
     qryEmailRegionalCOD_REGIAO: TBCDField;
     qryEmailRegionalEMAIL_REGIONAL: TStringField;
     chbEMailTeste: TCheckBox;
+    pnlTentativas: TPanel;
     procedure PreencheEstilos(Sender: TObject);
     procedure LimpaPdf;
     procedure btnGerarClick(Sender: TObject);
     procedure prbDetalheBeforePrint(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormActivate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
@@ -165,9 +167,11 @@ end;
 
 procedure TfrmRel_Venda_dia_Email.btnGerarClick(Sender: TObject);
 var
-    sMes, sAno, sParametros, sUsuario,
-    sDia, sDt_Inicial, sDt_Final, sSQL,sSQLEmail, sCodEmp,sCaminhoArquivo,sNomeArquivo,sCodRegiao,sDiretorio : String;
-    Size : Cardinal;
+   sMes,sAno,sParametros,sUsuario,sDia,sDt_Inicial,sDt_Final,sSQL,sSQLEmail,
+        sCodEmp,sCaminhoArquivo,sNomeArquivo,sCodRegiao,sDiretorio: String;
+    Size: Cardinal;
+    bEnvio: Boolean;
+    iTentativas: Integer;
 begin
      LimpaPdf;
 
@@ -245,21 +249,39 @@ begin
                 Exit;
           end;
 
-          ACBrMail1.From := sEmailFrom;
-          ACBrMail1.FromName := sNome;
-          ACBrMail1.Host := 'smtp.office365.com';
-          ACBrMail1.Username := sUserName;
-          ACBrMail1.Password := sPassword;
-          ACBrMail1.Port := '587';
-          ACBrMail1.AddAddress(sEmail,'');
-          ACBrMail1.AddBCC(sCopia_oculta);
-          ACBrMail1.Subject := sAssunto;
-          ACBrMail1.IsHTML := True;
-          ACBrMail1.Body.Text :=  '';
-          AcbrMail1.SetTLS := True;
-          ACBrMail1.AddAttachment(sCaminhoArquivo+sNomeArquivo);
-          ACBrMail1.Send;
-          Delay(100);
+          iTentativas := 0;
+          repeat
+                bEnvio := True;
+                Inc(iTentativas);
+                try
+                   pnlTentativas.Caption := '  Tentativas de ENVIO: '+floatToStrF(iTentativas,ffNumber,11,0);
+                   pnlTentativas.Update;
+                   Delay(200);
+
+                   ACBrMail1.Clear;
+                   ACBrMail1.ClearAttachments;
+                   ACBrMail1.SMTP.Reset;
+
+                   ACBrMail1.From := sEmailFrom;
+                   ACBrMail1.FromName := sNome;
+                   ACBrMail1.Host := 'smtp.office365.com';
+                   ACBrMail1.Username := sUserName;
+                   ACBrMail1.Password := sPassword;
+                   ACBrMail1.Port := '587';
+                   ACBrMail1.AddAddress(sEmail,'');
+                   ACBrMail1.AddBCC(sCopia_oculta);
+                   ACBrMail1.Subject := sAssunto;
+                   ACBrMail1.IsHTML := True;
+                   ACBrMail1.Body.Text :=  '';
+                   AcbrMail1.SetTLS := True;
+                   ACBrMail1.AddAttachment(sCaminhoArquivo+sNomeArquivo);
+                   ACBrMail1.Send;
+                except
+                      bEnvio := False;
+                end;
+          until (bEnvio);
+          pnlTentativas.Caption := '';
+          pnlTentativas.Update;
 
           qryEmailRegional.Next;// vai para a proxima linha
      end;
@@ -295,6 +317,11 @@ begin
         sDataMax := qryDta.FieldByName('dta_movimento').AsString
      else
          sDataMax := DateToStr(date - 1);
+end;
+
+procedure TfrmRel_Venda_dia_Email.FormShow(Sender: TObject);
+begin
+     pnlTentativas.Caption := '';
 end;
 
 procedure TfrmRel_Venda_dia_Email.LimpaPdf;

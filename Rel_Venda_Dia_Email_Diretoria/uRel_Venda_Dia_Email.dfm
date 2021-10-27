@@ -28,9 +28,11 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
   end
   object FDConnection1: TFDConnection
     Params.Strings = (
-      'User_Name=nl'
-      'Password=nl'
+      'Database=192.168.200.110:1522/GRZPROD'
+      'User_Name=grazz'
+      'Password=grazz'
       'ConnectionDef=Oracle PROD')
+    Connected = True
     LoginPrompt = False
     Left = 42
     Top = 14
@@ -49,10 +51,14 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
   object qryRelVenda: TFDQuery
     Connection = FDConnection1
     SQL.Strings = (
-      'SELECT * FROM VDA_VENDA_Ano'
-      'WHERE ano >= 2012 - 2'
-      'and cod_emp = 10'
-      'ORDER BY cod_emp, cod_unidade, ano, dta_movimento')
+      'select * '
+      'from vda_venda_ano  '
+      'where cod_unidade > 9000  '
+      'and ano >= 2021 - 2  '
+      'and mes = 10 '
+      
+        'order by decode(cod_emp,999,0,cod_emp), decode(cod_unidade,9999,' +
+        '0,cod_unidade), ano, dta_movimento')
     Left = 136
     Top = 56
   end
@@ -98,7 +104,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     PrinterSetup.mmMarginTop = 6350
     PrinterSetup.mmPaperHeight = 210000
     PrinterSetup.mmPaperWidth = 297000
-    PrinterSetup.PaperSize = 9
+    PrinterSetup.PaperSize = 120
     AllowPrintToFile = True
     ArchiveFileName = '($MyDocuments)\ReportArchive.raf'
     DeviceType = 'Screen'
@@ -113,6 +119,8 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     ThumbnailSettings.Enabled = True
     ThumbnailSettings.Visible = True
     ThumbnailSettings.DeadSpace = 30
+    ThumbnailSettings.PageHighlight.Width = 3
+    ThumbnailSettings.ThumbnailSize = tsSmall
     PDFSettings.EmbedFontOptions = [efUseSubset]
     PDFSettings.EncryptSettings.AllowCopy = True
     PDFSettings.EncryptSettings.AllowInteract = True
@@ -126,6 +134,8 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     PDFSettings.EncryptSettings.EncryptionType = etRC4
     PDFSettings.FontEncoding = feAnsi
     PDFSettings.ImageCompressionLevel = 25
+    PDFSettings.PDFAFormat = pafNone
+    PreviewFormSettings.PageBorder.mmPadding = 0
     RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
     RTFSettings.DefaultFont.Color = clWindowText
     RTFSettings.DefaultFont.Height = -13
@@ -141,11 +151,12 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     XLSSettings.WorksheetName = 'Report'
     Left = 228
     Top = 10
-    Version = '17.02'
+    Version = '20.0'
     mmColumnWidth = 94765
     DataPipelineName = 'pplVda_Venda_Temp'
     object prbCab: TppHeaderBand
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 6879
       mmPrintPosition = 0
@@ -174,12 +185,15 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
         DesignLayer = ppDesignLayer1
         UserName = 'Label1'
         HyperlinkEnabled = False
+        Border.mmPadding = 0
         Caption = 'Grazziotin S.A'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 12
         Font.Style = [fsBold]
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         TextAlignment = taCentered
         Transparent = True
         mmHeight = 5027
@@ -193,12 +207,15 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
         DesignLayer = ppDesignLayer1
         UserName = 'prlMes'
         HyperlinkEnabled = False
+        Border.mmPadding = 0
         Caption = 'prlMes'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 7
         Font.Style = []
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         Transparent = True
         mmHeight = 2910
         mmLeft = 42333
@@ -211,12 +228,15 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
         DesignLayer = ppDesignLayer1
         UserName = 'prlEmissao'
         HyperlinkEnabled = False
+        Border.mmPadding = 0
         Caption = 'prlEmissao'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 7
         Font.Style = []
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         Transparent = True
         mmHeight = 2910
         mmLeft = 71173
@@ -229,12 +249,15 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
         DesignLayer = ppDesignLayer1
         UserName = 'Label7'
         HyperlinkEnabled = False
+        Border.mmPadding = 0
         Caption = 'P'#225'gina:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 8
         Font.Style = []
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         Transparent = True
         mmHeight = 3704
         mmLeft = 261673
@@ -248,6 +271,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
         UserName = 'SystemVariable1'
         HyperlinkEnabled = False
         AutoSize = False
+        Border.mmPadding = 0
         VarType = vtPageNo
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -267,12 +291,15 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
         DesignLayer = ppDesignLayer1
         UserName = 'Label2'
         HyperlinkEnabled = False
+        Border.mmPadding = 0
         Caption = 'Relat'#243'rio de Venda Di'#225'ria e Semanal'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 12
         Font.Style = [fsBold]
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         Transparent = True
         mmHeight = 4995
         mmLeft = 165365
@@ -284,6 +311,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     end
     object ppColumnHeaderBand1: TppColumnHeaderBand
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 0
       mmPrintPosition = 0
@@ -292,12 +320,14 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
       BeforePrint = prbDetalheBeforePrint
       Background1.Brush.Style = bsClear
       Background2.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 5556
       mmPrintPosition = 0
       object ppMemo1: TppMemo
         DesignLayer = ppDesignLayer1
         UserName = 'Memo1'
+        Border.mmPadding = 0
         CharWrap = False
         Color = clSilver
         Font.Charset = ANSI_CHARSET
@@ -323,6 +353,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
         DesignLayer = ppDesignLayer1
         UserName = 'DBText4'
         HyperlinkEnabled = False
+        Border.mmPadding = 0
         DataField = 'DIA'
         DataPipeline = pplVda_Venda_Temp
         Font.Charset = DEFAULT_CHARSET
@@ -343,6 +374,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
         DesignLayer = ppDesignLayer1
         UserName = 'prlValor'
         HyperlinkEnabled = False
+        Border.mmPadding = 0
         DataField = 'VLR_VENDA_DIARIA'
         DataPipeline = pplVda_Venda_Temp
         DisplayFormat = '#,0;(#,0)'
@@ -365,6 +397,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
         DesignLayer = ppDesignLayer1
         UserName = 'prlPercentual'
         HyperlinkEnabled = False
+        Border.mmPadding = 0
         DataField = 'PER_CRESC_VDA_DIA'
         DataPipeline = pplVda_Venda_Temp
         DisplayFormat = '#,0;-#,0'
@@ -386,6 +419,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
       object ppLine1: TppLine
         DesignLayer = ppDesignLayer1
         UserName = 'Line1'
+        Border.mmPadding = 0
         Position = lpRight
         Weight = 0.750000000000000000
         mmHeight = 5292
@@ -398,6 +432,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
       object ppLine2: TppLine
         DesignLayer = ppDesignLayer1
         UserName = 'Line2'
+        Border.mmPadding = 0
         Position = lpLeft
         Weight = 0.750000000000000000
         mmHeight = 5292
@@ -411,6 +446,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
         DesignLayer = ppDesignLayer1
         UserName = 'prlValor1'
         HyperlinkEnabled = False
+        Border.mmPadding = 0
         DataField = 'VLR_VENDA_ACUMULADA'
         DataPipeline = pplVda_Venda_Temp
         DisplayFormat = '#,0;(#,0)'
@@ -433,6 +469,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
         DesignLayer = ppDesignLayer1
         UserName = 'prlPercentual1'
         HyperlinkEnabled = False
+        Border.mmPadding = 0
         DataField = 'PER_CRESC_VDA_ACUM'
         DataPipeline = pplVda_Venda_Temp
         DisplayFormat = '#,0;-#,0'
@@ -455,6 +492,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
         DesignLayer = ppDesignLayer1
         UserName = 'DBText5'
         HyperlinkEnabled = False
+        Border.mmPadding = 0
         DataField = 'VLR_VENDA_SEMANA'
         DataPipeline = pplVda_Venda_Temp
         DisplayFormat = '#,0;(#,0)'
@@ -478,6 +516,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
         DesignLayer = ppDesignLayer1
         UserName = 'DBText6'
         HyperlinkEnabled = False
+        Border.mmPadding = 0
         DataField = 'PER_CRESC_VDA_SEMANA'
         DataPipeline = pplVda_Venda_Temp
         DisplayFormat = '#,0;-#,0'
@@ -501,6 +540,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
         DesignLayer = ppDesignLayer1
         UserName = 'dPerMeta'
         HyperlinkEnabled = False
+        Border.mmPadding = 0
         DataField = 'PER_CRESC_ORCADO'
         DataPipeline = pplVda_Venda_Temp
         DisplayFormat = '#,0;-#,0'
@@ -523,6 +563,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
         DesignLayer = ppDesignLayer1
         UserName = 'DBText1'
         HyperlinkEnabled = False
+        Border.mmPadding = 0
         DataField = 'DIA_DA_SEMANA'
         DataPipeline = pplVda_Venda_Temp
         Font.Charset = DEFAULT_CHARSET
@@ -542,6 +583,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
       object ppLine3: TppLine
         DesignLayer = ppDesignLayer1
         UserName = 'Line3'
+        Border.mmPadding = 0
         Pen.Color = clSilver
         Pen.Width = 0
         mmHeight = 265
@@ -555,6 +597,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
         DesignLayer = ppDesignLayer1
         UserName = 'dDiaImpresso'
         HyperlinkEnabled = False
+        Border.mmPadding = 0
         DataField = 'DIAIMPRESSO'
         DataPipeline = pplVda_Venda_Temp
         Font.Charset = DEFAULT_CHARSET
@@ -577,6 +620,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
         DesignLayer = ppDesignLayer1
         UserName = 'dDtaMovimento'
         HyperlinkEnabled = False
+        Border.mmPadding = 0
         DataField = 'DTA_MOVIMENTO'
         DataPipeline = pplVda_Venda_Temp
         Font.Charset = ANSI_CHARSET
@@ -598,6 +642,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
         DesignLayer = ppDesignLayer1
         UserName = 'Margem'
         HyperlinkEnabled = False
+        Border.mmPadding = 0
         DataField = 'VLR_MARGEM'
         DataPipeline = pplVda_Venda_Temp
         DisplayFormat = '###.00'
@@ -620,6 +665,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
         DesignLayer = ppDesignLayer1
         UserName = 'dPerMeta1'
         HyperlinkEnabled = False
+        Border.mmPadding = 0
         DataField = 'QTD_CLIENTES_NOVOS'
         DataPipeline = pplVda_Venda_Temp
         DisplayFormat = '#,0;(#,0)'
@@ -642,6 +688,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     object ppColumnFooterBand1: TppColumnFooterBand
       AlignToBottom = True
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 0
       mmPrintPosition = 0
@@ -661,12 +708,14 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
       NewFile = False
       object ppGroupHeaderBand2: TppGroupHeaderBand
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         mmBottomOffset = 0
         mmHeight = 0
         mmPrintPosition = 0
       end
       object ppGroupFooterBand2: TppGroupFooterBand
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         HideWhenOneDetail = False
         mmBottomOffset = 0
         mmHeight = 0
@@ -689,12 +738,14 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
       object prbCabecalho: TppGroupHeaderBand
         BeforePrint = prbCabecalhoBeforePrint
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         mmBottomOffset = 0
         mmHeight = 6615
         mmPrintPosition = 0
         object mmoCabecalho: TppMemo
           DesignLayer = ppDesignLayer1
           UserName = 'mmoCabecalho'
+          Border.mmPadding = 0
           Caption = '6'
           CharWrap = False
           Font.Charset = ANSI_CHARSET
@@ -734,6 +785,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'prlCodLoja'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           DataField = 'ANO'
           DataPipeline = pplVda_Venda_Temp
           Font.Charset = ANSI_CHARSET
@@ -755,6 +807,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'prlDescricaoLoja'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           DataField = 'DES_UNIDADE'
           DataPipeline = pplVda_Venda_Temp
           Font.Charset = ANSI_CHARSET
@@ -776,12 +829,15 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'Label13'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           Caption = 'Ano:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Name = 'Courier New'
           Font.Size = 6
           Font.Style = []
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 2244
           mmLeft = 41804
@@ -795,6 +851,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'prlCodLoja1'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           DataField = 'COD_UNIDADE'
           DataPipeline = pplVda_Venda_Temp
           Font.Charset = ANSI_CHARSET
@@ -817,12 +874,15 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'Label3'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           Caption = 'Dia'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Name = 'Courier New'
           Font.Size = 7
           Font.Style = [fsBold]
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 2646
           mmLeft = 3969
@@ -836,12 +896,15 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'Label12'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           Caption = 'Vlr Vda'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Name = 'Courier New'
           Font.Size = 7
           Font.Style = [fsBold]
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 2646
           mmLeft = 21431
@@ -855,12 +918,15 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'Label14'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           Caption = '%'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Name = 'Courier New'
           Font.Size = 7
           Font.Style = [fsBold]
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 2646
           mmLeft = 33073
@@ -874,12 +940,15 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'Label15'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           Caption = 'Vda Acum.'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Name = 'Courier New'
           Font.Size = 7
           Font.Style = [fsBold]
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 2646
           mmLeft = 41540
@@ -893,12 +962,15 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'Label16'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           Caption = '%'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Name = 'Courier New'
           Font.Size = 7
           Font.Style = [fsBold]
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 2646
           mmLeft = 56092
@@ -912,12 +984,15 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'Label17'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           Caption = 'Semana'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Name = 'Courier New'
           Font.Size = 7
           Font.Style = [fsBold]
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 2646
           mmLeft = 62706
@@ -931,12 +1006,15 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'Label18'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           Caption = '%'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Name = 'Courier New'
           Font.Size = 7
           Font.Style = [fsBold]
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 2646
           mmLeft = 75142
@@ -950,12 +1028,15 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'Label19'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           Caption = '%Meta'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Name = 'Courier New'
           Font.Size = 7
           Font.Style = [fsBold]
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 2646
           mmLeft = 78581
@@ -969,12 +1050,15 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'Label8'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           Caption = '% Margem'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Name = 'Courier New'
           Font.Size = 7
           Font.Style = [fsBold]
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 2709
           mmLeft = 61913
@@ -988,12 +1072,15 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'Label10'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           Caption = '% Margem'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Name = 'Courier New'
           Font.Size = 7
           Font.Style = [fsBold]
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 2709
           mmLeft = 75406
@@ -1007,12 +1094,15 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'Label11'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           Caption = 'Cart'#227'o'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Name = 'Courier New'
           Font.Size = 7
           Font.Style = [fsBold]
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 2709
           mmLeft = 86519
@@ -1025,6 +1115,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
       end
       object prbRodape: TppGroupFooterBand
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         HideWhenOneDetail = False
         mmBottomOffset = 0
         mmHeight = 10054
@@ -1044,6 +1135,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
         object mmoRodape: TppMemo
           DesignLayer = ppDesignLayer1
           UserName = 'mmoRodape'
+          Border.mmPadding = 0
           Caption = ' '
           CharWrap = False
           Font.Charset = ANSI_CHARSET
@@ -1070,6 +1162,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'prlVlrAcumAno'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           DataField = 'VLR_ACUMULADO_ANO'
           DataPipeline = pplVda_Venda_Temp
           DisplayFormat = '#,0;(#,0)'
@@ -1093,6 +1186,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'prlVlrOrcado1'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           DataField = 'VLR_ORCADO_MES'
           DataPipeline = pplVda_Venda_Temp
           DisplayFormat = '#,0;(#,0)'
@@ -1116,12 +1210,15 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'Label4'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           Caption = 'Acum. Ano:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3440
           mmLeft = 1588
@@ -1135,12 +1232,15 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'Label5'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           Caption = 'Or'#231'. M'#234's:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3440
           mmLeft = 4498
@@ -1154,6 +1254,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'prlVlrAcumAno1'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           DataField = 'PER_CRESC_ANO'
           DataPipeline = pplVda_Venda_Temp
           DisplayFormat = '#,0;-#,0'
@@ -1176,12 +1277,15 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'Label6'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           Caption = 'Cresc. Ano:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3387
           mmLeft = 41010
@@ -1195,12 +1299,15 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'Label9'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           Caption = 'Marg Acum:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3387
           mmLeft = 40481
@@ -1214,6 +1321,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'DBText2'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           DataField = 'VLR_MARGEM_ACUM'
           DataPipeline = pplVda_Venda_Temp
           DisplayFormat = '###.00'
@@ -1236,12 +1344,15 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'Label20'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           Caption = 'Cart'#227'o:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3387
           mmLeft = 73290
@@ -1255,6 +1366,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'DBCalc1'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           DataField = 'QTD_CLIENTES_NOVOS'
           DataPipeline = pplVda_Venda_Temp
           DisplayFormat = '#,0;(#,0)'
@@ -1279,12 +1391,15 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'Label21'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           Caption = 'Acum.Cart:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3387
           mmLeft = 1852
@@ -1298,12 +1413,15 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'Label22'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           Caption = 'Cresc.Cart:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3387
           mmLeft = 41540
@@ -1317,12 +1435,15 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'Label201'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           Caption = 'Meta Cart:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3387
           mmLeft = 68792
@@ -1336,12 +1457,15 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'Label24'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           Caption = '%Meta Cart:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3387
           mmLeft = 66411
@@ -1355,6 +1479,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'prlVlrAcumAno2'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           DataField = 'QTD_ACUM_ANO_CARTOES'
           DataPipeline = pplVda_Venda_Temp
           DisplayFormat = '#,0;(#,0)'
@@ -1378,6 +1503,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'DBText9'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           DataField = 'PER_CRESC_ANO_CART'
           DataPipeline = pplVda_Venda_Temp
           DisplayFormat = '#,0;-#,0'
@@ -1400,6 +1526,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'DBText3'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           DataField = 'QTD_ORCADO_CARTOES'
           DataPipeline = pplVda_Venda_Temp
           DisplayFormat = '#,0;-#,0'
@@ -1423,6 +1550,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           DesignLayer = ppDesignLayer1
           UserName = 'DBText11'
           HyperlinkEnabled = False
+          Border.mmPadding = 0
           DataField = 'PER_CRESC_ORC_CART'
           DataPipeline = pplVda_Venda_Temp
           DisplayFormat = '#,0;-#,0'

@@ -16,6 +16,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
   Position = poScreenCenter
   OnActivate = FormActivate
   OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object pnlRodape: TPanel
@@ -26,6 +27,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     Align = alBottom
     BevelInner = bvLowered
     TabOrder = 0
+    ExplicitTop = 447
     object btnGerar: TBitBtn
       Left = 307
       Top = 2
@@ -60,7 +62,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
       Left = 2
       Top = 2
       Width = 368
-      Height = 439
+      Height = 414
       Align = alClient
       DataSource = dtsEmailRegional
       DrawingStyle = gdsGradient
@@ -86,6 +88,24 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
           Visible = True
         end>
     end
+    object pnlTentativas: TPanel
+      Left = 2
+      Top = 416
+      Width = 368
+      Height = 25
+      Align = alBottom
+      Alignment = taLeftJustify
+      BevelInner = bvLowered
+      Caption = '  Tentativas: 99.999.999.999'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 1
+      ExplicitTop = 415
+    end
   end
   object fdcEmail: TFDConnection
     Params.Strings = (
@@ -94,14 +114,14 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
       'Password=nl'
       'DriverID=Ora')
     LoginPrompt = False
-    Left = 34
-    Top = 286
+    Left = 56
+    Top = 221
   end
   object FDPhysOracleDriverLink1: TFDPhysOracleDriverLink
     DriverID = 'NL'
     VendorLib = 'oci.dll'
-    Left = 34
-    Top = 374
+    Left = 56
+    Top = 309
   end
   object ACBrMail1: TACBrMail
     Host = 'smtp.office365.com'
@@ -112,8 +132,8 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     Attempts = 3
     DefaultCharset = UTF_8
     IDECharset = CP1252
-    Left = 32
-    Top = 328
+    Left = 54
+    Top = 263
   end
   object qryDta: TFDQuery
     Connection = fdcEmail
@@ -122,8 +142,8 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
       'from grazz.vda_venda_ano'
       'where dta_movimento <= trunc(sysdate)'
       'and vlr_venda_diaria > 0')
-    Left = 72
-    Top = 287
+    Left = 94
+    Top = 222
   end
   object qryRelVenda: TFDQuery
     Connection = fdcEmail
@@ -137,13 +157,13 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
       '                   where a.cod_emp     = t.cod_emp_para'
       '                     and a.cod_unidade = t.cod_unidade_para)'
       'ORDER BY cod_emp, cod_unidade, ano, dta_movimento')
-    Left = 161
-    Top = 288
+    Left = 183
+    Top = 223
   end
   object dtsRelVenda: TDataSource
     DataSet = qryRelVenda
-    Left = 161
-    Top = 335
+    Left = 183
+    Top = 270
   end
   object pprVda_Venda_Temp: TppReport
     AutoStop = False
@@ -211,8 +231,8 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     XLSSettings.Subject = 'Report'
     XLSSettings.Title = 'Report'
     XLSSettings.WorksheetName = 'Report'
-    Left = 124
-    Top = 378
+    Left = 146
+    Top = 313
     Version = '20.0'
     mmColumnWidth = 94765
     DataPipelineName = 'pplVda_Venda_Temp'
@@ -1648,14 +1668,14 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
   object pplVda_Venda_Temp: TppDBPipeline
     DataSource = dtsRelVenda
     UserName = 'lVda_Venda_Temp'
-    Left = 161
-    Top = 378
+    Left = 183
+    Top = 313
   end
   object dtsEmailRegional: TDataSource
     AutoEdit = False
     DataSet = qryEmailRegional
-    Left = 128
-    Top = 334
+    Left = 150
+    Top = 269
   end
   object qryEmailRegional: TFDQuery
     Connection = fdcEmail
@@ -1665,8 +1685,8 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
       'where cod_regiao >= 8701 '
       'and cod_regiao <= 8725 '
       'order by email_regional')
-    Left = 128
-    Top = 287
+    Left = 150
+    Top = 222
     object qryEmailRegionalCOD_REGIAO: TBCDField
       FieldName = 'COD_REGIAO'
       Origin = 'COD_REGIAO'

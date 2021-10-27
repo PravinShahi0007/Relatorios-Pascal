@@ -5,7 +5,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
   BorderStyle = bsSingle
   Caption = 'Relat'#243'rio Venda E-mail MACRO....'
   ClientHeight = 188
-  ClientWidth = 259
+  ClientWidth = 436
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -14,6 +14,8 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = False
+  Position = poScreenCenter
+  OnActivate = FormActivate
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
   PixelsPerInch = 96
@@ -21,13 +23,14 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
   object pnlRodape: TPanel
     Left = 0
     Top = 155
-    Width = 259
+    Width = 436
     Height = 33
     Align = alBottom
     BevelInner = bvLowered
     TabOrder = 0
+    ExplicitWidth = 259
     object btnGerar: TBitBtn
-      Left = 179
+      Left = 356
       Top = 2
       Width = 78
       Height = 29
@@ -36,7 +39,26 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
       NumGlyphs = 2
       TabOrder = 0
       OnClick = btnGerarClick
+      ExplicitLeft = 179
     end
+  end
+  object mmoEmail: TMemo
+    Left = 0
+    Top = 0
+    Width = 436
+    Height = 155
+    Align = alClient
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 1
+    ExplicitLeft = 240
+    ExplicitTop = 40
+    ExplicitWidth = 185
+    ExplicitHeight = 89
   end
   object FDConnection1: TFDConnection
     Params.Strings = (
@@ -96,7 +118,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     PrinterSetup.DocumentName = 'Report'
     PrinterSetup.Duplex = dpNone
     PrinterSetup.Orientation = poLandscape
-    PrinterSetup.PaperName = 'A4'
+    PrinterSetup.PaperName = 'A4 210 x 297 mm'
     PrinterSetup.PrinterName = 'Default'
     PrinterSetup.SaveDeviceSettings = False
     PrinterSetup.mmMarginBottom = 6350

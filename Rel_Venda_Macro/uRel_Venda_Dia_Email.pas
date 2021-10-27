@@ -112,6 +112,7 @@ type
     ACBrMail1: TACBrMail;
     pnlRodape: TPanel;
     btnGerar: TBitBtn;
+    mmoEmail: TMemo;
     procedure PreencheEstilos(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnGerarClick(Sender: TObject);
@@ -119,6 +120,7 @@ type
     procedure prbCabecalhoBeforePrint(Sender: TObject);
     procedure prbDetalheBeforePrint(Sender: TObject);
     procedure LimpaPdf;
+    procedure FormActivate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -171,8 +173,10 @@ end;
 
 procedure TfrmRel_Venda_dia_Email.btnGerarClick(Sender: TObject);
 var
-    sMes, sAno, sDia, sDt_Inicial, sDt_Final, sSQL, sCaminhoArquivo,
-    sNomeArquivo, sDiretorio: String;
+   sMes,sAno,sDia,sDt_Inicial,sDt_Final,sSQL,sCaminhoArquivo,sNomeArquivo,
+        sDiretorio: String;
+   bEnvio: Boolean;
+   iTentativas: Integer;
 begin
      LimpaPdf;
 
@@ -181,7 +185,7 @@ begin
         iArqIni := TIniFile.Create(sDiretorio+'\Config.ini');
         //sEmail :=  qryEmailRegional.FieldByName('email_regional').value;
         //sEmail:= '386552@grupograzziotin.com.br';
-        sEmail:= iArqIni.ReadString('EMAIL FROM','Email','');
+        sEmail := iArqIni.ReadString('EMAIL FROM','Email','');
         sAssunto := iArqIni.ReadString('EMAIL FROM','Assunto','');
         sEmailFrom := iArqIni.ReadString('EMAIL FROM','Endereco','');
         sUserName := iArqIni.ReadString('EMAIL FROM','UserName','');
@@ -196,6 +200,9 @@ begin
            Application.Terminate;
            Exit;
      end;
+     mmoEmail.Lines.Clear;
+     mmoEmail.Lines.Add(sEmail);
+     mmoEmail.Update;
 
      sMes  := copy(DateToStr(Date-1),4,2);
      sAno  := copy(DateToStr(Date-1),7,4);
@@ -231,21 +238,46 @@ begin
 
      if (FileExists(sCaminhoArquivo+sNomeArquivo)) then
      begin
-          ACBrMail1.From := sEmailFrom;
-          ACBrMail1.FromName := sNome;
-          ACBrMail1.Host := 'smtp.office365.com';
-          ACBrMail1.Username := sUserName;
-          ACBrMail1.Password := sPassword;
-          ACBrMail1.Port := '587';
-          ACBrMail1.AddAddress(sEmail,'');
-          ACBrMail1.AddBCC(sCopia_oculta);
-          ACBrMail1.Subject := sAssunto;
-          ACBrMail1.IsHTML := True;
-          ACBrMail1.Body.Text := '';
-          AcbrMail1.SetTLS := True;
-          ACBrMail1.AddAttachment(sCaminhoArquivo+sNomeArquivo);
-          ACBrMail1.Send;
+          iTentativas := 0;
+          repeat
+                bEnvio := True;
+                Inc(iTentativas);
+                try
+                   pnlRodape.Caption := '  Tentativas de ENVIO: '+FloatToStrF(iTentativas,ffNumber,11,0);
+                   pnlRodape.Update;
+                   Delay(200);
+
+                   ACBrMail1.Clear;
+                   ACBrMail1.ClearAttachments;
+                   ACBrMail1.SMTP.Reset;
+
+                   ACBrMail1.From := sEmailFrom;
+                   ACBrMail1.FromName := sNome;
+                   ACBrMail1.Host := 'smtp.office365.com';
+                   ACBrMail1.Username := sUserName;
+                   ACBrMail1.Password := sPassword;
+                   ACBrMail1.Port := '587';
+                   ACBrMail1.AddAddress(sEmail,'');
+                   ACBrMail1.AddBCC(sCopia_oculta);
+                   ACBrMail1.Subject := sAssunto;
+                   ACBrMail1.IsHTML := True;
+                   ACBrMail1.Body.Text := '';
+                   AcbrMail1.SetTLS := True;
+                   ACBrMail1.AddAttachment(sCaminhoArquivo+sNomeArquivo);
+                   ACBrMail1.Send;
+                except
+                      bEnvio := False;
+                end;
+          until (bEnvio);
+          pnlRodape.Caption := '';
+          pnlRodape.Update;
      end;
+     Halt;
+end;
+
+procedure TfrmRel_Venda_dia_Email.FormActivate(Sender: TObject);
+begin
+     btnGerarClick(Sender);
 end;
 
 procedure TfrmRel_Venda_dia_Email.FormCreate(Sender: TObject);
