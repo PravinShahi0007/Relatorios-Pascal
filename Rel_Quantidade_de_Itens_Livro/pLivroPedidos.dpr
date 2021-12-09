@@ -2,7 +2,9 @@ program pLivroPedidos;
 
 uses
   Vcl.Forms,
-  uRelLivroPedidos in 'uRelLivroPedidos.pas' {frmLivroPedido};
+  uRelLivroPedidos in 'uRelLivroPedidos.pas' {frmLivroPedido},
+  uCarregaSenha in 'uCarregaSenha.pas',
+  Encryp in 'Encryp.pas';
 
 {$R *.res}
 

@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
-  <Transactions>
-    <Transaction>2021/04/19 14:00:15.078,=C:\GitHub\Relatorios\trunk\Atualiza_Posicao_Bonus\uEnviaEmailsKPIPagamentos.pas</Transaction>
-    <Transaction>2021/04/19 14:00:51.386,C:\GitHub\Relatorios\trunk\Atualiza_Posicao_Bonus\pAtualizaPosicaoBonus.dproj=C:\GitHub\Relatorios\trunk\Atualiza_Posicao_Bonus\pEnviaEmailsKPIPagamentos.dproj</Transaction>
-    <Transaction>2021/04/19 14:01:14.849,C:\GitHub\Relatorios\trunk\Atualiza_Posicao_Bonus\uAtualizaPosicaoBonus.dfm=C:\GitHub\Relatorios\trunk\Atualiza_Posicao_Bonus\uEnviaEmailsKPIPagamentos.dfm</Transaction>
-    <Transaction>2021/04/19 14:01:14.849,C:\GitHub\Relatorios\trunk\Atualiza_Posicao_Bonus\uAtualizaPosicaoBonus.pas=C:\GitHub\Relatorios\trunk\Atualiza_Posicao_Bonus\uEnviaEmailsKPIPagamentos.pas</Transaction>
+	<Transactions>
+    <Transaction>2021/04/19 14:00:15.000.078,=C:\GitHub\Relatorios\trunk\Atualiza_Posicao_Bonus\uEnviaEmailsKPIPagamentos.pas</Transaction>
+    <Transaction>2021/04/19 14:00:51.000.386,C:\GitHub\Relatorios\trunk\Atualiza_Posicao_Bonus\pEnviaEmailsKPIPagamentos.dproj=C:\GitHub\Relatorios\trunk\Atualiza_Posicao_Bonus\pAtualizaPosicaoBonus.dproj</Transaction>
+    <Transaction>2021/04/19 14:01:14.000.849,C:\GitHub\Relatorios\trunk\Atualiza_Posicao_Bonus\uEnviaEmailsKPIPagamentos.pas=C:\GitHub\Relatorios\trunk\Atualiza_Posicao_Bonus\uAtualizaPosicaoBonus.pas</Transaction>
+    <Transaction>2021/04/19 14:01:14.000.849,C:\GitHub\Relatorios\trunk\Atualiza_Posicao_Bonus\uEnviaEmailsKPIPagamentos.dfm=C:\GitHub\Relatorios\trunk\Atualiza_Posicao_Bonus\uAtualizaPosicaoBonus.dfm</Transaction>
   </Transactions>
 </BorlandProject>

@@ -17,6 +17,7 @@ uses
 
 type
   TfrmLivroPedido = class(TForm)
+
     edtCodigoInicial: TEdit;
     edtCodigoFinal: TEdit;
     btnVizualizar: TButton;
@@ -55,10 +56,8 @@ type
     procedure grdLivroPedidosDrawCell(Sender: TObject; ACol, ARow: Integer;
       Rect: TRect; State: TGridDrawState);
     procedure btmCancelarExit(Sender: TObject);
-
-
-
-
+    procedure CarregaParamsBanco;
+    procedure FormCreate(Sender: TObject);
 
   private
     { Private declarations }
@@ -68,15 +67,21 @@ type
 
 var
   frmLivroPedido: TfrmLivroPedido;
-    iNumero : String;
+    iNumero,sUsuario,sSenha,sBanco : String;
 
 implementation
 
-uses uFuncoes;
+uses uFuncoes, Encryp, uCarregaSenha;
 
 {$R *.dfm}
 
 
+procedure TfrmLivroPedido.CarregaParamsBanco;
+var TomEncryption1: TTomEncryption;
+begin
+    TomEncryption1 := TTomEncryption.Create(Self);
+    CarregaSenhasBancoOra('GRZPNL_BERLIN',TomEncryption1,sUsuario,sSenha,sBanco);
+end;
 
 procedure TfrmLivroPedido.btmCancelarClick(Sender: TObject);
 begin
@@ -106,7 +111,7 @@ begin
     FDQuery1.SQL.Text :=  '';
     FDQuery1.Active := False;
 
-	  FDQuery1.SQL.Text:= 'select count(distinct a.cod_item) as ItensLivro     '+
+      	  FDQuery1.SQL.Text:= 'select count(distinct a.cod_item) as ItensLivro     '+
                               'from ce_pars_calculo a                 '+
                               ',ie_mascaras b                        '+
                               ',ie_itens ie                          '+
@@ -123,7 +128,8 @@ begin
                               'and upper(ie.des_geral) = ''L''     '+
                               'and ie.cod_tipo = ''00''            '+
                               'and b.cod_item = a.cod_item       '+
-                              'and b.cod_mascara = 150           '+
+                              //'and b.cod_mascara =150           '+
+                              'and b.cod_mascara in (150,170)           '+
                               'and b.cod_niv0=''1''                '+
                               'and a.cod_emp = 1                 '+
                               'and nvl(a.qtd_est_min_i,0) > 0    ';
@@ -154,7 +160,8 @@ begin
 		                    '	from ne_ficha_compras a '+
 	                 		  ' ,ie_mascaras b  '+
 	                   	  ' where b.cod_item = a.cod_item'+
-		                    ' and b.cod_mascara = 150 '+
+		                  //  ' and b.cod_mascara = 150 '+
+                                     ' and b.cod_mascara in (150,170) '+
                         ' and b.cod_completo  >=  '''+(edtCodigoInicial.text)+''' '+
                         ' and b.cod_completo <=   '''+(edtCodigoFinal.text)+''' '+
                         ' and b.cod_niv0 = ''1''   '+
@@ -189,7 +196,8 @@ begin
                         ' from ne_ficha_compras a '+
                         ' ,ie_mascaras b  '+
                         ' where b.cod_item = a.cod_item '+
-                        ' and b.cod_mascara = 150 '+
+                       // ' and b.cod_mascara = 150 '+
+                        ' and b.cod_mascara in (150,170) '+
                         ' and b.cod_completo  >=  '''+(edtCodigoInicial.text)+''' '+
                         ' and b.cod_completo <=   '''+(edtCodigoFinal.text)+''' '+
                         ' and b.cod_niv0 = ''1'' '+
@@ -231,7 +239,8 @@ begin
 				                ' where ne.cod_item = b.cod_item  '+
 			                  ' and ne.dta_recebimento >= sysdate - 730)  '+
                         ' and e.cod_item = b.cod_item  '+
-		                    ' and e.cod_mascara = 150 '+
+		                 //  ' and e.cod_mascara = 150 '+
+                                     ' and e.cod_mascara in (150,170) '+
                         ' and e.cod_completo  >=  '''+(edtCodigoInicial.text)+''' '+
                         ' and e.cod_completo <=   '''+(edtCodigoFinal.text)+''' '+
 		                    ' and d.num_seq(+)      = b.num_seq '+
@@ -275,7 +284,7 @@ end;
 procedure TfrmLivroPedido.edtCodigoFinalExit(Sender: TObject);
 begin
  if edtCodigoFinal.Text = '' then
-          edtCodigoFinal.Text := '99999999999';
+          edtCodigoFinal.Text := '9999999999';
 
     if edtCodigoFinal.Text = '' then
      begin
@@ -309,7 +318,7 @@ end;
 procedure TfrmLivroPedido.edtCodigoInicialExit(Sender: TObject);
 begin
  if edtCodigoInicial.Text = '' then
-          edtCodigoInicial.Text := '00000000000';
+          edtCodigoInicial.Text := '0000000000';
 
       if edtCodigoInicial.Text = '' then
      begin
@@ -427,8 +436,6 @@ var
 codigo : boolean;
 begin
 
-
-
     case Key of
            '0'..'9' : codigo := true;
        //    ',' : Codigo := True;
@@ -527,6 +534,30 @@ begin
         Codigo := False;
     end;
 
+end;
+
+procedure TfrmLivroPedido.FormCreate(Sender: TObject);
+begin
+   CarregaParamsBanco;
+    try
+     fdOracle.Params.Database := sBanco;
+     fdOracle.Params.UserName := sUsuario;
+     fdOracle.Params.Password := sSenha;
+     fdOracle.Connected := True;
+   except
+       on E:EDatabaseError do
+            begin
+                 Informacao('Erro!!!'+#13+'Não pode se conectar ao banco!!!','Aviso!!!');
+                 Application.Terminate;
+            end;
+   end;
+    try
+      fdOracle.Connected := True;
+      //Session1.Active := True;
+    except
+      Informacao('Erro!!!'+#13+'Não pode se conectar ao banco!!!','Aviso!!!');
+      Application.Terminate;
+    end;
 end;
 
 procedure TfrmLivroPedido.FormShow(Sender: TObject);
