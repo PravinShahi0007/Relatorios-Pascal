@@ -694,7 +694,7 @@ end;
 
 procedure TfrmPrincipal.Envia_Email(Sender: TObject);
 begin
-     if (dayofweek(strtodate(sDataAtual))) = 5 then
+     if (dayofweek(strtodate(sDataAtual))) = 2 then
        begin
            lblMensagem.Caption := 'Enviando e-mail..';
            lblMensagem.Update;
