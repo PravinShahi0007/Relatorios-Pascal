@@ -1496,7 +1496,7 @@ begin
              //Soma Dos Totais
              dTotalRecebidos:=  qryRelatorioVendas.FieldByName('vlr_parcelas_pgto_cia').AsFloat;
              dSomaTotalRecebidos := dTotalRecebidos + dSomaTotalRecebidos ;
-             dTotalDoApp :=qryTotais.FieldByName('vlr_parcelas_pgto_app').AsFloat - qryRelatorioVendas.FieldByName('vlr_parcelas_pgto_decre').AsFloat ;
+             dTotalDoApp :=qryRelatorioVendas.FieldByName('vlr_parcelas_pgto_app').AsFloat - qryRelatorioVendas.FieldByName('vlr_parcelas_pgto_decre').AsFloat ;
              dSomaTotalDoApp := dTotalDoApp + dSomaTotalDoApp;
              dTotalDecre := qryRelatorioVendas.FieldByName('vlr_parcelas_pgto_decre').AsFloat + qryTotais.FieldByName('vlr_parcelas_pgto_0800').AsFloat;
              dSomaTotalDecre := dTotalDecre + dSomaTotalDecre;
@@ -1526,7 +1526,7 @@ begin
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TICKET_MEDIO_PAGAMENTOS+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_TOTAL_RS_PAGAMENTOS+'</td> '+
                            // ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOT_RS_PGTO_APP+'</td> '+
-                             ' <td style="width:50px">'+FloatToStrF(qryTotais.FieldByName('vlr_parcelas_pgto_app').AsFloat - qryRelatorioVendas.FieldByName('vlr_parcelas_pgto_decre').AsFloat ,ffNumber,18,0)+'</td> '+
+                             ' <td style="width:50px">'+FloatToStrF(dTotalDoApp ,ffNumber,18,0)+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TICKET_MEDIO_PAG_APP+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_TOT_RS_PGTO_APP+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_APP_DEBITO+'</td> '+
