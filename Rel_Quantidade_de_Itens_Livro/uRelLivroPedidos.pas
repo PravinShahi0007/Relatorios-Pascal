@@ -220,7 +220,9 @@ begin
                                '          and a.cod_unidade      in (818,838,848,858) '+
                                '          and a.dta_recebimento  >= trunc(sysdate - 730) '+
                                '          and a.cod_oper          = 104            '+
-                              'having min(a.dta_recebimento) >= '+ QuotedStr(FormatDateTime('dd/mm/yyyy',StrToDate(edtDataInicial.Text)))+
+                               '          and b.cod_completo  >=  '''+(edtCodigoInicial.text)+''' '+
+                               '          and b.cod_completo <=   '''+(edtCodigoFinal.text)+''' '+
+                              ' having min(a.dta_recebimento) >= '+ QuotedStr(FormatDateTime('dd/mm/yyyy',StrToDate(edtDataInicial.Text)))+
                               '   and max(a.dta_recebimento) <= '+ QuotedStr(FormatDateTime('dd/mm/yyyy',StrToDate(edtDataFinal.Text)))+
                               'group by a.cod_item ) rec        ';
      FDQuery1.Active := true;
@@ -596,7 +598,7 @@ begin
       case Key of
            '0'..'9' : codigo := true;
        //    ',' : Codigo := True;
-           chr(13) : btnVizualizar.SetFocus; //enter
+           chr(13) : edtCodigoInicial.SetFocus; //enter
            chr(9)  : Codigo  := True; //Tab
            chr(27) : Codigo  := True; //esc
            chr(8)  : Codigo  := True; //Backspace

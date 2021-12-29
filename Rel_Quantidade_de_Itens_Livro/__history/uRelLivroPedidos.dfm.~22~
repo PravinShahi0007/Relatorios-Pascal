@@ -4,7 +4,7 @@ object frmLivroPedido: TfrmLivroPedido
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Quantidade Itens Livro'
-  ClientHeight = 191
+  ClientHeight = 182
   ClientWidth = 464
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -14,12 +14,13 @@ object frmLivroPedido: TfrmLivroPedido
   Font.Style = []
   OldCreateOrder = False
   Position = poDesktopCenter
+  OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Panel3: TPanel
     Left = 0
-    Top = 43
+    Top = 36
     Width = 465
     Height = 95
     TabOrder = 4
@@ -55,12 +56,14 @@ object frmLivroPedido: TfrmLivroPedido
       Width = 111
       Height = 13
       Caption = 'C'#243'digo Estruturado:'
+      Enabled = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
+      Visible = False
     end
     object edtDataFinal: TMaskEdit
       Left = 268
@@ -128,9 +131,11 @@ object frmLivroPedido: TfrmLivroPedido
       Width = 115
       Height = 21
       Hint = 'Ex: 10999999999'
+      Enabled = False
       ParentShowHint = False
       ShowHint = True
       TabOrder = 4
+      Visible = False
       OnExit = edtCodigoFinalExit
       OnKeyPress = edtCodigoFinalKeyPress
     end
@@ -140,9 +145,11 @@ object frmLivroPedido: TfrmLivroPedido
       Width = 115
       Height = 21
       Hint = 'Ex: 100000000'
+      Enabled = False
       ParentShowHint = False
       ShowHint = True
       TabOrder = 5
+      Visible = False
       OnExit = edtCodigoInicialExit
       OnKeyPress = edtCodigoInicialKeyPress
     end
@@ -151,14 +158,14 @@ object frmLivroPedido: TfrmLivroPedido
     Left = -3
     Top = -3
     Width = 468
-    Height = 46
+    Height = 40
     TabOrder = 2
   end
   object btnVizualizar: TButton
-    Left = 1
+    Left = 7
     Top = 4
     Width = 65
-    Height = 33
+    Height = 28
     Caption = 'Gerar'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -180,10 +187,10 @@ object frmLivroPedido: TfrmLivroPedido
     Visible = False
   end
   object btmCancelar: TButton
-    Left = 396
+    Left = 390
     Top = 4
     Width = 65
-    Height = 33
+    Height = 28
     Caption = 'Fechar'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -197,7 +204,7 @@ object frmLivroPedido: TfrmLivroPedido
   end
   object grdLivroPedidos: TStringGrid
     Left = 0
-    Top = 138
+    Top = 129
     Width = 465
     Height = 54
     ColCount = 4
@@ -239,9 +246,6 @@ object frmLivroPedido: TfrmLivroPedido
   end
   object fdOracle: TFDConnection
     Params.Strings = (
-      'Database=192.168.200.110:1522/GRZPROD'
-      'User_Name=nl'
-      'Password=nl'
       'DriverID=Ora')
     LoginPrompt = False
     Left = 112

@@ -56,14 +56,12 @@ object frmLivroPedido: TfrmLivroPedido
       Width = 111
       Height = 13
       Caption = 'C'#243'digo Estruturado:'
-      Enabled = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
-      Visible = False
     end
     object edtDataFinal: TMaskEdit
       Left = 268
@@ -131,11 +129,9 @@ object frmLivroPedido: TfrmLivroPedido
       Width = 115
       Height = 21
       Hint = 'Ex: 10999999999'
-      Enabled = False
       ParentShowHint = False
       ShowHint = True
       TabOrder = 4
-      Visible = False
       OnExit = edtCodigoFinalExit
       OnKeyPress = edtCodigoFinalKeyPress
     end
@@ -145,11 +141,9 @@ object frmLivroPedido: TfrmLivroPedido
       Width = 115
       Height = 21
       Hint = 'Ex: 100000000'
-      Enabled = False
       ParentShowHint = False
       ShowHint = True
       TabOrder = 5
-      Visible = False
       OnExit = edtCodigoInicialExit
       OnKeyPress = edtCodigoInicialKeyPress
     end

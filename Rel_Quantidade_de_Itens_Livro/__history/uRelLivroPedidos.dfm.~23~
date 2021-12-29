@@ -14,6 +14,7 @@ object frmLivroPedido: TfrmLivroPedido
   Font.Style = []
   OldCreateOrder = False
   Position = poDesktopCenter
+  OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -155,7 +156,7 @@ object frmLivroPedido: TfrmLivroPedido
     TabOrder = 2
   end
   object btnVizualizar: TButton
-    Left = 1
+    Left = 7
     Top = 4
     Width = 65
     Height = 28
@@ -180,7 +181,7 @@ object frmLivroPedido: TfrmLivroPedido
     Visible = False
   end
   object btmCancelar: TButton
-    Left = 396
+    Left = 390
     Top = 4
     Width = 65
     Height = 28
@@ -239,9 +240,6 @@ object frmLivroPedido: TfrmLivroPedido
   end
   object fdOracle: TFDConnection
     Params.Strings = (
-      'Database=192.168.200.110:1522/GRZPROD'
-      'User_Name=nl'
-      'Password=nl'
       'DriverID=Ora')
     LoginPrompt = False
     Left = 112

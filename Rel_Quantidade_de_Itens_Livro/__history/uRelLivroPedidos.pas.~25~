@@ -133,7 +133,7 @@ begin
                               'and b.cod_niv0=''1''                '+
                               'and a.cod_emp = 1                 '+
                               'and nvl(a.qtd_est_min_i,0) > 0    ';}
-          FDQuery1.SQL.Text:= 'select sum(qtd_skus) qtd_skus         '+
+          FDQuery1.SQL.Text:= 'select sum(qtd_skus) ItensLivro          '+
                               'from (select b.cod_niv1              '+
                               '            ,count(distinct a.cod_item) qtd_skus     '+
                               '        from nl.ce_pars_calculo a     '+
@@ -145,7 +145,7 @@ begin
                               '                        and ce.cod_unidade in (818,838,848,858)    '+
                               '                        and ce.cod_item     = a.cod_item      '+
                               '                        and ce.cod_local    = ''101000''     '+
-                              '                        and ce.dta_local   <= '+ QuotedStr(FormatDateTime('mm/dd/yyyy',StrToDate(edtDataFinal.Text)))+
+                              '                        and ce.dta_local   <= '+ QuotedStr(FormatDateTime('dd/mm/yyyy',StrToDate(edtDataFinal.Text)))+
                               '                        and ce.qtd_entrada > nvl(ce.qtd_saida,0))     '+
                               '         and exists (select 1 from nl.ge_grupos_unidades ge    '+
                               '                      where ge.cod_emp     = a.cod_emp    '+
@@ -183,7 +183,7 @@ begin
 	  FDQuery1.SQL.Text :=  '';
     FDQuery1.Active := False;
 
-	  FDQuery1.SQL.Text:= ' select count(1) as ItensNovosLivro '+
+	 { FDQuery1.SQL.Text:= ' select count(1) as ItensNovosLivro '+
     		                '	from '+
 			                  ' (select a.cod_item '+
 			                  ' ,min(a.dta_recebimento)'+
@@ -201,7 +201,28 @@ begin
 		                    ' and a.dta_recebimento >= sysdate - 730 '+
                         ' having min(a.dta_recebimento) >= '''+(edtDataInicial.text)+''''+
 		                    ' and min(a.dta_recebimento) <=  '''+(edtDataFinal.text)+'''' +
-		                    ' group by a.cod_item ) item';
+		                    ' group by a.cod_item ) item';}
+         FDQuery1.SQL.Text :=  ' select count(distinct rec.cod_item) ItensNovosLivro      '+
+                               ' from (select a.cod_item                           '+
+                               '             ,min(a.dta_recebimento) dta_pri_entrada  '+
+                               '             ,max(a.dta_recebimento) dta_ult_entrada   '+
+                               '         from nl.ne_ficha_compras a     '+
+                               '             ,nl.ie_mascaras b           '+
+                               '             ,nl.ie_itens ie              '+
+                               '        where ie.cod_item         = a.cod_item '+
+                               '          and ie.ind_avulso       = 0        '+
+                               '          and ie.ind_inativo      = 0        '+
+                               '          and upper(ie.des_geral) = ''L''      '+
+                               '          and b.cod_item          = a.cod_item '+
+                               '          and b.cod_mascara       = 170       '+
+                               '          and b.cod_niv0          = ''1''       '+
+                               '          and a.cod_emp           = 1          '+
+                               '          and a.cod_unidade      in (818,838,848,858) '+
+                               '          and a.dta_recebimento  >= trunc(sysdate - 730) '+
+                               '          and a.cod_oper          = 104            '+
+                              'having min(a.dta_recebimento) >= '+ QuotedStr(FormatDateTime('dd/mm/yyyy',StrToDate(edtDataInicial.Text)))+
+                              '   and max(a.dta_recebimento) <= '+ QuotedStr(FormatDateTime('dd/mm/yyyy',StrToDate(edtDataFinal.Text)))+
+                              'group by a.cod_item ) rec        ';
      FDQuery1.Active := true;
 
    if ( FDQuery1.RecordCount = 0)then
@@ -219,7 +240,7 @@ begin
 	 FDQuery1.SQL.Text :=  '';
     FDQuery1.Active := False;
 
-	  FDQuery1.SQL.Text:= ' select count(1) as ItensNovosCross '+
+	 { FDQuery1.SQL.Text:= ' select count(1) as ItensNovosCross '+
                         ' from  '+
                         ' (select a.cod_item '+
                         ' ,min(a.dta_recebimento) '+
@@ -237,7 +258,27 @@ begin
                         ' and a.dta_recebimento >= sysdate - 730 '+
                          ' having min(a.dta_recebimento) >= '''+(edtDataInicial.text)+''''+
 		                    ' and min(a.dta_recebimento) <=  '''+(edtDataFinal.text)+'''' +
-                        ' group by a.cod_item ) item  ';
+                        ' group by a.cod_item ) item  '; }
+          FDQuery1.SQL.Text:= 'select count(distinct rec.cod_item) ItensNovosCross '+
+                              'from (select a.cod_item                     '+
+                              '            ,min(a.dta_recebimento) dta_pri_entrada '+
+                              '            ,max(a.dta_recebimento) dta_ult_entrada '+
+                              '        from nl.ne_ficha_compras a    '+
+                              '            ,nl.ie_mascaras b         '+
+                              '            ,nl.ie_itens ie           '+
+                              '       where ie.cod_item         = a.cod_item '+
+                              '         and ie.ind_avulso       = 0         '+
+                              '         and ie.ind_inativo      = 0         '+
+                              '         and b.cod_item          = a.cod_item  '+
+                              '         and b.cod_mascara       = 170        '+
+                              '         and b.cod_niv0          = ''1''        '+
+                              '         and a.cod_emp           = 1         '+
+                              '         and a.cod_unidade      in (818,838,848,858) '+
+                              '         and a.dta_recebimento  >= trunc(sysdate - 730) '+
+                              '         and a.cod_oper          = 103          '+
+                            'having min(a.dta_recebimento) >=  '+ QuotedStr(FormatDateTime('dd/mm/yyyy',StrToDate(edtDataInicial.Text)))+
+                            '   and max(a.dta_recebimento) <=  '+ QuotedStr(FormatDateTime('dd/mm/yyyy',StrToDate(edtDataFinal.Text)))+
+                           ' group by a.cod_item ) rec';
 
        FDQuery1.Active := true;
 
@@ -256,7 +297,7 @@ begin
 	 FDQuery1.SQL.Text :=  '';
     FDQuery1.Active := False;
 
-	  FDQuery1.SQL.Text:= ' Select count(distinct oc.cod_item) as ItemNovoEntrar  '+
+	 { FDQuery1.SQL.Text:= ' Select count(distinct oc.cod_item) as ItemNovoEntrar  '+
 				             	  '	from '+
 	                  	  ' (select b.cod_item  '+
                         ' ,sum(nvl(c.qtd_prev_entr,0)) qtd_comprada '+
@@ -290,7 +331,46 @@ begin
 			                	' and a.cod_oper        = 104  '+
 			                	' and a.cod_unidade    IN (818,838,848,858) '+
 		                    ' having (sum(nvl(c.qtd_prev_entr,0)) - sum(nvl(d.qtd_recebida,0))) > 0 '+
-		                  	' group by b.cod_item ) oc';
+		                  	' group by b.cod_item ) oc';  }
+
+              FDQuery1.SQL.Text := 'Select count(distinct oc.cod_item) ItemNovoEntrar '+
+                                   ' from (select b.cod_item                   '+
+                                   '            ,sum(nvl(c.qtd_prev_entr,0)) qtd_comprada '+
+                                   '            ,sum(nvl(d.qtd_recebida,0)) qtd_recebida   '+
+                                   '        from ac_ordens_compra a     '+
+                                   '            ,ac_itens_oc b           '+
+                                   '            ,ac_parcs_itens c         '+
+                                   '            ,ac_recebimentos_oc d      '+
+                                   '            ,ie_mascaras e              '+
+                                   '            ,ie_itens ie                 '+
+                                   '       where not exists (select 1 from ne_ficha_compras ne  '+
+                                   '                          where ne.cod_item         = b.cod_item '+
+                                   '                            and ne.dta_recebimento >= sysdate - 730 '+
+                                   '                            and ne.cod_oper        in (103,104) )   '+
+                                   '         and ie.cod_item           = b.cod_item  '+
+                                   '         and ie.ind_avulso         = 0           '+
+                                   '         and ie.ind_inativo        = 0           '+
+                                   '         and e.cod_item            = b.cod_item  '+
+                                   '         and e.cod_mascara         = 170          '+
+                                   '         and e.cod_niv0            = ''1''        '+
+                                   '         and d.num_seq(+)          = b.num_seq    '+
+                                   '         and d.cod_maquina(+)      = b.cod_maquina '+
+                                   '         and d.num_seq_item(+)     = b.num_seq_item  '+
+                                   '         and d.tip_atendimento(+) is not null       '+
+                                   '         and c.num_seq             = b.num_seq       '+
+                                   '         and c.cod_maquina         = b.cod_maquina   '+
+                                   '         and c.num_seq_item        = b.num_seq_item  '+
+                                   '         and c.dta_prev_entr      >=  '+ QuotedStr(FormatDateTime('dd/mm/yyyy',StrToDate(edtDataPrevistaInicial.Text)))+
+                                   '         and c.dta_prev_entr      <=   '+ QuotedStr(FormatDateTime('dd/mm/yyyy',StrToDate(edtDataPrevistaFinal.Text)))+
+                                   '         and b.num_seq             = a.num_seq         '+
+                                   '         and b.cod_maquina         = a.cod_maquina     '+
+                                   '         and a.tip_status          = 1                 '+
+                                   '         and a.tip_situacao        = 1                 '+
+                                   '         and a.cod_oper           in (103,104)         '+
+                                   '         and a.cod_unidade        in (818,838,848,858) '+
+                                   '         and a.dta_emissao        >= trunc(sysdate - 210) '+
+                                   '    having (sum(nvl(c.qtd_prev_entr,0)) - sum(nvl(d.qtd_recebida,0))) > 0 '+
+                                   '       group by b.cod_item ) oc';
 
                 FDQuery1.Active := true;
 
@@ -308,8 +388,6 @@ begin
               grdLivroPedidos.Cells[1,1]  := FormatFloat('#,###',sQItensNovosLivro);
               grdLivroPedidos.Cells[2,1] := FormatFloat('#,###',sItensNovosCross);
               grdLivroPedidos.Cells[3,1] := FormatFloat('#,###',sItemNovoEntrar);
-
-
 end;
 
 procedure TfrmLivroPedido.edtCodigoFinalExit(Sender: TObject);
@@ -518,7 +596,7 @@ begin
       case Key of
            '0'..'9' : codigo := true;
        //    ',' : Codigo := True;
-           chr(13) : edtCodigoInicial.SetFocus; //enter
+           chr(13) : btnVizualizar.SetFocus; //enter
            chr(9)  : Codigo  := True; //Tab
            chr(27) : Codigo  := True; //esc
            chr(8)  : Codigo  := True; //Backspace
