@@ -461,7 +461,6 @@ const
                   '       vlr_pgto_pix_loja, '+
                   '       QTD_PGTO_AUTOATEND,'+
                   '       VLR_PGTO_AUTOATEND '+
-                  '       vlr_pgto_lojas     '+
                   ' from grzw_rel_pgtos_appxloja '+
                   'where (dta_mes between to_date(:inicial,''dd/mm/yyyy'') and to_date(:final,''dd/mm/yyyy'')) '+
                   'order by dta_mes';
@@ -507,7 +506,6 @@ const
                   '       sum(vlr_pgto_pix_loja) as vlr_pgto_pix_loja, '+
                   '       sum(QTD_PGTO_AUTOATEND) as QTD_PGTO_AUTOATEND,'+
                   '       sum(VLR_PGTO_AUTOATEND) as VLR_PGTO_AUTOATEND '+
-                   '      sum(vlr_pgto_lojas) as vlr_pgto_lojas '+
                   'from grzw_rel_pgtos_appxloja '+
                   'where (dta_mes between to_date(:inicial,''dd/mm/yyyy'') and to_date(:final,''dd/mm/yyyy''))';
 
@@ -696,7 +694,7 @@ end;
 
 procedure TfrmPrincipal.Envia_Email(Sender: TObject);
 begin
-     if (dayofweek(strtodate(sDataAtual))) = 5 then
+     if (dayofweek(strtodate(sDataAtual))) = 2 then
        begin
            lblMensagem.Caption := 'Enviando e-mail..';
            lblMensagem.Update;
@@ -1498,11 +1496,11 @@ begin
              //Soma Dos Totais
              dTotalRecebidos:=  qryRelatorioVendas.FieldByName('vlr_parcelas_pgto_cia').AsFloat;
              dSomaTotalRecebidos := dTotalRecebidos + dSomaTotalRecebidos ;
-             dTotalDoApp :=qryTotais.FieldByName('vlr_parcelas_pgto_app').AsFloat - qryRelatorioVendas.FieldByName('vlr_parcelas_pgto_decre').AsFloat ;
+             dTotalDoApp :=qryRelatorioVendas.FieldByName('vlr_parcelas_pgto_app').AsFloat - qryRelatorioVendas.FieldByName('vlr_parcelas_pgto_decre').AsFloat ;
              dSomaTotalDoApp := dTotalDoApp + dSomaTotalDoApp;
              dTotalDecre := qryRelatorioVendas.FieldByName('vlr_parcelas_pgto_decre').AsFloat + qryTotais.FieldByName('vlr_parcelas_pgto_0800').AsFloat;
              dSomaTotalDecre := dTotalDecre + dSomaTotalDecre;
-             dTotalLojas :=qryTotais.FieldByName('vlr_pgto_lojas').AsFloat;
+             dTotalLojas :=qryRelatorioVendas.FieldByName('vlr_pgto_loja').AsFloat;
              dSomaTotalLojas:= dTotalLojas +  dSomaTotalLojas;
 
 
@@ -1528,7 +1526,7 @@ begin
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TICKET_MEDIO_PAGAMENTOS+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_TOTAL_RS_PAGAMENTOS+'</td> '+
                            // ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOT_RS_PGTO_APP+'</td> '+
-                             ' <td style="width:50px">'+FloatToStrF(qryTotais.FieldByName('vlr_parcelas_pgto_app').AsFloat - qryRelatorioVendas.FieldByName('vlr_parcelas_pgto_decre').AsFloat ,ffNumber,18,0)+'</td> '+
+                             ' <td style="width:50px">'+FloatToStrF(dTotalDoApp ,ffNumber,18,0)+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TICKET_MEDIO_PAG_APP+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_TOT_RS_PGTO_APP+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_APP_DEBITO+'</td> '+
@@ -1545,7 +1543,7 @@ begin
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_DECRE_CARTAO+'</td> '+
                             // Sub cabeçalho LOJA....
                            // ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOT_RS_PGTO_LOJA+'</td> '+
-                             ' <td style="width:50px">'+FloatToStrF(qryTotais.FieldByName('vlr_pgto_lojas').AsFloat,ffNumber,18,0)+'</td> '+
+                             ' <td style="width:50px">'+FloatToStrF(qryRelatorioVendas.FieldByName('vlr_pgto_loja').AsFloat,ffNumber,18,0)+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TICKET_MEDIO_PAG_LOJA+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_TOT_RS_PGTO_LOJA+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_LOJA_EFETIVO+'</td> '+
@@ -1579,11 +1577,11 @@ begin
                        //' <th style="width:50px" bgcolor="LightGreen">&nbsp;</th> '+
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PARCELAS_ARECEBER+'</th> '+
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TICKET_MEDIO_VLR_PARCELAS+'</td> '+
-                       ' <th style="width:50px" bgcolor="LightGreen">'+FloatToStrF(dSomaTotalRecebidos,ffNumber,18,0)+'</td> '+
+                         ' <th style="width:50px" bgcolor="LightGreen">'+FloatToStrF(dSomaTotalRecebidos,ffNumber,18,0)+'</td> '+
                        //' <th style="width:50px" bgcolor="LightGreen">'+FloatToStrF(qryTotais.FieldByName('vlr_parcelas_pgto_app').AsFloat - qryTotais.FieldByName('vlr_parcelas_pgto_decre').AsFloat,ffNumber,18,0)+'</th> '+
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TICKET_MEDIO_PAGAMENTOS+'</th> '+
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_TOTAL_RS_PAGAMENTOS+'</th> '+
-                       ' <th style="width:50px" bgcolor="LightGreen">'+FloatToStrF(dSomaTotalDoApp,ffNumber,19,0)+'</td> '+
+                         ' <th style="width:50px" bgcolor="LightGreen">'+FloatToStrF(dSomaTotalDoApp,ffNumber,19,0)+'</td> '+
                      //  ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOT_RS_PGTO_APP+'</th> '+
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TICKET_MEDIO_PAG_APP+'</th> '+
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_TOT_RS_PGTO_APP+'</th> '+
@@ -1600,7 +1598,8 @@ begin
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_DECRE_PIX+'</th> '+
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_DECRE_CARTAO+'</th> '+
                        // Cabeçalho PAGAMENTOS R$ - LOJA...
-                       ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOT_RS_PGTO_LOJA+'</th> '+
+                      // ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOT_RS_PGTO_LOJA+'</th> '+
+                         ' <th style="width:50px" bgcolor="LightGreen">'+FloatToStrF(dSomaTotalLojas,ffNumber,19,0)+'</td> '+
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TICKET_MEDIO_PAG_LOJA+'</th> '+
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_TOT_RS_PGTO_LOJA+'</th> '+
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_LOJA_EFETIVO+'</th> '+

@@ -409,7 +409,7 @@ type
         GRZW_REL_PGTOS_APPXLOJA: RGRZW_REL_PGTOS_APPXLOJA;
         EMAIL: REMAIL;
         sHTMLEMail, sHTMLLinha: WideString;
-        sDataAtual, sDataInicio, sDataFinal, sDataInicioAno: String;
+        sDataAtual, sDataInicio, sDataFinal, sDataInicioAno,sAnoAtual: String;
         aEstilos: array of String;
         mmoEstilos: TMemo;
         iEstilos: Integer;
@@ -702,6 +702,7 @@ begin
 
            Log('Envia e-mail...');
            // Configura e envia E-Mail...
+
            EMAIL.CORPO := sHTMLEMail;
            acbrEMail.From := EMAIL.ENDERECO;
            acbrEMail.FromName := EMAIL.NOME;
@@ -716,6 +717,7 @@ begin
            acbrEMail.Body.Add(EMAIL.CORPO);
            acbrEMail.IsHTML := True;
            acbrEMail.SetTLS := True;
+           acbrEMail.SetSSL := False;
            //try
               acbrEMail.Send;
            {except
@@ -1667,6 +1669,7 @@ begin
      sDataAtual := DateToStr(Date);
      sDiaAtual := Copy(sDataAtual,0,2);
      sMesAtual := Copy(sDataAtual,4,2);
+     sAnoAtual := Copy(sDataAtual,7,4);
      // Gera as datas do intervalo. Gera o primeiro dia do mês corrente até
      // o dia atual (dia de execução da rotina)...
      // Obs.: Execução semanal, toda segunda-feira, para envio semanal, por
@@ -1733,6 +1736,14 @@ begin
        begin
          sDataInicio := '01'+'/'+sMesAnterior+'/'+Copy(sDataAtual,7,4);
          sDataFinal  := sUltimoDiaMesAnterior+'/'+sMesAnterior+'/'+Copy(sDataAtual,7,4);
+       end;
+    if (sDiaAtual = '01') and (sMesAtual = '01') then
+       begin
+         sAnoAtual := IntToStr(StrToInt(sAnoAtual) - 1);
+         sDataInicio := '01/12'+'/'+sAnoAtual;
+         sDataFinal  := '31/12'+'/'+sAnoAtual;
+
+
        end;
 
      edtInicio.Text := sDataInicio;
