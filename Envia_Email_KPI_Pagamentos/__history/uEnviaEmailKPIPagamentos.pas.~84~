@@ -638,7 +638,7 @@ begin
      qryRelatorioVendas.Active := False;
      qryRelatorioVendas.SQL.Clear;
      qryRelatorioVendas.SQL.Add(sSQLSelectPagamentos);
-     //qryRelatorioVendas.Params.ParamByName('inicial').AsString := edtInicio.Text;
+     //qryRelatorioVendas.Params.ParamByName('inicial').AsString := sDataInicioAno;
      qryRelatorioVendas.Params.ParamByName('inicial').AsString := sDataInicioAno;
      qryRelatorioVendas.Params.ParamByName('final').AsString := edtFinal.Text;
      qryRelatorioVendas.Active := True;
@@ -651,6 +651,8 @@ begin
      //qryTotais.Params.ParamByName('inicial').AsString := edtInicio.Text;
      qryTotais.Params.ParamByName('inicial').AsString := sDataInicioAno;
      qryTotais.Params.ParamByName('final').AsString := edtFinal.Text;
+       qryTotais.Params.ParamByName('inicial').AsString :=  '01/01/2021';
+     qryTotais.Params.ParamByName('final').AsString := '31/01/2021';
      qryTotais.Active := True;
 end;
 
@@ -702,6 +704,7 @@ begin
 
            Log('Envia e-mail...');
            // Configura e envia E-Mail...
+
            EMAIL.CORPO := sHTMLEMail;
            acbrEMail.From := EMAIL.ENDERECO;
            acbrEMail.FromName := EMAIL.NOME;
@@ -716,6 +719,7 @@ begin
            acbrEMail.Body.Add(EMAIL.CORPO);
            acbrEMail.IsHTML := True;
            acbrEMail.SetTLS := True;
+           acbrEMail.SetSSL := False;
            //try
               acbrEMail.Send;
            {except
@@ -1677,6 +1681,7 @@ begin
     // sDataInicio := DateToStr(IncDay(StrToDate(sDataAtual), -1));
      sDataFinal := sDataAtual;
      sDataInicioAno := '01/01/'+Copy(sDataAtual,7,4);
+     sDataInicioAno := DateToStr(IncMonth(StrToDate(sDataInicioAno),-12));
 
      case StrToInt(sMesAtual) of
          1 :begin
@@ -1737,8 +1742,9 @@ begin
        end;
     if (sDiaAtual = '01') and (sMesAtual = '01') then
        begin
-         sDataFinal := sDataAtual;
-         sDataInicioAno := '01/01/'+ IntToStr(StrToInt(sAnoAtual) - 1) ;
+         sAnoAtual := IntToStr(StrToInt(sAnoAtual) - 1);
+         sDataInicio := '01/12'+'/'+sAnoAtual;
+         sDataFinal  := '31/12'+'/'+sAnoAtual;
        end;
 
      edtInicio.Text := sDataInicio;

@@ -702,6 +702,7 @@ begin
 
            Log('Envia e-mail...');
            // Configura e envia E-Mail...
+
            EMAIL.CORPO := sHTMLEMail;
            acbrEMail.From := EMAIL.ENDERECO;
            acbrEMail.FromName := EMAIL.NOME;
@@ -716,6 +717,7 @@ begin
            acbrEMail.Body.Add(EMAIL.CORPO);
            acbrEMail.IsHTML := True;
            acbrEMail.SetTLS := True;
+           acbrEMail.SetSSL := False;
            //try
               acbrEMail.Send;
            {except
@@ -1667,7 +1669,7 @@ begin
      sDataAtual := DateToStr(Date);
      sDiaAtual := Copy(sDataAtual,0,2);
      sMesAtual := Copy(sDataAtual,4,2);
-     sAnoAtual := Copy(sDataAtual,7,4)
+     sAnoAtual := Copy(sDataAtual,7,4);
      // Gera as datas do intervalo. Gera o primeiro dia do mês corrente até
      // o dia atual (dia de execução da rotina)...
      // Obs.: Execução semanal, toda segunda-feira, para envio semanal, por
@@ -1735,10 +1737,11 @@ begin
          sDataInicio := '01'+'/'+sMesAnterior+'/'+Copy(sDataAtual,7,4);
          sDataFinal  := sUltimoDiaMesAnterior+'/'+sMesAnterior+'/'+Copy(sDataAtual,7,4);
        end;
-    if (sDiaAtual = '31') and (sMesAtual = '12') then
+    if (sDiaAtual = '01') and (sMesAtual = '01') then
        begin
-         sDataFinal := sDataAtual;
-         sDataInicioAno := '01/01/'+Copy(sDataAtual,7,4);
+         sAnoAtual := IntToStr(StrToInt(sAnoAtual) - 1);
+         sDataInicio := '01/12'+'/'+sAnoAtual;
+         sDataFinal  := '31/12'+'/'+sAnoAtual;
        end;
 
      edtInicio.Text := sDataInicio;

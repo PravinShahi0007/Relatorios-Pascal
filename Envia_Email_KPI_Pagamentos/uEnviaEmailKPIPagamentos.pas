@@ -638,7 +638,7 @@ begin
      qryRelatorioVendas.Active := False;
      qryRelatorioVendas.SQL.Clear;
      qryRelatorioVendas.SQL.Add(sSQLSelectPagamentos);
-     //qryRelatorioVendas.Params.ParamByName('inicial').AsString := edtInicio.Text;
+     //qryRelatorioVendas.Params.ParamByName('inicial').AsString := sDataInicioAno;
      qryRelatorioVendas.Params.ParamByName('inicial').AsString := sDataInicioAno;
      qryRelatorioVendas.Params.ParamByName('final').AsString := edtFinal.Text;
      qryRelatorioVendas.Active := True;
@@ -1679,6 +1679,7 @@ begin
     // sDataInicio := DateToStr(IncDay(StrToDate(sDataAtual), -1));
      sDataFinal := sDataAtual;
      sDataInicioAno := '01/01/'+Copy(sDataAtual,7,4);
+     sDataInicioAno := DateToStr(IncMonth(StrToDate(sDataInicioAno),-12));
 
      case StrToInt(sMesAtual) of
          1 :begin
@@ -1742,8 +1743,6 @@ begin
          sAnoAtual := IntToStr(StrToInt(sAnoAtual) - 1);
          sDataInicio := '01/12'+'/'+sAnoAtual;
          sDataFinal  := '31/12'+'/'+sAnoAtual;
-
-
        end;
 
      edtInicio.Text := sDataInicio;

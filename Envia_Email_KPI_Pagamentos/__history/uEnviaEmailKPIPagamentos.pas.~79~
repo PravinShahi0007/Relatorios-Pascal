@@ -702,6 +702,7 @@ begin
 
            Log('Envia e-mail...');
            // Configura e envia E-Mail...
+
            EMAIL.CORPO := sHTMLEMail;
            acbrEMail.From := EMAIL.ENDERECO;
            acbrEMail.FromName := EMAIL.NOME;
@@ -716,6 +717,7 @@ begin
            acbrEMail.Body.Add(EMAIL.CORPO);
            acbrEMail.IsHTML := True;
            acbrEMail.SetTLS := True;
+           acbrEMail.SetSSL := False;
            //try
               acbrEMail.Send;
            {except
@@ -1155,6 +1157,7 @@ begin
         qryRelatorioVendas.First;
         while not qryRelatorioVendas.Eof do
         begin
+             qryRelatorioVendas.RecordCount;
              // Dados do SQL...
              GRZW_REL_PGTOS_APPXLOJA.DTA_MES :=  qryRelatorioVendas.FieldByName('dta_mes').AsDateTime;
              GRZW_REL_PGTOS_APPXLOJA.ANOMES := Copy(DateToStr(GRZW_REL_PGTOS_APPXLOJA.DTA_MES),4,7);
@@ -1735,10 +1738,11 @@ begin
          sDataInicio := '01'+'/'+sMesAnterior+'/'+Copy(sDataAtual,7,4);
          sDataFinal  := sUltimoDiaMesAnterior+'/'+sMesAnterior+'/'+Copy(sDataAtual,7,4);
        end;
-    if (sDiaAtual = '31') and (sMesAtual = '12') then
+    if (sDiaAtual = '01') and (sMesAtual = '01') then
        begin
-         sDataFinal := sDataAtual;
-         sDataInicioAno := '01/01/'+Copy(sDataAtual,7,4);
+         sAnoAtual := IntToStr(StrToInt(sAnoAtual) - 1);
+         sDataInicio := '01/12'+'/'+sAnoAtual;
+         sDataFinal  := '31/12'+'/'+sAnoAtual;
        end;
 
      edtInicio.Text := sDataInicio;

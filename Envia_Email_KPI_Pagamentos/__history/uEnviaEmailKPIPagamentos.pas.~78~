@@ -409,7 +409,7 @@ type
         GRZW_REL_PGTOS_APPXLOJA: RGRZW_REL_PGTOS_APPXLOJA;
         EMAIL: REMAIL;
         sHTMLEMail, sHTMLLinha: WideString;
-        sDataAtual, sDataInicio, sDataFinal, sDataInicioAno: String;
+        sDataAtual, sDataInicio, sDataFinal, sDataInicioAno,sAnoAtual: String;
         aEstilos: array of String;
         mmoEstilos: TMemo;
         iEstilos: Integer;
@@ -694,7 +694,7 @@ end;
 
 procedure TfrmPrincipal.Envia_Email(Sender: TObject);
 begin
-     if (dayofweek(strtodate(sDataAtual))) = 5 then
+     if (dayofweek(strtodate(sDataAtual))) = 2 then
        begin
            lblMensagem.Caption := 'Enviando e-mail..';
            lblMensagem.Update;
@@ -702,6 +702,7 @@ begin
 
            Log('Envia e-mail...');
            // Configura e envia E-Mail...
+
            EMAIL.CORPO := sHTMLEMail;
            acbrEMail.From := EMAIL.ENDERECO;
            acbrEMail.FromName := EMAIL.NOME;
@@ -716,6 +717,7 @@ begin
            acbrEMail.Body.Add(EMAIL.CORPO);
            acbrEMail.IsHTML := True;
            acbrEMail.SetTLS := True;
+           acbrEMail.SetSSL := False;
            //try
               acbrEMail.Send;
            {except
@@ -1496,7 +1498,7 @@ begin
              //Soma Dos Totais
              dTotalRecebidos:=  qryRelatorioVendas.FieldByName('vlr_parcelas_pgto_cia').AsFloat;
              dSomaTotalRecebidos := dTotalRecebidos + dSomaTotalRecebidos ;
-             dTotalDoApp :=qryTotais.FieldByName('vlr_parcelas_pgto_app').AsFloat - qryRelatorioVendas.FieldByName('vlr_parcelas_pgto_decre').AsFloat ;
+             dTotalDoApp :=qryRelatorioVendas.FieldByName('vlr_parcelas_pgto_app').AsFloat - qryRelatorioVendas.FieldByName('vlr_parcelas_pgto_decre').AsFloat ;
              dSomaTotalDoApp := dTotalDoApp + dSomaTotalDoApp;
              dTotalDecre := qryRelatorioVendas.FieldByName('vlr_parcelas_pgto_decre').AsFloat + qryTotais.FieldByName('vlr_parcelas_pgto_0800').AsFloat;
              dSomaTotalDecre := dTotalDecre + dSomaTotalDecre;
@@ -1526,7 +1528,7 @@ begin
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TICKET_MEDIO_PAGAMENTOS+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_TOTAL_RS_PAGAMENTOS+'</td> '+
                            // ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOT_RS_PGTO_APP+'</td> '+
-                             ' <td style="width:50px">'+FloatToStrF(qryTotais.FieldByName('vlr_parcelas_pgto_app').AsFloat - qryRelatorioVendas.FieldByName('vlr_parcelas_pgto_decre').AsFloat ,ffNumber,18,0)+'</td> '+
+                             ' <td style="width:50px">'+FloatToStrF(dTotalDoApp ,ffNumber,18,0)+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TICKET_MEDIO_PAG_APP+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_TOT_RS_PGTO_APP+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_APP_DEBITO+'</td> '+
@@ -1667,6 +1669,7 @@ begin
      sDataAtual := DateToStr(Date);
      sDiaAtual := Copy(sDataAtual,0,2);
      sMesAtual := Copy(sDataAtual,4,2);
+     sAnoAtual := Copy(sDataAtual,7,4);
      // Gera as datas do intervalo. Gera o primeiro dia do mês corrente até
      // o dia atual (dia de execução da rotina)...
      // Obs.: Execução semanal, toda segunda-feira, para envio semanal, por
@@ -1733,6 +1736,14 @@ begin
        begin
          sDataInicio := '01'+'/'+sMesAnterior+'/'+Copy(sDataAtual,7,4);
          sDataFinal  := sUltimoDiaMesAnterior+'/'+sMesAnterior+'/'+Copy(sDataAtual,7,4);
+       end;
+    if (sDiaAtual = '01') and (sMesAtual = '01') then
+       begin
+         sAnoAtual := IntToStr(StrToInt(sAnoAtual) - 1);
+         sDataInicio := '01/12'+'/'+sAnoAtual;
+         sDataFinal  := '31/12'+'/'+sAnoAtual;
+
+
        end;
 
      edtInicio.Text := sDataInicio;
