@@ -302,6 +302,14 @@ Var
    iContProdutos, iUnidade : Integer;
    sCabecalho : string;
 begin
+
+      if ( (StrToTime( TimeToStr(now)) >= StrToTime('22:05:00') )
+      and  (StrToTime( TimeToStr(now)) <= StrToTime('07:50:00')
+    )) then
+  begin
+        exit;
+  end;
+
   Log('entrou no gera email');
   try
     sCabecalho := '';
