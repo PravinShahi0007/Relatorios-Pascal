@@ -72,7 +72,7 @@ var
   iIndGrz, iIndPrm, iIndArr, iIndFrg, iIndTot : Integer;
   sUsuario, sParametro, sData : String;
   iArqIni : tIniFile;
-  sAssunto, sEmailFrom, sUserName, sPassword, sNome : String;
+  sAssunto, sEmailFrom, sUserName, sPassword, sNome, sHost, sPort  : String;
 
 
 implementation
@@ -162,7 +162,9 @@ begin
   sEmailPrm := iArqIni.ReadString('EMAIL','PorMenos','');
   sEmailFrg := iArqIni.ReadString('EMAIL','FrancoGiorgi','');
   sEmailTot := iArqIni.ReadString('EMAIL','Tottal','');
-  // sEmailCCCia := iArqIni.ReadString('EMAIL','Cia','');
+  sHost := iArqIni.ReadString('EMAIL','Host','');
+  sPort := iArqIni.ReadString('EMAIL','Port','');
+  sEmailCCCia := iArqIni.ReadString('EMAIL','Cia','');
   sAssunto := iArqIni.ReadString('EMAIL FROM','Assunto','');
   sEmailFrom := iArqIni.ReadString('EMAIL FROM','Endereco','');
   sUserName := iArqIni.ReadString('EMAIL FROM','UserName','');
@@ -388,10 +390,10 @@ begin
 
        ACBrMail1.From := sEmailFrom;
        ACBrMail1.FromName := sNome;
-       ACBrMail1.Host := 'smtp.office365.com';
+       ACBrMail1.Host := sHost;
        ACBrMail1.Username := sUserName;
        ACBrMail1.Password := sPassword;
-       ACBrMail1.Port := '587';
+       ACBrMail1.Port := sPort;
        ACBrMail1.AddAddress(sEmailGrz,'');
       // ACBrMail1.AddCC(sEmailCCGrz);
        ACBrMail1.Subject := sAssunto;
@@ -400,13 +402,8 @@ begin
        AcbrMail1.SetTLS := True;
        ACBrMail1.Send;
 
-
        Log('Rede: '+ FloatToStr(CodEmp));
        Log('Enviando Email Para: '+sEmailFrom);
-
-
-
-
 
   except
     on e: Exception do
@@ -461,6 +458,21 @@ end;
 
 procedure TfrmPrincipal.FormActivate(Sender: TObject);
 begin
+     try
+     {FDConnection1.Params.Database := '172.16.0.40:1521/GRZPROD';
+     FDConnection1.Params.UserName := 'nl';
+     FDConnection1.Params.Password := 'nl'; }
+     FDConnection1.Connected := True;
+   except
+       on E:EDatabaseError do
+            begin
+                 MessageDlg('Falha ao conectar o banco '+#13+
+                            'a aplicação vai fechar!'+#13+
+                            E.Message,mtInformation,[mbOk], 0);
+                Application.Terminate;
+            end;
+   end;
+
      AbreSistema;
      Executa;
 end;
