@@ -22,7 +22,6 @@ type
     ACBrMail1: TACBrMail;
     btnImprimir: TBitBtn;
     procedure btnImprimirClick(Sender: TObject);
-
     procedure CarregaParametros;
     procedure FormCreate(Sender: TObject);
   private
@@ -64,7 +63,7 @@ begin
     sCabecalho := sCabecalho + '<th style="width:500px" >Nome</th>';
     sCabecalho := sCabecalho + '<th style="width:100px" >Loja Destino</th>';
     sCabecalho := sCabecalho + '<th style="width:500px" >Nome</th>';
-    sCabecalho := sCabecalho + '<th style="width:100px" >Grupo De Itens</th>';
+    sCabecalho := sCabecalho + '<th style="width:100px" >Grupo de Itens</th>';
 
     sCabecalho := sCabecalho + '</tr>';
 
@@ -100,8 +99,8 @@ begin
                   '   and n.cod_unidade = b.cod_unidade   '+
                   '   and n.loja_destino = c.cod_unidade  '+
                   '   and n.loja_destino > 0              '+
-                  '   and n.dta_emissao ='+ QuotedStr('01/04/2022') +
-                //  '   and n.dta_emissao ='+ QuotedStr(DateToStr(Date - 3)) +
+                  //'   and n.dta_emissao ='+ QuotedStr('01/04/2022') +
+                  '   and n.dta_emissao ='+ QuotedStr(DateToStr(Date - 1)) +
                   ' group by n.cod_unidade,b.des_nome_loja, n.num_nota, n.dta_venda, n.cod_cliente, n.des_dest,  '+
                   '             n.des_ender_dest, n.des_bairro_dest, n.num_cep_dest, n.des_cidade_dest,   '+
                   '             n.vlr_produtos, n.vlr_total, n.num_seq_nota, n.vlr_liquido, n.txt_observacao,  '+
@@ -133,6 +132,7 @@ begin
                       ' width: 1500px;'+
                       ' }'+
                       ' </style> ';
+
        sHtml := sHtml + '<html>';
        sHtml := sHtml + '<head>';
        sHtml := sHtml + '<title>Grupo Grazziotin</title>';
@@ -140,6 +140,7 @@ begin
        sHtml := sHtml + '</head>';
        sHtml := sHtml + '<body>';
        sHtml := sHtml + 'Data: '+FormatDateTime('dd/mm/yyyy',Date) + '  Hora: '+FormatDateTime('hh:mm', Time)+'</b></p>';
+       sHtml := sHtml + 'Notas faturadas mas podem não ter impotado para o NL.'+'</b></p>';
        sHtml := sHtml + '<table border="1" cellpadding="3" cellspacing="1">';
 
        sHtml := sHtml + sCabecalho;
@@ -168,10 +169,10 @@ begin
                 begin
                    sCodItem :=   qryItens.FieldByName('cod_item').AsString;
                    sCodGrupo :=  qryItens.FieldByName('codEditado').AsString;
-                   sCodGrupoAtual := Copy(sCodGrupo,3,2);
+                   sCodGrupoAtual := Copy(sCodGrupo,0,4);
                       if sCodGrupoAtual <> sCodGrupoAntigo then
                       begin
-                        sCodGrupoTotal := Copy(sCodGrupo,3,2) +','+sCodGrupoAntigo;
+                        sCodGrupoTotal := Copy(sCodGrupo,0,4) +','+sCodGrupoAntigo;
                         sCodGrupoAntigo:= sCodGrupoAtual;
                       end;
 
@@ -180,6 +181,7 @@ begin
 
                 iTotalCaracteres := length(sCodGrupoTotal);
                 sCodGrupoTotal  := copy(sCodGrupoTotal,1,iTotalCaracteres-1);
+                sCodGrupoTotal :=copy(sCodGrupoTotal,0,2) +'.'+copy(sCodGrupoTotal,3,4);
 
                 sHtml := sHtml + '<tr>';
                 sHtml := sHtml + '<td align="center" WIDTH=100>'+qry.FieldByName('cod_unidade').AsString+'</td>';
@@ -190,9 +192,8 @@ begin
                 sHtml := sHtml + '<td align="center" WIDTH=100>'+qry.FieldByName('cod_cliente').AsString+'</td>';
                 sHtml := sHtml + '<td align="center" WIDTH=500>'+qry.FieldByName('des_dest').AsString+'</td>';
                 sHtml := sHtml + '<td align="center" WIDTH=100>'+qry.FieldByName('loja_destino').AsString+'</td>';
-                //sHtml := sHtml + '<td align="center" WIDTH=500>'+qry.FieldByName('NomeLojaDes').AsString+'</td>';
-                sHtml := sHtml + '<td style="width:500px">'+qry.FieldByName('NomeLojaDes').AsString+'</td>';
-                sHtml := sHtml + '<td align="center" WIDTH=150>'+sCodGrupoTotal+'</td>';
+                sHtml := sHtml + '<td align="center" WIDTH=500>'+qry.FieldByName('NomeLojaDes').AsString+'</td>';
+                sHtml := sHtml + '<td align="center" WIDTH=150>'+sCodGrupoTotal +'</td>';
                 sHtml := sHtml + '</tr>';
                 qry.Next;
             end;

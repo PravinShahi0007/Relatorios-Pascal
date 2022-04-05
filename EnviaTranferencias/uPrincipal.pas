@@ -99,7 +99,7 @@ begin
                   '   and n.cod_unidade = b.cod_unidade   '+
                   '   and n.loja_destino = c.cod_unidade  '+
                   '   and n.loja_destino > 0              '+
-                  //'   and n.dta_emissao ='+ QuotedStr('01/04/2022') +
+                 // '   and n.dta_emissao ='+ QuotedStr('01/04/2022') +
                   '   and n.dta_emissao ='+ QuotedStr(DateToStr(Date - 1)) +
                   ' group by n.cod_unidade,b.des_nome_loja, n.num_nota, n.dta_venda, n.cod_cliente, n.des_dest,  '+
                   '             n.des_ender_dest, n.des_bairro_dest, n.num_cep_dest, n.des_cidade_dest,   '+
@@ -140,6 +140,7 @@ begin
        sHtml := sHtml + '</head>';
        sHtml := sHtml + '<body>';
        sHtml := sHtml + 'Data: '+FormatDateTime('dd/mm/yyyy',Date) + '  Hora: '+FormatDateTime('hh:mm', Time)+'</b></p>';
+       sHtml := sHtml + 'Notas faturadas, porém, podem não estar integradas ao NL..'+'</p>';
        sHtml := sHtml + '<table border="1" cellpadding="3" cellspacing="1">';
 
        sHtml := sHtml + sCabecalho;
