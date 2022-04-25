@@ -200,7 +200,7 @@ begin
                 sHtml := sHtml + '<td align="center" WIDTH=500>'+qry.FieldByName('des_dest').AsString+'</td>';
                 sHtml := sHtml + '<td align="center" WIDTH=100>'+qry.FieldByName('loja_destino').AsString+'</td>';
                 sHtml := sHtml + '<td align="center" WIDTH=500>'+qry.FieldByName('NomeLojaDes').AsString+'</td>';
-                sHtml := sHtml + '<td align="center" WIDTH=150>'+sCodGrupoTotal +'</td>';
+                sHtml := sHtml + '<td align="center" WIDTH=150>'+copy(sCodGrupoTotal,0,5) +'</td>';
                 sHtml := sHtml + '</tr>';
                 qry.Next;
             end;

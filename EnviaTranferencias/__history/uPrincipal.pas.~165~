@@ -70,7 +70,8 @@ begin
     qry.Active := false;
     qry.SQL.Clear;
     qry.sql.Add(' select  n.cod_unidade,   '+
-                        '  b.des_nome_loja,'+
+                     //   '  b.des_nome_loja,'+
+                        '  p.des_fantasia, '+
                         '  n.num_nota,     '+
                         '  n.dta_venda,    '+
                         '  n.cod_cliente,  '+
@@ -85,26 +86,31 @@ begin
                         '  n.vlr_liquido,     '+
                         '  n.txt_observacao,  '+
                         '  n.loja_destino,    '+
+                        '  s.des_fantasia,      '+
                         '  n.rde_item,         '+
-                        '  c.des_nome_loja as NomeLojaDes,   '+
+                        '  s.des_fantasia as NomeLojaDes,'+
                         '  count(i.des_item)    '+
                   '  from grz_lojas_ne_notas n,  '+
                   '       grz_lojas_ne_notas_itens i,'+
                   '       grz_lojas_tamanho_base b,  '+
-                  '       grz_lojas_tamanho_base c   '+
+                  '       grz_lojas_tamanho_base c,  '+
+                  '       ps_pessoas p,              '+
+                  '       ps_pessoas s               '+
                   ' where n.cod_unidade = i.cod_unidade '+
                   '   and n.num_nota = i.num_nota       '+
                   '   and n.cod_filial = i.cod_filial    '+
                   '   and n.dta_emissao = i.dta_emissao  '+
                   '   and n.cod_unidade = b.cod_unidade   '+
                   '   and n.loja_destino = c.cod_unidade  '+
+                  '   and n.loja_destino = s.cod_pessoa   '+
+                  '   and p.cod_pessoa = b.cod_unidade    '+
                   '   and n.loja_destino > 0              '+
-                //  '   and n.dta_emissao ='+ QuotedStr('01/04/2022') +
-                  '   and n.dta_emissao ='+ QuotedStr(DateToStr(Date - 1)) +
-                  ' group by n.cod_unidade,b.des_nome_loja, n.num_nota, n.dta_venda, n.cod_cliente, n.des_dest,  '+
+                 // '   and n.dta_emissao ='+ QuotedStr('01/04/2022') +
+                  '   and n.dta_emissao >= '+ QuotedStr(DateToStr(Date - 7)) +
+                  ' group by n.cod_unidade,p.des_fantasia, n.num_nota, n.dta_venda, n.cod_cliente, n.des_dest,  '+
                   '             n.des_ender_dest, n.des_bairro_dest, n.num_cep_dest, n.des_cidade_dest,   '+
-                  '             n.vlr_produtos, n.vlr_total, n.num_seq_nota, n.vlr_liquido, n.txt_observacao,  '+
-                  '             n.loja_destino,  n.rde_item,  c.des_nome_loja' +
+                  '             n.vlr_produtos, n.loja_destino, n.vlr_total, n.num_seq_nota, n.vlr_liquido, n.txt_observacao,  '+
+                  '             s.des_fantasia,  n.rde_item,  c.des_nome_loja' +
                   ' order by n.cod_unidade, n.num_nota '    );
 
    qry.Active := true;
@@ -140,6 +146,7 @@ begin
        sHtml := sHtml + '</head>';
        sHtml := sHtml + '<body>';
        sHtml := sHtml + 'Data: '+FormatDateTime('dd/mm/yyyy',Date) + '  Hora: '+FormatDateTime('hh:mm', Time)+'</b></p>';
+       sHtml := sHtml + 'Notas faturadas, porém, podem não estar integradas ao NL..'+'</p>';
        sHtml := sHtml + '<table border="1" cellpadding="3" cellspacing="1">';
 
        sHtml := sHtml + sCabecalho;
@@ -184,7 +191,8 @@ begin
 
                 sHtml := sHtml + '<tr>';
                 sHtml := sHtml + '<td align="center" WIDTH=100>'+qry.FieldByName('cod_unidade').AsString+'</td>';
-                sHtml := sHtml + '<td align="center" WIDTH=500>'+qry.FieldByName('des_nome_loja').AsString+'</td>';
+                //sHtml := sHtml + '<td align="center" WIDTH=500>'+qry.FieldByName('des_nome_loja').AsString+'</td>';
+                sHtml := sHtml + '<td align="center" WIDTH=500>'+qry.FieldByName('des_fantasia').AsString+'</td>';
                 sHtml := sHtml + '<td align="center" WIDTH=100>'+qry.FieldByName('num_nota').AsString+'</td>';
                 sHtml := sHtml + '<td align="center" WIDTH=100>'+qry.FieldByName('dta_venda').AsString+'</td>';
                 sHtml := sHtml + '<td align="center" WIDTH=100>'+FormatFloat('#,0.00;-#,0.00',qry.FieldByName('vlr_total').AsFloat)+'</td>';

@@ -3,8 +3,8 @@
 	<Transactions>
     <Transaction>2022/03/04 13:43:16.000.699,=C:\Users\388717\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
     <Transaction>2022/04/01 14:52:05.000.659,=C:\Users\388717\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2022/04/01 14:53:29.000.830,C:\Users\388717\Desktop\EnviaTranferencias\uPrincipal.dfm=C:\Users\388717\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
-    <Transaction>2022/04/01 14:53:29.000.830,C:\Users\388717\Desktop\EnviaTranferencias\uPrincipal.pas=C:\Users\388717\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2022/04/01 14:53:36.000.596,C:\Users\388717\Desktop\EnviaTranferencias\pEnviaTranferencias.dproj=C:\Users\388717\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2022/04/01 14:53:29.000.830,C:\Users\388717\Documents\Embarcadero\Studio\Projects\Unit1.pas=C:\Users\388717\Desktop\EnviaTranferencias\uPrincipal.pas</Transaction>
+    <Transaction>2022/04/01 14:53:29.000.830,C:\Users\388717\Documents\Embarcadero\Studio\Projects\Unit1.dfm=C:\Users\388717\Desktop\EnviaTranferencias\uPrincipal.dfm</Transaction>
+    <Transaction>2022/04/01 14:53:36.000.596,C:\Users\388717\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\388717\Desktop\EnviaTranferencias\pEnviaTranferencias.dproj</Transaction>
   </Transactions>
 </BorlandProject>
