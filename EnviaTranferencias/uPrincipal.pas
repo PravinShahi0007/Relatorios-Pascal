@@ -107,6 +107,7 @@ begin
                   '   and n.loja_destino > 0              '+
                  // '   and n.dta_emissao ='+ QuotedStr('01/04/2022') +
                   '   and n.dta_emissao >= '+ QuotedStr(DateToStr(Date - 7)) +
+                  ' and n.ind_mot_transf in (7,3) '+ //Foi colocado para pegar apenas transferencia entre unidades e e excesso de estoque na loja
                   ' group by n.cod_unidade,p.des_fantasia, n.num_nota, n.dta_venda, n.cod_cliente, n.des_dest,  '+
                   '             n.des_ender_dest, n.des_bairro_dest, n.num_cep_dest, n.des_cidade_dest,   '+
                   '             n.vlr_produtos, n.loja_destino, n.vlr_total, n.num_seq_nota, n.vlr_liquido, n.txt_observacao,  '+
