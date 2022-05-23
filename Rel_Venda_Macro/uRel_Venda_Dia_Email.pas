@@ -23,7 +23,7 @@ uses
   daDataModule, ppBands, ppClass, ppCtrls, ppStrtch, ppMemo, ppVar, ppPrnabl,
   ppCache, ppComm, ppRelatv, ppProd, ppReport, Vcl.StdCtrls, Vcl.Mask,
   Vcl.Buttons, ACBrBase, ACBrMail,System.DateUtils,System.IniFiles, Vcl.ExtCtrls,
-  Vcl.Themes, Vcl.Styles;
+  Vcl.Themes, Vcl.Styles,StrUtils;
 
 type
   TfrmRel_Venda_dia_Email = class(TForm)
@@ -176,7 +176,7 @@ var
    sMes,sAno,sDia,sDt_Inicial,sDt_Final,sSQL,sCaminhoArquivo,sNomeArquivo,
         sDiretorio: String;
    bEnvio: Boolean;
-   iTentativas: Integer;
+   iTentativas,icont: Integer;
 begin
      LimpaPdf;
 
@@ -208,71 +208,92 @@ begin
      sAno  := copy(DateToStr(Date-1),7,4);
      sCaminhoArquivo := 'C:\Rel_Venda_Email_Macro\';
 
-     sSQL := '';
-     sSQL := ' select * from grazz.vda_venda_ano '+
-             ' where ano >= '+sAno+' - 2 '+
-             ' and mes = '+sMes+
-             ' and ind_nivel = 6 '+
-             ' order by ind_nivel desc,cod_emp,cod_unidade,ano,dta_movimento ';
-
-     sDia := '01';
-     sDt_Inicial := PadLeft(sDia+'/'+sMes+'/'+sAno,8,'0');
-     sDt_Final := PadLeft(sDia+'/'+sMes+'/'+sAno,8,'0');
-     prlMes.Caption := 'Mês/Ano - '+sMes+'/'+sAno;
-     prlEmissao.Caption := 'Emissão - '+DateToStr(Date());
-
-     if qryRelVenda.Active then
-        qryRelVenda.Active := False;
-
-     qryRelVenda.SQL.Clear;
-     qryRelVenda.SQL.Add(sSQL);
-     if not qryRelVenda.Active then
-        qryRelVenda.open;
-
-     sNomeArquivo := 'VendasPorMACRO_'+Elimina_Caracteres(DateToStr(date),'/','')+'.pdf';
-     pprVda_Venda_Temp.AllowPrintToFile := True;
-     pprVda_Venda_Temp.DeviceType := 'PDF';
-     pprVda_Venda_Temp.ShowPrintDialog := False;
-     pprVda_Venda_Temp.TextFileName := sCaminhoArquivo+sNomeArquivo;
-     pprVda_Venda_Temp.Print;
-
-     if (FileExists(sCaminhoArquivo+sNomeArquivo)) then
+     icont := 1739;
+     while icont <= 1741 do //While pra gerar um arquivo para cada macro
      begin
-          iTentativas := 0;
-          repeat
-                bEnvio := True;
-                Inc(iTentativas);
-                try
-                   pnlRodape.Caption := '  Tentativas de ENVIO: '+FloatToStrF(iTentativas,ffNumber,11,0);
-                   pnlRodape.Update;
-                   Delay(200);
+         sSQL := '';
+         sSQL := ' select * from grazz.vda_venda_ano '+
+                 ' where ano >= '+sAno+' - 2 '+
+                 ' and mes = '+sMes+
+                // ' and ind_nivel = 6 '+
+                 ' and ind_nivel in (2,6) '+
+                 ' and cod_macro = '+ IntToStr(icont)+
+                 ' order by ind_nivel desc,cod_emp,cod_unidade,ano,dta_movimento ';
 
-                   ACBrMail1.Clear;
-                   ACBrMail1.ClearAttachments;
-                   ACBrMail1.SMTP.Reset;
+         sDia := '01';
+         sDt_Inicial := PadLeft(sDia+'/'+sMes+'/'+sAno,8,'0');
+         sDt_Final := PadLeft(sDia+'/'+sMes+'/'+sAno,8,'0');
+         prlMes.Caption := 'Mês/Ano - '+sMes+'/'+sAno;
+         prlEmissao.Caption := 'Emissão - '+DateToStr(Date());
 
-                   ACBrMail1.From := sEmailFrom;
-                   ACBrMail1.FromName := sNome;
-                   ACBrMail1.Host := 'smtp.office365.com';
-                   ACBrMail1.Username := sUserName;
-                   ACBrMail1.Password := sPassword;
-                   ACBrMail1.Port := '587';
-                   ACBrMail1.AddAddress(sEmail,'');
-                   ACBrMail1.AddBCC(sCopia_oculta);
-                   ACBrMail1.Subject := sAssunto;
-                   ACBrMail1.IsHTML := True;
-                   ACBrMail1.Body.Text := '';
-                   AcbrMail1.SetTLS := True;
-                   ACBrMail1.AddAttachment(sCaminhoArquivo+sNomeArquivo);
-                   ACBrMail1.Send;
-                except
-                      bEnvio := False;
-                end;
-          until (bEnvio);
-          pnlRodape.Caption := '';
-          pnlRodape.Update;
+         if qryRelVenda.Active then
+            qryRelVenda.Active := False;
+
+         qryRelVenda.SQL.Clear;
+         qryRelVenda.SQL.Add(sSQL);
+         if not qryRelVenda.Active then
+            qryRelVenda.open;
+
+        //Case para criar os arquivos com o codigo da regional
+        case AnsiIndexStr(UpperCase(IntToStr(icont)), ['1739', '1740','1741']) of
+          0 : sNomeArquivo := 'VendasPorMACRO_'+IntToStr(icont)+'.pdf';
+          1 : sNomeArquivo := 'VendasPorMACRO_'+IntToStr(icont)+'.pdf';
+          2 : sNomeArquivo := 'VendasPorMACRO_'+IntToStr(icont)+'.pdf';
+        end;
+
+         //sNomeArquivo := 'VendasPorMACRO_'+Elimina_Caracteres(DateToStr(date),'/','')+'.pdf';
+         pprVda_Venda_Temp.AllowPrintToFile := True;
+         pprVda_Venda_Temp.DeviceType := 'PDF';
+         pprVda_Venda_Temp.ShowPrintDialog := False;
+         pprVda_Venda_Temp.TextFileName := sCaminhoArquivo+sNomeArquivo;
+         pprVda_Venda_Temp.Print;
+         icont := icont + 1;
      end;
-     Halt;
+
+         if (FileExists(sCaminhoArquivo+sNomeArquivo)) then
+         begin
+              iTentativas := 0;
+              repeat
+                    bEnvio := True;
+                    Inc(iTentativas);
+                    try
+                       pnlRodape.Caption := '  Tentativas de ENVIO: '+FloatToStrF(iTentativas,ffNumber,11,0);
+                       pnlRodape.Update;
+                       Delay(200);
+
+                       ACBrMail1.Clear;
+                       ACBrMail1.ClearAttachments;
+                       ACBrMail1.SMTP.Reset;
+
+                       ACBrMail1.From := sEmailFrom;
+                       ACBrMail1.FromName := sNome;
+                       ACBrMail1.Host := 'smtp.office365.com';
+                       ACBrMail1.Username := sUserName;
+                       ACBrMail1.Password := sPassword;
+                       ACBrMail1.Port := '587';
+                       ACBrMail1.AddAddress(sEmail,'');
+                       ACBrMail1.AddBCC(sCopia_oculta);
+                       ACBrMail1.Subject := sAssunto;
+                       ACBrMail1.IsHTML := True;
+                       ACBrMail1.Body.Text := '';
+                       AcbrMail1.SetTLS := True;
+                       //ACBrMail1.AddAttachment(sCaminhoArquivo+sNomeArquivo);
+                       icont := 1739;
+                       while icont <= 1741 do//While para anexar os 3 arquivos das macro
+                       begin
+                          ACBrMail1.AddAttachment('C:\Rel_Venda_Email_Macro\VendasPorMACRO_'+IntToStr(icont)+'.pdf');
+                          icont := icont + 1;
+                       end;
+                       ACBrMail1.Send;
+                    except
+                          bEnvio := False;
+                    end;
+              until (bEnvio);
+              pnlRodape.Caption := '';
+              pnlRodape.Update;
+         end;
+         Halt;
+
 end;
 
 procedure TfrmRel_Venda_dia_Email.FormActivate(Sender: TObject);

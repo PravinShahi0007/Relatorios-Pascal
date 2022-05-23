@@ -28,7 +28,6 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     Align = alBottom
     BevelInner = bvLowered
     TabOrder = 0
-    ExplicitWidth = 259
     object btnGerar: TBitBtn
       Left = 356
       Top = 2
@@ -39,7 +38,6 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
       NumGlyphs = 2
       TabOrder = 0
       OnClick = btnGerarClick
-      ExplicitLeft = 179
     end
   end
   object mmoEmail: TMemo
@@ -55,10 +53,6 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 1
-    ExplicitLeft = 240
-    ExplicitTop = 40
-    ExplicitWidth = 185
-    ExplicitHeight = 89
   end
   object FDConnection1: TFDConnection
     Params.Strings = (
@@ -127,7 +121,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     PrinterSetup.mmMarginTop = 6350
     PrinterSetup.mmPaperHeight = 210000
     PrinterSetup.mmPaperWidth = 297000
-    PrinterSetup.PaperSize = 120
+    PrinterSetup.PaperSize = 9
     AllowPrintToFile = True
     ArchiveFileName = '($MyDocuments)\ReportArchive.raf'
     DeviceType = 'Screen'
@@ -165,7 +159,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     RTFSettings.DefaultFont.Name = 'Arial'
     RTFSettings.DefaultFont.Style = []
     TextFileName = '($MyDocuments)\Report.pdf'
-    TextSearchSettings.DefaultString = '<FindText>'
+    TextSearchSettings.DefaultString = '<Texto a localizar>'
     TextSearchSettings.Enabled = False
     XLSSettings.AppName = 'ReportBuilder'
     XLSSettings.Author = 'ReportBuilder'

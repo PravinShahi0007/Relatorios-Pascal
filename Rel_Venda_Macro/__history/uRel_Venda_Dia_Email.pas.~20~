@@ -1,0 +1,415 @@
+{-------------------------------------------------------------------------------
+ Programa..: uRel_Venda_Dia_Email
+ Empresa...: Grazziotin S/A
+ Finalidade: Enviar e-mails da venda para MACROS
+
+ Autor   Data     Operação  Descrição
+ Daniele ???/???? Criação
+ Antônio JUN/2021 Alteração Selecionar dados para enviar e-mail para MACROS de
+                            nivel 6 (IND_NIVEL)
+-------------------------------------------------------------------------------}
+unit uRel_Venda_Dia_Email;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
+  FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.Oracle,
+  FireDAC.Phys.OracleDef, FireDAC.VCLUI.Wait, Data.DB, FireDAC.Comp.Client,
+  FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
+  FireDAC.Comp.DataSet, ppDesignLayer, ppParameter, ppDB, ppDBPipe, ppModule,
+  daDataModule, ppBands, ppClass, ppCtrls, ppStrtch, ppMemo, ppVar, ppPrnabl,
+  ppCache, ppComm, ppRelatv, ppProd, ppReport, Vcl.StdCtrls, Vcl.Mask,
+  Vcl.Buttons, ACBrBase, ACBrMail,System.DateUtils,System.IniFiles, Vcl.ExtCtrls,
+  Vcl.Themes, Vcl.Styles,StrUtils;
+
+type
+  TfrmRel_Venda_dia_Email = class(TForm)
+    FDConnection1: TFDConnection;
+    FDPhysOracleDriverLink1: TFDPhysOracleDriverLink;
+    dtsRelVenda: TDataSource;
+    qryRelVenda: TFDQuery;
+    qryDta: TFDQuery;
+
+    pprVda_Venda_Temp: TppReport;
+    prbCab: TppHeaderBand;
+    ppShape1: TppShape;
+    ppShape4: TppShape;
+    ppLabel1: TppLabel;
+    prlMes: TppLabel;
+    prlEmissao: TppLabel;
+    ppLabel7: TppLabel;
+    ppSystemVariable1: TppSystemVariable;
+    ppLabel2: TppLabel;
+    ppColumnHeaderBand1: TppColumnHeaderBand;
+    prbDetalhe: TppDetailBand;
+    ppMemo1: TppMemo;
+    ppDBText4: TppDBText;
+    prlValor: TppDBText;
+    prlPercentual: TppDBText;
+    ppLine1: TppLine;
+    ppLine2: TppLine;
+    ppdVlrAcum: TppDBText;
+    ppdPerAcum: TppDBText;
+    ppDBText5: TppDBText;
+    ppDBText6: TppDBText;
+    ppdPerMeta: TppDBText;
+    ppDBText1: TppDBText;
+    ppLine3: TppLine;
+    ppdDiaImpresso: TppDBText;
+    ppdDtaMovimento: TppDBText;
+    ppMargem: TppDBText;
+    ppDBText3: TppDBText;
+    ppColumnFooterBand1: TppColumnFooterBand;
+    ppGroup2: TppGroup;
+    ppGroupHeaderBand2: TppGroupHeaderBand;
+    ppGroupFooterBand2: TppGroupFooterBand;
+    ppGroup1: TppGroup;
+    prbCabecalho: TppGroupHeaderBand;
+    mmoCabecalho: TppMemo;
+    ppShape2: TppShape;
+    prlCodLoja: TppDBText;
+    prlDescricaoLoja: TppDBText;
+    ppLabel13: TppLabel;
+    ppdLoja: TppDBText;
+    ppLabel3: TppLabel;
+    ppLabel12: TppLabel;
+    ppLabel14: TppLabel;
+    ppLabel15: TppLabel;
+    ppLabel16: TppLabel;
+    ppLabel17: TppLabel;
+    ppLabel18: TppLabel;
+    ppLabel19: TppLabel;
+    ppLabel8: TppLabel;
+    ppLabel10: TppLabel;
+    ppLabel11: TppLabel;
+    prbRodape: TppGroupFooterBand;
+    ppShape3: TppShape;
+    mmoRodape: TppMemo;
+    prlVlrAcumAno: TppDBText;
+    pVlrOrcadoDia: TppDBText;
+    ppLabel4: TppLabel;
+    ppLabel5: TppLabel;
+    ppDBText7: TppDBText;
+    ppLabel6: TppLabel;
+    ppLabel9: TppLabel;
+    ppDBText2: TppDBText;
+    ppLabel20: TppLabel;
+    ppDBCalc1: TppDBCalc;
+    ppLabel21: TppLabel;
+    ppLabel22: TppLabel;
+    ppLabel23: TppLabel;
+    ppLabel24: TppLabel;
+    ppDBText8: TppDBText;
+    ppDBText9: TppDBText;
+    ppDBText10: TppDBText;
+    ppDBText11: TppDBText;
+    daDataModule1: TdaDataModule;
+    pplVda_Venda_Temp: TppDBPipeline;
+    ppParameterList1: TppParameterList;
+    ACBrMail1: TACBrMail;
+    pnlRodape: TPanel;
+    btnGerar: TBitBtn;
+    mmoEmail: TMemo;
+    procedure PreencheEstilos(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure btnGerarClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure prbCabecalhoBeforePrint(Sender: TObject);
+    procedure prbDetalheBeforePrint(Sender: TObject);
+    procedure LimpaPdf;
+    procedure FormActivate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+        { Public declarations }
+        aEstilos: array of String;
+        mmoEstilos: TMemo;
+        iEstilos: Integer;
+  end;
+
+var
+  frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email;
+  dDataIni, dDataFin: TDateTime;
+  iNumero: Integer;
+  sDataMax: String;
+  iArqIni: TIniFile;
+  sEmail,sAssunto,sEmailFrom,sUserName,sPassword,sNome,sCopia_oculta: String;
+
+implementation
+
+{$R *.dfm}
+
+uses uFunc, ufuncoes;
+
+procedure TfrmRel_Venda_dia_Email.PreencheEstilos(Sender: TObject);
+var
+   sEstilos: String;
+   iInd: Integer;
+begin
+     mmoEstilos := TMemo.Create(Self);
+     mmoEstilos.Parent := self;
+     mmoEstilos.Name := 'mmoEstilos'; // Caso vc queira nomeá-lo
+     mmoEstilos.Visible := False;
+
+     mmoEstilos.Lines.Clear;
+
+     for sEstilos in TStyleManager.StyleNames do
+         mmoEstilos.Lines.Add(sEstilos);
+
+     iEstilos := mmoEstilos.Lines.Count;
+     SetLength(aEstilos, iEstilos);
+
+     for iInd := 0 to iEstilos-1 do
+         aEstilos[iInd] := mmoEstilos.Lines[iInd];
+
+     Randomize;
+     iEstilos := Random(40);
+
+     TStyleManager.TrySetStyle(aEstilos[iEstilos]);
+end;
+
+procedure TfrmRel_Venda_dia_Email.btnGerarClick(Sender: TObject);
+var
+   sMes,sAno,sDia,sDt_Inicial,sDt_Final,sSQL,sCaminhoArquivo,sNomeArquivo,
+        sDiretorio: String;
+   bEnvio: Boolean;
+   iTentativas,icont: Integer;
+begin
+     LimpaPdf;
+
+     try
+        sDiretorio := 'C:\Rel_Venda_Email_Macro';
+        iArqIni := TIniFile.Create(sDiretorio+'\Config.ini');
+        //sEmail :=  qryEmailRegional.FieldByName('email_regional').value;
+        //sEmail:= '386552@grupograzziotin.com.br';
+        sEmail := iArqIni.ReadString('EMAIL FROM','Email','');
+        sAssunto := iArqIni.ReadString('EMAIL FROM','Assunto','');
+        sEmailFrom := iArqIni.ReadString('EMAIL FROM','Endereco','');
+        sUserName := iArqIni.ReadString('EMAIL FROM','UserName','');
+        sPassword := iArqIni.ReadString('EMAIL FROM','Password','');
+        sNome := iArqIni.ReadString('EMAIL FROM','Nome','');
+        sCopia_oculta :=  iArqIni.ReadString('EMAIL FROM','copia_oculta','');
+        iArqINI.Free;
+     except
+           ShowMessage('Erro: Não carregou arquivo de configuração.'+chr(13)+
+                       'Verifique!!!!'+chr(13)+
+                       sDiretorio+'\Config.ini');
+           Application.Terminate;
+           Exit;
+     end;
+     mmoEmail.Lines.Clear;
+     mmoEmail.Lines.Add(sEmail);
+     mmoEmail.Update;
+
+     sMes  := copy(DateToStr(Date-1),4,2);
+     sAno  := copy(DateToStr(Date-1),7,4);
+     sCaminhoArquivo := 'C:\Rel_Venda_Email_Macro\';
+
+     icont := 1739;
+     while icont <= 1741 do
+     begin
+         sSQL := '';
+         sSQL := ' select * from grazz.vda_venda_ano '+
+                 ' where ano >= '+sAno+' - 2 '+
+                 ' and mes = '+sMes+
+                // ' and ind_nivel = 6 '+
+                 ' and ind_nivel in (2,6) '+
+                 ' and cod_macro = '+ IntToStr(icont)+
+                 ' order by ind_nivel desc,cod_emp,cod_unidade,ano,dta_movimento ';
+
+         sDia := '01';
+         sDt_Inicial := PadLeft(sDia+'/'+sMes+'/'+sAno,8,'0');
+         sDt_Final := PadLeft(sDia+'/'+sMes+'/'+sAno,8,'0');
+         prlMes.Caption := 'Mês/Ano - '+sMes+'/'+sAno;
+         prlEmissao.Caption := 'Emissão - '+DateToStr(Date());
+
+         if qryRelVenda.Active then
+            qryRelVenda.Active := False;
+
+         qryRelVenda.SQL.Clear;
+         qryRelVenda.SQL.Add(sSQL);
+         if not qryRelVenda.Active then
+            qryRelVenda.open;
+
+        case AnsiIndexStr(UpperCase(IntToStr(icont)), ['1739', '1740','1741']) of
+          0 : sNomeArquivo := 'VendasPorMACRO_'+IntToStr(icont)+'.pdf';
+          1 : sNomeArquivo := 'VendasPorMACRO_'+IntToStr(icont)+'.pdf';
+          2 : sNomeArquivo := 'VendasPorMACRO_'+IntToStr(icont)+'.pdf';
+        end;
+
+         //sNomeArquivo := 'VendasPorMACRO_'+Elimina_Caracteres(DateToStr(date),'/','')+'.pdf';
+         pprVda_Venda_Temp.AllowPrintToFile := True;
+         pprVda_Venda_Temp.DeviceType := 'PDF';
+         pprVda_Venda_Temp.ShowPrintDialog := False;
+         pprVda_Venda_Temp.TextFileName := sCaminhoArquivo+sNomeArquivo;
+         pprVda_Venda_Temp.Print;
+         icont := icont + 1;
+     end;
+
+         if (FileExists(sCaminhoArquivo+sNomeArquivo)) then
+         begin
+              iTentativas := 0;
+              repeat
+                    bEnvio := True;
+                    Inc(iTentativas);
+                    try
+                       pnlRodape.Caption := '  Tentativas de ENVIO: '+FloatToStrF(iTentativas,ffNumber,11,0);
+                       pnlRodape.Update;
+                       Delay(200);
+
+                       ACBrMail1.Clear;
+                       ACBrMail1.ClearAttachments;
+                       ACBrMail1.SMTP.Reset;
+
+                       ACBrMail1.From := sEmailFrom;
+                       ACBrMail1.FromName := sNome;
+                       ACBrMail1.Host := 'smtp.office365.com';
+                       ACBrMail1.Username := sUserName;
+                       ACBrMail1.Password := sPassword;
+                       ACBrMail1.Port := '587';
+                       ACBrMail1.AddAddress(sEmail,'');
+                       ACBrMail1.AddBCC(sCopia_oculta);
+                       ACBrMail1.Subject := sAssunto;
+                       ACBrMail1.IsHTML := True;
+                       ACBrMail1.Body.Text := '';
+                       AcbrMail1.SetTLS := True;
+                       //ACBrMail1.AddAttachment(sCaminhoArquivo+sNomeArquivo);
+                       icont := 1739;
+                       while icont <= 1741 do
+                       begin
+                          ACBrMail1.AddAttachment('C:\Rel_Venda_Email_Macro\VendasPorMACRO_'+IntToStr(icont)+'.pdf');
+                       end;
+                       ACBrMail1.Send;
+                    except
+                          bEnvio := False;
+                    end;
+              until (bEnvio);
+              pnlRodape.Caption := '';
+              pnlRodape.Update;
+         end;
+         Halt;
+
+end;
+
+procedure TfrmRel_Venda_dia_Email.FormActivate(Sender: TObject);
+begin
+     btnGerarClick(Sender);
+end;
+
+procedure TfrmRel_Venda_dia_Email.FormCreate(Sender: TObject);
+begin
+     PreencheEstilos(Sender);
+     try
+        //FDConnection1.Params.UserName := 'grazz';
+        //FDConnection1.Params.Password := 'grazz';
+        FDConnection1.Params.UserName := 'nl';
+        FDConnection1.Params.Password := 'nl';
+        FDConnection1.Connected := True;
+     except
+           on E:EDatabaseError do
+           begin
+                MessageDlg('Falha ao conectar o banco '+#13+
+                           'a aplicação vai fechar!'+#13+
+                           E.Message,mtInformation,[mbOk], 0);
+                Application.Terminate;
+           end;
+     end;
+     qryDta.Close;
+     qryDta.Open;
+
+     if qryDta.RecordCount > 0 then
+        sDataMax := qryDta.FieldByName('dta_movimento').AsString
+     else
+         sDataMax := DateToStr(date - 1);
+     btnGerarClick(Sender);
+end;
+
+procedure TfrmRel_Venda_dia_Email.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+    case key of
+          VK_RETURN : Perform(WM_NEXTDLGCTL,0,0);
+    end;
+end;
+
+procedure TfrmRel_Venda_dia_Email.prbCabecalhoBeforePrint(Sender: TObject);
+begin
+    if StrToFloatDef(ppdLoja.Text,0) > 9000 then
+       ppdLoja.Visible := False
+    else
+        ppdLoja.Visible := true;
+end;
+
+procedure TfrmRel_Venda_dia_Email.prbDetalheBeforePrint(Sender: TObject);
+begin
+     if StrToFloatDef(fretiraPonto(ppDBText5.Text),0) = 0 then
+     begin
+          ppDBText5.Visible := False;
+          ppDBText6.Visible := False;
+     end
+     else
+     begin
+          ppDBText5.Visible := True;
+          ppDBText6.Visible := True;
+     end;
+
+     if (Trim(ppDBText1.Text) = 'Domingo') or (Trim(ppDBText1.Text) = 'Dom') then
+     begin
+          ppMemo1.Color := clSilver;
+          ppMemo1.Visible := True;
+          ppMargem.Left := 2.8400;;
+     end
+     else
+     begin
+          ppMemo1.Visible := False;
+          ppMargem.Left := 2.3437;
+     end;
+
+     if (Trim(ppdDiaImpresso.Text) = 'FF') and (not(Trim(ppDBText1.Text) = 'Domingo') and not(Trim(ppDBText1.Text) = 'Dom')) then
+     begin
+          ppMemo1.Color := clBtnFace;
+          ppMemo1.Visible := True;
+          ppdPerMeta.Visible := False;
+          ppdDiaImpresso.Visible := True;
+     end
+     else
+     begin
+          ppdPerMeta.Visible := True;
+          ppdDiaImpresso.Visible := False;
+     end;
+
+     if StrToDate(ppdDtaMovimento.Text) > StrToDate(sDataMax) then
+     begin
+          ppdVlrAcum.Visible := False;
+          ppdPerAcum.Visible := False;
+          ppMargem.Visible := False;
+          ppDBText3.Visible := False;
+     end
+     else
+     begin
+          ppdVlrAcum.Visible := True;
+          ppdPerAcum.Visible := True;
+          ppMargem.Visible := True;
+          ppDBText3.Visible := True;
+     end;
+end;
+
+procedure TfrmRel_Venda_dia_Email.LimpaPdf;
+var
+   SR: TSearchRec;
+   i: integer;
+begin
+     i := FindFirst('C:\Rel_Venda_Email_Macro\*.pdf', faAnyFile, SR);
+     while i = 0 do
+     begin
+          if (SR.Attr and faDirectory) <> faDirectory then
+             DeleteFile('C:\Rel_Venda_Email_Macro\'+SR.Name);
+          i := FindNext(SR);
+     end;
+end;
+
+end.
+
