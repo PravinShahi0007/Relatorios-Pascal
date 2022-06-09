@@ -694,7 +694,7 @@ end;
 
 procedure TfrmPrincipal.Envia_Email(Sender: TObject);
 begin
-     if (dayofweek(strtodate(sDataAtual))) = 2 then
+       if (dayofweek(strtodate(sDataAtual))) = 2 then
        begin
            lblMensagem.Caption := 'Enviando e-mail..';
            lblMensagem.Update;
@@ -1523,12 +1523,12 @@ begin
                             //' <td style="width:50px">&nbsp;</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_VLR_PARCELAS_ARECEBER+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TICKET_MEDIO_VLR_PARCELAS+'</td> '+
-                          //  ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_RS_PAGAMENTOS+'</td> '+
-                             ' <td style="width:50px">'+FloatToStrF(qryRelatorioVendas.FieldByName('vlr_parcelas_pgto_cia').AsFloat,ffNumber,18,0)+'</td> '+
+                            //' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_RS_PAGAMENTOS+'</td> '+
+                            ' <td style="width:50px">'+FloatToStrF(qryRelatorioVendas.FieldByName('vlr_parcelas_pgto_cia').AsFloat,ffNumber,18,0)+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TICKET_MEDIO_PAGAMENTOS+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_TOTAL_RS_PAGAMENTOS+'</td> '+
-                           // ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOT_RS_PGTO_APP+'</td> '+
-                             ' <td style="width:50px">'+FloatToStrF(dTotalDoApp ,ffNumber,18,0)+'</td> '+
+                            //' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOT_RS_PGTO_APP+'</td> '+
+                            ' <td style="width:50px">'+FloatToStrF(dTotalDoApp ,ffNumber,18,0)+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TICKET_MEDIO_PAG_APP+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_TOT_RS_PGTO_APP+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_APP_DEBITO+'</td> '+
@@ -1536,7 +1536,7 @@ begin
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_APP_PIX+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_APP_BOLETO+'</td> '+
                             // Sub cabeçalho DECRE....
-                           // ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOT_RS_PGTO_DECRE+'</td> '+
+                            //' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOT_RS_PGTO_DECRE+'</td> '+
                             ' <td style="width:50px">'+FloatToStrF(qryRelatorioVendas.FieldByName('vlr_parcelas_pgto_decre').AsFloat + qryTotais.FieldByName('vlr_parcelas_pgto_0800').AsFloat,ffNumber,18,0)+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TICKET_MEDIO_PAG_DECRE+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_TOT_RS_PGTO_DECRE+'</td> '+
@@ -1544,8 +1544,8 @@ begin
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_DECRE_PIX+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_DECRE_CARTAO+'</td> '+
                             // Sub cabeçalho LOJA....
-                           // ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOT_RS_PGTO_LOJA+'</td> '+
-                             ' <td style="width:50px">'+FloatToStrF(qryRelatorioVendas.FieldByName('vlr_pgto_loja').AsFloat,ffNumber,18,0)+'</td> '+
+                            //' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOT_RS_PGTO_LOJA+'</td> '+
+                            ' <td style="width:50px">'+FloatToStrF(qryRelatorioVendas.FieldByName('vlr_pgto_loja').AsFloat,ffNumber,18,0)+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TICKET_MEDIO_PAG_LOJA+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_TOT_RS_PGTO_LOJA+'</td> '+
                             ' <td style="width:50px">'+GRZW_REL_PGTOS_APPXLOJA.HTML_PERC_RS_PGTO_LOJA_EFETIVO+'</td> '+
@@ -1579,12 +1579,12 @@ begin
                        //' <th style="width:50px" bgcolor="LightGreen">&nbsp;</th> '+
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_VLR_PARCELAS_ARECEBER+'</th> '+
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TICKET_MEDIO_VLR_PARCELAS+'</td> '+
-                         ' <th style="width:50px" bgcolor="LightGreen">'+FloatToStrF(dSomaTotalRecebidos,ffNumber,18,0)+'</td> '+
+                       ' <th style="width:50px" bgcolor="LightGreen">'+FloatToStrF(dSomaTotalRecebidos,ffNumber,18,0)+'</td> '+
                        //' <th style="width:50px" bgcolor="LightGreen">'+FloatToStrF(qryTotais.FieldByName('vlr_parcelas_pgto_app').AsFloat - qryTotais.FieldByName('vlr_parcelas_pgto_decre').AsFloat,ffNumber,18,0)+'</th> '+
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TICKET_MEDIO_PAGAMENTOS+'</th> '+
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_TOTAL_RS_PAGAMENTOS+'</th> '+
-                         ' <th style="width:50px" bgcolor="LightGreen">'+FloatToStrF(dSomaTotalDoApp,ffNumber,19,0)+'</td> '+
-                     //  ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOT_RS_PGTO_APP+'</th> '+
+                       ' <th style="width:50px" bgcolor="LightGreen">'+FloatToStrF(dSomaTotalDoApp,ffNumber,19,0)+'</td> '+
+                       //' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOT_RS_PGTO_APP+'</th> '+
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TICKET_MEDIO_PAG_APP+'</th> '+
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_TOT_RS_PGTO_APP+'</th> '+
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_APP_DEBITO+'</th> '+
@@ -1592,22 +1592,22 @@ begin
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_APP_PIX+'</th> '+
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_APP_BOLETO+'</th> '+
                        // Cabeçalho PAGAMENTOS R$ - DECRE...
-                      // ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOT_RS_PGTO_DECRE+'</th> '+
-                         ' <th style="width:50px" bgcolor="LightGreen">'+FloatToStrF(dSomaTotalDecre,ffNumber,19,0)+'</td> '+
+                       //' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOT_RS_PGTO_DECRE+'</th> '+
+                       ' <th style="width:50px" bgcolor="LightGreen">'+FloatToStrF(dSomaTotalDecre,ffNumber,19,0)+'</td> '+
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TICKET_MEDIO_PAG_DECRE+'</th> '+
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_TOT_RS_PGTO_DECRE+'</th> '+
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_DECRE_BOLETO+'</th> '+
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_DECRE_PIX+'</th> '+
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_DECRE_CARTAO+'</th> '+
                        // Cabeçalho PAGAMENTOS R$ - LOJA...
-                      // ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOT_RS_PGTO_LOJA+'</th> '+
-                         ' <th style="width:50px" bgcolor="LightGreen">'+FloatToStrF(dSomaTotalLojas,ffNumber,19,0)+'</td> '+
+                       //' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TOT_RS_PGTO_LOJA+'</th> '+
+                       ' <th style="width:50px" bgcolor="LightGreen">'+FloatToStrF(dSomaTotalLojas,ffNumber,19,0)+'</td> '+
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_TICKET_MEDIO_PAG_LOJA+'</th> '+
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_TOT_RS_PGTO_LOJA+'</th> '+
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_LOJA_EFETIVO+'</th> '+
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_LOJA_DEBITO+'</th> '+
                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_RS_PGTO_LOJA_PIX+'</th> '+
-                        ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_VLR_A_ATENDIMENTO+'</th> '+
+                       ' <th style="width:50px" bgcolor="LightGreen">'+GRZW_REL_PGTOS_APPXLOJA.HTML_TOTAL_PERC_VLR_A_ATENDIMENTO+'</th> '+
                        ' </tr></tfoot> ';
 
         sHTMLEMail := sHTMLEMail + sHTMLLinha;
@@ -1667,7 +1667,7 @@ begin
 
      // Gera intervalo de datas...
      sDataAtual := DateToStr(Date);
-     sDiaAtual := Copy(sDataAtual,0,2);
+     sDiaAtual := Copy(sDataAtual,0,2) ;
      sMesAtual := Copy(sDataAtual,4,2);
      sAnoAtual := Copy(sDataAtual,7,4);
      // Gera as datas do intervalo. Gera o primeiro dia do mês corrente até
@@ -1676,7 +1676,7 @@ begin
      //       e-mail, do relatório de pagamentos
 
      sDataInicio := '01/'+Copy(sDataAtual,4,7);
-    // sDataInicio := DateToStr(IncDay(StrToDate(sDataAtual), -1));
+     //sDataInicio := DateToStr(IncDay(StrToDate(sDataAtual), -1));
      sDataFinal := sDataAtual;
      sDataInicioAno := '01/01/'+Copy(sDataAtual,7,4);
      sDataInicioAno := DateToStr(IncMonth(StrToDate(sDataInicioAno),-12));
@@ -1730,19 +1730,24 @@ begin
                                    sUltimoDiaMesAnterior := '30';
                                    sMesAnterior  := '11';
                                  end;
-
      end;
 
-     if (sDiaAtual = '01')   then
+     sDiaAtual := '05';
+     sMesAtual := '01';
+     sMesAnterior  := '12';
+
+     if  StrToInt(sDiaAtual) <= 05 then
        begin
+         //sDataFinal  := sUltimoDiaMesAnterior+'/'+sMesAnterior+'/'+Copy(sDataAtual,7,4);
          sDataInicio := '01'+'/'+sMesAnterior+'/'+Copy(sDataAtual,7,4);
-         sDataFinal  := sUltimoDiaMesAnterior+'/'+sMesAnterior+'/'+Copy(sDataAtual,7,4);
+         sDataFinal  := sDiaAtual+'/'+sMesAtual+'/'+Copy(sDataAtual,7,4);
        end;
-    if (sDiaAtual = '01') and (sMesAtual = '01') then
+    if (StrToInt(sDiaAtual) <= 05) and (sMesAtual = '01') then
        begin
          sAnoAtual := IntToStr(StrToInt(sAnoAtual) - 1);
          sDataInicio := '01/12'+'/'+sAnoAtual;
-         sDataFinal  := '31/12'+'/'+sAnoAtual;
+         //sDataFinal  := '31/12'+'/'+sAnoAtual;
+         sDataFinal  := '05/01'+'/'+IntToStr(StrToInt(sAnoAtual) + 1);
        end;
 
      edtInicio.Text := sDataInicio;
