@@ -1732,10 +1732,6 @@ begin
                                  end;
      end;
 
-     sDiaAtual := '05';
-     sMesAtual := '01';
-     sMesAnterior  := '12';
-
      if  StrToInt(sDiaAtual) <= 05 then
        begin
          //sDataFinal  := sUltimoDiaMesAnterior+'/'+sMesAnterior+'/'+Copy(sDataAtual,7,4);

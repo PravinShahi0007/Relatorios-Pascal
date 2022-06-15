@@ -525,7 +525,7 @@ var
    sEstilos: String;
    iInd: Integer;
 begin
- {    mmoEstilos := TMemo.Create(Self);
+     mmoEstilos := TMemo.Create(Self);
      mmoEstilos.Parent := self;
      mmoEstilos.Name := 'mmoEstilos'; // Caso vc queira nomeá-lo
      mmoEstilos.Visible := False;
@@ -544,7 +544,7 @@ begin
      Randomize;
      iEstilos := Random(40);
 
-     TStyleManager.TrySetStyle(aEstilos[iEstilos]); }
+     TStyleManager.TrySetStyle(aEstilos[iEstilos]);
 end;
 
 procedure TfrmPrincipal.Log(Texto: String);
@@ -694,8 +694,7 @@ end;
 
 procedure TfrmPrincipal.Envia_Email(Sender: TObject);
 begin
-    // if (dayofweek(strtodate(sDataAtual))) = 2 then
-     if (dayofweek(strtodate(sDataAtual))) = 5 then
+       if (dayofweek(strtodate(sDataAtual))) = 2 then
        begin
            lblMensagem.Caption := 'Enviando e-mail..';
            lblMensagem.Update;
@@ -1637,7 +1636,7 @@ end;
 
 procedure TfrmPrincipal.FormCreate(Sender: TObject);
 begin
-//     PreencheEstilos(Sender);
+     PreencheEstilos(Sender);
      try
         fdcOracle.Connected := True;
      except
@@ -1733,22 +1732,22 @@ begin
                                  end;
      end;
 
-     sDiaAtual:= '01'; //strtodate
-     //if  sDiaAtual = '01' then
+     sDiaAtual := '05';
+     sMesAtual := '01';
+     sMesAnterior  := '12';
+
      if  StrToInt(sDiaAtual) <= 05 then
        begin
-         sDataInicio := '01'+'/'+sMesAnterior+'/'+Copy(sDataAtual,7,4);
-         sDataInicio :=  DateToStr(strtodate(sDataInicio));
-
-
          //sDataFinal  := sUltimoDiaMesAnterior+'/'+sMesAnterior+'/'+Copy(sDataAtual,7,4);
+         sDataInicio := '01'+'/'+sMesAnterior+'/'+Copy(sDataAtual,7,4);
          sDataFinal  := sDiaAtual+'/'+sMesAtual+'/'+Copy(sDataAtual,7,4);
        end;
-    if (sDiaAtual = '01') and (sMesAtual = '01') then
+    if (StrToInt(sDiaAtual) <= 05) and (sMesAtual = '01') then
        begin
          sAnoAtual := IntToStr(StrToInt(sAnoAtual) - 1);
          sDataInicio := '01/12'+'/'+sAnoAtual;
-         sDataFinal  := '31/12'+'/'+sAnoAtual;
+         //sDataFinal  := '31/12'+'/'+sAnoAtual;
+         sDataFinal  := '05/01'+'/'+IntToStr(StrToInt(sAnoAtual) + 1);
        end;
 
      edtInicio.Text := sDataInicio;
