@@ -1,0 +1,1044 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = '%st Venda Di'#225'ria'
+  ClientHeight = 156
+  ClientWidth = 295
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object btnExecutar: TButton
+    Left = 8
+    Top = 8
+    Width = 70
+    Height = 25
+    Caption = 'Executar'
+    TabOrder = 0
+    OnClick = btnExecutarClick
+  end
+  object btnExcel: TButton
+    Left = 104
+    Top = 8
+    Width = 75
+    Height = 25
+    Caption = 'Excel'
+    TabOrder = 1
+    OnClick = btnExcelClick
+  end
+  object ACBrMail1: TACBrMail
+    Host = '127.0.0.1'
+    Port = '25'
+    SetSSL = False
+    SetTLS = False
+    Attempts = 3
+    DefaultCharset = UTF_8
+    IDECharset = CP1252
+    Left = 28
+    Top = 35
+  end
+  object FDConnection1: TFDConnection
+    Params.Strings = (
+      'Database=192.168.200.110:1522/GRZPROD'
+      'User_Name=SISLOGWEB'
+      'Password=S1sl0gw3bAdm'
+      'DriverID=Ora')
+    LoginPrompt = False
+    Left = 28
+    Top = 83
+  end
+  object qry: TFDQuery
+    Connection = FDConnection1
+    Left = 98
+    Top = 34
+  end
+  object qryUpdate: TFDQuery
+    Connection = FDConnection1
+    Left = 100
+    Top = 98
+  end
+  object qryConsulta: TFDQuery
+    Connection = FDConnection1
+    SQL.Strings = (
+      'Select vda.cod_quebra "Regi'#227'o"'
+      '      ,ge.des_grupo "Nome"'
+      '      ,sum(nvl(vda.vlr_venda,0)) "Vda Loja"'
+      '      ,sum(nvl(vda.vlr_venda_ja,0)) "Vda jaq"'
+      #9'  ,trunc((case when sum(nvl(vda.vlr_venda,0)) > 0 then '
+      
+        #9'                     (sum(nvl(vda.vlr_venda_ja,0)) * 100) / sum' +
+        '(nvl(vda.vlr_venda,0)) else 0 end),2) "%Jaq"'
+      '      ,'#39'20'#39' "Dia"'
+      
+        #9'  ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/20'#39',nvl(v' +
+        'da.vlr_venda,0),0)) "Vda Loja"'
+      
+        '      ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/20'#39',nv' +
+        'l(vda.vlr_venda_ja,0),0)) "Vda jaq"'
+      
+        #9'  ,trunc((case when sum(decode(to_char(vda.dta_lancamento,'#39'mm/d' +
+        'd'#39'),'#39'05/20'#39',nvl(vda.vlr_venda,0),0)) > 0 then '
+      
+        #9'                     (sum(decode(to_char(vda.dta_lancamento,'#39'mm' +
+        '/dd'#39'),'#39'05/20'#39',nvl(vda.vlr_venda_ja,0),0)) * 100) '
+      
+        #9#9#9#9#9#9'  / sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/20'#39 +
+        ',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"'
+      '      ,'#39'19'#39' "Dia"'
+      
+        #9'  ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/19'#39',nvl(v' +
+        'da.vlr_venda,0),0)) "Vda Loja"'
+      
+        '      ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/19'#39',nv' +
+        'l(vda.vlr_venda_ja,0),0)) "Vda jaq"'
+      
+        #9'  ,trunc((case when sum(decode(to_char(vda.dta_lancamento,'#39'mm/d' +
+        'd'#39'),'#39'05/19'#39',nvl(vda.vlr_venda,0),0)) > 0 then '
+      
+        #9'                     (sum(decode(to_char(vda.dta_lancamento,'#39'mm' +
+        '/dd'#39'),'#39'05/19'#39',nvl(vda.vlr_venda_ja,0),0)) * 100) '
+      
+        #9#9#9#9#9#9'  / sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/19'#39 +
+        ',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"'
+      '      ,'#39'18'#39' "Dia"'
+      
+        #9'  ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/18'#39',nvl(v' +
+        'da.vlr_venda,0),0)) "Vda Loja"'
+      
+        '      ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/18'#39',nv' +
+        'l(vda.vlr_venda_ja,0),0)) "Vda jaq"'
+      
+        #9'  ,trunc((case when sum(decode(to_char(vda.dta_lancamento,'#39'mm/d' +
+        'd'#39'),'#39'05/18'#39',nvl(vda.vlr_venda,0),0)) > 0 then '
+      
+        #9'                     (sum(decode(to_char(vda.dta_lancamento,'#39'mm' +
+        '/dd'#39'),'#39'05/18'#39',nvl(vda.vlr_venda_ja,0),0)) * 100) '
+      
+        #9#9#9#9#9#9'  / sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/18'#39 +
+        ',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"'
+      '      ,'#39'17'#39' "Dia"'
+      
+        #9'  ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/17'#39',nvl(v' +
+        'da.vlr_venda,0),0)) "Vda Loja"'
+      
+        '      ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/17'#39',nv' +
+        'l(vda.vlr_venda_ja,0),0)) "Vda jaq"'
+      
+        #9'  ,trunc((case when sum(decode(to_char(vda.dta_lancamento,'#39'mm/d' +
+        'd'#39'),'#39'05/17'#39',nvl(vda.vlr_venda,0),0)) > 0 then '
+      
+        #9'                     (sum(decode(to_char(vda.dta_lancamento,'#39'mm' +
+        '/dd'#39'),'#39'05/17'#39',nvl(vda.vlr_venda_ja,0),0)) * 100) '
+      
+        #9#9#9#9#9#9'  / sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/17'#39 +
+        ',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"'
+      '     ,'#39'16'#39' "Dia"'
+      
+        #9'  ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/16'#39',nvl(v' +
+        'da.vlr_venda,0),0)) "Vda Loja"'
+      
+        '      ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/16'#39',nv' +
+        'l(vda.vlr_venda_ja,0),0)) "Vda jaq"'
+      
+        #9'  ,trunc((case when sum(decode(to_char(vda.dta_lancamento,'#39'mm/d' +
+        'd'#39'),'#39'05/16'#39',nvl(vda.vlr_venda,0),0)) > 0 then '
+      
+        #9'                     (sum(decode(to_char(vda.dta_lancamento,'#39'mm' +
+        '/dd'#39'),'#39'05/16'#39',nvl(vda.vlr_venda_ja,0),0)) * 100) '
+      
+        #9#9#9#9#9#9'  / sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/16'#39 +
+        ',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"'
+      '      ,'#39'14'#39' "Dia"'
+      
+        #9'  ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/14'#39',nvl(v' +
+        'da.vlr_venda,0),0)) "Vda Loja"'
+      
+        '      ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/14'#39',nv' +
+        'l(vda.vlr_venda_ja,0),0)) "Vda jaq"'
+      
+        #9'  ,trunc((case when sum(decode(to_char(vda.dta_lancamento,'#39'mm/d' +
+        'd'#39'),'#39'05/14'#39',nvl(vda.vlr_venda,0),0)) > 0 then '
+      
+        #9'                     (sum(decode(to_char(vda.dta_lancamento,'#39'mm' +
+        '/dd'#39'),'#39'05/14'#39',nvl(vda.vlr_venda_ja,0),0)) * 100) '
+      
+        #9#9#9#9#9#9'  / sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/14'#39 +
+        ',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"'
+      '      ,'#39'13'#39' "Dia"'
+      
+        #9'  ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/13'#39',nvl(v' +
+        'da.vlr_venda,0),0)) "Vda Loja"'
+      
+        '      ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/13'#39',nv' +
+        'l(vda.vlr_venda_ja,0),0)) "Vda jaq"'
+      
+        #9'  ,trunc((case when sum(decode(to_char(vda.dta_lancamento,'#39'mm/d' +
+        'd'#39'),'#39'05/13'#39',nvl(vda.vlr_venda,0),0)) > 0 then '
+      
+        #9'                     (sum(decode(to_char(vda.dta_lancamento,'#39'mm' +
+        '/dd'#39'),'#39'05/13'#39',nvl(vda.vlr_venda_ja,0),0)) * 100) '
+      
+        #9#9#9#9#9#9'  / sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/13'#39 +
+        ',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"'
+      '      ,'#39'12'#39' "Dia"'
+      
+        #9'  ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/12'#39',nvl(v' +
+        'da.vlr_venda,0),0)) "Vda Loja"'
+      
+        '      ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/12'#39',nv' +
+        'l(vda.vlr_venda_ja,0),0)) "Vda jaq"'
+      
+        #9'  ,trunc((case when sum(decode(to_char(vda.dta_lancamento,'#39'mm/d' +
+        'd'#39'),'#39'05/12'#39',nvl(vda.vlr_venda,0),0)) > 0 then '
+      
+        #9'                     (sum(decode(to_char(vda.dta_lancamento,'#39'mm' +
+        '/dd'#39'),'#39'05/12'#39',nvl(vda.vlr_venda_ja,0),0)) * 100) '
+      
+        #9#9#9#9#9#9'  / sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/12'#39 +
+        ',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"'
+      '      ,'#39'11'#39' "Dia"'
+      
+        #9'  ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/11'#39',nvl(v' +
+        'da.vlr_venda,0),0)) "Vda Loja"'
+      
+        '      ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/11'#39',nv' +
+        'l(vda.vlr_venda_ja,0),0)) "Vda jaq"'
+      
+        #9'  ,trunc((case when sum(decode(to_char(vda.dta_lancamento,'#39'mm/d' +
+        'd'#39'),'#39'05/11'#39',nvl(vda.vlr_venda,0),0)) > 0 then '
+      
+        #9'                     (sum(decode(to_char(vda.dta_lancamento,'#39'mm' +
+        '/dd'#39'),'#39'05/11'#39',nvl(vda.vlr_venda_ja,0),0)) * 100) '
+      
+        #9#9#9#9#9#9'  / sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/11'#39 +
+        ',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"'
+      '      ,'#39'10'#39' "Dia"'
+      
+        #9'  ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/10'#39',nvl(v' +
+        'da.vlr_venda,0),0)) "Vda Loja"'
+      
+        '      ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/10'#39',nv' +
+        'l(vda.vlr_venda_ja,0),0)) "Vda jaq"'
+      
+        #9'  ,trunc((case when sum(decode(to_char(vda.dta_lancamento,'#39'mm/d' +
+        'd'#39'),'#39'05/10'#39',nvl(vda.vlr_venda,0),0)) > 0 then '
+      
+        #9'                     (sum(decode(to_char(vda.dta_lancamento,'#39'mm' +
+        '/dd'#39'),'#39'05/10'#39',nvl(vda.vlr_venda_ja,0),0)) * 100) '
+      
+        #9#9#9#9#9#9'  / sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/10'#39 +
+        ',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"'
+      '      ,'#39'09'#39' "Dia"'
+      
+        #9'  ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/09'#39',nvl(v' +
+        'da.vlr_venda,0),0)) "Vda Loja"'
+      
+        '      ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/09'#39',nv' +
+        'l(vda.vlr_venda_ja,0),0)) "Vda jaq"'
+      
+        #9'  ,trunc((case when sum(decode(to_char(vda.dta_lancamento,'#39'mm/d' +
+        'd'#39'),'#39'05/09'#39',nvl(vda.vlr_venda,0),0)) > 0 then '
+      
+        #9'                     (sum(decode(to_char(vda.dta_lancamento,'#39'mm' +
+        '/dd'#39'),'#39'05/09'#39',nvl(vda.vlr_venda_ja,0),0)) * 100) '
+      
+        #9#9#9#9#9#9'  / sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/09'#39 +
+        ',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"'
+      '      ,'#39'07'#39' "Dia"'
+      
+        #9'  ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/07'#39',nvl(v' +
+        'da.vlr_venda,0),0)) "Vda Loja"'
+      
+        '      ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/07'#39',nv' +
+        'l(vda.vlr_venda_ja,0),0)) "Vda jaq"'
+      
+        #9'  ,trunc((case when sum(decode(to_char(vda.dta_lancamento,'#39'mm/d' +
+        'd'#39'),'#39'05/07'#39',nvl(vda.vlr_venda,0),0)) > 0 then '
+      
+        #9'                     (sum(decode(to_char(vda.dta_lancamento,'#39'mm' +
+        '/dd'#39'),'#39'05/07'#39',nvl(vda.vlr_venda_ja,0),0)) * 100) '
+      
+        #9#9#9#9#9#9'  / sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/07'#39 +
+        ',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"'
+      '      ,'#39'06'#39' "Dia"'
+      
+        #9'  ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/06'#39',nvl(v' +
+        'da.vlr_venda,0),0)) "Vda Loja"'
+      
+        '      ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/06'#39',nv' +
+        'l(vda.vlr_venda_ja,0),0)) "Vda jaq"'
+      
+        #9'  ,trunc((case when sum(decode(to_char(vda.dta_lancamento,'#39'mm/d' +
+        'd'#39'),'#39'05/06'#39',nvl(vda.vlr_venda,0),0)) > 0 then '
+      
+        #9'                     (sum(decode(to_char(vda.dta_lancamento,'#39'mm' +
+        '/dd'#39'),'#39'05/06'#39',nvl(vda.vlr_venda_ja,0),0)) * 100) '
+      
+        #9#9#9#9#9#9'  / sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/06'#39 +
+        ',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"'
+      '      ,'#39'05'#39' "Dia"'
+      
+        #9'  ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/05'#39',nvl(v' +
+        'da.vlr_venda,0),0)) "Vda Loja"'
+      
+        '      ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/05'#39',nv' +
+        'l(vda.vlr_venda_ja,0),0)) "Vda jaq"'
+      
+        #9'  ,trunc((case when sum(decode(to_char(vda.dta_lancamento,'#39'mm/d' +
+        'd'#39'),'#39'05/05'#39',nvl(vda.vlr_venda,0),0)) > 0 then '
+      
+        #9'                     (sum(decode(to_char(vda.dta_lancamento,'#39'mm' +
+        '/dd'#39'),'#39'05/05'#39',nvl(vda.vlr_venda_ja,0),0)) * 100) '
+      
+        #9#9#9#9#9#9'  / sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/05'#39 +
+        ',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"'
+      '      ,'#39'04'#39' "Dia"'
+      
+        #9'  ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/04'#39',nvl(v' +
+        'da.vlr_venda,0),0)) "Vda Loja"'
+      
+        '      ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/04'#39',nv' +
+        'l(vda.vlr_venda_ja,0),0)) "Vda jaq"'
+      
+        #9'  ,trunc((case when sum(decode(to_char(vda.dta_lancamento,'#39'mm/d' +
+        'd'#39'),'#39'05/04'#39',nvl(vda.vlr_venda,0),0)) > 0 then '
+      
+        #9'                     (sum(decode(to_char(vda.dta_lancamento,'#39'mm' +
+        '/dd'#39'),'#39'05/04'#39',nvl(vda.vlr_venda_ja,0),0)) * 100) '
+      
+        #9#9#9#9#9#9'  / sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/04'#39 +
+        ',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"'
+      '      ,'#39'03'#39' "Dia"'
+      
+        #9'  ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/03'#39',nvl(v' +
+        'da.vlr_venda,0),0)) "Vda Loja"'
+      
+        '      ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/03'#39',nv' +
+        'l(vda.vlr_venda_ja,0),0)) "Vda jaq"'
+      
+        #9'  ,trunc((case when sum(decode(to_char(vda.dta_lancamento,'#39'mm/d' +
+        'd'#39'),'#39'05/03'#39',nvl(vda.vlr_venda,0),0)) > 0 then '
+      
+        #9'                     (sum(decode(to_char(vda.dta_lancamento,'#39'mm' +
+        '/dd'#39'),'#39'05/03'#39',nvl(vda.vlr_venda_ja,0),0)) * 100) '
+      
+        #9#9#9#9#9#9'  / sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/03'#39 +
+        ',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"'
+      '      ,'#39'02'#39' "Dia"'
+      
+        #9'  ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/02'#39',nvl(v' +
+        'da.vlr_venda,0),0)) "Vda Loja"'
+      
+        '      ,sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/02'#39',nv' +
+        'l(vda.vlr_venda_ja,0),0)) "Vda jaq"'
+      
+        #9'  ,trunc((case when sum(decode(to_char(vda.dta_lancamento,'#39'mm/d' +
+        'd'#39'),'#39'05/02'#39',nvl(vda.vlr_venda,0),0)) > 0 then '
+      
+        #9'                     (sum(decode(to_char(vda.dta_lancamento,'#39'mm' +
+        '/dd'#39'),'#39'05/02'#39',nvl(vda.vlr_venda_ja,0),0)) * 100) '
+      
+        #9#9#9#9#9#9'  / sum(decode(to_char(vda.dta_lancamento,'#39'mm/dd'#39'),'#39'05/02'#39 +
+        ',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"'#9#9#9#9#9#9' '
+      '  from (select uni.cod_unidade'
+      '              ,ge.cod_quebra'
+      '              ,e.dta_lancamento'
+      
+        '              ,sum(decode(e.tip_lancamento,2,nvl(e.vlr_total,0),' +
+        '1,((nvl(e.vlr_total,0)) * -1),0)) vlr_venda'
+      
+        #9#9#9'  ,sum(decode(nvl(t.seq_intervalo,-1),-1,0,decode(e.tip_lanca' +
+        'mento,2,nvl(e.vlr_total,0),1,((nvl(e.vlr_total,0)) * -1),0))) vl' +
+        'r_venda_ja'
+      '          from nl.ce_diarios e'
+      '              ,nl.ie_mascaras iem'
+      '              ,nl.ie_itens ie'
+      #9#9#9'  ,nl.ps_juridicas pj'
+      #9#9#9'  ,nl.ge_grupos_unidades ge'
+      #9#9#9'  ,nl.t5_itens_grupo t'
+      #9#9#9'  ,(select e.cod_emp'
+      '                      ,p.cod_atividade'
+      '                      ,to_char(pj.num_cgc) num_cgc'
+      
+        '                      ,max(decode(e.cod_unidade,1566,566,3566,56' +
+        '6,4566,566,5566,566'
+      
+        '                                               ,1580,580,3580,58' +
+        '0,4580,580,5580,580'
+      
+        '                                               ,818,900,838,900,' +
+        '848,900,858,900,878,900'
+      
+        '                                               ,e.cod_unidade)) ' +
+        'cod_unidade'
+      '                  from nl.ge_unidades e'
+      '                      ,nl.ps_pessoas p'
+      '                      ,nl.ps_juridicas pj'
+      '                 where pj.cod_pessoa       = e.cod_unidade'
+      '                   and nvl(pj.num_cgc,0)   > 0'
+      '                   and pj.num_cgc     not in (92012467000170)'
+      '                   and p.cod_pessoa        = e.cod_unidade'
+      '                   and p.dta_afastamento  is null'
+      '                   and p.ind_inativo       = 0'
+      '                   and e.cod_emp           = 1'
+      '                   and e.cod_unidade       < 8000'
+      
+        '                   and e.cod_nivel2       in (810,830,840,850,87' +
+        '0)'
+      
+        '                 group by e.cod_emp,p.cod_atividade,pj.num_cgc )' +
+        ' uni'#9#9#9#9' '#9#9#9'  '
+      '         where ge.cod_unidade     = e.cod_unidade'
+      #9#9'   and ge.cod_grupo      in (910,930,940)'
+      #9#9'   and ge.cod_emp         = 1'
+      #9#9'   and uni.num_cgc        = pj.num_cgc'
+      #9#9'   and pj.cod_pessoa      = e.cod_unidade'
+      #9#9'   and t.cod_gr_prod(+)   = 970'
+      #9#9'   and t.cod_mascara(+)   = 170'
+      #9#9'   and t.cod_inicial(+)   < iem.cod_completo'
+      #9#9'   and t.cod_final(+)     > iem.cod_completo '
+      '           and ie.cod_item        = e.cod_item'
+      '           and ie.ind_avulso      = 0'
+      '           and iem.cod_item       = e.cod_item'
+      '           and iem.cod_mascara    = 170'
+      '           and iem.cod_niv0       = '#39'1'#39
+      '           and e.cod_emp          = 1'
+      #9#9'   and e.ind_estoque      = 1'
+      
+        '           and e.cod_unidade not in (818,838,848,858,549,1549,35' +
+        '49,4549,5549)'
+      
+        #9#9'   and e.cod_oper        in (106,107,300,301,302,305,2106,2107' +
+        ',3106,3300,3301,3302,3305)'
+      '           and e.dta_lancamento  >= '#39'01/05/2022'#39
+      #9#9'   and e.dta_lancamento  <= trunc((sysdate))'
+      '         group by uni.cod_unidade'
+      '                 ,ge.cod_quebra'
+      '                 ,e.dta_lancamento  ) vda'
+      '   ,nl.ge_grupos ge'
+      ' where ge.cod_grupo = vda.cod_quebra'
+      ' group by vda.cod_quebra'
+      '      ,ge.des_grupo'
+      ' order by 1')
+    Left = 160
+    Top = 98
+  end
+  object qry2: TFDQuery
+    Connection = FDConnection1
+    SQL.Strings = (
+      'Select vda.cod_quebra "Regi'#227'o"'
+      
+        ',ge.des_grupo "Nome"                                            ' +
+        '                                                                ' +
+        '                         '
+      
+        ',sum(nvl(vda.vlr_venda,0)) "Vda Loja"                           ' +
+        '                                                                ' +
+        '                          '
+      
+        ',sum(nvl(vda.vlr_venda_ja,0)) "Vda jaq"                         ' +
+        '                                                                ' +
+        '                          '
+      
+        ',trunc((case when sum(nvl(vda.vlr_venda,0)) > 0 then            ' +
+        '                                                                ' +
+        '                          '
+      
+        '(sum(nvl(vda.vlr_venda_ja,0)) * 100) / sum(nvl(vda.vlr_venda,0))' +
+        ' else 0 end),2) "%Jaq"  '
+      
+        'from (select uni.cod_unidade                                    ' +
+        '                                                                ' +
+        '           '
+      
+        '          ,ge.cod_quebra                                        ' +
+        '                                                                ' +
+        '               '
+      
+        '          ,e.dta_lancamento                                     ' +
+        '                                                                ' +
+        '               '
+      
+        '          ,sum(decode(e.tip_lancamento,2,nvl(e.vlr_total,0),1,((' +
+        'nvl(e.vlr_total,0)) * -1),0)) vlr_venda'#9#9#9#9#9'   '
+      
+        '          ,sum(decode(nvl(t.seq_intervalo,-1),-1,0,decode(e.tip_' +
+        'lancamento,2,nvl(e.vlr_total,0),1,((nvl(e.vlr_total,0)) * -1),0)' +
+        ')) vlr_venda_ja'
+      
+        '          from nl.ce_diarios e                                  ' +
+        '                                                                ' +
+        '               '
+      
+        '               ,nl.ie_mascaras iem                              ' +
+        '                                                                ' +
+        '               '
+      
+        '               ,nl.ie_itens ie                                  ' +
+        '                                                                ' +
+        '               '
+      
+        '               ,nl.ps_juridicas pj                              ' +
+        '                                                                ' +
+        '               '
+      
+        '               ,nl.ge_grupos_unidades ge                        ' +
+        '                                                                ' +
+        '               '
+      
+        '               ,nl.t5_itens_grupo t                             ' +
+        '                                                                ' +
+        '               '
+      
+        '               ,(select e.cod_emp                               ' +
+        '                                                                ' +
+        '               '
+      
+        '                   ,p.cod_atividade                             ' +
+        '                                                                ' +
+        '               '
+      
+        '                   ,to_char(pj.num_cgc) num_cgc                 ' +
+        '                                                                ' +
+        '               '
+      
+        '                   ,max(decode(e.cod_unidade,1566,566,3566,566,4' +
+        '566,566,5566,566                                                ' +
+        '               '
+      
+        '                   ,1580,580,3580,580,4580,580,5580,580         ' +
+        '                                                                ' +
+        '               '
+      
+        '                   ,818,900,838,900,848,900,858,900,878,900     ' +
+        '                                                                ' +
+        '               '
+      
+        '                   ,e.cod_unidade)) cod_unidade                 ' +
+        '                                                                ' +
+        '               '
+      
+        '                   from nl.ge_unidades e                        ' +
+        '                                                                ' +
+        '               '
+      
+        '                        ,nl.ps_pessoas p                        ' +
+        '                                                                ' +
+        '               '
+      
+        '                        ,nl.ps_juridicas pj                     ' +
+        '                                                                ' +
+        '               '
+      
+        '                   where pj.cod_pessoa    = e.cod_unidade       ' +
+        '                                                                ' +
+        '               '
+      
+        '                   and nvl(pj.num_cgc,0)  > 0                   ' +
+        '                                                                ' +
+        '               '
+      
+        '                   and pj.num_cgc     not in (92012467000170)   ' +
+        '                                                                ' +
+        '               '
+      
+        '                   and p.cod_pessoa       = e.cod_unidade       ' +
+        '                                                                ' +
+        '               '
+      
+        '                   and p.dta_afastamento  is null               ' +
+        '                                                                ' +
+        '               '
+      
+        '                   and p.ind_inativo      = 0                   ' +
+        '                                                                ' +
+        '               '
+      
+        '                   and e.cod_emp          = 1                   ' +
+        '                                                                ' +
+        '               '
+      
+        '                   and e.cod_unidade      < 8000                ' +
+        '                                                                ' +
+        '               '
+      
+        '                   and e.cod_nivel2       in (810,830,840,850,87' +
+        '0)                                                              ' +
+        '               '
+      
+        '                   group by e.cod_emp,p.cod_atividade,pj.num_cgc' +
+        ' ) uni'#9#9#9#9' '#9#9#9'                   '
+      
+        '          where ge.cod_unidade   = e.cod_unidade                ' +
+        '                                                                ' +
+        '               '
+      
+        '          and ge.cod_grupo       in (910,930,940)               ' +
+        '                                                                ' +
+        '               '
+      
+        '          and ge.cod_emp         = 1                            ' +
+        '                                                                ' +
+        '               '
+      
+        '          and uni.num_cgc        = pj.num_cgc                   ' +
+        '                                                                ' +
+        '               '
+      
+        '          and pj.cod_pessoa      = e.cod_unidade                ' +
+        '                                                                ' +
+        '               '
+      
+        '          and t.cod_gr_prod(+)   = 970                          ' +
+        '                                                                ' +
+        '               '
+      
+        '          and t.cod_mascara(+)   = 170                          ' +
+        '                                                                ' +
+        '               '
+      
+        '          and t.cod_inicial(+)   < iem.cod_completo             ' +
+        '                                                                ' +
+        '               '
+      
+        '          and t.cod_final(+)     > iem.cod_completo             ' +
+        '                                                                ' +
+        '               '
+      
+        '          and ie.cod_item        = e.cod_item                   ' +
+        '                                                                ' +
+        '               '
+      
+        '          and ie.ind_avulso      = 0                            ' +
+        '                                                                ' +
+        '               '
+      
+        '          and iem.cod_item       = e.cod_item                   ' +
+        '                                                                ' +
+        '               '
+      
+        '          and iem.cod_mascara    = 170                          ' +
+        '                                                                ' +
+        '               '
+      
+        '          and iem.cod_niv0       = '#39'1'#39'                          ' +
+        '                                                                ' +
+        '             '
+      
+        '          and e.cod_emp          = 1                            ' +
+        '                                                                ' +
+        '               '
+      
+        '          and e.ind_estoque      = 1                            ' +
+        '                                                                ' +
+        '               '
+      
+        '          and e.cod_unidade not in (818,838,848,858,549,1549,354' +
+        '9,4549,5549)                                                    ' +
+        '               '
+      
+        '          and e.cod_oper        in (106,107,300,301,302,305,2106' +
+        ',2107,3106,3300,3301,3302,3305)                                 ' +
+        '               '
+      
+        '          and e.dta_lancamento  >= ( SELECT TO_DATE('#39'01/'#39'||EXTRA' +
+        'CT( MONTH FROM  ADD_MONTHS(TO_DATE( sysdate,  '#39'DD-MM-YYYY'#39' ) ,-1' +
+        ') )||'#39'/'#39'||  EXTRACT( YEAR FROM  ADD_MONTHS(TO_DATE( sysdate,  '#39'D' +
+        'D-MM-YYYY'#39' ) ,1) )  ,  '#39'DD-MM-YYYY'#39' ) "Data" FROM DUAL)         ' +
+        '                                                                ' +
+        '                '
+      
+        '          and e.dta_lancamento  < ( SELECT TO_DATE('#39'01/'#39'||EXTRAC' +
+        'T( MONTH FROM  ADD_MONTHS(TO_DATE( sysdate,  '#39'DD-MM-YYYY'#39' ) ,-0)' +
+        ' )||'#39'/'#39'||  EXTRACT( YEAR FROM  ADD_MONTHS(TO_DATE( sysdate,  '#39'DD' +
+        '-MM-YYYY'#39' ) ,1) )  ,  '#39'DD-MM-YYYY'#39' ) "Data"  FROM DUAL)         ' +
+        '                                                                ' +
+        '                '
+      
+        '          group by uni.cod_unidade                              ' +
+        '                                                                ' +
+        '               '
+      
+        '                   ,ge.cod_quebra                               ' +
+        '                                                                ' +
+        '               '
+      
+        '                   ,e.dta_lancamento) vda                       ' +
+        '                                                                ' +
+        '               '
+      
+        ',nl.ge_grupos ge                                                ' +
+        '                                                                ' +
+        '               '
+      
+        'where ge.cod_grupo = vda.cod_quebra                             ' +
+        '                                                                ' +
+        '               '
+      
+        'group by vda.cod_quebra                                         ' +
+        '                                                                ' +
+        '               '
+      
+        ',ge.des_grupo                                                   ' +
+        '                                                                ' +
+        '               '
+      
+        'order by 1                                                      ' +
+        '                                                                ' +
+        '               ')
+    Left = 152
+    Top = 34
+  end
+  object fdVdaMes: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    Left = 240
+    Top = 34
+    object fdVdaMesRegiao: TStringField
+      FieldName = 'Regiao'
+    end
+    object fdVdaMesNome: TStringField
+      FieldName = 'Nome'
+      Size = 50
+    end
+    object fdVdaMesvda_loja: TStringField
+      FieldName = 'vda_loja'
+    end
+    object fdVdaMesVda_jaq: TStringField
+      FieldName = 'Vda_jaq'
+    end
+    object fdVdaMesjaq: TStringField
+      FieldName = '%jaq'
+    end
+    object fdVdaMesvda_loja1: TStringField
+      FieldName = 'vda_loja1'
+    end
+    object fdVdaMesVda_jaq1: TStringField
+      FieldName = 'Vda_jaq1'
+    end
+    object fdVdaMesjaq1: TStringField
+      FieldName = '%jaq1'
+    end
+    object fdVdaMesvda_loja2: TStringField
+      FieldName = 'vda_loja2'
+    end
+    object fdVdaMesVda_jaq2: TStringField
+      FieldName = 'Vda_jaq2'
+    end
+    object fdVdaMesjaq2: TStringField
+      FieldName = '%jaq2'
+    end
+    object fdVdaMesvda_loja3: TStringField
+      FieldName = 'vda_loja3'
+    end
+    object fdVdaMesVda_jaq3: TStringField
+      FieldName = 'Vda_jaq3'
+    end
+    object fdVdaMesjaq3: TStringField
+      FieldName = '%jaq3'
+    end
+    object fdVdaMesvda_loja4: TStringField
+      FieldName = 'vda_loja4'
+    end
+    object fdVdaMesVda_jaq4: TStringField
+      FieldName = 'Vda_jaq4'
+    end
+    object fdVdaMesjaq4: TStringField
+      FieldName = '%jaq4'
+    end
+    object fdVdaMesvda_loja5: TStringField
+      FieldName = 'vda_loja5'
+    end
+    object fdVdaMesVda_jaq5: TStringField
+      FieldName = 'Vda_jaq5'
+    end
+    object fdVdaMesjaq5: TStringField
+      FieldName = '%jaq5'
+    end
+    object fdVdaMesvda_loja6: TStringField
+      FieldName = 'vda_loja6'
+    end
+    object fdVdaMesVda_jaq6: TStringField
+      FieldName = 'Vda_jaq6'
+    end
+    object fdVdaMesjaq6: TStringField
+      FieldName = '%jaq6'
+    end
+    object fdVdaMesvda_loja7: TStringField
+      FieldName = 'vda_loja7'
+    end
+    object fdVdaMesVda_jaq7: TStringField
+      FieldName = 'Vda_jaq7'
+    end
+    object fdVdaMesjaq7: TStringField
+      FieldName = '%jaq7'
+    end
+    object fdVdaMesvda_loja8: TStringField
+      FieldName = 'vda_loja8'
+    end
+    object fdVdaMesVda_jaq8: TStringField
+      FieldName = 'Vda_jaq8'
+    end
+    object fdVdaMesjaq8: TStringField
+      FieldName = '%jaq8'
+    end
+    object fdVdaMesvda_loja9: TStringField
+      FieldName = 'vda_loja9'
+    end
+    object fdVdaMesVda_jaq9: TStringField
+      FieldName = 'Vda_jaq9'
+    end
+    object fdVdaMesjaq9: TStringField
+      FieldName = '%jaq9'
+    end
+    object fdVdaMesvda_loja10: TStringField
+      FieldName = 'vda_loja10'
+    end
+    object fdVdaMesVda_jaq10: TStringField
+      FieldName = 'Vda_jaq10'
+    end
+    object fdVdaMesjaq10: TStringField
+      FieldName = '%jaq10'
+    end
+    object fdVdaMesvda_loja11: TStringField
+      FieldName = 'vda_loja11'
+    end
+    object fdVdaMesVda_jaq11: TStringField
+      FieldName = 'Vda_jaq11'
+    end
+    object fdVdaMesjaq11: TStringField
+      FieldName = '%jaq11'
+    end
+    object fdVdaMesvda_loja12: TStringField
+      FieldName = 'vda_loja12'
+    end
+    object fdVdaMesVda_jaq12: TStringField
+      FieldName = 'Vda_jaq12'
+    end
+    object fdVdaMesjaq12: TStringField
+      FieldName = '%jaq12'
+    end
+    object fdVdaMesVda_jaq13: TStringField
+      FieldName = 'Vda_jaq13'
+    end
+    object fdVdaMesvda_loja13: TStringField
+      FieldName = 'vda_loja13'
+    end
+    object fdVdaMesjaq13: TStringField
+      FieldName = '%jaq13'
+    end
+    object b: TStringField
+      FieldName = 'Vda_jaq14'
+    end
+    object fdVdaMesvda_loja14: TStringField
+      FieldName = 'vda_loja14'
+    end
+    object fdVdaMesjaq14: TStringField
+      FieldName = '%jaq14'
+    end
+    object fdVdaMesvda_loja15: TStringField
+      FieldName = 'vda_loja15'
+    end
+    object fdVdaMesVda_jaq15: TStringField
+      FieldName = 'Vda_jaq15'
+    end
+    object fdVdaMesjaq15: TStringField
+      FieldName = '%jaq15'
+    end
+  end
+  object fdVdaMesLoja: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    Left = 240
+    Top = 99
+    object StringField1: TStringField
+      FieldName = 'Regiao'
+    end
+    object StringField2: TStringField
+      FieldName = 'Nome'
+      Size = 50
+    end
+    object fdVdaMesLojaUnidade: TStringField
+      FieldName = 'Unidade'
+      Size = 10
+    end
+    object fdVdaMesLojaRede: TStringField
+      FieldName = 'Rede'
+      Size = 10
+    end
+    object StringField3: TStringField
+      FieldName = 'vda_loja'
+    end
+    object StringField4: TStringField
+      FieldName = 'Vda_jaq'
+    end
+    object StringField5: TStringField
+      FieldName = '%jaq'
+    end
+    object fdVdaMesLojavda_loja1: TStringField
+      FieldName = 'vda_loja1'
+    end
+    object fdVdaMesLojaVda_jaq1: TStringField
+      FieldName = 'Vda_jaq1'
+    end
+    object fdVdaMesLojajaq1: TStringField
+      FieldName = '%jaq1'
+    end
+    object fdVdaMesLojavda_loja2: TStringField
+      FieldName = 'vda_loja2'
+    end
+    object fdVdaMesLojaVda_jaq2: TStringField
+      FieldName = 'Vda_jaq2'
+    end
+    object fdVdaMesLojajaq2: TStringField
+      FieldName = '%jaq2'
+    end
+    object fdVdaMesLojavda_loja3: TStringField
+      FieldName = 'vda_loja3'
+    end
+    object fdVdaMesLojaVda_jaq3: TStringField
+      FieldName = 'Vda_jaq3'
+    end
+    object fdVdaMesLojajaq3: TStringField
+      FieldName = '%jaq3'
+    end
+    object fdVdaMesLojavda_loja4: TStringField
+      FieldName = 'vda_loja4'
+    end
+    object fdVdaMesLojaVda_jaq4: TStringField
+      FieldName = 'Vda_jaq4'
+    end
+    object fdVdaMesLojajaq4: TStringField
+      FieldName = '%jaq4'
+    end
+    object fdVdaMesLojavda_loja5: TStringField
+      FieldName = 'vda_loja5'
+    end
+    object fdVdaMesLojaVda_jaq5: TStringField
+      FieldName = 'Vda_jaq5'
+    end
+    object fdVdaMesLojajaq5: TStringField
+      FieldName = '%jaq5'
+    end
+    object fdVdaMesLojavda_loja6: TStringField
+      FieldName = 'vda_loja6'
+    end
+    object fdVdaMesLojaVda_jaq6: TStringField
+      FieldName = 'Vda_jaq6'
+    end
+    object fdVdaMesLojajaq6: TStringField
+      FieldName = '%jaq6'
+    end
+    object fdVdaMesLojavda_loja7: TStringField
+      FieldName = 'vda_loja7'
+    end
+    object fdVdaMesLojaVda_jaq7: TStringField
+      FieldName = 'Vda_jaq7'
+    end
+    object fdVdaMesLojajaq7: TStringField
+      FieldName = '%jaq7'
+    end
+    object fdVdaMesLojavda_loja8: TStringField
+      FieldName = 'vda_loja8'
+    end
+    object fdVdaMesLojaVda_jaq8: TStringField
+      FieldName = 'Vda_jaq8'
+    end
+    object fdVdaMesLojajaq8: TStringField
+      FieldName = '%jaq8'
+    end
+    object fdVdaMesLojavda_loja9: TStringField
+      FieldName = 'vda_loja9'
+    end
+    object fdVdaMesLojaVda_jaq9: TStringField
+      FieldName = 'Vda_jaq9'
+    end
+    object fdVdaMesLojajaq9: TStringField
+      FieldName = '%jaq9'
+    end
+    object fdVdaMesLojavda_loja10: TStringField
+      FieldName = 'vda_loja10'
+    end
+    object fdVdaMesLojaVda_jaq10: TStringField
+      FieldName = 'Vda_jaq10'
+    end
+    object fdVdaMesLojajaq10: TStringField
+      FieldName = '%jaq10'
+    end
+    object fdVdaMesLojavda_loja11: TStringField
+      FieldName = 'vda_loja11'
+    end
+    object fdVdaMesLojaVda_jaq11: TStringField
+      FieldName = 'Vda_jaq11'
+    end
+    object fdVdaMesLojajaq11: TStringField
+      FieldName = '%jaq11'
+    end
+    object fdVdaMesLojavda_loja12: TStringField
+      FieldName = 'vda_loja12'
+    end
+    object fdVdaMesLojaVda_jaq12: TStringField
+      FieldName = 'Vda_jaq12'
+    end
+    object fdVdaMesLojajaq12: TStringField
+      FieldName = '%jaq12'
+    end
+    object fdVdaMesLojavda_loja13: TStringField
+      FieldName = 'vda_loja13'
+    end
+    object fdVdaMesLojaVda_jaq13: TStringField
+      FieldName = 'Vda_jaq13'
+    end
+    object fdVdaMesLojajaq13: TStringField
+      FieldName = '%jaq13'
+    end
+    object fdVdaMesLojavda_loja14: TStringField
+      FieldName = 'vda_loja14'
+    end
+    object fdVdaMesLojaVda_jaq14: TStringField
+      FieldName = 'Vda_jaq14'
+    end
+    object fdVdaMesLojajaq14: TStringField
+      FieldName = '%jaq14'
+    end
+    object fdVdaMesLojavda_loja15: TStringField
+      FieldName = 'vda_loja15'
+    end
+    object fdVdaMesLojaVda_jaq15: TStringField
+      FieldName = 'Vda_jaq15'
+    end
+    object fdVdaMesLojajaq15: TStringField
+      FieldName = '%jaq15'
+    end
+  end
+  object IdMessage1: TIdMessage
+    AttachmentEncoding = 'MIME'
+    BccList = <>
+    CCList = <>
+    Encoding = meDefault
+    FromList = <
+      item
+      end>
+    Recipients = <>
+    ReplyTo = <>
+    ConvertPreamble = True
+    Left = 200
+    Top = 8
+  end
+end

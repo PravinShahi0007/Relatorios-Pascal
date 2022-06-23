@@ -1,0 +1,3805 @@
+unit uFrmEnviaEmail;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
+  FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.Oracle,
+  FireDAC.Phys.OracleDef, FireDAC.VCLUI.Wait, FireDAC.Stan.Param, FireDAC.DatS,
+  FireDAC.DApt.Intf, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client, ACBrBase, ACBrMail, Vcl.StdCtrls, System.IniFiles,
+  Vcl.Grids, Vcl.DBGrids, COMOBJ, IdMessageClient, IdAttachmentFile,
+  IdBaseComponent, IdMessage;
+
+type
+  TForm1 = class(TForm)
+    btnExecutar: TButton;
+    ACBrMail1: TACBrMail;
+    FDConnection1: TFDConnection;
+    qry: TFDQuery;
+    qryUpdate: TFDQuery;
+    qryConsulta: TFDQuery;
+    qry2: TFDQuery;
+    fdVdaMes: TFDMemTable;
+    fdVdaMesRegiao: TStringField;
+    fdVdaMesNome: TStringField;
+    fdVdaMesvda_loja: TStringField;
+    fdVdaMesVda_jaq: TStringField;
+    fdVdaMesjaq: TStringField;
+    fdVdaMesLoja: TFDMemTable;
+    StringField1: TStringField;
+    StringField2: TStringField;
+    StringField3: TStringField;
+    StringField4: TStringField;
+    StringField5: TStringField;
+    fdVdaMesLojaUnidade: TStringField;
+    fdVdaMesLojaRede: TStringField;
+    fdVdaMesvda_loja1: TStringField;
+    fdVdaMesvda_loja2: TStringField;
+    fdVdaMesvda_loja3: TStringField;
+    fdVdaMesvda_loja4: TStringField;
+    fdVdaMesvda_loja5: TStringField;
+    fdVdaMesvda_loja6: TStringField;
+    fdVdaMesvda_loja7: TStringField;
+    fdVdaMesvda_loja8: TStringField;
+    fdVdaMesvda_loja9: TStringField;
+    fdVdaMesvda_loja10: TStringField;
+    fdVdaMesvda_loja11: TStringField;
+    fdVdaMesvda_loja12: TStringField;
+    fdVdaMesvda_loja13: TStringField;
+    fdVdaMesvda_loja14: TStringField;
+    fdVdaMesvda_loja15: TStringField;
+    fdVdaMesVda_jaq1: TStringField;
+    fdVdaMesVda_jaq2: TStringField;
+    fdVdaMesVda_jaq3: TStringField;
+    fdVdaMesVda_jaq4: TStringField;
+    fdVdaMesVda_jaq5: TStringField;
+    fdVdaMesVda_jaq6: TStringField;
+    fdVdaMesVda_jaq7: TStringField;
+    fdVdaMesVda_jaq8: TStringField;
+    fdVdaMesVda_jaq9: TStringField;
+    fdVdaMesVda_jaq10: TStringField;
+    fdVdaMesVda_jaq11: TStringField;
+    fdVdaMesVda_jaq12: TStringField;
+    fdVdaMesVda_jaq13: TStringField;
+    b: TStringField;
+    fdVdaMesVda_jaq15: TStringField;
+    fdVdaMesjaq1: TStringField;
+    fdVdaMesjaq2: TStringField;
+    fdVdaMesjaq3: TStringField;
+    fdVdaMesjaq4: TStringField;
+    fdVdaMesjaq5: TStringField;
+    fdVdaMesjaq6: TStringField;
+    fdVdaMesjaq7: TStringField;
+    fdVdaMesjaq8: TStringField;
+    fdVdaMesjaq9: TStringField;
+    fdVdaMesjaq10: TStringField;
+    fdVdaMesjaq11: TStringField;
+    fdVdaMesjaq12: TStringField;
+    fdVdaMesjaq13: TStringField;
+    fdVdaMesjaq14: TStringField;
+    fdVdaMesjaq15: TStringField;
+    fdVdaMesLojavda_loja1: TStringField;
+    fdVdaMesLojavda_loja2: TStringField;
+    fdVdaMesLojavda_loja3: TStringField;
+    fdVdaMesLojavda_loja4: TStringField;
+    fdVdaMesLojavda_loja5: TStringField;
+    fdVdaMesLojavda_loja6: TStringField;
+    fdVdaMesLojavda_loja7: TStringField;
+    fdVdaMesLojavda_loja8: TStringField;
+    fdVdaMesLojavda_loja9: TStringField;
+    fdVdaMesLojavda_loja10: TStringField;
+    fdVdaMesLojavda_loja11: TStringField;
+    fdVdaMesLojavda_loja12: TStringField;
+    fdVdaMesLojavda_loja13: TStringField;
+    fdVdaMesLojavda_loja14: TStringField;
+    fdVdaMesLojavda_loja15: TStringField;
+    fdVdaMesLojaVda_jaq1: TStringField;
+    fdVdaMesLojaVda_jaq2: TStringField;
+    fdVdaMesLojaVda_jaq3: TStringField;
+    fdVdaMesLojaVda_jaq4: TStringField;
+    fdVdaMesLojaVda_jaq5: TStringField;
+    fdVdaMesLojaVda_jaq6: TStringField;
+    fdVdaMesLojaVda_jaq7: TStringField;
+    fdVdaMesLojaVda_jaq8: TStringField;
+    fdVdaMesLojaVda_jaq9: TStringField;
+    fdVdaMesLojaVda_jaq10: TStringField;
+    fdVdaMesLojaVda_jaq11: TStringField;
+    fdVdaMesLojaVda_jaq12: TStringField;
+    fdVdaMesLojaVda_jaq13: TStringField;
+    fdVdaMesLojaVda_jaq14: TStringField;
+    fdVdaMesLojaVda_jaq15: TStringField;
+    fdVdaMesLojajaq1: TStringField;
+    fdVdaMesLojajaq2: TStringField;
+    fdVdaMesLojajaq3: TStringField;
+    fdVdaMesLojajaq4: TStringField;
+    fdVdaMesLojajaq5: TStringField;
+    fdVdaMesLojajaq6: TStringField;
+    fdVdaMesLojajaq7: TStringField;
+    fdVdaMesLojajaq8: TStringField;
+    fdVdaMesLojajaq9: TStringField;
+    fdVdaMesLojajaq10: TStringField;
+    fdVdaMesLojajaq11: TStringField;
+    fdVdaMesLojajaq12: TStringField;
+    fdVdaMesLojajaq13: TStringField;
+    fdVdaMesLojajaq14: TStringField;
+    fdVdaMesLojajaq15: TStringField;
+    btnExcel: TButton;
+    IdMessage1: TIdMessage;
+    function GeraEmailLojas(): Boolean;
+    function GeraEmailRegioes(): Boolean;
+    function PrencheTabelaMemoriaRegiao(): Boolean;
+    function PrencheTabelaMemoriaLoja(): Boolean;
+    procedure AbreSistema;
+    procedure btnExecutarClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure Log(texto: string);
+    procedure btnExcelClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+  sDiretorio, sEmailCC, sEmailGrz: String;
+  Timer, Data: tDateTime;
+  iIndGrz, iIndPrm, iIndArr, iIndFrg, iIndTot: Integer;
+  sUsuario, sParametro, sData: String;
+  iArqIni: tIniFile;
+  sAssunto, sEmailFrom, sUserName, sPassword, sNome, sHost, sPort: String;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.AbreSistema;
+begin
+  try
+    // sDiretorio := GetCurrentDir;
+    sDiretorio := 'D:\EnviaEmail';
+    iArqIni := tIniFile.Create(sDiretorio + '\config.ini');
+    sHost := iArqIni.ReadString('EMAIL', 'Host', '');
+    sPort := iArqIni.ReadString('EMAIL', 'Port', '');
+    sEmailGrz := iArqIni.ReadString('EMAIL', 'Grz', '');
+    sAssunto := iArqIni.ReadString('EMAIL FROM', 'Assunto', '');
+    sEmailFrom := iArqIni.ReadString('EMAIL FROM', 'Endereco', '');
+    sUserName := iArqIni.ReadString('EMAIL FROM', 'UserName', '');
+    sPassword := iArqIni.ReadString('EMAIL FROM', 'Password', '');
+    sNome := iArqIni.ReadString('EMAIL FROM', 'Nome', '');
+    sEmailCC := iArqIni.ReadString('EMAIL_CC', 'Copia', '');
+    // sEmailCCCia := iArqIni.ReadString('EMAIL_CC','Cia','');
+    iArqIni.Free;
+
+  except
+    ShowMessage('Erro: Não carregou arquivo de configuração.' + chr(13) +
+      'Verifique!!!!' + chr(13) + sDiretorio + '\config.ini');
+    Log('Erro: Não carregou arquivo de configuração.' + sDiretorio +
+      '\config.ini');
+    Application.Terminate;
+    exit;
+  end;
+end;
+
+procedure TForm1.btnExcelClick(Sender: TObject);
+var
+  excel: variant;
+begin
+  excel := CreateOleObject('Excel.Application');
+  excel.Workbooks.open('C:\lojas_vendas_taja_14062022.xlsx');
+end;
+
+procedure TForm1.btnExecutarClick(Sender: TObject);
+var
+  CodEmp: Real;
+begin
+  AbreSistema;
+  // GeraEmailRegioes;
+  /// GeraEmailLojas;
+  // btnExcelClick(Sender);
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+  try
+    FDConnection1.Connected := true;
+  except
+    on e: EDatabaseError do
+    begin
+      MessageDlg('Falha ao conectar o banco ' + #13 + 'a aplicação vai fechar!'
+        + #13 + e.Message, mtInformation, [mbOk], 0);
+      Application.Terminate;
+    end;
+  end;
+
+  AbreSistema;
+  btnExecutarClick(Sender);
+  qry.Close;
+  qryUpdate.Close;
+  qryConsulta.Close;
+  qry2.Close;
+  Application.Terminate;
+end;
+
+function TForm1.GeraEmailLojas: Boolean;
+Var
+  sHtml, sRede: String;
+  i: Integer;
+  sCabecalho, sSeqChave, sSelectAtual, sSelectAnterior: string;
+  cTotalVdaLoja, cTotalVdaLoja1, cTotalVdaLoja2, cTotalVdaLoja3, cTotalVdaLoja4,
+    cTotalVdaLoja5, cTotalVdaLoja6, cTotalVdaLoja7, cTotalVdaLoja8,
+    cTotalVdaLoja9, cTotalVdaLoja10, cTotalVdaLoja11, cTotalVdaLoja12,
+    cTotalVdaLoja13, cTotalVdaLoja14, cTotalVdaLoja15, cTotalVdaJaq,
+    cTotalVdaJaq1, cTotalVdaJaq2, cTotalVdaJaq3, cTotalVdaJaq4, cTotalVdaJaq5,
+    cTotalVdaJaq6, cTotalVdaJaq7, cTotalVdaJaq8, cTotalVdaJaq9, cTotalVdaJaq10,
+    cTotalVdaJaq11, cTotalVdaJaq12, cTotalVdaJaq13, cTotalVdaJaq14,
+    cTotalVdaJaq15, cTotalJaq, cTotalJaq1, cTotalJaq2, cTotalJaq3, cTotalJaq4,
+    cTotalJaq5, cTotalJaq6, cTotalJaq7, cTotalJaq8, cTotalJaq9, cTotalJaq10,
+    cTotalJaq11, cTotalJaq12, cTotalJaq13, cTotalJaq14, cTotalJaq15: Currency;
+  iDiaAtual, iMesInicial, iMesFinal, iMesAtual: Integer;
+
+begin
+
+  if ((StrToTime(TimeToStr(now)) >= StrToTime('22:05:00')) and
+    (StrToTime(TimeToStr(now)) <= StrToTime('07:50:00'))) then
+  begin
+    exit;
+  end;
+
+  try
+    iDiaAtual := StrToInt(Copy(DateToStr(Date), 1, 2));
+  except
+    iDiaAtual := 1;
+  end;
+
+  if iDiaAtual > 3 then
+  begin
+    iMesInicial := 0;
+    iMesFinal := 1;
+
+    iMesAtual := StrToInt(Copy(DateToStr(Date), 4, 2));
+
+    sSelectAtual :=
+      ' SELECT TO_DATE( ''01/''||EXTRACT( MONTH FROM  ADD_MONTHS(TO_DATE( sysdate,  ''DD-MM-YYYY'' ) ,-'
+      + IntToStr(iMesInicial) + ') )||''/''|| ' +
+      ' EXTRACT( YEAR FROM  ADD_MONTHS(TO_DATE( sysdate,  ''DD-MM-YYYY'' ) ,1) )  ,  ''DD-MM-YYYY'' )                                        '
+      + ' FROM DUAL                                                                                                                            ';
+
+    sSelectAnterior :=
+      ' SELECT TO_DATE( ''01/''||EXTRACT( MONTH FROM  ADD_MONTHS(TO_DATE( sysdate,  ''DD-MM-YYYY'' ) ,+'
+      + IntToStr(iMesFinal) + ') )||''/''|| ' +
+      ' EXTRACT( YEAR FROM  ADD_MONTHS(TO_DATE( sysdate,  ''DD-MM-YYYY'' ) ,1) )  ,  ''DD-MM-YYYY'' )                                      '
+      + ' FROM DUAL                                                                                                                          ';
+  end
+  else
+  begin
+    iMesInicial := 1;
+    iMesFinal := 0;
+
+    iMesAtual := StrToInt(Copy(DateToStr(Date), 4, 2)) - 1;
+
+    sSelectAtual :=
+      ' SELECT TO_DATE( ''01/''||EXTRACT( MONTH FROM  ADD_MONTHS(TO_DATE( sysdate,  ''DD-MM-YYYY'' ) ,-'
+      + IntToStr(iMesInicial) + ') )||''/''|| ' +
+      ' EXTRACT( YEAR FROM  ADD_MONTHS(TO_DATE( sysdate,  ''DD-MM-YYYY'' ) ,1) )  ,  ''DD-MM-YYYY'' )                                        '
+      + ' FROM DUAL                                                                                                                            ';
+
+    sSelectAnterior :=
+      ' SELECT TO_DATE( ''01/''||EXTRACT( MONTH FROM  ADD_MONTHS(TO_DATE( sysdate,  ''DD-MM-YYYY'' ) ,-'
+      + IntToStr(iMesFinal) + ') )||''/''|| ' +
+      ' EXTRACT( YEAR FROM  ADD_MONTHS(TO_DATE( sysdate,  ''DD-MM-YYYY'' ) ,1) )  ,  ''DD-MM-YYYY'' )                                      '
+      + ' FROM DUAL                                                                                                                          ';
+  end;
+
+  cTotalVdaLoja := 0;
+  cTotalVdaLoja3 := 0;
+  cTotalVdaLoja6 := 0;
+  cTotalVdaLoja9 := 0;
+  cTotalVdaLoja12 := 0;
+  cTotalVdaLoja1 := 0;
+  cTotalVdaLoja4 := 0;
+  cTotalVdaLoja7 := 0;
+  cTotalVdaLoja10 := 0;
+  cTotalVdaLoja13 := 0;
+  cTotalVdaLoja2 := 0;
+  cTotalVdaLoja5 := 0;
+  cTotalVdaLoja8 := 0;
+  cTotalVdaLoja11 := 0;
+  cTotalVdaLoja14 := 0;
+  cTotalVdaLoja15 := 0;
+
+  Log('entrou no gera email');
+  try
+    sCabecalho := '';
+    sCabecalho := sCabecalho + '<tr>';
+    sCabecalho := sCabecalho +
+      '<th style="background-color: powderblue;">Região</th>';
+    sCabecalho := sCabecalho +
+      '<th style="background-color: powderblue;">Unidade</th>';
+    sCabecalho := sCabecalho +
+      '<th style="background-color: powderblue;">Nome</th>';
+    sCabecalho := sCabecalho +
+      '<th style="background-color: powderblue;">Rede</th>';
+    for i := 1 to 16 do
+    begin
+      if ((i mod 2) = 0) then
+      begin
+        sCabecalho := sCabecalho +
+          '<th style="background-color: powderblue;">Vda Loja</th>';
+        sCabecalho := sCabecalho +
+          '<th style="background-color: powderblue;">Vda Jaq</th>';
+        sCabecalho := sCabecalho +
+          '<th style="background-color: powderblue;">% Jaq</th>';
+      end
+      else
+      begin
+        sCabecalho := sCabecalho +
+          '<th style="background-color: thistle;">Vda Loja</th>';
+        sCabecalho := sCabecalho +
+          '<th style="background-color: thistle;">Vda Jaq</th>';
+        sCabecalho := sCabecalho +
+          '<th style="background-color: thistle;">% Jaq</th>';
+      end;
+    end;
+    sCabecalho := sCabecalho + '</tr>';
+    qryConsulta.Active := False;
+
+    qryConsulta.SQL.Clear;
+    qryConsulta.SQL.Text :=
+      ' Select vda.cod_quebra "Região"                                                                                                                     '
+      + '     ,vda.cod_unidade "Unidade"                                                                                                                     '
+      + '     ,ge.des_nome "Nome"                                                                                                                            '
+      + '     ,decode(ge.cod_nivel2,810,''GRZ'',830,''PRM'',840,''FRG'',850,''TOT'',''GZT'') "Rede"                                                          '
+      + '     ,sum(nvl(vda.vlr_venda,0)) "Vda Loja"                                                                                                          '
+      + '     ,sum(nvl(vda.vlr_venda_ja,0)) "Vda jaq"                                                                                                        '
+      + '     ,trunc((case when sum(nvl(vda.vlr_venda,0)) > 0 then                                                                                           '
+      + '     (sum(nvl(vda.vlr_venda_ja,0)) * 100) / sum(nvl(vda.vlr_venda,0)) else 0 end),2) "%Jaq"                                                         '
+      + '     ,''' + FormatDateTime('dd/mm', Date - 1) +
+      ''' "Dia"                                                                                                     '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 1) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                 ' +
+      '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 1) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"               ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 1) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then  ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 1) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                  ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 1) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"     ' + '     ,''' +
+      FormatDateTime('dd/mm', Date - 2) +
+      ''' "Dia"                                                                                                     '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 2) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                 ' +
+      '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 2) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"               ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 2) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then  ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 2) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                  ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 2) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"     ' + '     ,''' +
+      FormatDateTime('dd/mm', Date - 3) +
+      ''' "Dia"                                                                                                     '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 3) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                 ' +
+      '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 3) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"               ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 3) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then  ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 3) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                  ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 3) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"     ' + '     ,''' +
+      FormatDateTime('dd/mm', Date - 4) +
+      ''' "Dia"                                                                                                     '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 4) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                 ' +
+      '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 4) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"               ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 4) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then  ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 4) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                  ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 4) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"     ' + '     ,''' +
+      FormatDateTime('dd/mm', Date - 5) +
+      ''' "Dia"                                                                                                     '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 5) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                 ' +
+      '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 5) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"               ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 5) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then  ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 5) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                  ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 5) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"     ' + '     ,''' +
+      FormatDateTime('dd/mm', Date - 6) +
+      ''' "Dia"                                                                                                     '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 6) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                 ' +
+      '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 6) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"               ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 6) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then  ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 6) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                  ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 6) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"     ' + '     ,''' +
+      FormatDateTime('dd/mm', Date - 7) +
+      ''' "Dia"                                                                                                     '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 7) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                 ' +
+      '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 7) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"               ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 7) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then  ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 7) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                  ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 7) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"     ' + '     ,''' +
+      FormatDateTime('dd/mm', Date - 8) +
+      ''' "Dia"                                                                                                     '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 8) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                 ' +
+      '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 8) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"               ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 8) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then  ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 8) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                  ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 8) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"     ' + '     ,''' +
+      FormatDateTime('dd/mm', Date - 9) +
+      ''' "Dia"                                                                                                     '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 9) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                 ' +
+      '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 9) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"               ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 9) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then  ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 9) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                  ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 9) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"     ' + '     ,''' +
+      FormatDateTime('dd/mm', Date - 10) +
+      ''' "Dia"                                                                                                     '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 10) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                 ' +
+      '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 10) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"               ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 10) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then  ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 10) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                  ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 10) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"     ' + '     ,''' +
+      FormatDateTime('dd/mm', Date - 11) +
+      ''' "Dia"                                                                                                     '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 11) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                 ' +
+      '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 11) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"               ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 11) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then  ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 11) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                  ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 11) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"     ' + '     ,''' +
+      FormatDateTime('dd/mm', Date - 12) +
+      ''' "Dia"                                                                                                     '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 12) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                 ' +
+      '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 12) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"               ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 12) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then  ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 12) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                  ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 12) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"     ' + '     ,''' +
+      FormatDateTime('dd/mm', Date - 13) +
+      ''' "Dia"                                                                                                     '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 13) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                 ' +
+      '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 13) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"               ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 13) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then  ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 13) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                  ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 13) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"     ' + '     ,''' +
+      FormatDateTime('dd/mm', Date - 14) +
+      ''' "Dia"                                                                                                     '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 14) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                 ' +
+      '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 14) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"               ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 14) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then  ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 14) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                  ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 14) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"     ' + '     ,''' +
+      FormatDateTime('dd/mm', Date - 15) +
+      ''' "Dia"                                                                                                     '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 15) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                 ' +
+      '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 15) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"               ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 15) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then  ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 15) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                  ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 15) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"     ' +
+      '     from (select uni.cod_unidade                                                                                                                   '
+      + '           ,ge.cod_quebra                                                                                                                           '
+      + '           ,e.dta_lancamento                                                                                                                        '
+      + '           ,sum(decode(e.tip_lancamento,2,nvl(e.vlr_total,0),1,((nvl(e.vlr_total,0)) * -1),0)) vlr_venda                                            '
+      + '           ,sum(decode(nvl(t.seq_intervalo,-1),-1,0,decode(e.tip_lancamento,2,nvl(e.vlr_total,0),1,((nvl(e.vlr_total,0)) * -1),0))) vlr_venda_ja    '
+      + '           from nl.ce_diarios e                                                                                                                     '
+      + '                ,nl.ie_mascaras iem                                                                                                                 '
+      + '                ,nl.ie_itens ie                                                                                                                     '
+      + '                ,nl.ps_juridicas pj                                                                                                                 '
+      + '                ,nl.ge_grupos_unidades ge                                                                                                           '
+      + '                ,nl.t5_itens_grupo t                                                                                                                '
+      + '                ,(select e.cod_emp                                                                                                                  '
+      + '                    ,p.cod_atividade                                                                                                                '
+      + '                    ,to_char(pj.num_cgc) num_cgc                                                                                                    '
+      + '                    ,max(decode(e.cod_unidade,1566,566,3566,566,4566,566,5566,566                                                                   '
+      + '                    ,1580,580,3580,580,4580,580,5580,580                                                                                            '
+      + '                    ,818,900,838,900,848,900,858,900,878,900                                                                                        '
+      + '                    ,e.cod_unidade)) cod_unidade                                                                                                    '
+      + '                from nl.ge_unidades e                                                                                                               '
+      + '                    ,nl.ps_pessoas p                                                                                                                '
+      + '                    ,nl.ps_juridicas pj                                                                                                             '
+      + '                where pj.cod_pessoa       = e.cod_unidade                                                                                           '
+      + '                and nvl(pj.num_cgc,0)   > 0                                                                                                         '
+      + '                and pj.num_cgc     not in (92012467000170)                                                                                          '
+      + '                and p.cod_pessoa        = e.cod_unidade                                                                                             '
+      + '                and p.dta_afastamento  is null                                                                                                      '
+      + '                and p.ind_inativo       = 0                                                                                                         '
+      + '                and e.cod_emp           = 1                                                                                                         '
+      + '                and e.cod_unidade       < 8000                                                                                                      '
+      + '                and e.cod_nivel2       in (810,830,840,850,870)                                                                                     '
+      + '                group by e.cod_emp,p.cod_atividade,pj.num_cgc ) uni                                                                                 '
+      + '           where ge.cod_unidade     = e.cod_unidade                                                                                                 '
+      + '           and ge.cod_grupo      in (910,930,940)                                                                                                   '
+      + '           and ge.cod_emp         = 1                                                                                                               '
+      + '           and uni.num_cgc        = pj.num_cgc                                                                                                      '
+      + '           and pj.cod_pessoa      = e.cod_unidade                                                                                                   '
+      + '           and t.cod_gr_prod(+)   = 970                                                                                                             '
+      + '           and t.cod_mascara(+)   = 170                                                                                                             '
+      + '           and t.cod_inicial(+)   < iem.cod_completo                                                                                                '
+      + '           and t.cod_final(+)     > iem.cod_completo                                                                                                '
+      + '           and ie.cod_item        = e.cod_item                                                                                                      '
+      + '           and ie.ind_avulso      = 0                                                                                                               '
+      + '           and iem.cod_item       = e.cod_item                                                                                                      '
+      + '           and iem.cod_mascara    = 170                                                                                                             '
+      + '           and iem.cod_niv0       = ''1''                                                                                                           '
+      + '           and e.cod_emp          = 1                                                                                                               '
+      + '           and e.ind_estoque      = 1                                                                                                               '
+      + '           and e.cod_unidade not in (818,838,848,858,549,1549,3549,4549,5549)                                                                       '
+      + '           and e.cod_oper        in (106,107,300,301,302,305,2106,2107,3106,3300,3301,3302,3305)                                                    '
+      + '           and e.dta_lancamento  >= trunc((sysdate)-16)                                                                                             '
+      + '           and e.dta_lancamento  <= trunc((sysdate)-1)                                                                                              '
+      + '           group by uni.cod_unidade                                                                                                                 '
+      + '           ,ge.cod_quebra                                                                                                                           '
+      + '           ,e.dta_lancamento  ) vda                                                                                                                 '
+      + ' ,nl.ge_unidades ge                                                                                                                                 '
+      + ' where ge.cod_unidade = vda.cod_unidade                                                                                                             '
+      + ' group by vda.cod_quebra                                                                                                                            '
+      + ' ,vda.cod_unidade                                                                                                                                   '
+      + ' ,ge.des_nome                                                                                                                                       '
+      + ' ,decode(ge.cod_nivel2,810,''GRZ'',830,''PRM'',840,''FRG'',850,''TOT'',''GZT'')                                                                     '
+      + ' order by 1,2                                                                                                                                       ';
+    try
+      qryConsulta.Active := true;
+    except
+      on e: Exception do
+      begin
+        ShowMessage(e.Message);
+        exit;
+      end;
+    end;
+
+    qry2.SQL.Clear;
+    qry2.SQL.Text
+      := ' Select vda.cod_quebra "Região"				  '
+      + ' ,vda.cod_unidade "Unidade"                                                                                                                        '
+      + ' ,ge.des_nome "Nome"                                                                                                                               '
+      + ' ,decode(ge.cod_nivel2,810,''GRZ'',830,''PRM'',840,''FRG'',850,''TOT'',''GZT'') "Rede"                                                             '
+      + ' ,sum(nvl(vda.vlr_venda,0)) "Vda Loja"                                                                                                             '
+      + ' ,sum(nvl(vda.vlr_venda_ja,0)) "Vda jaq"                                                                                                           '
+      + ' ,trunc((case when sum(nvl(vda.vlr_venda,0)) > 0 then                                                                                              '
+      + ' (sum(nvl(vda.vlr_venda_ja,0)) * 100) / sum(nvl(vda.vlr_venda,0)) else 0 end),2) "%Jaq"                                                            '
+      + ' from (select uni.cod_unidade                                                                                                                      '
+      + '            ,ge.cod_quebra                                                                                                                         '
+      + '            ,e.dta_lancamento                                                                                                                      '
+      + '            ,sum(decode(e.tip_lancamento,2,nvl(e.vlr_total,0),1,((nvl(e.vlr_total,0)) * -1),0)) vlr_venda                                          '
+      + '            ,sum(decode(nvl(t.seq_intervalo,-1),-1,0,decode(e.tip_lancamento,2,nvl(e.vlr_total,0),1,((nvl(e.vlr_total,0)) * -1),0))) vlr_venda_ja  '
+      + '            from nl.ce_diarios e                                                                                ,nl.ie_mascaras iem                '
+      + '                 ,nl.ie_itens ie                                                                                                                   '
+      + '                 ,nl.ps_juridicas pj                                                                                                               '
+      + '                 ,nl.ge_grupos_unidades ge                                                                                                         '
+      + '                 ,nl.t5_itens_grupo t                                                                                                              '
+      + '                 ,(select e.cod_emp                                                                                                                '
+      + '                          ,p.cod_atividade                                                                                                         '
+      + '                          ,to_char(pj.num_cgc) num_cgc                                                                                             '
+      + '                          ,max(decode(e.cod_unidade,1566,566,3566,566,4566,566,5566,566                                                            '
+      + '                          ,1580,580,3580,580,4580,580,5580,580                                                                                     '
+      + '                          ,818,900,838,900,848,900,858,900,878,900                                                                                 '
+      + '                          ,e.cod_unidade)) cod_unidade                                                                                             '
+      + '                          from nl.ge_unidades e                                                                                                    '
+      + '                               ,nl.ps_pessoas p                                                                                                    '
+      + '                               ,nl.ps_juridicas pj                                                                                                 '
+      + '                          where pj.cod_pessoa       = e.cod_unidade                                                                                '
+      + '                          and nvl(pj.num_cgc,0)   > 0                                                                                              '
+      + '                          and pj.num_cgc     not in (92012467000170)                                                                               '
+      + '                          and p.cod_pessoa        = e.cod_unidade                                                                                  '
+      + '                          and p.dta_afastamento  is null                                                                                           '
+      + '                          and p.ind_inativo       = 0                                                                                              '
+      + '                          and e.cod_emp           = 1                                                                                              '
+      + '                          and e.cod_unidade       < 8000                                                                                           '
+      + '                          and e.cod_nivel2       in (810,830,840,850,870)                                                                          '
+      + '                          group by e.cod_emp,p.cod_atividade,pj.num_cgc ) uni                                                                      '
+      + '                  where ge.cod_unidade     = e.cod_unidade                                                                                         '
+      + '                  and ge.cod_grupo      in (910,930,940)                                                                                           '
+      + '                  and ge.cod_emp         = 1                        and uni.num_cgc        = pj.num_cgc                                            '
+      + '                  and pj.cod_pessoa      = e.cod_unidade                                                                                           '
+      + '                  and t.cod_gr_prod(+)   = 970                                                                                                     '
+      + '                  and t.cod_mascara(+)   = 170                                                                                                     '
+      + '                  and t.cod_inicial(+)   < iem.cod_completo                                                                                        '
+      + '                  and t.cod_final(+)     > iem.cod_completo                                                                                        '
+      + '                  and ie.cod_item        = e.cod_item                                                                                              '
+      + '                  and ie.ind_avulso      = 0                                                                                                       '
+      + '                  and iem.cod_item       = e.cod_item                                                                                              '
+      + '                  and iem.cod_mascara    = 170                                                                                                     '
+      + '                  and iem.cod_niv0       = ''1''                                                                                                   '
+      + '                  and e.cod_emp          = 1                                                                                                       '
+      + '                  and e.ind_estoque      = 1                                                                                                       '
+      + '                  and e.cod_unidade not in (818,838,848,858,549,1549,3549,4549,5549)                                                               '
+      + '                  and e.cod_oper        in                                                                                                         '
+      + '                  (106,107,300,301,302,305,2106,2107,3106,3300,3301,3302,3305)                                                                     '
+      + '                  and e.dta_lancamento  >= (' + sSelectAtual +
+      ')                                                                                      '
+      + '                  and e.dta_lancamento  < (' + sSelectAnterior +
+      ')                                                                                    '
+      + '                  group by uni.cod_unidade                                                                                                         '
+      + '                           ,ge.cod_quebra                                                                                                          '
+      + '                           ,e.dta_lancamento  ) vda                                                                                                '
+      + ' ,nl.ge_unidades ge                                                                                                                                '
+      + ' where ge.cod_unidade = vda.cod_unidade                                                                                                            '
+      + ' group by vda.cod_quebra                                                                                                                           '
+      + // ,  vda.dta_lancamento
+      ' ,vda.cod_unidade                                                                                                                                  '
+      + ' ,ge.des_nome                                                                                                                                      '
+      + ' ,decode(ge.cod_nivel2,810,''GRZ'',830,''PRM'',840,''FRG'',850,''TOT'',''GZT'')                                                                    '
+      + ' order by 1,2                                                                                                                                      ';
+    try
+      qry2.Active := true;
+      PrencheTabelaMemoriaLoja;
+    except
+      on e: Exception do
+      begin
+        ShowMessage(e.Message);
+        exit;
+      end;
+    end;
+
+    sHtml := '';
+    sHtml := sHtml + '<html>';
+    sHtml := sHtml + '<head>';
+    sHtml := sHtml + '<title>Grupo Grazziotin</title>';
+    sHtml := sHtml + '<h3>Grupo Grazziotin S/A.</h3>';
+    sHtml := sHtml + '<style>                      ';
+    sHtml := sHtml + 'table, th, td {             ';
+    sHtml := sHtml + '  border: 1px solid black;';
+    sHtml := sHtml + '  border-style: ridge;';
+    sHtml := sHtml + '  border-collapse: collapse;';
+    sHtml := sHtml + '  font-family: Arial, Helvetica, sans-serif;';
+    sHtml := sHtml + '}';
+    sHtml := sHtml + '</style>';
+    sHtml := sHtml + '</head>';
+    sHtml := sHtml + '<body>';
+    sHtml := sHtml + '<b><p>Data: ' + FormatDateTime('dd/mm/yyyy', Date) +
+      '  Hora: ' + FormatDateTime('hh:mm', Time) + '</b></p>';
+    sHtml := sHtml + '<table>';
+    sHtml := sHtml + '<tr>';
+    sHtml := sHtml +
+      '<td style="background-color: powderblue;" align="center" colspan="4"><p><b><font color="#006600">Venda de Jaquetas e Acrílicos por Loja</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: thistle;" align="center" colspan="3"><p><b><font color="#006600">Acumulado do Mês '
+      + IntToStr(iMesAtual) + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: powderblue;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia').AsString + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: thistle;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia_1').AsString + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: powderblue;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia_2').AsString + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: thistle;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia_3').AsString + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: powderblue;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia_4').AsString + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: thistle;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia_5').AsString + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: powderblue;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia_6').AsString + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: thistle;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia_7').AsString + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: powderblue;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia_8').AsString + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: thistle;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia_9').AsString + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: powderblue;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia_10').AsString + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: thistle;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia_11').AsString + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: powderblue;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia_12').AsString + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: thistle;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia_13').AsString + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: powderblue;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia_14').AsString + '</font></b></p></td>';
+    sHtml := sHtml + '</tr>';
+    sHtml := sHtml + sCabecalho;
+    if qryConsulta.RecordCount > 0 then
+    begin
+      qryConsulta.First;
+      while not qryConsulta.Eof do
+      begin
+        sHtml := sHtml + '<tr>';
+        sHtml := sHtml + '<td style="background-color: powderblue;">' +
+          qryConsulta.FieldByName('Região').AsString + '</td>';
+        sHtml := sHtml + '<td style="background-color: powderblue;">' +
+          qryConsulta.FieldByName('Unidade').AsString + '</td>';
+        sHtml := sHtml + '<td style="background-color: powderblue;">' +
+          qryConsulta.FieldByName('Nome').AsString + '</td>';
+        sHtml := sHtml + '<td style="background-color: powderblue;">' +
+          qryConsulta.FieldByName('Rede').AsString + '</td>';
+
+        begin
+          fdVdaMesLoja.Filter := 'Unidade = ' + qryConsulta.FieldByName
+            ('Unidade').AsString;
+          fdVdaMesLoja.Filtered := true; // ativa o filtro
+        end;
+
+        sHtml := sHtml + '<td style="background-color: thistle;">' +
+          FormatFloat('###,###,###,###', fdVdaMesLoja.FieldByName('Vda_Loja')
+          .AsFloat) + '</td>';
+        cTotalVdaLoja := cTotalVdaLoja + fdVdaMesLoja.FieldByName
+          ('Vda_Loja').AsFloat;
+        sHtml := sHtml + '<td style="background-color: thistle;">' +
+          FormatFloat('###,###,###,###', fdVdaMesLoja.FieldByName('Vda_jaq')
+          .AsFloat) + '</td>';
+        cTotalVdaJaq := cTotalVdaJaq + fdVdaMesLoja.FieldByName
+          ('Vda_jaq').AsFloat;
+        sHtml := sHtml + '<td style="background-color: thistle;">' +
+          FormatFloat('##.0', fdVdaMesLoja.FieldByName('%Jaq').AsFloat)
+          + '</td>';
+        cTotalJaq := cTotalVdaJaq / cTotalVdaLoja;
+
+        if (qryConsulta.FieldByName('Vda Loja_1').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda Loja_1')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda Loja_1').AsFloat) + '</td>';
+        end;
+        cTotalVdaLoja1 := cTotalVdaLoja1 + qryConsulta.FieldByName
+          ('Vda Loja_1').AsFloat;
+
+        if (qryConsulta.FieldByName('Vda jaq_1').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_1')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_1').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq1 := cTotalVdaJaq1 + qryConsulta.FieldByName
+          ('Vda jaq_1').AsFloat;
+
+        if (qryConsulta.FieldByName('Vda jaq_1').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_1').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_1').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq1 = 0) and (cTotalVdaLoja1 = 0) then
+        begin
+          cTotalJaq1 := 0;
+        end
+        else
+        begin
+          cTotalJaq1 := cTotalVdaJaq1 / cTotalVdaLoja1;
+        end;
+
+        if (qryConsulta.FieldByName('Vda Loja_2').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda Loja_2')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda Loja_2').AsFloat) + '</td>';
+        end;
+        cTotalVdaLoja2 := cTotalVdaLoja2 + qryConsulta.FieldByName
+          ('Vda Loja_2').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_2').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_2')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_2').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq2 := cTotalVdaJaq2 + qryConsulta.FieldByName
+          ('Vda jaq_2').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_2').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_2').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_2').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq2 = 0) and (cTotalVdaLoja2 = 0) then
+        begin
+          cTotalJaq2 := 0;
+        end
+        else
+        begin
+          cTotalJaq2 := cTotalVdaJaq2 / cTotalVdaLoja2;
+        end;
+
+        if (qryConsulta.FieldByName('Vda Loja_3').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda Loja_3')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda Loja_3').AsFloat) + '</td>';
+        end;
+        cTotalVdaLoja3 := cTotalVdaLoja3 + qryConsulta.FieldByName
+          ('Vda Loja_3').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_3').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_3')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_3').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq3 := cTotalVdaJaq3 + qryConsulta.FieldByName
+          ('Vda jaq_3').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_3').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_3').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_3').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq3 = 0) and (cTotalVdaLoja3 = 0) then
+        begin
+          cTotalJaq3 := 0;
+        end
+        else
+        begin
+          cTotalJaq3 := cTotalVdaJaq3 / cTotalVdaLoja3;
+        end;
+
+        if (qryConsulta.FieldByName('Vda Loja_4').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda Loja_4')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda Loja_4').AsFloat) + '</td>';
+        end;
+        cTotalVdaLoja4 := cTotalVdaLoja4 + qryConsulta.FieldByName
+          ('Vda Loja_4').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_4').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_4')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_4').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq4 := cTotalVdaJaq4 + qryConsulta.FieldByName
+          ('Vda jaq_4').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_4').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_4').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_4').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq4 = 0) and (cTotalVdaLoja4 = 0) then
+        begin
+          cTotalJaq4 := 0;
+        end
+        else
+        begin
+          cTotalJaq4 := cTotalVdaJaq4 / cTotalVdaLoja4;
+        end;
+
+        if (qryConsulta.FieldByName('Vda Loja_5').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda Loja_5')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda Loja_5').AsFloat) + '</td>';
+        end;
+        cTotalVdaLoja5 := cTotalVdaLoja5 + qryConsulta.FieldByName
+          ('Vda Loja_5').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_5').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_5')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_5').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq5 := cTotalVdaJaq5 + qryConsulta.FieldByName
+          ('Vda jaq_5').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_5').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_5').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_5').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq5 = 0) and (cTotalVdaLoja5 = 0) then
+        begin
+          cTotalJaq5 := 0;
+        end
+        else
+        begin
+          cTotalJaq5 := cTotalVdaJaq5 / cTotalVdaLoja5;
+        end;
+
+        if (qryConsulta.FieldByName('Vda Loja_6').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda Loja_6')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda Loja_6').AsFloat) + '</td>';
+        end;
+        cTotalVdaLoja6 := cTotalVdaLoja6 + qryConsulta.FieldByName
+          ('Vda Loja_6').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_6').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_6')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_6').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq6 := cTotalVdaJaq6 + qryConsulta.FieldByName
+          ('Vda jaq_6').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_6').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_6').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_6').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq6 = 0) and (cTotalVdaLoja6 = 0) then
+        begin
+          cTotalJaq6 := 0;
+        end
+        else
+        begin
+          cTotalJaq1 := cTotalVdaJaq6 / cTotalVdaLoja6;
+        end;
+
+        if (qryConsulta.FieldByName('Vda Loja_7').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda Loja_7')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda Loja_7').AsFloat) + '</td>';
+        end;
+        cTotalVdaLoja7 := cTotalVdaLoja7 + qryConsulta.FieldByName
+          ('Vda Loja_7').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_7').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_7')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_7').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq7 := cTotalVdaJaq7 + qryConsulta.FieldByName
+          ('Vda jaq_7').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_7').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_7').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_7').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq7 = 0) and (cTotalVdaLoja7 = 0) then
+        begin
+          cTotalJaq7 := 0;
+        end
+        else
+        begin
+          cTotalJaq7 := cTotalVdaJaq7 / cTotalVdaLoja7;
+        end;
+
+        if (qryConsulta.FieldByName('Vda Loja_8').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda Loja_8')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda Loja_8').AsFloat) + '</td>';
+        end;
+        cTotalVdaLoja8 := cTotalVdaLoja8 + qryConsulta.FieldByName
+          ('Vda Loja_8').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_8').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_8')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_8').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq8 := cTotalVdaJaq8 + qryConsulta.FieldByName
+          ('Vda jaq_8').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_8').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_8').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_8').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq8 = 0) and (cTotalVdaLoja8 = 0) then
+        begin
+          cTotalJaq8 := 0;
+        end
+        else
+        begin
+          cTotalJaq8 := cTotalVdaJaq8 / cTotalVdaLoja8;
+        end;
+
+        if (qryConsulta.FieldByName('Vda Loja_9').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda Loja_9')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda Loja_9').AsFloat) + '</td>';
+        end;
+        cTotalVdaLoja9 := cTotalVdaLoja9 + qryConsulta.FieldByName
+          ('Vda Loja_9').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_9').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_9')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_9').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq9 := cTotalVdaJaq9 + qryConsulta.FieldByName
+          ('Vda jaq_9').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_9').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_9').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_9').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq9 = 0) and (cTotalVdaLoja9 = 0) then
+        begin
+          cTotalJaq9 := 0;
+        end
+        else
+        begin
+          cTotalJaq9 := cTotalVdaJaq9 / cTotalVdaLoja9;
+        end;
+
+        if (qryConsulta.FieldByName('Vda Loja_10').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('###,###,###,###',
+            qryConsulta.FieldByName('Vda Loja_10').AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda Loja_10').AsFloat)
+            + '</td>';
+        end;
+        cTotalVdaLoja10 := cTotalVdaLoja10 + qryConsulta.FieldByName
+          ('Vda Loja_10').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_10').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_10')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_10').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq10 := cTotalVdaJaq10 + qryConsulta.FieldByName
+          ('Vda jaq_10').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_10').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_10').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_10').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq10 = 0) and (cTotalVdaLoja10 = 0) then
+        begin
+          cTotalJaq10 := 0;
+        end
+        else
+        begin
+          cTotalJaq10 := cTotalVdaJaq10 / cTotalVdaLoja10;
+        end;
+
+        if (qryConsulta.FieldByName('Vda Loja_11').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###',
+            qryConsulta.FieldByName('Vda Loja_11').AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda Loja_11').AsFloat)
+            + '</td>';
+        end;
+        cTotalVdaLoja11 := cTotalVdaLoja11 + qryConsulta.FieldByName
+          ('Vda Loja_11').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_11').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_11')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_11').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq11 := cTotalVdaJaq11 + qryConsulta.FieldByName
+          ('Vda jaq_11').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_11').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_11').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_11').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq11 = 0) and (cTotalVdaLoja11 = 0) then
+        begin
+          cTotalJaq11 := 0;
+        end
+        else
+        begin
+          cTotalJaq11 := cTotalVdaJaq11 / cTotalVdaLoja11;
+        end;
+
+        if (qryConsulta.FieldByName('Vda Loja_12').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('###,###,###,###',
+            qryConsulta.FieldByName('Vda Loja_12').AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda Loja_12').AsFloat)
+            + '</td>';
+        end;
+        cTotalVdaLoja12 := cTotalVdaLoja12 + qryConsulta.FieldByName
+          ('Vda Loja_12').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_12').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_12')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_12').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq12 := cTotalVdaJaq12 + qryConsulta.FieldByName
+          ('Vda jaq_12').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_12').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_12').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_12').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq12 = 0) and (cTotalVdaLoja12 = 0) then
+        begin
+          cTotalJaq12 := 0;
+        end
+        else
+        begin
+          cTotalJaq12 := cTotalVdaJaq12 / cTotalVdaLoja12;
+        end;
+
+        if (qryConsulta.FieldByName('Vda Loja_13').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###',
+            qryConsulta.FieldByName('Vda Loja_13').AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda Loja_13').AsFloat)
+            + '</td>';
+        end;
+        cTotalVdaLoja13 := cTotalVdaLoja13 + qryConsulta.FieldByName
+          ('Vda Loja_13').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_13').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_13')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_13').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq13 := cTotalVdaJaq13 + qryConsulta.FieldByName
+          ('Vda jaq_13').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_13').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_13').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_13').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq13 = 0) and (cTotalVdaLoja13 = 0) then
+        begin
+          cTotalJaq13 := 0;
+        end
+        else
+        begin
+          cTotalJaq13 := cTotalVdaJaq13 / cTotalVdaLoja13;
+        end;
+
+        if (qryConsulta.FieldByName('Vda Loja_14').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('###,###,###,###',
+            qryConsulta.FieldByName('Vda Loja_14').AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('Vda Loja_14').AsFloat)
+            + '</td>';
+        end;
+        cTotalVdaLoja14 := cTotalVdaLoja14 + qryConsulta.FieldByName
+          ('Vda Loja_14').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_14').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_14')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_14').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq14 := cTotalVdaJaq14 + qryConsulta.FieldByName
+          ('Vda jaq_14').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_14').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_14').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_14').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq14 = 0) and (cTotalVdaLoja14 = 0) then
+        begin
+          cTotalJaq14 := 0;
+        end
+        else
+        begin
+          cTotalJaq14 := cTotalVdaJaq14 / cTotalVdaLoja14;
+        end;
+
+        if (qryConsulta.FieldByName('Vda Loja_15').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###',
+            qryConsulta.FieldByName('Vda Loja_15').AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda Loja_15').AsFloat)
+            + '</td>';
+        end;
+        cTotalVdaLoja15 := cTotalVdaLoja15 + qryConsulta.FieldByName
+          ('Vda Loja_15').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_15').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_15')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_15').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq15 := cTotalVdaJaq15 + qryConsulta.FieldByName
+          ('Vda jaq_15').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_15').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_15').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_15').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq15 = 0) and (cTotalVdaLoja15 = 0) then
+        begin
+          cTotalJaq15 := 0;
+        end
+        else
+        begin
+          cTotalJaq15 := cTotalVdaJaq15 / cTotalVdaLoja15;
+        end;
+        sHtml := sHtml + '</tr>';
+        qryConsulta.Next;
+      end;
+      qryConsulta.Close;
+    end;
+
+    sHtml := sHtml +
+      '<td style="background-color: powderblue;" align="center" colspan="4"><b>Totais</b></td>';
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('##.0', (cTotalJaq) * 100) + '</b></td>';
+
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja1) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq1) + '</b></td>';
+    if cTotalJaq1 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FormatFloat('##.0', (cTotalJaq1) * 100) + '</b></td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FloatToStr((cTotalJaq1) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja2) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq2) + '</b></td>';
+    if cTotalJaq2 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+        FormatFloat('##.0', (cTotalJaq2) * 100) + '</td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+        FloatToStr((cTotalJaq2) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja3) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq3) + '</b></td>';
+    if cTotalJaq3 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FormatFloat('##.0', (cTotalJaq3) * 100) + '</b></td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FloatToStr((cTotalJaq3) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja4) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq4) + '</b></td>';
+    if cTotalJaq4 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+        FormatFloat('##.0', (cTotalJaq4) * 100) + '</b></td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+        FloatToStr((cTotalJaq4) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja5) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq5) + '</b></td>';
+    if cTotalJaq5 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FormatFloat('##.0', (cTotalJaq5) * 100) + '</b></td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FloatToStr((cTotalJaq5) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja6) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq6) + '</b></td>';
+    if cTotalJaq6 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+        FormatFloat('##.0', (cTotalJaq6) * 100) + '</b></td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+        FloatToStr((cTotalJaq6) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja7) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq7) + '</b></td>';
+    if cTotalJaq7 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FormatFloat('##.0', (cTotalJaq7) * 100) + '</b></td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FloatToStr((cTotalJaq7) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja8) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq8) + '</b></td>';
+    if cTotalJaq8 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+        FormatFloat('##.0', (cTotalJaq8) * 100) + '</b></td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+        FloatToStr((cTotalJaq8) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja9) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq9) + '</b></td>';
+    if cTotalJaq9 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FormatFloat('##.0', (cTotalJaq9) * 100) + '</b></td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FloatToStr((cTotalJaq9) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja10) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq10) + '</b></td>';
+    if cTotalJaq10 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+        FormatFloat('##.0', (cTotalJaq10) * 100) + '</b></td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+        FloatToStr((cTotalJaq10) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja11) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq11) + '</b></td>';
+    if cTotalJaq11 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FormatFloat('##.0', (cTotalJaq11) * 100) + '</b></td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FloatToStr((cTotalJaq11) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja12) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq12) + '</b></td>';
+    if cTotalJaq12 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+        FormatFloat('##.0', (cTotalJaq12) * 100) + '</b></td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+        FloatToStr((cTotalJaq12) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja13) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq13) + '</b></td>';
+    if cTotalJaq13 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FormatFloat('##.0', (cTotalJaq13) * 100) + '</b></td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FloatToStr((cTotalJaq13) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja14) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq14) + '</b></td>';
+    if cTotalJaq14 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+        FormatFloat('##.0', (cTotalJaq14) * 100) + '</b></td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+        FloatToStr((cTotalJaq14) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja15) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq15) + '</b></td>';
+    if cTotalJaq15 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FormatFloat('##.0', (cTotalJaq15) * 100) + '</b></td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FloatToStr((cTotalJaq15) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '</table>';
+    sHtml := sHtml + '</body>';
+    sHtml := sHtml + '</html>';
+
+    qry.Active := False;
+    qry.SQL.Clear;
+    qry.SQL.Text := ' SELECT * FROM GRZ_FORM_EMAIL g              ' +
+      ' WHERE TRUNC(DATA_CADASTRO) = TRUNC(sysdate) ' +
+      ' AND g.form_origem = ''Auto''                ' +
+      ' AND g.ind_status = 0                        ';
+    qry.Active := true;
+    qry.RecordCount;
+
+    sSeqChave := qry.FieldByName('seq_chave').AsString;
+    ACBrMail1.From := qry.FieldByName('remetente_email').AsString;
+    ACBrMail1.FromName := sNome;
+    ACBrMail1.Host := sHost;
+    ACBrMail1.Username := sUserName;
+    ACBrMail1.Password := sPassword;
+    ACBrMail1.Port := sPort;
+    ACBrMail1.AddAddress(qry.FieldByName('destinatario1').AsString, '');
+    ACBrMail1.AddCC(qry.FieldByName('destinatario1').AsString);
+    ACBrMail1.Subject := qry.FieldByName('assunto_email').AsString;;
+    ACBrMail1.IsHTML := true;
+    ACBrMail1.Body.Text := sHtml;
+    ACBrMail1.SetTLS := true;
+    ACBrMail1.Send;
+
+    qryUpdate.Active := False;
+    qryUpdate.SQL.Clear;
+    qryUpdate.SQL.Text := ' UPDATE GRZ_FORM_EMAIL     ' +
+      ' SET ind_status = 1,       ' + '     html = :sHtml         ' +
+      ' WHERE ind_status = 0      ' + ' AND SEQ_CHAVE = ' + sSeqChave;
+    qryUpdate.ParamByName('sHtml').Size := 999999;
+    qryUpdate.ParamByName('sHtml').AsBlob := sHtml;
+    qryUpdate.ExecSQL;
+
+    Log('Enviando Email Para: ' + sEmailFrom);
+
+  except
+    on e: Exception do
+    begin
+      Log(e.ClassName + ' - ' + e.Message);
+      exit;
+    end;
+  end;
+
+end;
+
+function TForm1.GeraEmailRegioes: Boolean;
+Var
+  sHtml, sRede: String;
+  i: Integer;
+  sCabecalho, sSeqChave, sSelectAtual, sSelectAnterior: string;
+  cTotalVdaLoja, cTotalVdaLoja1, cTotalVdaLoja2, cTotalVdaLoja3, cTotalVdaLoja4,
+    cTotalVdaLoja5, cTotalVdaLoja6, cTotalVdaLoja7, cTotalVdaLoja8,
+    cTotalVdaLoja9, cTotalVdaLoja10, cTotalVdaLoja11, cTotalVdaLoja12,
+    cTotalVdaLoja13, cTotalVdaLoja14, cTotalVdaLoja15, cTotalVdaJaq,
+    cTotalVdaJaq1, cTotalVdaJaq2, cTotalVdaJaq3, cTotalVdaJaq4, cTotalVdaJaq5,
+    cTotalVdaJaq6, cTotalVdaJaq7, cTotalVdaJaq8, cTotalVdaJaq9, cTotalVdaJaq10,
+    cTotalVdaJaq11, cTotalVdaJaq12, cTotalVdaJaq13, cTotalVdaJaq14,
+    cTotalVdaJaq15, cTotalJaq, cTotalJaq1, cTotalJaq2, cTotalJaq3, cTotalJaq4,
+    cTotalJaq5, cTotalJaq6, cTotalJaq7, cTotalJaq8, cTotalJaq9, cTotalJaq10,
+    cTotalJaq11, cTotalJaq12, cTotalJaq13, cTotalJaq14, cTotalJaq15: Currency;
+  iDiaAtual, iMesInicial, iMesFinal, iMesAtual: Integer;
+
+begin
+  if ((StrToTime(TimeToStr(now)) >= StrToTime('22:05:00')) and
+    (StrToTime(TimeToStr(now)) <= StrToTime('07:50:00'))) then
+  begin
+    exit;
+  end;
+
+  try
+    iDiaAtual := StrToInt(Copy(DateToStr(Date), 1, 2));
+  except
+    iDiaAtual := 1;
+  end;
+
+  if iDiaAtual > 3 then
+  begin
+    iMesInicial := 0;
+    iMesFinal := 1;
+
+    iMesAtual := StrToInt(Copy(DateToStr(Date), 4, 2));
+
+    sSelectAtual :=
+      ' SELECT TO_DATE( ''01/''||EXTRACT( MONTH FROM  ADD_MONTHS(TO_DATE( sysdate,  ''DD-MM-YYYY'' ) ,-'
+      + IntToStr(iMesInicial) + ') )||''/''|| ' +
+      ' EXTRACT( YEAR FROM  ADD_MONTHS(TO_DATE( sysdate,  ''DD-MM-YYYY'' ) ,1) )  ,  ''DD-MM-YYYY'' )                                        '
+      + ' FROM DUAL                                                                                                                            ';
+
+    sSelectAnterior :=
+      ' SELECT TO_DATE( ''01/''||EXTRACT( MONTH FROM  ADD_MONTHS(TO_DATE(sysdate,''DD-MM-YYYY'') ,+'
+      + IntToStr(iMesFinal) + ') )||''/''|| ' +
+      ' EXTRACT( YEAR FROM  ADD_MONTHS(TO_DATE( sysdate,  ''DD-MM-YYYY''),1)),''DD-MM-YYYY'' )                                         '
+      + ' FROM DUAL                                                                                                                      ';
+  end
+  else
+  begin
+    iMesInicial := 1;
+    iMesFinal := 0;
+
+    iMesAtual := StrToInt(Copy(DateToStr(Date), 4, 2)) - 1;
+
+    sSelectAtual :=
+      ' SELECT TO_DATE(''01/''||EXTRACT( MONTH FROM ADD_MONTHS(TO_DATE(sysdate,''DD-MM-YYYY''),-'
+      + IntToStr(iMesInicial) + ') )||''/''|| ' +
+      ' EXTRACT( YEAR FROM  ADD_MONTHS(TO_DATE( sysdate,''DD-MM-YYYY''),1)),''DD-MM-YYYY'')                                           '
+      + ' FROM DUAL                                                                                                                     ';
+
+    sSelectAnterior :=
+      ' SELECT TO_DATE( ''01/''||EXTRACT( MONTH FROM  ADD_MONTHS(TO_DATE( sysdate,  ''DD-MM-YYYY'' ) ,-'
+      + IntToStr(iMesFinal) + ') )||''/''|| ' +
+      ' EXTRACT( YEAR FROM  ADD_MONTHS(TO_DATE( sysdate,  ''DD-MM-YYYY'' ) ,1) )  ,  ''DD-MM-YYYY'' )                                      '
+      + ' FROM DUAL                                                                                                                          ';
+  end;
+
+  cTotalVdaLoja := 0;
+  cTotalVdaLoja3 := 0;
+  cTotalVdaLoja6 := 0;
+  cTotalVdaLoja9 := 0;
+  cTotalVdaLoja12 := 0;
+  cTotalVdaLoja1 := 0;
+  cTotalVdaLoja4 := 0;
+  cTotalVdaLoja7 := 0;
+  cTotalVdaLoja10 := 0;
+  cTotalVdaLoja13 := 0;
+  cTotalVdaLoja2 := 0;
+  cTotalVdaLoja5 := 0;
+  cTotalVdaLoja8 := 0;
+  cTotalVdaLoja11 := 0;
+  cTotalVdaLoja14 := 0;
+  cTotalVdaLoja15 := 0;
+
+  Log('entrou no gera email');
+  try
+    sCabecalho := '';
+    sCabecalho := sCabecalho + '<tr>';
+    sCabecalho := sCabecalho +
+      '<th style="background-color: powderblue;">Região</th>';
+    sCabecalho := sCabecalho +
+      '<th style="background-color: powderblue;">Nome</th>';
+    for i := 1 to 16 do
+    begin
+      if ((i mod 2) = 0) then
+      begin
+        sCabecalho := sCabecalho +
+          '<th style="background-color: powderblue;">Vda Loja</th>';
+        sCabecalho := sCabecalho +
+          '<th style="background-color: powderblue;">Vda Jaq</th>';
+        sCabecalho := sCabecalho +
+          '<th style="background-color: powderblue;">% Jaq</th>';
+      end
+      else
+      begin
+        sCabecalho := sCabecalho +
+          '<th style="background-color: thistle;">Vda Loja</th>';
+        sCabecalho := sCabecalho +
+          '<th style="background-color: thistle;">Vda Jaq</th>';
+        sCabecalho := sCabecalho +
+          '<th style="background-color: thistle;">% Jaq</th>';
+      end;
+    end;
+    sCabecalho := sCabecalho + '</tr>';
+    qryConsulta.Active := False;
+
+    qryConsulta.SQL.Clear;
+    qryConsulta.SQL.
+      Text := ' Select vda.cod_quebra "Região"				                                                     '
+      + '     ,ge.des_grupo "Nome"                                                                                                                                 '
+      + '     ,sum(nvl(vda.vlr_venda,0)) "Vda Loja"                                                                                                                '
+      + '     ,sum(nvl(vda.vlr_venda_ja,0)) "Vda jaq"                                                                                                              '
+      + '     ,trunc((case when sum(nvl(vda.vlr_venda,0)) > 0 then                                                                                                 '
+      + '     (sum(nvl(vda.vlr_venda_ja,0)) * 100) / sum(nvl(vda.vlr_venda,0)) else 0 end),2) "%Jaq"                                                               '
+      + '     ,''' + FormatDateTime('dd/mm', Date - 1) +
+      ''' "Dia"                                                                                                        '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 1) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                     ' +
+      '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 1) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"                   ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 1) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then      ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 1) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                      ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 1) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"         ' + '     ,'''
+      + FormatDateTime('dd/mm', Date - 2) +
+      ''' "Dia"                                                                                                        '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 2) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                     ' +
+      '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 2) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"                   ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 2) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then      ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 2) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                      ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 2) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"         ' + '     ,'''
+      + FormatDateTime('dd/mm', Date - 3) +
+      ''' "Dia"                                                                                                        '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 3) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                     ' +
+      '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 3) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"                   ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 3) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then      ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 3) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                      ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 3) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"         ' + '     ,'''
+      + FormatDateTime('dd/mm', Date - 4) +
+      ''' "Dia"                                                                                                        '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 4) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                     ' +
+      '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 4) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"                   ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 4) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then      ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 4) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                      ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 4) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"         ' + '     ,'''
+      + FormatDateTime('dd/mm', Date - 5) +
+      ''' "Dia"                                                                                                        '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 5) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                     ' +
+      '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 5) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"                   ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 5) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then      ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 5) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                      ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 5) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"         ' + '     ,'''
+      + FormatDateTime('dd/mm', Date - 6) +
+      ''' "Dia"                                                                                                        '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 6) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                     ' +
+      '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 6) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"                   ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 6) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then      ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 6) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                      ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 6) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"         ' + '     ,'''
+      + FormatDateTime('dd/mm', Date - 7) +
+      ''' "Dia"                                                                                                        '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 7) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                     ' +
+      '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 7) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"                   ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 7) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then      ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 7) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                      ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 7) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"         ' + '     ,'''
+      + FormatDateTime('dd/mm', Date - 8) +
+      ''' "Dia"                                                                                                        '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 8) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                     ' +
+      '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 8) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"                   ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 8) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then      ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 8) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                      ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 8) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"         ' + '     ,'''
+      + FormatDateTime('dd/mm', Date - 9) +
+      ''' "Dia"                                                                                                        '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 9) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                     ' +
+      '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 9) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"                   ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 9) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then      ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 9) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                      ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 9) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"         ' + '     ,'''
+      + FormatDateTime('dd/mm', Date - 10) +
+      ''' "Dia"                                                                                                       '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 10) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                    ' +
+      '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 10) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"                  ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 10) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then     ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 10) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                     ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 10) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"        ' + '     ,''' +
+      FormatDateTime('dd/mm', Date - 11) +
+      ''' "Dia"                                                                                                       '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 11) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                    ' +
+      '          ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 11) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"                 ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 11) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then     ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 11) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                     ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 11) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"        ' + '     ,''' +
+      FormatDateTime('dd/mm', Date - 12) +
+      ''' "Dia"                                                                                                       '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 12) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                    ' +
+      '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 12) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"                  ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 12) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then     ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 12) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                     ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 12) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"        ' + '     ,''' +
+      FormatDateTime('dd/mm', Date - 13) +
+      ''' "Dia"                                                                                                       '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 13) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                    ' +
+      '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 13) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"                  ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 13) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then     ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 13) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                     ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 13) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"        ' + '     ,''' +
+      FormatDateTime('dd/mm', Date - 14) +
+      ''' "Dia"                                                                                                       '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 14) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                    ' +
+      '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 14) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"                  ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 14) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then     ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 14) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                     ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 14) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"        ' + '     ,''' +
+      FormatDateTime('dd/mm', Date - 15) +
+      ''' "Dia"                                                                                                       '
+      + '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 15) +
+      ''',nvl(vda.vlr_venda,0),0)) "Vda Loja"                    ' +
+      '         ,sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 15) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) "Vda jaq"                  ' +
+      '         ,trunc((case when sum(decode(to_char(vda.dta_lancamento,''mm/dd''),'''
+      + FormatDateTime('mm/dd', Date - 15) +
+      ''',nvl(vda.vlr_venda,0),0)) > 0 then     ' +
+      '         (sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 15) +
+      ''',nvl(vda.vlr_venda_ja,0),0)) * 100)                     ' +
+      '         / sum(decode(to_char(vda.dta_lancamento,''mm/dd''),''' +
+      FormatDateTime('mm/dd', Date - 15) +
+      ''',nvl(vda.vlr_venda,0),0)) else 0 end),2) "%Jaq"        ' +
+      '     from (select uni.cod_unidade                                                                                                                         '
+      + '           ,ge.cod_quebra                                                                                                                                 '
+      + '           ,e.dta_lancamento                                                                                                                              '
+      +
+      '           ,sum(decode(e.tip_lancamento,2,nvl(e.vlr_total,0),1,((nvl(e.vlr_total,0)) * -1),0)) vlr_venda             '
+      + '           ,sum(decode(nvl(t.seq_intervalo,-1),-1,0,decode(e.tip_lancamento,2,nvl(e.vlr_total,0),1,((nvl(e.vlr_total,0)) * -1),0))) vlr_venda_ja          '
+      + '           from nl.ce_diarios e                                                                                                                           '
+      + '                ,nl.ie_mascaras iem                                                                                                                       '
+      + '                ,nl.ie_itens ie                                                                                                                           '
+      + '                ,nl.ps_juridicas pj                                                                                                                       '
+      + '                ,nl.ge_grupos_unidades ge                                                                                                                 '
+      + '                ,nl.t5_itens_grupo t                                                                                                                      '
+      + '                ,(select e.cod_emp                                                                                                                        '
+      + '                    ,p.cod_atividade                                                                                                                      '
+      + '                    ,to_char(pj.num_cgc) num_cgc                                                                                                          '
+      + '                    ,max(decode(e.cod_unidade,1566,566,3566,566,4566,566,5566,566                                                                         '
+      + '                    ,1580,580,3580,580,4580,580,5580,580                                                                                                  '
+      + '                    ,818,900,838,900,848,900,858,900,878,900                                                                                              '
+      + '                    ,e.cod_unidade)) cod_unidade                                                                                                          '
+      + '                    from nl.ge_unidades e                                                                                                                 '
+      + '                         ,nl.ps_pessoas p                                                                                                                 '
+      + '                         ,nl.ps_juridicas pj                                                                                                              '
+      + '                    where pj.cod_pessoa    = e.cod_unidade                                                                                                '
+      + '                    and nvl(pj.num_cgc,0)  > 0                                                                                                            '
+      + '                    and pj.num_cgc     not in (92012467000170)                                                                                            '
+      + '                    and p.cod_pessoa       = e.cod_unidade                                                                                                '
+      + '                    and p.dta_afastamento  is null                                                                                                        '
+      + '                    and p.ind_inativo      = 0                                                                                                            '
+      + '                    and e.cod_emp          = 1                                                                                                            '
+      + '                    and e.cod_unidade      < 8000                                                                                                         '
+      + '                    and e.cod_nivel2       in (810,830,840,850,870)                                                                                       '
+      +
+      '                    group by e.cod_emp,p.cod_atividade,pj.num_cgc ) uni				 			                             '
+      + '           where ge.cod_unidade   = e.cod_unidade                                                                                                         '
+      + '           and ge.cod_grupo       in (910,930,940)                                                                                                        '
+      + '           and ge.cod_emp         = 1                                                                                                                     '
+      + '           and uni.num_cgc        = pj.num_cgc                                                                                                            '
+      + '           and pj.cod_pessoa      = e.cod_unidade                                                                                                         '
+      + '           and t.cod_gr_prod(+)   = 970                                                                                                                   '
+      + '           and t.cod_mascara(+)   = 170                                                                                                                   '
+      + '           and t.cod_inicial(+)   < iem.cod_completo                                                                                                      '
+      + '           and t.cod_final(+)     > iem.cod_completo                                                                                                      '
+      + '           and ie.cod_item        = e.cod_item                                                                                                            '
+      + '           and ie.ind_avulso      = 0                                                                                                                     '
+      + '           and iem.cod_item       = e.cod_item                                                                                                            '
+      + '           and iem.cod_mascara    = 170                                                                                                                   '
+      + '           and iem.cod_niv0       = ''1''                                                                                                                 '
+      + '           and e.cod_emp          = 1                                                                                                                     '
+      + '           and e.ind_estoque      = 1                                                                                                                     '
+      + '           and e.cod_unidade not in (818,838,848,858,549,1549,3549,4549,5549)                                                                             '
+      + '           and e.cod_oper        in (106,107,300,301,302,305,2106,2107,3106,3300,3301,3302,3305)                                                          '
+      + '           and e.dta_lancamento  >= trunc((sysdate-16))                                                                                                   '
+      + '           and e.dta_lancamento  <= trunc((sysdate-1))                                                                                                    '
+      + '           group by uni.cod_unidade                                                                                                                       '
+      + '                    ,ge.cod_quebra                                                                                                                        '
+      + '                    ,e.dta_lancamento) vda                                                                                                                '
+      + ' ,nl.ge_grupos ge                                                                                                                                         '
+      + ' where ge.cod_grupo = vda.cod_quebra                                                                                                                      '
+      + ' group by vda.cod_quebra                                                                                                                                  '
+      + ' ,ge.des_grupo                                                                                                                                            '
+      + ' order by 1                                                                                                                                               ';
+    try
+      qryConsulta.Active := true;
+
+    except
+      on e: Exception do
+      begin
+        ShowMessage(e.Message);
+        exit;
+      end;
+    end;
+
+    qry2.SQL.Clear;
+    qry2.SQL.Text
+      := ' Select vda.cod_quebra "Região"				'
+      + ' ,ge.des_grupo "Nome"                                                                                                                              '
+      + ' ,sum(nvl(vda.vlr_venda,0)) "Vda Loja"                                                                                                             '
+      + ' ,sum(nvl(vda.vlr_venda_ja,0)) "Vda jaq"                                                                                                           '
+      + ' ,trunc((case when sum(nvl(vda.vlr_venda,0)) > 0 then                                                                                              '
+      + ' (sum(nvl(vda.vlr_venda_ja,0)) * 100) / sum(nvl(vda.vlr_venda,0)) else 0 end),2) "%Jaq"                                                            '
+      + ' from (select uni.cod_unidade                                                                                                                      '
+      + '           ,ge.cod_quebra                                                                                                                          '
+      + '           ,e.dta_lancamento                                                                                                                       '
+      +
+      '           ,sum(decode(e.tip_lancamento,2,nvl(e.vlr_total,0),1,((nvl(e.vlr_total,0)) * -1),0)) vlr_venda    '
+      + '           ,sum(decode(nvl(t.seq_intervalo,-1),-1,0,decode(e.tip_lancamento,2,nvl(e.vlr_total,0),1,((nvl(e.vlr_total,0)) * -1),0))) vlr_venda_ja   '
+      + '           from nl.ce_diarios e                                                                                                                    '
+      + '                ,nl.ie_mascaras iem                                                                                                                '
+      + '                ,nl.ie_itens ie                                                                                                                    '
+      + '                ,nl.ps_juridicas pj                                                                                                                '
+      + '                ,nl.ge_grupos_unidades ge                                                                                                          '
+      + '                ,nl.t5_itens_grupo t                                                                                                               '
+      + '                ,(select e.cod_emp                                                                                                                 '
+      + '                    ,p.cod_atividade                                                                                                               '
+      + '                    ,to_char(pj.num_cgc) num_cgc                                                                                                   '
+      + '                    ,max(decode(e.cod_unidade,1566,566,3566,566,4566,566,5566,566                                                                  '
+      + '                    ,1580,580,3580,580,4580,580,5580,580                                                                                           '
+      + '                    ,818,900,838,900,848,900,858,900,878,900                                                                                       '
+      + '                    ,e.cod_unidade)) cod_unidade                                                                                                   '
+      + '                    from nl.ge_unidades e                                                                                                          '
+      + '                         ,nl.ps_pessoas p                                                                                                          '
+      + '                         ,nl.ps_juridicas pj                                                                                                       '
+      + '                    where pj.cod_pessoa    = e.cod_unidade                                                                                         '
+      + '                    and nvl(pj.num_cgc,0)  > 0                                                                                                     '
+      + '                    and pj.num_cgc     not in (92012467000170)                                                                                     '
+      + '                    and p.cod_pessoa       = e.cod_unidade                                                                                         '
+      + '                    and p.dta_afastamento  is null                                                                                                 '
+      + '                    and p.ind_inativo      = 0                                                                                                     '
+      + '                    and e.cod_emp          = 1                                                                                                     '
+      + '                    and e.cod_unidade      < 8000                                                                                                  '
+      + '                    and e.cod_nivel2       in (810,830,840,850,870)                                                                                '
+      +
+      '                    group by e.cod_emp,p.cod_atividade,pj.num_cgc ) uni				 			                    '
+      + '           where ge.cod_unidade   = e.cod_unidade                                                                                                  '
+      + '           and ge.cod_grupo       in (910,930,940)                                                                                                 '
+      + '           and ge.cod_emp         = 1                                                                                                              '
+      + '           and uni.num_cgc        = pj.num_cgc                                                                                                     '
+      + '           and pj.cod_pessoa      = e.cod_unidade                                                                                                  '
+      + '           and t.cod_gr_prod(+)   = 970                                                                                                            '
+      + '           and t.cod_mascara(+)   = 170                                                                                                            '
+      + '           and t.cod_inicial(+)   < iem.cod_completo                                                                                               '
+      + '           and t.cod_final(+)     > iem.cod_completo                                                                                               '
+      + '           and ie.cod_item        = e.cod_item                                                                                                     '
+      + '           and ie.ind_avulso      = 0                                                                                                              '
+      + '           and iem.cod_item       = e.cod_item                                                                                                     '
+      + '           and iem.cod_mascara    = 170                                                                                                            '
+      + '           and iem.cod_niv0       = ''1''                                                                                                          '
+      + '           and e.cod_emp          = 1                                                                                                              '
+      + '           and e.ind_estoque      = 1                                                                                                              '
+      + '           and e.cod_unidade not in (818,838,848,858,549,1549,3549,4549,5549)                                                                      '
+      + '           and e.cod_oper        in (106,107,300,301,302,305,2106,2107,3106,3300,3301,3302,3305)                                                   '
+      + '           and e.dta_lancamento  >= (' + sSelectAtual +
+      ')                                                                                             '
+      + '           and e.dta_lancamento  < (' + sSelectAnterior +
+      ')                                                                                           '
+      + '           group by uni.cod_unidade                                                                                                                '
+      + '                    ,ge.cod_quebra                                                                                                                 '
+      + '                    ,e.dta_lancamento) vda                                                                                                         '
+      + ' ,nl.ge_grupos ge                                                                                                                                  '
+      + ' where ge.cod_grupo = vda.cod_quebra                                                                                                               '
+      + ' group by vda.cod_quebra                                                                                                                           '
+      + // , vda.dta_lancamento
+      ' ,ge.des_grupo                                                                                                                                     '
+      + ' order by 1                                                                                                                                        ';
+    try
+      qry2.Active := true;
+      PrencheTabelaMemoriaRegiao;
+    except
+      on e: Exception do
+      begin
+        ShowMessage(e.Message);
+        exit;
+      end;
+    end;
+
+    sHtml := '';
+    sHtml := sHtml + '<html>';
+    sHtml := sHtml + '<head>';
+    sHtml := sHtml + '<title>Grupo Grazziotin</title>';
+    sHtml := sHtml + '<h3>Grupo Grazziotin S/A.</h3>';
+    sHtml := sHtml + '<style>                      ';
+    sHtml := sHtml + 'table, th, td {             ';
+    sHtml := sHtml + '  border: 1px solid black;';
+    sHtml := sHtml + '  border-style: ridge;';
+    sHtml := sHtml + '  border-collapse: collapse;';
+    sHtml := sHtml + '  font-family: Arial, Helvetica, sans-serif;';
+    sHtml := sHtml + '}';
+    sHtml := sHtml + '</style>';
+    sHtml := sHtml + '</head>';
+    sHtml := sHtml + '<body>';
+    sHtml := sHtml + '<b><p>Data: ' + FormatDateTime('dd/mm/yyyy', Date) +
+      '  Hora: ' + FormatDateTime('hh:mm', Time) + '</b></p>';
+    sHtml := sHtml + '<table>';
+    sHtml := sHtml + '<tr>';
+    sHtml := sHtml +
+      '<td style="background-color: powderblue;" align="center" colspan="2"><p><b><font color="#006600">Venda de Jaquetas e Acrílicos por Região</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: thistle;" align="center" colspan="3"><p><b><font color="#006600">Acumulado do Mês '
+      + IntToStr(iMesAtual) + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: powderblue;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia').AsString + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: thistle;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia_1').AsString + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: powderblue;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia_2').AsString + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: thistle;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia_3').AsString + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: powderblue;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia_4').AsString + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: thistle;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia_5').AsString + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: powderblue;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia_6').AsString + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: thistle;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia_7').AsString + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: powderblue;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia_8').AsString + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: thistle;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia_9').AsString + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: powderblue;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia_10').AsString + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: thistle;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia_11').AsString + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: powderblue;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia_12').AsString + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: thistle;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia_13').AsString + '</font></b></p></td>';
+    sHtml := sHtml +
+      '<td style="background-color: powderblue;" align="center" colspan="3"><p><b><font color="#006600">Dia '
+      + qryConsulta.FieldByName('Dia_14').AsString + '</font></b></p></td>';
+    sHtml := sHtml + '</tr>';
+    sHtml := sHtml + sCabecalho;
+    if qryConsulta.RecordCount > 0 then
+    Begin
+      qryConsulta.First;
+      while not qryConsulta.Eof do
+      begin
+        sHtml := sHtml + '<tr>';
+        sHtml := sHtml + '<td style="background-color: powderblue;">' +
+          qryConsulta.FieldByName('Região').AsString + '</td>';
+        sHtml := sHtml + '<td style="background-color: powderblue;">' +
+          qryConsulta.FieldByName('Nome').AsString + '</td>';
+
+        begin
+          fdVdaMes.Filter := 'regiao = ' + qryConsulta.FieldByName
+            ('Região').AsString;
+          fdVdaMes.Filtered := true; // ativa o filtro
+        end;
+
+        sHtml := sHtml + '<td style="background-color: thistle;">' +
+          FormatFloat('###,###,###,###', fdVdaMes.FieldByName('Vda_Loja')
+          .AsFloat) + '</td>';
+        cTotalVdaLoja := cTotalVdaLoja + fdVdaMes.FieldByName
+          ('Vda_Loja').AsFloat;
+        sHtml := sHtml + '<td style="background-color: thistle;">' +
+          FormatFloat('###,###,###,###', fdVdaMes.FieldByName('Vda_jaq')
+          .AsFloat) + '</td>';
+        cTotalVdaJaq := cTotalVdaJaq + fdVdaMes.FieldByName('Vda_jaq').AsFloat;
+        sHtml := sHtml + '<td style="background-color: thistle;">' +
+          FormatFloat('##.0', fdVdaMes.FieldByName('%Jaq').AsFloat) + '</td>';
+        cTotalJaq := cTotalVdaJaq / cTotalVdaLoja;
+
+        if (qryConsulta.FieldByName('Vda Loja_1').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda Loja_1')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda Loja_1').AsFloat) + '</td>';
+        end;
+        cTotalVdaLoja1 := cTotalVdaLoja1 + qryConsulta.FieldByName
+          ('Vda Loja_1').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_1').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_1')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_1').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq1 := cTotalVdaJaq1 + qryConsulta.FieldByName
+          ('Vda jaq_1').AsFloat;
+        if (qryConsulta.FieldByName('%Jaq_1').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_1').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_1').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq1 = 0) and (cTotalVdaLoja1 = 0) then
+        begin
+          cTotalJaq1 := 0;
+        end
+        else
+        begin
+          cTotalJaq1 := cTotalVdaJaq1 / cTotalVdaLoja1;
+        end;
+
+        if (qryConsulta.FieldByName('Vda Loja_2').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda Loja_2')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda Loja_2').AsFloat) + '</td>';
+        end;
+        cTotalVdaLoja2 := cTotalVdaLoja2 + qryConsulta.FieldByName
+          ('Vda Loja_2').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_2').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_2')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_2').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq2 := cTotalVdaJaq2 + qryConsulta.FieldByName
+          ('Vda jaq_2').AsFloat;
+        if (qryConsulta.FieldByName('%Jaq_2').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_2').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_2').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq2 = 0) and (cTotalVdaLoja2 = 0) then
+        begin
+          cTotalJaq2 := 0;
+        end
+        else
+        begin
+          cTotalJaq2 := cTotalVdaJaq2 / cTotalVdaLoja2;
+        end;
+
+        if (qryConsulta.FieldByName('Vda Loja_3').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda Loja_3')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda Loja_3').AsFloat) + '</td>';
+        end;
+        cTotalVdaLoja3 := cTotalVdaLoja3 + qryConsulta.FieldByName
+          ('Vda Loja_3').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_3').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_3')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_3').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq3 := cTotalVdaJaq3 + qryConsulta.FieldByName
+          ('Vda jaq_3').AsFloat;
+        if (qryConsulta.FieldByName('%Jaq_3').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_3').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_3').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq3 = 0) and (cTotalVdaLoja3 = 0) then
+        begin
+          cTotalJaq3 := 0;
+        end
+        else
+        begin
+          cTotalJaq3 := cTotalVdaJaq3 / cTotalVdaLoja3;
+        end;
+
+        if (qryConsulta.FieldByName('Vda Loja_4').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda Loja_4')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda Loja_4').AsFloat) + '</td>';
+        end;
+        cTotalVdaLoja4 := cTotalVdaLoja4 + qryConsulta.FieldByName
+          ('Vda Loja_4').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_4').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_4')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_4').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq4 := cTotalVdaJaq4 + qryConsulta.FieldByName
+          ('Vda jaq_4').AsFloat;
+        if (qryConsulta.FieldByName('%Jaq_4').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_4').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_4').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq4 = 0) and (cTotalVdaLoja4 = 0) then
+        begin
+          cTotalJaq4 := 0;
+        end
+        else
+        begin
+          cTotalJaq4 := cTotalVdaJaq4 / cTotalVdaLoja4;
+        end;
+
+        if (qryConsulta.FieldByName('Vda Loja_5').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda Loja_5')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda Loja_5').AsFloat) + '</td>';
+        end;
+        cTotalVdaLoja5 := cTotalVdaLoja5 + qryConsulta.FieldByName
+          ('Vda Loja_5').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_5').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_5')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_5').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq5 := cTotalVdaJaq5 + qryConsulta.FieldByName
+          ('Vda jaq_5').AsFloat;
+        if (qryConsulta.FieldByName('%Jaq_5').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_5').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_5').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq5 = 0) and (cTotalVdaLoja5 = 0) then
+        begin
+          cTotalJaq5 := 0;
+        end
+        else
+        begin
+          cTotalJaq5 := cTotalVdaJaq5 / cTotalVdaLoja5;
+        end;
+
+        if (qryConsulta.FieldByName('Vda Loja_6').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda Loja_6')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda Loja_6').AsFloat) + '</td>';
+        end;
+        cTotalVdaLoja6 := cTotalVdaLoja6 + qryConsulta.FieldByName
+          ('Vda Loja_6').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_6').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_6')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_6').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq6 := cTotalVdaJaq6 + qryConsulta.FieldByName
+          ('Vda jaq_6').AsFloat;
+        if (qryConsulta.FieldByName('%Jaq_6').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_6').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_6').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq6 = 0) and (cTotalVdaLoja6 = 0) then
+        begin
+          cTotalJaq6 := 0;
+        end
+        else
+        begin
+          cTotalJaq6 := cTotalVdaJaq6 / cTotalVdaLoja6;
+        end;
+
+        if (qryConsulta.FieldByName('Vda Loja_7').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda Loja_7')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda Loja_7').AsFloat) + '</td>';
+        end;
+        cTotalVdaLoja7 := cTotalVdaLoja7 + qryConsulta.FieldByName
+          ('Vda Loja_7').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_7').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_7')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_7').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq7 := cTotalVdaJaq7 + qryConsulta.FieldByName
+          ('Vda jaq_7').AsFloat;
+        if (qryConsulta.FieldByName('%Jaq_7').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_7').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_7').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq7 = 0) and (cTotalVdaLoja7 = 0) then
+        begin
+          cTotalJaq7 := 0;
+        end
+        else
+        begin
+          cTotalJaq7 := cTotalVdaJaq7 / cTotalVdaLoja7;
+        end;
+
+        if (qryConsulta.FieldByName('Vda Loja_8').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda Loja_8')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda Loja_8').AsFloat) + '</td>';
+        end;
+        cTotalVdaLoja8 := cTotalVdaLoja8 + qryConsulta.FieldByName
+          ('Vda Loja_8').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_8').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_8')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_8').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq8 := cTotalVdaJaq8 + qryConsulta.FieldByName
+          ('Vda jaq_8').AsFloat;
+        if (qryConsulta.FieldByName('%Jaq_8').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_8').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_8').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq8 = 0) and (cTotalVdaLoja8 = 0) then
+        begin
+          cTotalJaq8 := 0;
+        end
+        else
+        begin
+          cTotalJaq8 := cTotalVdaJaq8 / cTotalVdaLoja8;
+        end;
+
+        if (qryConsulta.FieldByName('Vda Loja_9').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda Loja_9')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda Loja_9').AsFloat) + '</td>';
+        end;
+        cTotalVdaLoja9 := cTotalVdaLoja9 + qryConsulta.FieldByName
+          ('Vda Loja_9').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_9').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_9')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_9').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq9 := cTotalVdaJaq9 + qryConsulta.FieldByName
+          ('Vda jaq_9').AsFloat;
+        if (qryConsulta.FieldByName('%Jaq_9').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_9').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_9').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq9 = 0) and (cTotalVdaLoja9 = 0) then
+        begin
+          cTotalJaq9 := 0;
+        end
+        else
+        begin
+          cTotalJaq9 := cTotalVdaJaq9 / cTotalVdaLoja9;
+        end;
+
+        if (qryConsulta.FieldByName('Vda Loja_10').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('###,###,###,###',
+            qryConsulta.FieldByName('Vda Loja_10').AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda Loja_10').AsFloat)
+            + '</td>';
+        end;
+        cTotalVdaLoja10 := cTotalVdaLoja10 + qryConsulta.FieldByName
+          ('Vda Loja_10').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_10').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_10')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_10').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq10 := cTotalVdaJaq10 + qryConsulta.FieldByName
+          ('Vda jaq_10').AsFloat;
+        if (qryConsulta.FieldByName('%Jaq_10').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_10').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_10').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq10 = 0) and (cTotalVdaLoja10 = 0) then
+        begin
+          cTotalJaq10 := 0;
+        end
+        else
+        begin
+          cTotalJaq10 := cTotalVdaJaq10 / cTotalVdaLoja10;
+        end;
+
+        if (qryConsulta.FieldByName('Vda Loja_11').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###',
+            qryConsulta.FieldByName('Vda Loja_11').AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda Loja_11').AsFloat)
+            + '</td>';
+        end;
+        cTotalVdaLoja11 := cTotalVdaLoja11 + qryConsulta.FieldByName
+          ('Vda Loja_11').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_11').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_11')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_11').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq11 := cTotalVdaJaq11 + qryConsulta.FieldByName
+          ('Vda jaq_11').AsFloat;
+        if (qryConsulta.FieldByName('%Jaq_11').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_11').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_11').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq11 = 0) and (cTotalVdaLoja11 = 0) then
+        begin
+          cTotalJaq11 := 0;
+        end
+        else
+        begin
+          cTotalJaq11 := cTotalVdaJaq11 / cTotalVdaLoja11;
+        end;
+
+        if (qryConsulta.FieldByName('Vda Loja_12').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('###,###,###,###',
+            qryConsulta.FieldByName('Vda Loja_12').AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda Loja_12').AsFloat)
+            + '</td>';
+        end;
+        cTotalVdaLoja12 := cTotalVdaLoja12 + qryConsulta.FieldByName
+          ('Vda Loja_12').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_12').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_12')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_12').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq12 := cTotalVdaJaq12 + qryConsulta.FieldByName
+          ('Vda jaq_12').AsFloat;
+        if (qryConsulta.FieldByName('%Jaq_12').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_12').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_12').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq12 = 0) and (cTotalVdaLoja12 = 0) then
+        begin
+          cTotalJaq12 := 0;
+        end
+        else
+        begin
+          cTotalJaq12 := cTotalVdaJaq12 / cTotalVdaLoja12;
+        end;
+
+        if (qryConsulta.FieldByName('Vda Loja_13').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###',
+            qryConsulta.FieldByName('Vda Loja_13').AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda Loja_13').AsFloat)
+            + '</td>';
+        end;
+        cTotalVdaLoja13 := cTotalVdaLoja13 + qryConsulta.FieldByName
+          ('Vda Loja_13').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_13').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_13')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_13').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq13 := cTotalVdaJaq13 + qryConsulta.FieldByName
+          ('Vda jaq_13').AsFloat;
+        if (qryConsulta.FieldByName('%Jaq_13').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_13').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_13').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq13 = 0) and (cTotalVdaLoja13 = 0) then
+        begin
+          cTotalJaq13 := 0;
+        end
+        else
+        begin
+          cTotalJaq13 := cTotalVdaJaq13 / cTotalVdaLoja13;
+        end;
+
+        if (qryConsulta.FieldByName('Vda Loja_14').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('###,###,###,###',
+            qryConsulta.FieldByName('Vda Loja_14').AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda Loja_14').AsFloat)
+            + '</td>';
+        end;
+        cTotalVdaLoja14 := cTotalVdaLoja14 + qryConsulta.FieldByName
+          ('Vda Loja_14').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_14').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_14')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_14').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq14 := cTotalVdaJaq14 + qryConsulta.FieldByName
+          ('Vda jaq_14').AsFloat;
+        if (qryConsulta.FieldByName('%Jaq_14').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_14').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: thistle;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_14').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq14 = 0) and (cTotalVdaLoja14 = 0) then
+        begin
+          cTotalJaq14 := 0;
+        end
+        else
+        begin
+          cTotalJaq14 := cTotalVdaJaq14 / cTotalVdaLoja14;
+        end;
+
+        if (qryConsulta.FieldByName('Vda Loja_15').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###',
+            qryConsulta.FieldByName('Vda Loja_15').AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda Loja_15').AsFloat)
+            + '</td>';
+        end;
+        cTotalVdaLoja15 := cTotalVdaLoja15 + qryConsulta.FieldByName
+          ('Vda Loja_15').AsFloat;
+        if (qryConsulta.FieldByName('Vda jaq_15').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('###,###,###,###', qryConsulta.FieldByName('Vda jaq_15')
+            .AsFloat) + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('Vda jaq_15').AsFloat) + '</td>';
+        end;
+        cTotalVdaJaq15 := cTotalVdaJaq15 + qryConsulta.FieldByName
+          ('Vda jaq_15').AsFloat;
+        if (qryConsulta.FieldByName('%Jaq_15').AsFloat) <> 0 then
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FormatFloat('##.0', qryConsulta.FieldByName('%Jaq_15').AsFloat)
+            + '</td>';
+        end
+        else
+        begin
+          sHtml := sHtml + '<td style="background-color: powderblue;">' +
+            FloatToStr(qryConsulta.FieldByName('%Jaq_15').AsFloat) + '</td>';
+        end;
+
+        if (cTotalVdaJaq15 = 0) and (cTotalVdaLoja15 = 0) then
+        begin
+          cTotalJaq15 := 0;
+        end
+        else
+        begin
+          cTotalJaq15 := cTotalVdaJaq15 / cTotalVdaLoja15;
+        end;
+
+        sHtml := sHtml + '</tr>';
+        qryConsulta.Next;
+      end;
+      qryConsulta.Close;
+    end;
+    sHtml := sHtml +
+      '<td style="background-color: powderblue;" align="center" colspan="2"><b>Totais</b></td>';
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('##.0', (cTotalJaq) * 100) + '</b></td>';
+
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja1) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq1) + '</b></td>';
+    if cTotalJaq1 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FormatFloat('##.0', (cTotalJaq1) * 100) + '</b></td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FloatToStr((cTotalJaq1) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja2) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq2) + '</b></td>';
+    if cTotalJaq2 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+        FormatFloat('##.0', (cTotalJaq2) * 100) + '</td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+        FloatToStr((cTotalJaq2) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja3) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq3) + '</b></td>';
+    if cTotalJaq3 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FormatFloat('##.0', (cTotalJaq3) * 100) + '</b></td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FloatToStr((cTotalJaq3) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja4) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq4) + '</b></td>';
+    if cTotalJaq4 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+        FormatFloat('##.0', (cTotalJaq4) * 100) + '</b></td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+        FloatToStr((cTotalJaq4) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja5) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq5) + '</b></td>';
+    if cTotalJaq5 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FormatFloat('##.0', (cTotalJaq5) * 100) + '</b></td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FloatToStr((cTotalJaq5) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja6) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq6) + '</b></td>';
+    if cTotalJaq6 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+        FormatFloat('##.0', (cTotalJaq6) * 100) + '</b></td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+        FloatToStr((cTotalJaq6) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja7) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq7) + '</b></td>';
+    if cTotalJaq7 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FormatFloat('##.0', (cTotalJaq7) * 100) + '</b></td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FloatToStr((cTotalJaq7) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja8) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq8) + '</b></td>';
+    if cTotalJaq8 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+        FormatFloat('##.0', (cTotalJaq8) * 100) + '</b></td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+        FloatToStr((cTotalJaq8) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja9) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq9) + '</b></td>';
+    if cTotalJaq9 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FormatFloat('##.0', (cTotalJaq9) * 100) + '</b></td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FloatToStr((cTotalJaq9) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja10) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq10) + '</b></td>';
+    if cTotalJaq10 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+        FormatFloat('##.0', (cTotalJaq10) * 100) + '</b></td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+        FloatToStr((cTotalJaq10) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja11) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq11) + '</b></td>';
+    if cTotalJaq11 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FormatFloat('##.0', (cTotalJaq11) * 100) + '</b></td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FloatToStr((cTotalJaq11) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja12) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq12) + '</b></td>';
+    if cTotalJaq12 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+        FormatFloat('##.0', (cTotalJaq12) * 100) + '</b></td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+        FloatToStr((cTotalJaq12) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja13) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq13) + '</b></td>';
+    if cTotalJaq13 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FormatFloat('##.0', (cTotalJaq13) * 100) + '</b></td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FloatToStr((cTotalJaq13) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja14) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq14) + '</b></td>';
+    if cTotalJaq14 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+        FormatFloat('##.0', (cTotalJaq14) * 100) + '</b></td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: thistle;"><b>' +
+        FloatToStr((cTotalJaq14) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaLoja15) + '</b></td>';
+    sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+      FormatFloat('###,###,###,###', cTotalVdaJaq15) + '</b></td>';
+    if cTotalJaq15 <> 0 then
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FormatFloat('##.0', (cTotalJaq15) * 100) + '</b></td>';
+    end
+    else
+    begin
+      sHtml := sHtml + '<td style="background-color: powderblue;"><b>' +
+        FloatToStr((cTotalJaq15) * 100) + '</b></td>';
+    end;
+
+    sHtml := sHtml + '</table>';
+    sHtml := sHtml + '</body>';
+    sHtml := sHtml + '</html>';
+
+    qry.Active := False;
+    qry.SQL.Clear;
+    qry.SQL.Text := 'SELECT * FROM GRZ_FORM_EMAIL g               ' +
+                    'WHERE TRUNC(DATA_CADASTRO) = TRUNC(sysdate) ' +
+                    'AND g.form_origem = ''Auto''                ' +
+                    'AND g.ind_status = 0                        ';
+    qry.Active := true;
+    qry.RecordCount;
+
+    sSeqChave := qry.FieldByName('seq_chave').AsString;
+    ACBrMail1.From := qry.FieldByName('remetente_email').AsString;
+    ACBrMail1.FromName := sNome;
+    ACBrMail1.Host := sHost;
+    ACBrMail1.Username := sUserName;
+    ACBrMail1.Password := sPassword;
+    ACBrMail1.Port := sPort;
+    ACBrMail1.AddAddress(qry.FieldByName('destinatario1').AsString, '');
+    ACBrMail1.AddCC(qry.FieldByName('destinatario1').AsString);
+    ACBrMail1.Subject := qry.FieldByName('assunto_email').AsString;;
+    ACBrMail1.IsHTML := true;
+    ACBrMail1.Body.Text := sHtml;
+    ACBrMail1.SetTLS := true;
+    ACBrMail1.Send;
+
+    qryUpdate.Active := False;
+    qryUpdate.SQL.Clear;
+    try
+      qryUpdate.SQL.Text := ' UPDATE GRZ_FORM_EMAIL     ' +
+                            ' SET ind_status = 1,       ' +
+                            '     html = :sHtml         ' +
+                            ' WHERE ind_status = 0      ' +
+                            ' AND SEQ_CHAVE = ' + sSeqChave;
+      qryUpdate.ParamByName('sHtml').Size := 999999;
+      qryUpdate.ParamByName('sHtml').AsBlob := sHtml
+    except
+      on e: Exception do
+      begin
+        ShowMessage(e.Message);
+        exit;
+      end;
+    end;
+    qryUpdate.ExecSQL;
+
+    Log('Enviando Email Para: ' + sEmailFrom);
+
+  except
+    on e: Exception do
+    begin
+      Log(e.ClassName + ' - ' + e.Message);
+      exit;
+    end;
+  end;
+end;
+
+procedure TForm1.Log(texto: string);
+Var
+  sArq: string;
+  f: TextFile;
+  fb: file of byte;
+  iSize: Integer;
+begin
+  sArq := sDiretorio + '\log.log';
+  try
+    try
+      if not FileExists(sArq) then
+      Begin
+        Rewrite(f, sArq);
+        CloseFile(f);
+      end;
+      AssignFile(fb, sArq);
+      Reset(fb);
+      iSize := FileSize(fb);
+      CloseFile(fb);
+      if iSize > 1048576 then
+        DeleteFile(pChar(sArq));
+      AssignFile(f, sArq);
+      if not FileExists(sArq) then
+        Rewrite(f, sArq);
+      Append(f);
+      Writeln(f, '---->' + FormatDateTime('dd/mm/yyyy hh:nn:ss:zzz', now) +
+        ':' + texto);
+    finally
+      CloseFile(f);
+    end;
+  except
+    exit;
+  end;
+
+end;
+
+function TForm1.PrencheTabelaMemoriaLoja: Boolean;
+begin
+  qry2.First;
+  while not qry2.Eof do
+  begin
+    fdVdaMesLoja.Active := true;
+    fdVdaMesLoja.Append;
+    fdVdaMesLoja.FieldByName('Regiao').value :=
+      qry2.FieldByName('Região').AsString;
+    fdVdaMesLoja.FieldByName('nome').value := qry2.FieldByName('Nome').AsString;
+    fdVdaMesLoja.FieldByName('Unidade').value :=
+      qry2.FieldByName('Unidade').AsString;
+    fdVdaMesLoja.FieldByName('rede').value := qry2.FieldByName('Rede').AsString;
+    fdVdaMesLoja.FieldByName('vda_loja').value :=
+      qry2.FieldByName('Vda Loja').AsString;
+    fdVdaMesLoja.FieldByName('Vda_jaq').value :=
+      qry2.FieldByName('Vda jaq').AsString;
+    fdVdaMesLoja.FieldByName('%jaq').value := qry2.FieldByName('%Jaq').AsString;
+
+    fdVdaMesLoja.FieldByName('vda_loja1').value :=
+      qryConsulta.FieldByName('Vda Loja_1').AsString;
+    fdVdaMesLoja.FieldByName('vda_loja2').value :=
+      qryConsulta.FieldByName('Vda Loja_2').AsString;
+    fdVdaMesLoja.FieldByName('vda_loja3').value :=
+      qryConsulta.FieldByName('Vda Loja_3').AsString;
+    fdVdaMesLoja.FieldByName('vda_loja4').value :=
+      qryConsulta.FieldByName('Vda Loja_4').AsString;
+    fdVdaMesLoja.FieldByName('vda_loja5').value :=
+      qryConsulta.FieldByName('Vda Loja_5').AsString;
+    fdVdaMesLoja.FieldByName('vda_loja6').value :=
+      qryConsulta.FieldByName('Vda Loja_6').AsString;
+    fdVdaMesLoja.FieldByName('vda_loja7').value :=
+      qryConsulta.FieldByName('Vda Loja_7').AsString;
+    fdVdaMesLoja.FieldByName('vda_loja8').value :=
+      qryConsulta.FieldByName('Vda Loja_8').AsString;
+    fdVdaMesLoja.FieldByName('vda_loja9').value :=
+      qryConsulta.FieldByName('Vda Loja_9').AsString;
+    fdVdaMesLoja.FieldByName('vda_loja10').value :=
+      qryConsulta.FieldByName('Vda Loja_10').AsString;
+    fdVdaMesLoja.FieldByName('vda_loja11').value :=
+      qryConsulta.FieldByName('Vda Loja_11').AsString;
+    fdVdaMesLoja.FieldByName('vda_loja12').value :=
+      qryConsulta.FieldByName('Vda Loja_12').AsString;
+    fdVdaMesLoja.FieldByName('vda_loja13').value :=
+      qryConsulta.FieldByName('Vda Loja_13').AsString;
+    fdVdaMesLoja.FieldByName('vda_loja14').value :=
+      qryConsulta.FieldByName('Vda Loja_14').AsString;
+    fdVdaMesLoja.FieldByName('vda_loja15').value :=
+      qryConsulta.FieldByName('Vda Loja_15').AsString;
+
+    fdVdaMesLoja.FieldByName('Vda_jaq1').value :=
+      qryConsulta.FieldByName('Vda jaq_1').AsString;
+    fdVdaMesLoja.FieldByName('Vda_jaq2').value :=
+      qryConsulta.FieldByName('Vda jaq_2').AsString;
+    fdVdaMesLoja.FieldByName('Vda_jaq3').value :=
+      qryConsulta.FieldByName('Vda jaq_3').AsString;
+    fdVdaMesLoja.FieldByName('Vda_jaq4').value :=
+      qryConsulta.FieldByName('Vda jaq_4').AsString;
+    fdVdaMesLoja.FieldByName('Vda_jaq5').value :=
+      qryConsulta.FieldByName('Vda jaq_5').AsString;
+    fdVdaMesLoja.FieldByName('Vda_jaq6').value :=
+      qryConsulta.FieldByName('Vda jaq_6').AsString;
+    fdVdaMesLoja.FieldByName('Vda_jaq7').value :=
+      qryConsulta.FieldByName('Vda jaq_7').AsString;
+    fdVdaMesLoja.FieldByName('Vda_jaq8').value :=
+      qryConsulta.FieldByName('Vda jaq_8').AsString;
+    fdVdaMesLoja.FieldByName('Vda_jaq9').value :=
+      qryConsulta.FieldByName('Vda jaq_9').AsString;
+    fdVdaMesLoja.FieldByName('Vda_jaq10').value :=
+      qryConsulta.FieldByName('Vda jaq_10').AsString;
+    fdVdaMesLoja.FieldByName('Vda_jaq11').value :=
+      qryConsulta.FieldByName('Vda jaq_11').AsString;
+    fdVdaMesLoja.FieldByName('Vda_jaq12').value :=
+      qryConsulta.FieldByName('Vda jaq_12').AsString;
+    fdVdaMesLoja.FieldByName('Vda_jaq13').value :=
+      qryConsulta.FieldByName('Vda jaq_13').AsString;
+    fdVdaMesLoja.FieldByName('Vda_jaq14').value :=
+      qryConsulta.FieldByName('Vda jaq_14').AsString;
+    fdVdaMesLoja.FieldByName('Vda_jaq15').value :=
+      qryConsulta.FieldByName('Vda jaq_15').AsString;
+
+    fdVdaMesLoja.FieldByName('%jaq1').value :=
+      qryConsulta.FieldByName('%Jaq_1').AsString;
+    fdVdaMesLoja.FieldByName('%jaq2').value :=
+      qryConsulta.FieldByName('%Jaq_2').AsString;
+    fdVdaMesLoja.FieldByName('%jaq3').value :=
+      qryConsulta.FieldByName('%Jaq_3').AsString;
+    fdVdaMesLoja.FieldByName('%jaq4').value :=
+      qryConsulta.FieldByName('%Jaq_4').AsString;
+    fdVdaMesLoja.FieldByName('%jaq5').value :=
+      qryConsulta.FieldByName('%Jaq_5').AsString;
+    fdVdaMesLoja.FieldByName('%jaq6').value :=
+      qryConsulta.FieldByName('%Jaq_6').AsString;
+    fdVdaMesLoja.FieldByName('%jaq7').value :=
+      qryConsulta.FieldByName('%Jaq_7').AsString;
+    fdVdaMesLoja.FieldByName('%jaq8').value :=
+      qryConsulta.FieldByName('%Jaq_8').AsString;
+    fdVdaMesLoja.FieldByName('%jaq9').value :=
+      qryConsulta.FieldByName('%Jaq_9').AsString;
+    fdVdaMesLoja.FieldByName('%jaq10').value :=
+      qryConsulta.FieldByName('%Jaq_10').AsString;
+    fdVdaMesLoja.FieldByName('%jaq11').value :=
+      qryConsulta.FieldByName('%Jaq_11').AsString;
+    fdVdaMesLoja.FieldByName('%jaq12').value :=
+      qryConsulta.FieldByName('%Jaq_12').AsString;
+    fdVdaMesLoja.FieldByName('%jaq13').value :=
+      qryConsulta.FieldByName('%Jaq_13').AsString;
+    fdVdaMesLoja.FieldByName('%jaq14').value :=
+      qryConsulta.FieldByName('%Jaq_14').AsString;
+    fdVdaMesLoja.FieldByName('%jaq15').value :=
+      qryConsulta.FieldByName('%Jaq_15').AsString;
+    fdVdaMesLoja.Post;
+    qry2.Next;
+  end;
+end;
+
+function TForm1.PrencheTabelaMemoriaRegiao: Boolean;
+begin
+  qry2.First;
+  while not qry2.Eof do
+  begin
+    while not qryConsulta.Eof do
+    begin
+      fdVdaMes.Active := true;
+      fdVdaMes.Append;
+      fdVdaMes.FieldByName('Regiao').value :=
+        qry2.FieldByName('Região').AsString;
+      fdVdaMes.FieldByName('nome').value := qry2.FieldByName('Nome').AsString;
+      fdVdaMes.FieldByName('vda_loja').value :=
+        qry2.FieldByName('Vda Loja').AsString;
+      fdVdaMes.FieldByName('Vda_jaq').value :=
+        qry2.FieldByName('Vda jaq').AsString;
+      fdVdaMes.FieldByName('%jaq').value := qry2.FieldByName('%Jaq').AsString;
+      // Segundo while
+      fdVdaMes.FieldByName('vda_loja1').value :=
+        qryConsulta.FieldByName('Vda Loja_1').AsString;
+      fdVdaMes.FieldByName('Vda_jaq1').value :=
+        qryConsulta.FieldByName('Vda jaq_1').AsString;
+      fdVdaMes.FieldByName('%jaq1').value :=
+        qryConsulta.FieldByName('%Jaq_1').AsString;
+
+      fdVdaMes.FieldByName('vda_loja2').value :=
+        qryConsulta.FieldByName('Vda Loja_2').AsString;
+      fdVdaMes.FieldByName('Vda_jaq2').value :=
+        qryConsulta.FieldByName('Vda jaq_2').AsString;
+      fdVdaMes.FieldByName('%jaq2').value :=
+        qryConsulta.FieldByName('%Jaq_2').AsString;
+
+      fdVdaMes.FieldByName('vda_loja3').value :=
+        qryConsulta.FieldByName('Vda Loja_3').AsString;
+      fdVdaMes.FieldByName('Vda_jaq3').value :=
+        qryConsulta.FieldByName('Vda jaq_3').AsString;
+      fdVdaMes.FieldByName('%jaq3').value :=
+        qryConsulta.FieldByName('%Jaq_3').AsString;
+
+      fdVdaMes.FieldByName('vda_loja4').value :=
+        qryConsulta.FieldByName('Vda Loja_4').AsString;
+      fdVdaMes.FieldByName('Vda_jaq4').value :=
+        qryConsulta.FieldByName('Vda jaq_4').AsString;
+      fdVdaMes.FieldByName('%jaq4').value :=
+        qryConsulta.FieldByName('%Jaq_4').AsString;
+
+      fdVdaMes.FieldByName('vda_loja5').value :=
+        qryConsulta.FieldByName('Vda Loja_5').AsString;
+      fdVdaMes.FieldByName('Vda_jaq5').value :=
+        qryConsulta.FieldByName('Vda jaq_5').AsString;
+      fdVdaMes.FieldByName('%jaq5').value :=
+        qryConsulta.FieldByName('%Jaq_5').AsString;
+
+      fdVdaMes.FieldByName('vda_loja6').value :=
+        qryConsulta.FieldByName('Vda Loja_6').AsString;
+      fdVdaMes.FieldByName('Vda_jaq6').value :=
+        qryConsulta.FieldByName('Vda jaq_6').AsString;
+      fdVdaMes.FieldByName('%jaq6').value :=
+        qryConsulta.FieldByName('%Jaq_6').AsString;
+
+      fdVdaMes.FieldByName('vda_loja7').value :=
+        qryConsulta.FieldByName('Vda Loja_7').AsString;
+      fdVdaMes.FieldByName('Vda_jaq7').value :=
+        qryConsulta.FieldByName('Vda jaq_7').AsString;
+      fdVdaMes.FieldByName('%jaq7').value :=
+        qryConsulta.FieldByName('%Jaq_7').AsString;
+
+      fdVdaMes.FieldByName('vda_loja8').value :=
+        qryConsulta.FieldByName('Vda Loja_8').AsString;
+      fdVdaMes.FieldByName('Vda_jaq8').value :=
+        qryConsulta.FieldByName('Vda jaq_8').AsString;
+      fdVdaMes.FieldByName('%jaq8').value :=
+        qryConsulta.FieldByName('%Jaq_8').AsString;
+
+      fdVdaMes.FieldByName('vda_loja9').value :=
+        qryConsulta.FieldByName('Vda Loja_9').AsString;
+      fdVdaMes.FieldByName('Vda_jaq9').value :=
+        qryConsulta.FieldByName('Vda jaq_9').AsString;
+      fdVdaMes.FieldByName('%jaq9').value :=
+        qryConsulta.FieldByName('%Jaq_9').AsString;
+
+      fdVdaMes.FieldByName('vda_loja10').value :=
+        qryConsulta.FieldByName('Vda Loja_10').AsString;
+      fdVdaMes.FieldByName('Vda_jaq10').value :=
+        qryConsulta.FieldByName('Vda jaq_10').AsString;
+      fdVdaMes.FieldByName('%jaq10').value :=
+        qryConsulta.FieldByName('%Jaq_10').AsString;
+
+      fdVdaMes.FieldByName('vda_loja11').value :=
+        qryConsulta.FieldByName('Vda Loja_11').AsString;
+      fdVdaMes.FieldByName('Vda_jaq11').value :=
+        qryConsulta.FieldByName('Vda jaq_11').AsString;
+      fdVdaMes.FieldByName('%jaq11').value :=
+        qryConsulta.FieldByName('%Jaq_11').AsString;
+
+      fdVdaMes.FieldByName('vda_loja12').value :=
+        qryConsulta.FieldByName('Vda Loja_12').AsString;
+      fdVdaMes.FieldByName('Vda_jaq12').value :=
+        qryConsulta.FieldByName('Vda jaq_12').AsString;
+      fdVdaMes.FieldByName('%jaq12').value :=
+        qryConsulta.FieldByName('%Jaq_12').AsString;
+
+      fdVdaMes.FieldByName('vda_loja13').value :=
+        qryConsulta.FieldByName('Vda Loja_13').AsString;
+      fdVdaMes.FieldByName('Vda_jaq13').value :=
+        qryConsulta.FieldByName('Vda jaq_13').AsString;
+      fdVdaMes.FieldByName('%jaq13').value :=
+        qryConsulta.FieldByName('%Jaq_13').AsString;
+
+      fdVdaMes.FieldByName('vda_loja14').value :=
+        qryConsulta.FieldByName('Vda Loja_14').AsString;
+      fdVdaMes.FieldByName('Vda_jaq14').value :=
+        qryConsulta.FieldByName('Vda jaq_14').AsString;
+      fdVdaMes.FieldByName('%jaq14').value :=
+        qryConsulta.FieldByName('%Jaq_14').AsString;
+
+      fdVdaMes.FieldByName('vda_loja15').value :=
+        qryConsulta.FieldByName('Vda Loja_15').AsString;
+      fdVdaMes.FieldByName('Vda_jaq15').value :=
+        qryConsulta.FieldByName('Vda jaq_15').AsString;
+      fdVdaMes.FieldByName('%jaq15').value :=
+        qryConsulta.FieldByName('%Jaq_15').AsString;
+      fdVdaMes.Post;
+      qry2.Next;
+      qryConsulta.Next;
+    end;
+  end;
+end;
+
+end.

@@ -1,0 +1,195 @@
+unit uFrmEnviaEmail;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
+  FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.Oracle,
+  FireDAC.Phys.OracleDef, FireDAC.VCLUI.Wait, FireDAC.Stan.Param, FireDAC.DatS,
+  FireDAC.DApt.Intf, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client, ACBrBase, ACBrMail, Vcl.StdCtrls, System.IniFiles,
+  Vcl.Grids, Vcl.DBGrids, COMOBJ, IdMessageClient, IdAttachmentFile,
+  IdBaseComponent, IdMessage;
+
+type
+  TForm1 = class(TForm)
+    btnExecutar: TButton;
+    ACBrMail1: TACBrMail;
+    FDConnection1: TFDConnection;
+    qry: TFDQuery;
+    qryUpdate: TFDQuery;
+    function GeraEmail(): Boolean;
+    procedure AbreSistema;
+    procedure btnExecutarClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure Log(texto: string);
+    procedure btnExcelClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+  sDiretorio, sEmailCC, sEmailGrz: String;
+  Timer, Data: tDateTime;
+  iIndGrz, iIndPrm, iIndArr, iIndFrg, iIndTot: Integer;
+  sUsuario, sParametro, sData: String;
+  iArqIni: tIniFile;
+  sAssunto, sEmailFrom, sUserName, sPassword, sNome, sHost, sPort: String;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.AbreSistema;
+begin
+  try
+    // sDiretorio := GetCurrentDir;
+    sDiretorio := 'D:\EnviaEmail';
+    iArqIni := tIniFile.Create(sDiretorio + '\config.ini');
+    sHost := iArqIni.ReadString('EMAIL', 'Host', '');
+    sPort := iArqIni.ReadString('EMAIL', 'Port', '');
+    sEmailGrz := iArqIni.ReadString('EMAIL', 'Grz', '');
+    sAssunto := iArqIni.ReadString('EMAIL FROM', 'Assunto', '');
+    sEmailFrom := iArqIni.ReadString('EMAIL FROM', 'Endereco', '');
+    sUserName := iArqIni.ReadString('EMAIL FROM', 'UserName', '');
+    sPassword := iArqIni.ReadString('EMAIL FROM', 'Password', '');
+    sNome := iArqIni.ReadString('EMAIL FROM', 'Nome', '');
+    sEmailCC := iArqIni.ReadString('EMAIL_CC', 'Copia', '');
+    // sEmailCCCia := iArqIni.ReadString('EMAIL_CC','Cia','');
+    iArqIni.Free;
+
+  except
+    ShowMessage('Erro: Não carregou arquivo de configuração.' + chr(13) +
+      'Verifique!!!!' + chr(13) + sDiretorio + '\config.ini');
+    Log('Erro: Não carregou arquivo de configuração.' + sDiretorio +
+      '\config.ini');
+    Application.Terminate;
+    exit;
+  end;
+end;
+
+procedure TForm1.btnExcelClick(Sender: TObject);
+var
+  excel: variant;
+begin
+  excel := CreateOleObject('Excel.Application');
+  excel.Workbooks.open('C:\lojas_vendas_taja_14062022.xlsx');
+end;
+
+procedure TForm1.btnExecutarClick(Sender: TObject);
+begin
+  AbreSistema;
+   GeraEmail;
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+  try
+    FDConnection1.Connected := true;
+  except
+    on e: EDatabaseError do
+    begin
+      MessageDlg('Falha ao conectar o banco ' + #13 + 'a aplicação vai fechar!'
+        + #13 + e.Message, mtInformation, [mbOk], 0);
+      Application.Terminate;
+    end;
+  end;
+
+  AbreSistema;
+  btnExecutarClick(Sender);
+  qry.Close;
+  qryUpdate.Close;
+  Application.Terminate;
+end;
+
+function TForm1.GeraEmail: Boolean;
+begin
+
+  try
+    qry.Active := False;
+    qry.SQL.Clear;
+    qry.SQL.Text := ' SELECT * FROM GRZ_FORM_EMAIL g              '+
+                    ' WHERE TRUNC(DATA_CADASTRO) = TRUNC(sysdate) '+
+                    ' AND g.form_origem = ''Auto''                '+
+                    ' AND g.ind_status = 0                        ';
+    qry.Active := true;
+    qry.RecordCount;
+
+    ACBrMail1.From := qry.FieldByName('remetente_email').AsString;
+    ACBrMail1.FromName := sNome;
+    ACBrMail1.Host := sHost;
+    ACBrMail1.Username := sUserName;
+    ACBrMail1.Password := sPassword;
+    ACBrMail1.Port := sPort;
+    ACBrMail1.AddAddress(qry.FieldByName('destinatario1').AsString, '');
+    ACBrMail1.AddCC(qry.FieldByName('destinatario1').AsString);
+    ACBrMail1.Subject := qry.FieldByName('assunto_email').AsString;;
+    ACBrMail1.IsHTML := True;
+    ACBrMail1.Body.Text := '';
+    ACBrMail1.SetTLS := True;
+    ACBrMail1.AddAttachment('D:\LojasTaja.xls');
+    ACBrMail1.AddAttachment('D:\RegioesTaja.xls');
+    ACBrMail1.Send;
+
+    qryUpdate.Active := False;
+    qryUpdate.SQL.Clear;
+    qryUpdate.SQL.Text := ' UPDATE GRZ_FORM_EMAIL '+
+                          ' SET ind_status = 1    '+
+                          ' WHERE ind_status = 0  ';
+    qryUpdate.ExecSQL;
+
+    Log('Enviando Email Para: ' + sEmailFrom);
+
+  except
+    on e: Exception do
+    begin
+      Log(e.ClassName + ' - ' + e.Message);
+      exit;
+    end;
+  end;
+
+end;
+
+procedure TForm1.Log(texto: string);
+Var
+  sArq: string;
+  f: TextFile;
+  fb: file of byte;
+  iSize: Integer;
+begin
+  sArq := sDiretorio + '\log.log';
+  try
+    try
+      if not FileExists(sArq) then
+      Begin
+        Rewrite(f, sArq);
+        CloseFile(f);
+      end;
+      AssignFile(fb, sArq);
+      Reset(fb);
+      iSize := FileSize(fb);
+      CloseFile(fb);
+      if iSize > 1048576 then
+        DeleteFile(pChar(sArq));
+      AssignFile(f, sArq);
+      if not FileExists(sArq) then
+        Rewrite(f, sArq);
+      Append(f);
+      Writeln(f, '---->' + FormatDateTime('dd/mm/yyyy hh:nn:ss:zzz', now) +
+        ':' + texto);
+    finally
+      CloseFile(f);
+    end;
+  except
+    exit;
+  end;
+
+end;
+
+end.
