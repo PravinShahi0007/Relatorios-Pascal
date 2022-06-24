@@ -48,7 +48,7 @@ procedure TForm1.AbreSistema;
 begin
   try
     // sDiretorio := GetCurrentDir;
-    sDiretorio := 'D:\EnviaEmailExcel';
+    sDiretorio := 'C:\EnviaEmailExcel';
     iArqIni := tIniFile.Create(sDiretorio + '\config.ini');
     sHost := iArqIni.ReadString('EMAIL', 'Host', '');
     sPort := iArqIni.ReadString('EMAIL', 'Port', '');
@@ -84,9 +84,9 @@ procedure TForm1.FormCreate(Sender: TObject);
 begin
   AbreSistema;
   ShellExecute(GetDesktopWindow,'open',PChar(sExecutaRegioes), '','',SW_SHOWNORMAL);
-  Sleep(300000);
+  Sleep(60000);
   ShellExecute(GetDesktopWindow,'open',PChar(sExecutaLojas), '','',SW_SHOWNORMAL);
-  Sleep(300000);
+  Sleep(60000);
   btnExecutarClick(Sender);
   DeleteFile(sEmailLojas);
   DeleteFile(sEmailRegioes);
