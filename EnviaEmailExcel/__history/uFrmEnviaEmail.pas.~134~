@@ -63,6 +63,11 @@ begin
     ExecutaLojasXLSX := iArqIni.ReadString('EMAIL', 'ExecutaLojasXLSX', '');
     ExecutaRegioesXLSX := iArqIni.ReadString('EMAIL', 'ExecutaRegioesXLSX', '');
 
+
+
+FileRegioesXLSX=C:\Users\Administrador\Downloads\RegioesTaja.xlsx
+ExecutaLojasXLSX=C:\EnviaEmailExcel\executaLojasTajaXLSX.vbs
+ExecutaRegioesXLSX=C:\EnviaEmailExcel\executaRegioesTajaXLSX.vbs
     sAssunto := iArqIni.ReadString('EMAIL FROM', 'Assunto', '');
     sEmailFrom := iArqIni.ReadString('EMAIL FROM', 'Endereco', '');
     sUserName := iArqIni.ReadString('EMAIL FROM', 'UserName', '');
@@ -93,24 +98,6 @@ begin
   Sleep(60000);
   ShellExecute(GetDesktopWindow,'open',PChar(sExecutaLojas), '','',SW_SHOWNORMAL);
   Sleep(60000);
-
-  ShellExecute(GetDesktopWindow,'open',PChar(ExecutaRegioesXLSX), '','',SW_SHOWNORMAL);
-  Sleep(60000);
-  Sleep(60000);
-  Sleep(60000);
-  Sleep(60000);
-  Sleep(60000);
-  ShellExecute(GetDesktopWindow,'open',PChar(ExecutaLojasXLSX), '','',SW_SHOWNORMAL);
-  Sleep(60000);
-  Sleep(60000);
-  Sleep(60000);
-  Sleep(60000);
-  Sleep(60000);
-  Sleep(60000);
-  DeleteFile(sEmailLojas);
-  DeleteFile(sEmailRegioes);
-  sEmailLojas := FileLojasXLSX;
-  sEmailRegioes := FileRegioesXLSX;
   btnExecutarClick(Sender);
   DeleteFile(sEmailLojas);
   DeleteFile(sEmailRegioes);

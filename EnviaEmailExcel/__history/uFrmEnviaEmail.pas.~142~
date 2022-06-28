@@ -111,6 +111,13 @@ begin
   DeleteFile(sEmailRegioes);
   sEmailLojas := FileLojasXLSX;
   sEmailRegioes := FileRegioesXLSX;
+
+  FileLojasXLSX := iArqIni.ReadString('EMAIL', 'FileLojasXLSX', '');
+    FileRegioesXLSX := iArqIni.ReadString('EMAIL', 'FileRegioesXLSX', '');
+    ExecutaLojasXLSX := iArqIni.ReadString('EMAIL', 'ExecutaLojasXLSX', '');
+    ExecutaRegioesXLSX := iArqIni.ReadString('EMAIL', 'ExecutaRegioesXLSX', '');
+
+
   btnExecutarClick(Sender);
   DeleteFile(sEmailLojas);
   DeleteFile(sEmailRegioes);

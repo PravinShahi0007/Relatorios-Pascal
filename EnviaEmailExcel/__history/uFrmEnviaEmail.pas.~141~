@@ -94,7 +94,7 @@ begin
   ShellExecute(GetDesktopWindow,'open',PChar(sExecutaLojas), '','',SW_SHOWNORMAL);
   Sleep(60000);
 
-  ShellExecute(GetDesktopWindow,'open',PChar(ExecutaRegioesXLSX), '','',SW_SHOWNORMAL);
+  ShellExecute(GetDesktopWindow,'open',PChar(FileRegioesXLSX), '','',SW_SHOWNORMAL);
   Sleep(60000);
   Sleep(60000);
   Sleep(60000);
@@ -111,6 +111,13 @@ begin
   DeleteFile(sEmailRegioes);
   sEmailLojas := FileLojasXLSX;
   sEmailRegioes := FileRegioesXLSX;
+
+  FileLojasXLSX := iArqIni.ReadString('EMAIL', 'FileLojasXLSX', '');
+    FileRegioesXLSX := iArqIni.ReadString('EMAIL', 'FileRegioesXLSX', '');
+    ExecutaLojasXLSX := iArqIni.ReadString('EMAIL', 'ExecutaLojasXLSX', '');
+    ExecutaRegioesXLSX := iArqIni.ReadString('EMAIL', 'ExecutaRegioesXLSX', '');
+
+
   btnExecutarClick(Sender);
   DeleteFile(sEmailLojas);
   DeleteFile(sEmailRegioes);
