@@ -23,7 +23,7 @@ uses
   daDataModule, ppBands, ppClass, ppCtrls, ppStrtch, ppMemo, ppVar, ppPrnabl,
   ppCache, ppComm, ppRelatv, ppProd, ppReport, Vcl.StdCtrls, Vcl.Mask,
   Vcl.Buttons, ACBrBase, ACBrMail,System.DateUtils,System.IniFiles, Vcl.ExtCtrls,
-  Vcl.Themes, Vcl.Styles,StrUtils;
+  Vcl.Themes, Vcl.Styles,StrUtils, Encryp, uCarregaSenha;
 
 type
   TfrmRel_Venda_dia_Email = class(TForm)
@@ -121,6 +121,7 @@ type
     procedure prbDetalheBeforePrint(Sender: TObject);
     procedure LimpaPdf;
     procedure FormActivate(Sender: TObject);
+    procedure CarregaParamsBanco;
   private
     { Private declarations }
   public
@@ -137,7 +138,7 @@ var
   sDataMax: String;
   iArqIni: TIniFile;
   sEmail,sAssunto,sEmailFrom,sUserName,sPassword,sNome,sCopia_oculta: String;
-
+  sUsuario, sBanco, sSenha : String;
 implementation
 
 {$R *.dfm}
@@ -296,6 +297,13 @@ begin
 
 end;
 
+procedure TfrmRel_Venda_dia_Email.CarregaParamsBanco;
+var TomEncryption1: TTomEncryption;
+begin
+    TomEncryption1 := TTomEncryption.Create(Self);
+    CarregaSenhasBancoOra('GRZPNL_BERLIN',TomEncryption1,sUsuario,sSenha,sBanco);
+end;
+
 procedure TfrmRel_Venda_dia_Email.FormActivate(Sender: TObject);
 begin
      btnGerarClick(Sender);
@@ -304,11 +312,11 @@ end;
 procedure TfrmRel_Venda_dia_Email.FormCreate(Sender: TObject);
 begin
      PreencheEstilos(Sender);
+     CarregaParamsBanco;
      try
-        //FDConnection1.Params.UserName := 'grazz';
-        //FDConnection1.Params.Password := 'grazz';
-        FDConnection1.Params.UserName := 'nl';
-        FDConnection1.Params.Password := 'nl';
+        FDConnection1.Params.Database := sBanco;
+        FDConnection1.Params.UserName := sUsuario;
+        FDConnection1.Params.Password := sSenha;
         FDConnection1.Connected := True;
      except
            on E:EDatabaseError do

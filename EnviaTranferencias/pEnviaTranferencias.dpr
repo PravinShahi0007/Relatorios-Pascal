@@ -2,7 +2,9 @@ program pEnviaTranferencias;
 
 uses
   Vcl.Forms,
-  uPrincipal in 'uPrincipal.pas' {frmPrincipal};
+  uPrincipal in 'uPrincipal.pas' {frmPrincipal},
+  Encryp in 'Encryp.pas',
+  uCarregaSenha in 'uCarregaSenha.pas';
 
 {$R *.res}
 

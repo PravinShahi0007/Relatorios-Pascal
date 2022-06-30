@@ -27,7 +27,6 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     Align = alBottom
     BevelInner = bvLowered
     TabOrder = 0
-    ExplicitTop = 447
     object btnGerar: TBitBtn
       Left = 307
       Top = 2
@@ -104,14 +103,10 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
       Font.Style = [fsBold]
       ParentFont = False
       TabOrder = 1
-      ExplicitTop = 415
     end
   end
   object fdcEmail: TFDConnection
     Params.Strings = (
-      'Database=192.168.200.110:1522/GRZPROD'
-      'User_Name=nl'
-      'Password=nl'
       'DriverID=Ora')
     LoginPrompt = False
     Left = 56
@@ -186,7 +181,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     PrinterSetup.mmMarginTop = 6350
     PrinterSetup.mmPaperHeight = 210000
     PrinterSetup.mmPaperWidth = 297000
-    PrinterSetup.PaperSize = 120
+    PrinterSetup.PaperSize = 256
     AllowPrintToFile = True
     ArchiveFileName = '($MyDocuments)\ReportArchive.raf'
     DeviceType = 'Screen'

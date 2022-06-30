@@ -12,7 +12,8 @@ uses
   FireDAC.Comp.DataSet, ppDesignLayer, ppParameter, ppDB, ppDBPipe, ppModule,
   daDataModule, ppBands, ppClass, ppCtrls, ppStrtch, ppMemo, ppVar, ppPrnabl,
   ppCache, ppComm, ppRelatv, ppProd, ppReport, Vcl.StdCtrls, Vcl.Mask,
-  Vcl.Buttons, ACBrBase, ACBrMail,System.DateUtils,System.IniFiles;
+  Vcl.Buttons, ACBrBase, ACBrMail,System.DateUtils,System.IniFiles, Encryp,
+  uCarregaSenha;
 
 type
   TfrmRel_Venda_dia_Email = class(TForm)
@@ -106,6 +107,7 @@ type
     procedure prbDetalheBeforePrint(Sender: TObject);
     procedure CarregaParametros;
     procedure LimpaPdf;
+    procedure CarregaParamsBanco;
   private
     { Private declarations }
   public
@@ -119,7 +121,7 @@ var
   sDataMax : string;
   iArqIni : tIniFile;
   sEmail,sAssunto,sEmailFrom,sUserName,sPassword,sNome,sCopia_oculta :STRING;
-
+  sUsuario, sBanco, sSenha : String;
 implementation
 
 {$R *.dfm}
@@ -139,7 +141,7 @@ begin
      sAno  := copy(DateToStr(Date-1),7,4);
 
      sSQL := '';
-     sSQL := 'select * from vda_venda_ano '+
+     sSQL := 'select * from grazz.vda_venda_ano '+
              ' where cod_unidade > 9000 '+
              ' and ano >= '+sAno+' - 2 '+
              ' and mes = '+sMes+
@@ -197,10 +199,11 @@ end;
 
 procedure TfrmRel_Venda_dia_Email.FormCreate(Sender: TObject);
 begin
+   CarregaParamsBanco;
    try
-     //FDConnection1.Params.Database := '172.16.0.40:1521/GRZPROD';
-     FDConnection1.Params.UserName := 'grazz';
-     FDConnection1.Params.Password := 'grazz';
+     FDConnection1.Params.Database := sBanco;
+     FDConnection1.Params.UserName := sUsuario;
+     FDConnection1.Params.Password := sSenha;
      FDConnection1.Connected := True;
    except
        on E:EDatabaseError do
@@ -318,6 +321,13 @@ begin
      end;
 
      LimpaPdf;
+end;
+
+procedure TfrmRel_Venda_dia_Email.CarregaParamsBanco;
+var TomEncryption1: TTomEncryption;
+begin
+    TomEncryption1 := TTomEncryption.Create(Self);
+    CarregaSenhasBancoOra('GRZPNL_BERLIN',TomEncryption1,sUsuario,sSenha,sBanco);
 end;
 
 procedure TfrmRel_Venda_dia_Email.LimpaPdf;

@@ -282,14 +282,10 @@ object frmGeraKPI: TfrmGeraKPI
   end
   object fdcBancoDados: TFDConnection
     Params.Strings = (
-      'Database=192.168.200.110:1522/GRZPROD'
-      'User_Name=nl'
-      'Password=nl'
       'DriverID=Ora')
-    Connected = True
     LoginPrompt = False
-    Left = 203
-    Top = 4
+    Left = 147
+    Top = 44
   end
   object sp_Venda_Diaria_Cidade: TFDStoredProc
     Connection = fdcBancoDados

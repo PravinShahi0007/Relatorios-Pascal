@@ -28,11 +28,7 @@ object frmEstoqueCD: TfrmEstoqueCD
   end
   object FDConnection1: TFDConnection
     Params.Strings = (
-      'Database=192.168.200.110:1522/GRZPROD'
-      'User_Name=nl'
-      'Password=nl'
       'DriverID=Ora')
-    Connected = True
     LoginPrompt = False
     Left = 42
     Top = 14

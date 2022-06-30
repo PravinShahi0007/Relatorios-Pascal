@@ -1,0 +1,499 @@
+unit uEnviaEmailCupons;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ExtCtrls, Buttons, IniFiles, IdComponent,
+  IdTCPConnection, IdTCPClient, IdMessageClient, IdSMTP, IdBaseComponent,
+  IdMessage, ShellApi, Menus, FMTBcd, DBClient, DB, SqlExpr,
+  Provider, Registry, DBTables, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
+  FireDAC.Phys.OracleDef, FireDAC.UI.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool,
+  FireDAC.Phys, FireDAC.Phys.Oracle, FireDAC.VCLUI.Wait, FireDAC.Comp.Client,
+  FireDAC.Comp.DataSet,ACBrMail, ACBrBase;
+
+Const
+   WM_ICONTRAY = WM_USER+1;
+
+type
+  TfrmPrincipal = class(TForm)
+    edtHoraExecucao: TEdit;
+    btnExecutar: TBitBtn;
+    RadioGroup1: TRadioGroup;
+    chkGrazziotin: TCheckBox;
+    chkPorMenos: TCheckBox;
+    chkFranco: TCheckBox;
+    chkTottal: TCheckBox;
+    edtDtaSelecao: TEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    btnGravar: TBitBtn;
+    PopupMenu1: TPopupMenu;
+    Fechar1: TMenuItem;
+    Edit1: TEdit;
+    dts: TDataSource;
+    relogio: TTimer;
+    FDPhysOracleDriverLink1: TFDPhysOracleDriverLink;
+    FDConnection1: TFDConnection;
+    qry: TFDQuery;
+    ACBrMail1: TACBrMail;
+    procedure AbreSistema;
+    function  GravaConfiguracao : Boolean;
+    function  Executa : Boolean;
+    function  GeraEmail(CodEmp : Real) : Boolean;
+    procedure btnGravarClick(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure Fechar1Click(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure btnExecutarClick(Sender: TObject);
+    procedure Log(texto : string);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure relogioTimer(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure CarregaParamsBanco;
+ 
+  private
+    { Private declarations }
+    TrayIconData: TNotifyIconData;
+  public
+    { Public declarations }
+    procedure TrayMessage(var MSG: TMessage); message WM_ICONTRAY;
+  end;
+
+var
+  frmPrincipal: TfrmPrincipal;
+  sDiretorio, sEmailGrz, sEmailPrm, sEmailArr, sEmailFrg, sEmailTot,
+  sEmailCCGrz, sEmailCCPrm, sEmailCCArr, sEmailCCFrg, sEmailCCTot ,sEmailCCCia: String;
+  Timer, Data : tDateTime;
+  iIndGrz, iIndPrm, iIndArr, iIndFrg, iIndTot : Integer;
+  sUsuario, sParametro, sData : String;
+  iArqIni : tIniFile;
+  sAssunto, sEmailFrom, sUserName, sPassword, sNome, sHost, sPort  : String;
+  sUsuario, sBanco, sSenha : String;
+
+
+
+implementation
+
+{$R *.dfm}
+
+{ TForm1 }
+
+procedure TfrmPrincipal.Log(texto : string);
+Var
+    sArq : string;
+    f : TextFile;
+    fb: file of byte;
+    iSize : Integer;
+Begin
+   sArq := sDiretorio + '\log.log';
+try
+
+    try
+      if not FileExists(sArq) then
+         Begin
+           Rewrite(f, sArq);
+           CloseFile(f);
+         end;
+      AssignFile (fb, sArq);
+      Reset(fb);
+      iSize := FileSize(fb);
+      CloseFile(fb);
+      if iSize > 1048576 then
+        DeleteFile(pChar(sarq));
+      AssignFile(f, sarq);
+      if not FileExists(sarq) then
+        Rewrite(f, sarq);
+      Append(f);
+      Writeln(f, '---->' + FormatDateTime('dd/mm/yyyy hh:nn:ss:zzz', now)+':'+Texto);
+    finally
+        CloseFile(f);
+    end;
+  except
+    Exit;
+  end;
+end;
+
+
+procedure TfrmPrincipal.TrayMessage(var MSG: TMessage);
+var
+   Pt:TPoint;
+begin
+   case Msg.lParam of
+       WM_LBUTTONDOWN:
+       begin
+          FrmPrincipal.Show;
+       end;
+       WM_MBUTTONDOWN:
+       begin
+          FrmPrincipal.Hide;
+       end;
+       WM_RBUTTONDOWN:
+       begin
+           GetCursorPos(Pt);
+           PopupMenu1.Popup(Pt.x, Pt.y);
+       end;
+    end;
+end;
+
+procedure TfrmPrincipal.AbreSistema;
+begin
+ try
+  //sDiretorio := GetCurrentDir;
+  sDiretorio :='C:\EmailCupons';
+  iArqIni := TIniFile.Create(sDiretorio+'\config.ini');
+  iIndGrz := iArqIni.ReadInteger('REDES','Grazziotin',1);
+  iIndPrm := iArqIni.ReadInteger('REDES','PorMenos',1);
+  iIndArr := iArqIni.ReadInteger('REDES','Arrazo',1);
+  iIndFrg := iArqIni.ReadInteger('REDES','FrancoGiorgi',1);
+  iIndTot := iArqIni.ReadInteger('REDES','Tottal',1);
+  Timer := iArqIni.ReadDateTime('TIME','timer', time);
+  Data := iArqINI.ReadDateTime('DATE', 'date', Date);
+  edtDtaSelecao.Text := FormatDateTime('dd/mm/yyyy', Data);
+  edtHoraExecucao.Text := FormatDateTime('hh:mm:ss',timer);
+  chkGrazziotin.Checked := iIndGrz = 1;
+  chkPorMenos.Checked := iIndPrm = 1;
+  chkFranco.Checked := iIndFrg = 1;
+  chkTottal.Checked := iIndTot = 1;
+  sEmailGrz := iArqIni.ReadString('EMAIL','Grazziotin','');
+  sEmailArr := iArqIni.ReadString('EMAIL','Arrazo','');
+  sEmailPrm := iArqIni.ReadString('EMAIL','PorMenos','');
+  sEmailFrg := iArqIni.ReadString('EMAIL','FrancoGiorgi','');
+  sEmailTot := iArqIni.ReadString('EMAIL','Tottal','');
+  sHost := iArqIni.ReadString('EMAIL','Host','');
+  sPort := iArqIni.ReadString('EMAIL','Port','');
+  sEmailCCCia := iArqIni.ReadString('EMAIL','Cia','');
+  sAssunto := iArqIni.ReadString('EMAIL FROM','Assunto','');
+  sEmailFrom := iArqIni.ReadString('EMAIL FROM','Endereco','');
+  sUserName := iArqIni.ReadString('EMAIL FROM','UserName','');
+  sPassword := iArqIni.ReadString('EMAIL FROM','Password','');
+  sNome := iArqIni.ReadString('EMAIL FROM','Nome','');
+
+  sEmailCCGrz := iArqIni.ReadString('EMAIL_CC','Grazziotin','');
+  sEmailCCArr := iArqIni.ReadString('EMAIL_CC','Arrazo','');
+  sEmailCCPrm := iArqIni.ReadString('EMAIL_CC','PorMenos','');
+  sEmailCCFrg := iArqIni.ReadString('EMAIL_CC','FrancoGiorgi','');
+  sEmailCCTot := iArqIni.ReadString('EMAIL_CC','Tottal','');
+    //sEmailCCCia := iArqIni.ReadString('EMAIL_CC','Cia','');
+  iArqINI.Free;
+
+ except
+  ShowMessage('Erro: Não carregou arquivo de configuração.'+chr(13)+
+             'Verifique!!!!'+chr(13)+
+             sDiretorio+'\config.ini');
+  Log('Erro: Não carregou arquivo de configuração.'+sDiretorio+'\config.ini');
+  Application.Terminate;
+  exit;
+ end;
+end;
+
+function TfrmPrincipal.GravaConfiguracao: Boolean;
+begin
+ try
+  sDiretorio := GetCurrentDir;
+  iArqIni := TIniFile.Create(sDiretorio+'\config.ini');
+  iArqINI.WriteDateTime('DATE', 'date', date - 150);
+  iArqIni.WriteDateTime('TIME','timer', StrToTime(edtHoraExecucao.Text));
+  if chkGrazziotin.Checked then
+     iArqIni.WriteInteger('REDES','Grazziotin',1)
+  else
+     iArqIni.WriteInteger('REDES','Grazziotin',0);
+  if chkPorMenos.Checked then
+     iArqIni.WriteInteger('REDES','PorMenos',1)
+  else
+     iArqIni.WriteInteger('REDES','PorMenos',0);
+  if chkFranco.Checked then
+     iArqIni.WriteInteger('REDES','FrancoGiorgi',1)
+  else
+     iArqIni.WriteInteger('REDES','FrancoGiorgi',0);
+  if chkTottal.Checked then
+     iArqIni.WriteInteger('REDES','Tottal',1)
+  else
+     iArqIni.WriteInteger('REDES','Tottal',0);
+  iArqINI.Free;
+  Result := true;
+ except
+  ShowMessage('Erro: Não salvou configuraçoes.'+chr(13)+
+             'Verifique!!!!'+chr(13)+
+             sDiretorio+'\config.ini');
+  Log('Erro: Não salvou configuraçoes.'+sDiretorio+'\config.ini');
+  //Application.Terminate;
+  Result := false;
+  exit;
+ end;
+end;
+
+procedure TfrmPrincipal.btnGravarClick(Sender: TObject);
+begin
+   if GravaConfiguracao then
+      AbreSistema; 
+end;
+procedure TfrmPrincipal.CarregaParamsBanco;
+var TomEncryption1: TTomEncryption;
+begin
+    TomEncryption1 := TTomEncryption.Create(Self);
+    CarregaSenhasBancoOra('GRZPNL_BERLIN',TomEncryption1,sUsuario,sSenha,sBanco);
+end;
+
+procedure TfrmPrincipal.FormDestroy(Sender: TObject);
+begin
+ Shell_NotifyIcon(NIM_DELETE, @TrayIconData);
+ try
+  sDiretorio := GetCurrentDir;
+  iArqIni := TIniFile.Create(sDiretorio+'\config.ini');
+  iArqINI.WriteDateTime('DATE', 'date', date - 150);
+  iArqINI.Free;
+ except
+  On e: Exception do
+      Begin
+       Log(e.ClassName + ' - ' + e.Message);
+      end;
+ end
+end;
+
+
+
+procedure TfrmPrincipal.Fechar1Click(Sender: TObject);
+begin
+    Application.Terminate;
+    halt;
+end;
+
+procedure TfrmPrincipal.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+   if Key = VK_ESCAPE then
+      frmPrincipal.Hide;
+end;
+
+function TfrmPrincipal.Executa: Boolean;
+Var
+   Size : cardinal;
+begin
+   Log('Entrou no executa');
+    try
+      Size := 128;
+      SetLength(sUsuario,Size);
+      GetUserName(PChar(sUsuario), Size);
+      Edit1.Text := sUsuario;
+      sUsuario := Trim(Edit1.Text);
+      sData := datetostr(Data);
+
+      if iIndGrz = 1 then
+        Begin
+         GeraEmail(910);
+        end;
+    except
+      on e : Exception do
+       Begin
+         Log(e.ClassName + ' - ' + e.Message);
+         Application.Terminate;
+         exit;
+       end;
+    end;
+    Application.Terminate;
+end;
+
+procedure TfrmPrincipal.btnExecutarClick(Sender: TObject);
+begin
+    AbreSistema;
+    Executa;
+end;
+
+function TfrmPrincipal.GeraEmail(CodEmp : Real) : Boolean;
+Var
+   Email : TIdMessage;
+   sHtml, sRede : String;
+   iContProdutos, iUnidade : Integer;
+   sCabecalho : string;
+begin
+
+      if ( (StrToTime( TimeToStr(now)) >= StrToTime('22:05:00') )
+      and  (StrToTime( TimeToStr(now)) <= StrToTime('07:50:00')
+    )) then
+  begin
+        exit;
+  end;
+
+  Log('entrou no gera email');
+  try
+    sCabecalho := '';
+    sCabecalho := sCabecalho + '<tr>';
+    sCabecalho := sCabecalho + '<th>Cod. Grupo</th>';
+    sCabecalho := sCabecalho + '<th>Qtd. Cupons</th>';
+    sCabecalho := sCabecalho + '</tr>';
+
+    qry.Active := false;
+    qry.SQL.Clear;
+    qry.sql.Add(' select count(1) as qtd_cupons, ge.cod_grupo '+
+                '   from ns_notas t, ge_grupos_unidades ge '+
+                '  where t.COD_UNIDADE = ge.cod_unidade '+
+                '    and ge.cod_emp = 1 '+
+                '    and ge.cod_grupo in (910, 930, 940, 950,870) '+
+                '     and t.dta_emissao = trunc(sysdate)  '+
+                '    and t.ind_status = 1 '+
+                '    and (t.tip_nota = 3 '+
+                '     or (t.tip_nota = 2 '+
+                '    and t.num_modelo = 65)) '+
+                '  group by ge.cod_grupo '+
+                '  order by ge.cod_grupo ');
+
+    qry.Active := true;
+    
+  
+      if CodEmp = 910 then
+         Begin
+
+          sRede := 'Grazziotin';
+         end;
+
+       sHtml := '';
+       sHtml := sHtml + '<html>';
+       sHtml := sHtml + '<head>';
+       sHtml := sHtml + '<title>Grupo Grazziotin</title>';
+       sHtml := sHtml + '<h3>Grupo Grazziotin S/A.</h3>';
+       sHtml := sHtml + '</head>';
+       sHtml := sHtml + '<body>';
+       sHtml := sHtml + '<p><b>Rede '+sRede+'<br>';
+       sHtml := sHtml + 'Data: '+FormatDateTime('dd/mm/yyyy',Date) + '  Hora: '+FormatDateTime('hh:mm', Time)+'</b></p>';
+       sHtml := sHtml + '<table border="1" cellpadding="3" cellspacing="1">';
+       sHtml := sHtml + '<tr>';
+       sHtml := sHtml + '<td align="center" colspan="6"><p><b><font face="arial" size="3" color="#006600">Qtd. Cupons do Dia no NL - LOJAS</font></b></p></td>';
+       sHtml := sHtml + '</tr>';
+       sHtml := sHtml + sCabecalho;
+       iContProdutos := 0;
+       if qry.RecordCount > 0 then
+       Begin
+           qry.First;
+           while not qry.Eof do
+            Begin
+
+
+
+                sHtml := sHtml + '<tr>';
+                sHtml := sHtml + '<td>'+qry.FieldByName('cod_grupo').AsString+'</td>';
+                sHtml := sHtml + '<td>'+qry.FieldByName('qtd_cupons').AsString+'</td>';
+                sHtml := sHtml + '</tr>';
+                qry.Next;
+            end;
+           qry.Close;
+       end else
+       begin
+           sHtml := sHtml + '<tr>';
+           sHtml := sHtml + '<td>910</td>';
+           sHtml := sHtml + '<td>0</td>';
+           sHtml := sHtml + '</tr>';
+           sHtml := sHtml + '<tr>';
+           sHtml := sHtml + '<td>930</td>';
+           sHtml := sHtml + '<td>0</td>';
+           sHtml := sHtml + '</tr>';
+           sHtml := sHtml + '<tr>';
+           sHtml := sHtml + '<td>940</td>';
+           sHtml := sHtml + '<td>0</td>';
+           sHtml := sHtml + '</tr>';
+           sHtml := sHtml + '<tr>';
+           sHtml := sHtml + '<td>950</td>';
+           sHtml := sHtml + '<td>0</td>';
+           sHtml := sHtml + '</tr>';
+       end;
+       sHtml := sHtml + '</table>';
+       sHtml := sHtml + '</body>';
+       sHtml := sHtml + '</html>';
+     Log('Vai enviar a mensagem.');
+
+       ACBrMail1.From := sEmailFrom;
+       ACBrMail1.FromName := sNome;
+       ACBrMail1.Host := sHost;
+       ACBrMail1.Username := sUserName;
+       ACBrMail1.Password := sPassword;
+       ACBrMail1.Port := sPort;
+       ACBrMail1.AddAddress(sEmailGrz,'');
+      // ACBrMail1.AddCC(sEmailCCGrz);
+       ACBrMail1.Subject := sAssunto;
+       ACBrMail1.IsHTML := True;
+       ACBrMail1.Body.Text :=  sHtml;
+       AcbrMail1.SetTLS := True;
+       ACBrMail1.Send;
+
+       Log('Rede: '+ FloatToStr(CodEmp));
+       Log('Enviando Email Para: '+sEmailFrom);
+
+  except
+    on e: Exception do
+     Begin
+      Log(e.ClassName + ' - ' + e.Message);
+      Exit;
+     end;
+  end;
+end;
+
+procedure TfrmPrincipal.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+ try
+  sDiretorio := GetCurrentDir;
+  iArqIni := TIniFile.Create(sDiretorio+'\config.ini');
+  iArqINI.WriteDateTime('DATE', 'date', date - 150);
+  iArqINI.Free;
+ except
+  On e: Exception do
+      Begin
+       Log(e.ClassName + ' - ' + e.Message);
+      end;
+ end
+end;
+
+procedure TfrmPrincipal.FormCreate(Sender: TObject);
+begin
+  CarregaParamsBanco;
+   try
+     FDConnection1.Params.Database := sBanco;
+     FDConnection1.Params.UserName := sUsuario;
+     FDConnection1.Params.Password := sSenha;
+     FDConnection1.Connected := True;
+   except
+       on E:EDatabaseError do
+            begin
+                 MessageDlg('Falha ao conectar o banco '+#13+
+                            'a aplicação vai fechar!'+#13+
+                            E.Message,mtInformation,[mbOk], 0);
+                Application.Terminate;
+            end;
+   end;
+end;
+
+procedure TfrmPrincipal.relogioTimer(Sender: TObject);
+begin
+       relogio.Enabled := False;
+       Application.ProcessMessages;
+
+
+end;
+
+procedure TfrmPrincipal.FormActivate(Sender: TObject);
+begin
+ {    try
+     {FDConnection1.Params.Database := '172.16.0.40:1521/GRZPROD';
+     FDConnection1.Params.UserName := 'nl';
+     FDConnection1.Params.Password := 'nl';
+     FDConnection1.Connected := True;
+   except
+       on E:EDatabaseError do
+            begin
+                 MessageDlg('Falha ao conectar o banco '+#13+
+                            'a aplicação vai fechar!'+#13+
+                            E.Message,mtInformation,[mbOk], 0);
+                Application.Terminate;
+            end;
+   end;
+
+     AbreSistema;
+     Executa;   }
+end;
+
+end.
+

@@ -12,7 +12,7 @@ uses
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   FireDAC.Phys.OracleDef, FireDAC.UI.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool,
   FireDAC.Phys, FireDAC.Phys.Oracle, FireDAC.VCLUI.Wait, FireDAC.Comp.Client,
-  FireDAC.Comp.DataSet,ACBrMail, ACBrBase;
+  FireDAC.Comp.DataSet,ACBrMail, ACBrBase, Encryp, uCarregaSenha;
 
 Const
    WM_ICONTRAY = WM_USER+1;
@@ -54,7 +54,7 @@ type
     procedure relogioTimer(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-
+    procedure CarregaParamsBanco;
  
   private
     { Private declarations }
@@ -70,10 +70,9 @@ var
   sEmailCCGrz, sEmailCCPrm, sEmailCCArr, sEmailCCFrg, sEmailCCTot ,sEmailCCCia: String;
   Timer, Data : tDateTime;
   iIndGrz, iIndPrm, iIndArr, iIndFrg, iIndTot : Integer;
-  sUsuario, sParametro, sData : String;
+  sUsuario, sParametro, sData,sBanco, sSenha : String;
   iArqIni : tIniFile;
   sAssunto, sEmailFrom, sUserName, sPassword, sNome, sHost, sPort  : String;
-
 
 implementation
 
@@ -230,6 +229,13 @@ begin
    if GravaConfiguracao then
       AbreSistema; 
 end;
+procedure TfrmPrincipal.CarregaParamsBanco;
+var TomEncryption1: TTomEncryption;
+begin
+    TomEncryption1 := TTomEncryption.Create(Self);
+    CarregaSenhasBancoOra('GRZPNL_BERLIN',TomEncryption1,sUsuario,sSenha,sBanco);
+end;
+
 procedure TfrmPrincipal.FormDestroy(Sender: TObject);
 begin
  Shell_NotifyIcon(NIM_DELETE, @TrayIconData);
@@ -440,10 +446,11 @@ end;
 
 procedure TfrmPrincipal.FormCreate(Sender: TObject);
 begin
+  CarregaParamsBanco;
    try
-     {FDConnection1.Params.Database := '172.16.0.40:1521/GRZPROD';
-     FDConnection1.Params.UserName := 'nl';
-     FDConnection1.Params.Password := 'nl'; }
+     FDConnection1.Params.Database := sBanco;
+     FDConnection1.Params.UserName := sUsuario;
+     FDConnection1.Params.Password := sSenha;
      FDConnection1.Connected := True;
    except
        on E:EDatabaseError do
@@ -454,6 +461,8 @@ begin
                 Application.Terminate;
             end;
    end;
+   AbreSistema;
+   Executa;
 end;
 
 procedure TfrmPrincipal.relogioTimer(Sender: TObject);
@@ -466,10 +475,10 @@ end;
 
 procedure TfrmPrincipal.FormActivate(Sender: TObject);
 begin
-     try
+ {    try
      {FDConnection1.Params.Database := '172.16.0.40:1521/GRZPROD';
      FDConnection1.Params.UserName := 'nl';
-     FDConnection1.Params.Password := 'nl'; }
+     FDConnection1.Params.Password := 'nl';
      FDConnection1.Connected := True;
    except
        on E:EDatabaseError do
@@ -482,7 +491,7 @@ begin
    end;
 
      AbreSistema;
-     Executa;
+     Executa;   }
 end;
 
 end.

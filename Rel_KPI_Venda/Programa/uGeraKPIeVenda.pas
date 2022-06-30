@@ -142,14 +142,17 @@ end;
 
 procedure TfrmGeraKPI.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
+  { CarregaParamsBanco;
      try
-        if fdcBancoDados.Connected then
-           fdcBancoDados.Connected := False;
+        fdcBancoDados.Params.Database := sBanco;
+        fdcBancoDados.Params.UserName := sUsuario;
+        fdcBancoDados.Params.Password := sSenha;
+        fdcBancoDados.Connected := True;
      except
            lblMensagem.Caption := 'Erro Banco! Tente Novamente!';
            Abort;
            Close;
-     end;
+     end; }
 end;
 
 procedure TfrmGeraKPI.FormCreate(Sender: TObject);
@@ -158,8 +161,8 @@ var
    wDia, wMes, wAno: Word;
 begin
      PreencheEstilos(Sender);
-     //CarregaParamsBanco;
-     {try
+     CarregaParamsBanco;
+     try
         fdcBancoDados.Params.Database := sBanco;
         fdcBancoDados.Params.UserName := sUsuario;
         fdcBancoDados.Params.Password := sSenha;
@@ -171,7 +174,7 @@ begin
                                        'a aplicação vai fechar!' + #13 + e.Message;
                 Application.Terminate;
            end;
-     end;}
+     end;
 
      lblMensagem.Caption := '';
 
@@ -206,8 +209,7 @@ var
    TomEncryption1: TTomEncryption;
 begin
      TomEncryption1 := TTomEncryption.Create(Self);
-     CarregaSenhasBancoOra('GRZPNL_BERLIN', TomEncryption1, sUsuario,
-                           sSenha, sBanco);
+     CarregaSenhasBancoOra('GRZPNL_BERLIN', TomEncryption1, sUsuario,sSenha, sBanco);
 end;
 
 end.

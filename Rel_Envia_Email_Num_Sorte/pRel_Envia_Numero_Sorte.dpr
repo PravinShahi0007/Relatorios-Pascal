@@ -4,7 +4,9 @@ uses
   Vcl.Forms,
   uRel_Envia_Email_Num_Sorte in 'uRel_Envia_Email_Num_Sorte.pas' {frmRel_Numero_Sorte},
   uFunc in 'uFunc.pas',
-  ufuncoes in 'ufuncoes.pas';
+  ufuncoes in 'ufuncoes.pas',
+  Encryp in 'Encryp.pas',
+  uCarregaSenha in 'uCarregaSenha.pas';
 
 {$R *.res}
 

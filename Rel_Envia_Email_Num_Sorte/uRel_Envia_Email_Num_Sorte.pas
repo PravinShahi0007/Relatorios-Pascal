@@ -12,7 +12,8 @@ uses
   FireDAC.Comp.DataSet, ppDesignLayer, ppParameter, ppDB, ppDBPipe, ppModule,
   daDataModule, ppBands, ppClass, ppCtrls, ppStrtch, ppMemo, ppVar, ppPrnabl,
   ppCache, ppComm, ppRelatv, ppProd, ppReport, Vcl.StdCtrls, Vcl.Mask,
-  Vcl.Buttons, ACBrBase, ACBrMail,System.DateUtils,System.IniFiles;
+  Vcl.Buttons, ACBrBase, ACBrMail,System.DateUtils,System.IniFiles, Encryp,
+  uCarregaSenha;
 
 type
   TfrmRel_Numero_Sorte = class(TForm)
@@ -29,6 +30,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure btnImprimirClick(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure CarregaParamsBanco;
 
 
     procedure CarregaParametros;
@@ -46,7 +48,7 @@ var
   sDataMax : string;
   iArqIni : tIniFile;
   sEmail,sAssunto,sEmailFrom,sUserName,sPassword,sNome,sCopia_oculta :STRING;
-
+  sUsuario, sBanco, sSenha : String;
 implementation
 
 {$R *.dfm}
@@ -81,7 +83,7 @@ begin
 
          //Número da sorte usados   CRE
            qry.SQL.Clear;
-           qry.sql.Add(' select count(1) num_sorte_usado from ns_notas_certificados a, grz_lojas_seguro_numeracao t '+
+           qry.sql.Add(' select count(1) num_sorte_usado from grazz.ns_notas_certificados a, grazz.grz_lojas_seguro_numeracao t '+
                          ' where a.num_sorte = t.numero_da_sorte '+
                          ' and a.num_proposta_capital = t.num_apolice'+
                          ' and a.num_apolice = 0000075 ');
@@ -90,7 +92,7 @@ begin
 
           //Número da sorte disponivel   CRE
            FDQuery1.SQL.Clear;
-           FDQuery1.sql.Add(' select count(1) num_sorte_disponivel from grz_lojas_seguro_numeracao t');
+           FDQuery1.sql.Add(' select count(1) num_sorte_disponivel from grazz.grz_lojas_seguro_numeracao t');
            FDQuery1.Active := true;
 
           sPerUsoCRE:= FormatFloat('0.00',((qry.FieldByName('num_sorte_usado').AsFloat * 100)/ FDQuery1.FieldByName('num_sorte_disponivel').AsFloat));
@@ -100,7 +102,7 @@ begin
 
          //Número da sorte usados  CPP
            FDQuery2.SQL.Clear;
-           FDQuery2.sql.Add(' select count(1) num_sorte_usado from ns_notas_certificados a, grz_lojas_seguro_numeracao_cpp t '+
+           FDQuery2.sql.Add(' select count(1) num_sorte_usado from grazz.ns_notas_certificados a, grazz.grz_lojas_seguro_numeracao_cpp t '+
                          ' where a.num_sorte = t.numero_da_sorte '+
                          ' and a.num_proposta_capital = t.num_apolice'+
                          ' and a.num_apolice = 77527 ');
@@ -109,7 +111,7 @@ begin
 
           //Número da sorte disponivel  CPP
            FDQuery3.SQL.Clear;
-           FDQuery3.sql.Add(' select count(1) num_sorte_disponivel from grz_lojas_seguro_numeracao_cpp t');
+           FDQuery3.sql.Add(' select count(1) num_sorte_disponivel from grazz.grz_lojas_seguro_numeracao_cpp t');
            FDQuery3.Active := true;
 
            sPerUsoCPP:= FormatFloat('0.00',((FDQuery2.FieldByName('num_sorte_usado').AsFloat * 100)/ FDQuery3.FieldByName('num_sorte_disponivel').AsFloat));
@@ -141,10 +143,11 @@ end;
 
 procedure TfrmRel_Numero_Sorte.FormCreate(Sender: TObject);
 begin
+   CarregaParamsBanco;
    try
-
-     FDConnection1.Params.UserName := 'nl';
-     FDConnection1.Params.Password := 'nl';
+     FDConnection1.Params.Database := sBanco;
+     FDConnection1.Params.UserName := sUsuario;
+     FDConnection1.Params.Password := sSenha;
      FDConnection1.Connected := True;
    except
        on E:EDatabaseError do
@@ -201,5 +204,12 @@ begin
 
 end;
 
+
+procedure TfrmRel_Numero_Sorte.CarregaParamsBanco;
+var TomEncryption1: TTomEncryption;
+begin
+    TomEncryption1 := TTomEncryption.Create(Self);
+    CarregaSenhasBancoOra('GRZPNL_BERLIN',TomEncryption1,sUsuario,sSenha,sBanco);
+end;
 
 end.

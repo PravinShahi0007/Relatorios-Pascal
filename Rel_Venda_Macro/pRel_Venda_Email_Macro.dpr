@@ -6,7 +6,9 @@ uses
   uFunc in 'uFunc.pas',
   ufuncoes in 'ufuncoes.pas',
   Vcl.Themes,
-  Vcl.Styles;
+  Vcl.Styles,
+  Encryp in 'Encryp.pas',
+  uCarregaSenha in 'uCarregaSenha.pas';
 
 {$R *.res}
 

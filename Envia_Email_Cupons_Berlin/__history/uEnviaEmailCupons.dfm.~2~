@@ -1,0 +1,257 @@
+object frmPrincipal: TfrmPrincipal
+  Left = 411
+  Top = 224
+  BorderIcons = []
+  Caption = 'Envia Cupons Baixados ------>>>> Jaisson'
+  ClientHeight = 196
+  ClientWidth = 378
+  Color = clWhite
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  KeyPreview = True
+  OldCreateOrder = False
+  Visible = True
+  OnActivate = FormActivate
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnKeyDown = FormKeyDown
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label1: TLabel
+    Left = 237
+    Top = 9
+    Width = 78
+    Height = 13
+    Caption = 'Data Sele'#231#227'o'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object Label2: TLabel
+    Left = 235
+    Top = 49
+    Width = 88
+    Height = 13
+    Caption = 'Hora Execu'#231#227'o'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object Edit1: TEdit
+    Left = 47
+    Top = 96
+    Width = 129
+    Height = 21
+    TabOrder = 9
+  end
+  object edtHoraExecucao: TEdit
+    Left = 215
+    Top = 64
+    Width = 129
+    Height = 21
+    TabOrder = 0
+  end
+  object btnExecutar: TBitBtn
+    Left = 191
+    Top = 96
+    Width = 81
+    Height = 25
+    Caption = 'Executar'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    Glyph.Data = {
+      76010000424D7601000000000000760000002800000020000000100000000100
+      04000000000000010000120B0000120B00001000000000000000000000000000
+      800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+      FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00300000000000
+      0000377777777777777707FFFFFFFFFFFF70773FF33333333F770F77FFFFFFFF
+      77F07F773FFFFFFF77F70FFF7700000000007F337777777777770FFFFF0FFFFF
+      FFF07F333F7F3FFFF3370FFF700F0000FFF07F3F777F777733370F707F0FFFFF
+      FFF07F77337F3FFFFFF7007EEE0F000000F077FFFF7F777777370777770FFFFF
+      FFF07777777F3FFFFFF7307EEE0F000000F03773FF7F7777773733707F0FFFFF
+      FFF03337737F3FFF33373333700F000FFFF03333377F77733FF73333330FFFFF
+      00003333337F3FF377773333330F00FF0F033333337F77337F733333330FFFFF
+      00333333337FFFFF773333333300000003333333337777777333}
+    NumGlyphs = 2
+    ParentFont = False
+    TabOrder = 1
+    OnClick = btnExecutarClick
+  end
+  object RadioGroup1: TRadioGroup
+    Left = 8
+    Top = 8
+    Width = 177
+    Height = 113
+    Caption = 'Redes'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clMaroon
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 2
+  end
+  object chkGrazziotin: TCheckBox
+    Left = 16
+    Top = 24
+    Width = 97
+    Height = 17
+    Caption = 'Grazziotin'
+    Checked = True
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clGreen
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+    State = cbChecked
+    TabOrder = 3
+  end
+  object chkPorMenos: TCheckBox
+    Left = 16
+    Top = 42
+    Width = 97
+    Height = 17
+    Caption = 'Por Menos'
+    Checked = True
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clGreen
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+    State = cbChecked
+    TabOrder = 4
+  end
+  object chkFranco: TCheckBox
+    Left = 16
+    Top = 60
+    Width = 97
+    Height = 17
+    Caption = 'Franco Giorgi'
+    Checked = True
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clGreen
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+    State = cbChecked
+    TabOrder = 5
+  end
+  object chkTottal: TCheckBox
+    Left = 16
+    Top = 79
+    Width = 97
+    Height = 17
+    Caption = 'Tottal'
+    Checked = True
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clGreen
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+    State = cbChecked
+    TabOrder = 6
+  end
+  object edtDtaSelecao: TEdit
+    Left = 215
+    Top = 24
+    Width = 129
+    Height = 21
+    TabOrder = 7
+  end
+  object btnGravar: TBitBtn
+    Left = 281
+    Top = 96
+    Width = 81
+    Height = 25
+    Caption = 'Gravar'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    Glyph.Data = {
+      76010000424D7601000000000000760000002800000020000000100000000100
+      04000000000000010000120B0000120B00001000000000000000000000000000
+      800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+      FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00555555555555
+      555555555555555555555555555555555555555555FF55555555555559055555
+      55555555577FF5555555555599905555555555557777F5555555555599905555
+      555555557777FF5555555559999905555555555777777F555555559999990555
+      5555557777777FF5555557990599905555555777757777F55555790555599055
+      55557775555777FF5555555555599905555555555557777F5555555555559905
+      555555555555777FF5555555555559905555555555555777FF55555555555579
+      05555555555555777FF5555555555557905555555555555777FF555555555555
+      5990555555555555577755555555555555555555555555555555}
+    NumGlyphs = 2
+    ParentFont = False
+    TabOrder = 8
+    OnClick = btnGravarClick
+  end
+  object PopupMenu1: TPopupMenu
+    Left = 192
+    Top = 40
+    object Fechar1: TMenuItem
+      Caption = 'Fechar'
+      OnClick = Fechar1Click
+    end
+  end
+  object dts: TDataSource
+    Left = 151
+    Top = 63
+  end
+  object relogio: TTimer
+    OnTimer = relogioTimer
+    Left = 216
+    Top = 40
+  end
+  object FDPhysOracleDriverLink1: TFDPhysOracleDriverLink
+    DriverID = 'NL'
+    VendorLib = 'oci.dll'
+    Left = 50
+    Top = 102
+  end
+  object FDConnection1: TFDConnection
+    Params.Strings = (
+      'Database=192.168.200.110:1522/GRZPROD'
+      'User_Name=nl'
+      'Password=nl'
+      'DriverID=Ora')
+    LoginPrompt = False
+    Left = 154
+    Top = 102
+  end
+  object qry: TFDQuery
+    Connection = FDConnection1
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    Left = 200
+    Top = 102
+  end
+  object ACBrMail1: TACBrMail
+    Host = '127.0.0.1'
+    Port = '25'
+    SetSSL = False
+    SetTLS = False
+    Attempts = 3
+    DefaultCharset = UTF_8
+    IDECharset = CP1252
+    Left = 200
+  end
+end

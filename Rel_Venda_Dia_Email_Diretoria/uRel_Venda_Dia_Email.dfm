@@ -28,11 +28,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
   end
   object FDConnection1: TFDConnection
     Params.Strings = (
-      'Database=192.168.200.110:1522/GRZPROD'
-      'User_Name=grazz'
-      'Password=grazz'
-      'ConnectionDef=Oracle PROD')
-    Connected = True
+      'DriverID=Ora')
     LoginPrompt = False
     Left = 42
     Top = 14
@@ -95,7 +91,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     PrinterSetup.DocumentName = 'Report'
     PrinterSetup.Duplex = dpNone
     PrinterSetup.Orientation = poLandscape
-    PrinterSetup.PaperName = 'A4 (210 x 297 mm)'
+    PrinterSetup.PaperName = 'Custom'
     PrinterSetup.PrinterName = 'Default'
     PrinterSetup.SaveDeviceSettings = False
     PrinterSetup.mmMarginBottom = 6350
@@ -104,7 +100,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     PrinterSetup.mmMarginTop = 6350
     PrinterSetup.mmPaperHeight = 210000
     PrinterSetup.mmPaperWidth = 297000
-    PrinterSetup.PaperSize = 120
+    PrinterSetup.PaperSize = 256
     AllowPrintToFile = True
     ArchiveFileName = '($MyDocuments)\ReportArchive.raf'
     DeviceType = 'Screen'

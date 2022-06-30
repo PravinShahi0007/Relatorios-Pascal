@@ -14,7 +14,9 @@ uses
   Ufuncoes in 'Ufuncoes.pas',
   uEnviaEmailKPIPagamentos in 'uEnviaEmailKPIPagamentos.pas' {frmPrincipal},
   Vcl.Themes,
-  Vcl.Styles;
+  Vcl.Styles,
+  Encryp in 'Encryp.pas',
+  uCarregaSenha in 'uCarregaSenha.pas';
 
 {$R *.res}
 

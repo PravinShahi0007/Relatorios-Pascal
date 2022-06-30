@@ -13,7 +13,7 @@ uses
   ppPrnabl, ppCache, ppComm, ppRelatv, ppProd, ppReport, Data.DB,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, ACBrBase, ACBrMail, Vcl.StdCtrls,
   Vcl.Buttons, Vcl.ExtCtrls, System.IniFiles, Vcl.Grids, Vcl.DBGrids, Vcl.Themes,
-  Vcl.Styles;
+  Vcl.Styles, Encryp, uCarregaSenha;
 
 type
   TfrmRel_Venda_dia_Email = class(TForm)
@@ -118,6 +118,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure CarregaParamsBanco;
   private
     { Private declarations }
   public
@@ -129,8 +130,8 @@ type
 var
   frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email;
   iArqIni: TIniFile;
-  sEmail,sAssunto,sEmailFrom,sUserName,sPassword,sNome,sCopia_oculta,
-      sDataMax: String;
+  sEmail,sAssunto,sEmailFrom,sUserName,sPassword,sNome,sCopia_oculta,sDataMax: String;
+  sUsuario, sBanco, sSenha : String;
 
 implementation
 
@@ -288,6 +289,13 @@ begin
      Close;
 end;
 
+procedure TfrmRel_Venda_dia_Email.CarregaParamsBanco;
+var TomEncryption1: TTomEncryption;
+begin
+    TomEncryption1 := TTomEncryption.Create(Self);
+    CarregaSenhasBancoOra('GRZPNL_BERLIN',TomEncryption1,sUsuario,sSenha,sBanco);
+end;
+
 procedure TfrmRel_Venda_dia_Email.FormActivate(Sender: TObject);
 begin
      btnGerarClick(Sender);
@@ -296,10 +304,11 @@ end;
 procedure TfrmRel_Venda_dia_Email.FormCreate(Sender: TObject);
 begin
      PreencheEstilos(Sender);
-
+     CarregaParamsBanco;
      try
-        fdcEmail.Params.UserName := 'nl';
-        fdcEmail.Params.Password := 'nl';
+        fdcEmail.Params.Database := sBanco;
+        fdcEmail.Params.UserName := sUsuario;
+        fdcEmail.Params.Password := sSenha;
         fdcEmail.Connected := True;
      except
            on E:EDatabaseError do

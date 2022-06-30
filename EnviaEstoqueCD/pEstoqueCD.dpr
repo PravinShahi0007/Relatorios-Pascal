@@ -4,7 +4,9 @@ uses
   Vcl.Forms,
   uEstoqueCd in 'uEstoqueCd.pas' {frmEstoqueCD},
   uFunc in 'uFunc.pas',
-  ufuncoes in 'ufuncoes.pas';
+  ufuncoes in 'ufuncoes.pas',
+  Encryp in 'Encryp.pas',
+  uCarregaSenha in 'uCarregaSenha.pas';
 
 {$R *.res}
 

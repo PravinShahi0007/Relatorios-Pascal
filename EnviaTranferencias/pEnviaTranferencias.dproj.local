@@ -6,5 +6,7 @@
     <Transaction>2022/04/01 14:53:29.000.830,C:\Users\388717\Desktop\EnviaTranferencias\uPrincipal.dfm=C:\Users\388717\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
     <Transaction>2022/04/01 14:53:29.000.830,C:\Users\388717\Desktop\EnviaTranferencias\uPrincipal.pas=C:\Users\388717\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
     <Transaction>2022/04/01 14:53:36.000.596,C:\Users\388717\Desktop\EnviaTranferencias\pEnviaTranferencias.dproj=C:\Users\388717\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2022/06/30 10:46:52.000.805,=C:\Github\Relatorios\EnviaTranferencias\uCarregaSenha.pas</Transaction>
+    <Transaction>2022/06/30 10:46:52.000.783,=C:\Github\Relatorios\EnviaTranferencias\Encryp.pas</Transaction>
   </Transactions>
 </BorlandProject>

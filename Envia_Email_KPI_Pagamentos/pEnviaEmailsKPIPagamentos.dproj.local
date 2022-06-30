@@ -1,9 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>2021/03/11 15:59:59.000.350,C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\pEnviaEmailsKPIPagamentos.dproj=C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\pEnviaEmailsCupons.dproj</Transaction>
-    <Transaction>2021/03/11 16:01:07.000.568,C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\uEnviaEmailKPIPagamentos.dfm=C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\uEnviaEmailCupons.dfm</Transaction>
-    <Transaction>2021/03/12 10:01:19.000.187,C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\uEnviaEmailKPIPagamentos.dfm=C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\uEnviaEmail.dfm</Transaction>
-    <Transaction>2021/03/12 10:01:32.000.623,C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\Unit1.dfm=C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\uEnviaEmailKPIPagamentos.dfm</Transaction>
+    <Transaction>2021/03/11 15:59:59.000.350,C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\pEnviaEmailsCupons.dproj=C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\pEnviaEmailsKPIPagamentos.dproj</Transaction>
+    <Transaction>2021/03/11 16:01:07.000.568,C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\uEnviaEmailCupons.dfm=C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\uEnviaEmailKPIPagamentos.dfm</Transaction>
+    <Transaction>2021/03/12 10:01:19.000.187,C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\uEnviaEmail.dfm=C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\uEnviaEmailKPIPagamentos.dfm</Transaction>
+    <Transaction>2021/03/12 10:01:32.000.623,C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\uEnviaEmailKPIPagamentos.dfm=C:\GitHub\Relatorios\trunk\Envia_Email_KPI_Pagamentos\Unit1.dfm</Transaction>
+    <Transaction>2022/06/30 10:30:47.000.417,=C:\Github\Relatorios\Envia_Email_KPI_Pagamentos\Encryp.pas</Transaction>
+    <Transaction>2022/06/30 10:30:56.000.566,=C:\Github\Relatorios\Envia_Email_KPI_Pagamentos\uCarregaSenha.pas</Transaction>
   </Transactions>
 </BorlandProject>

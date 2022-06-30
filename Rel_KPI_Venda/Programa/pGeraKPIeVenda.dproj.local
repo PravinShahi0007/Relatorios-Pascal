@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>2020/10/02 09:54:06.000.771,G:\SisLog\Rel.Kpi e VEnda\GeraVenda\uGeraKPIeVenda.pas=C:\Users\386552\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
     <Transaction>2020/10/02 09:54:06.000.771,G:\SisLog\Rel.Kpi e VEnda\GeraVenda\uGeraKPIeVenda.dfm=C:\Users\386552\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2020/10/02 09:54:06.000.771,G:\SisLog\Rel.Kpi e VEnda\GeraVenda\uGeraKPIeVenda.pas=C:\Users\386552\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
     <Transaction>2020/10/02 09:54:16.000.330,G:\SisLog\Rel.Kpi e VEnda\GeraVenda\pGeraKPIeVenda.dproj=C:\Users\386552\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
   </Transactions>
 </BorlandProject>

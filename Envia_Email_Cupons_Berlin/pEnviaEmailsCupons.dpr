@@ -2,7 +2,9 @@ program pEnviaEmailsCupons;
 
 uses
   Forms,
-  uEnviaEmailCupons in 'uEnviaEmailCupons.pas' {frmPrincipal};
+  uEnviaEmailCupons in 'uEnviaEmailCupons.pas' {frmPrincipal},
+  Encryp in 'Encryp.pas',
+  uCarregaSenha in 'uCarregaSenha.pas';
 
 {$R *.res}
 

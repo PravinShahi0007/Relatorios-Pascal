@@ -9,7 +9,8 @@ uses
   FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.Oracle,
   FireDAC.Phys.OracleDef, FireDAC.VCLUI.Wait, FireDAC.Stan.Param, FireDAC.DatS,
   FireDAC.DApt.Intf, FireDAC.DApt, ACBrBase, ACBrMail, Data.DB, IniFiles,
-  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.StdCtrls, Vcl.Buttons;
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.StdCtrls, Vcl.Buttons, Encryp,
+  uCarregaSenha;
 
 type
   TfrmPrincipal = class(TForm)
@@ -24,6 +25,7 @@ type
     procedure btnImprimirClick(Sender: TObject);
     procedure CarregaParametros;
     procedure FormCreate(Sender: TObject);
+    procedure CarregaParamsBanco;
   private
     { Private declarations }
   public
@@ -37,7 +39,7 @@ var
   sDataMax : string;
   iArqIni : tIniFile;
   sEmail,sAssunto,sEmailFrom,sUserName,sPassword,sNome,sCopia_oculta :STRING;
-
+  sUsuario, sBanco, sSenha : String;
 implementation
 
 {$R *.dfm}
@@ -254,12 +256,20 @@ begin
      end;
 end;
 
+procedure TfrmPrincipal.CarregaParamsBanco;
+var TomEncryption1: TTomEncryption;
+begin
+    TomEncryption1 := TTomEncryption.Create(Self);
+    CarregaSenhasBancoOra('GRZPNL_BERLIN',TomEncryption1,sUsuario,sSenha,sBanco);
+end;
+
 procedure TfrmPrincipal.FormCreate(Sender: TObject);
 begin
+  CarregaParamsBanco;
   try
-
-     FDConnection1.Params.UserName := 'nl';
-     FDConnection1.Params.Password := 'nl';
+     FDConnection1.Params.Database := sBanco;
+     FDConnection1.Params.UserName := sUsuario;
+     FDConnection1.Params.Password := sSenha;
      FDConnection1.Connected := True;
    except
        on E:EDatabaseError do
@@ -270,7 +280,6 @@ begin
                 Application.Terminate;
             end;
    end;
-
     CarregaParametros;
     btnImprimirClick(Sender);
     Application.Terminate;

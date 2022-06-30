@@ -19,7 +19,7 @@ uses
   FireDAC.Phys.OracleDef, FireDAC.VCLUI.Wait, FireDAC.Stan.Param, FireDAC.DatS,
   FireDAC.DApt.Intf, FireDAC.DApt, Vcl.Menus, Data.DB, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, ACBrBase, ACBrMail, Vcl.Buttons, IniFiles,
-  FireDAC.Comp.UI, Vcl.Themes, Vcl.Styles,DateUtils ;
+  FireDAC.Comp.UI, Vcl.Themes, Vcl.Styles,DateUtils, Encryp, uCarregaSenha ;
 
 type
     RGRZW_REL_PGTOS_APPXLOJA = record
@@ -402,6 +402,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormActivate(Sender: TObject);
+    procedure CarregaParamsBanco;
   private
     { Private declarations }
   public
@@ -413,7 +414,8 @@ type
         aEstilos: array of String;
         mmoEstilos: TMemo;
         iEstilos: Integer;
-         dSomaTotalRecebidos, dTotalRecebidos, dSomaTotalDoApp, dTotalDoApp, dSomaTotalDecre, dTotalDecre, dSomaTotalLojas, dTotalLojas : double;
+        dSomaTotalRecebidos, dTotalRecebidos, dSomaTotalDoApp, dTotalDoApp, dSomaTotalDecre, dTotalDecre, dSomaTotalLojas, dTotalLojas : double;
+        sUsuario, sBanco, sSenha : String;
   end;
 
 const
@@ -691,6 +693,14 @@ begin
            Exit;
      end;
 end;
+
+procedure TfrmPrincipal.CarregaParamsBanco;
+var TomEncryption1: TTomEncryption;
+begin
+    TomEncryption1 := TTomEncryption.Create(Self);
+    CarregaSenhasBancoOra('GRZPNL_BERLIN',TomEncryption1,sUsuario,sSenha,sBanco);
+end;
+
 
 procedure TfrmPrincipal.Envia_Email(Sender: TObject);
 begin
@@ -1637,7 +1647,11 @@ end;
 procedure TfrmPrincipal.FormCreate(Sender: TObject);
 begin
      PreencheEstilos(Sender);
+     CarregaParamsBanco;
      try
+        fdcOracle.Params.Database := sBanco;
+        fdcOracle.Params.UserName := sUsuario;
+        fdcOracle.Params.Password := sSenha;
         fdcOracle.Connected := True;
      except
            on E:EDatabaseError do

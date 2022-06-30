@@ -12,7 +12,8 @@ uses
   FireDAC.Comp.DataSet, ppDesignLayer, ppParameter, ppDB, ppDBPipe, ppModule,
   daDataModule, ppBands, ppClass, ppCtrls, ppStrtch, ppMemo, ppVar, ppPrnabl,
   ppCache, ppComm, ppRelatv, ppProd, ppReport, Vcl.StdCtrls, Vcl.Mask,
-  Vcl.Buttons, ACBrBase, ACBrMail,System.DateUtils,System.IniFiles;
+  Vcl.Buttons, ACBrBase, ACBrMail,System.DateUtils,System.IniFiles, Encryp,
+  uCarregaSenha;
 
 type
   TfrmEnviaProdLivroCD = class(TForm)
@@ -27,6 +28,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure btnImprimirClick(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure CarregaParamsBanco;
 
 
     procedure CarregaParametros;
@@ -44,6 +46,7 @@ var
   sDataMax : string;
   iArqIni : tIniFile;
   sEmail,sAssunto,sEmailFrom,sUserName,sPassword,sNome,sCopia_oculta :STRING;
+  sUsuario, sBanco, sSenha : String;
 
 implementation
 
@@ -265,21 +268,21 @@ end;
 
 procedure TfrmEnviaProdLivroCD.FormCreate(Sender: TObject);
 begin
-   try
-
-     FDConnection1.Params.UserName := 'nl';
-     FDConnection1.Params.Password := 'nl';
-     FDConnection1.Connected := True;
-   except
-       on E:EDatabaseError do
-            begin
-                 MessageDlg('Falha ao conectar o banco '+#13+
-                            'a aplicação vai fechar!'+#13+
-                            E.Message,mtInformation,[mbOk], 0);
-                Application.Terminate;
-            end;
-   end;
-
+  CarregaParamsBanco;
+     try
+        FDConnection1.Params.Database := sBanco;
+        FDConnection1.Params.UserName := sUsuario;
+        FDConnection1.Params.Password := sSenha;
+        FDConnection1.Connected := True;
+     except
+         on E:EDatabaseError do
+              begin
+                   MessageDlg('Falha ao conectar o banco '+#13+
+                              'a aplicação vai fechar!'+#13+
+                              E.Message,mtInformation,[mbOk], 0);
+                  Application.Terminate;
+              end;
+     end;
     CarregaParametros;
     btnImprimirClick(Sender);
 end;
@@ -325,5 +328,12 @@ begin
 
 end;
 
+
+procedure TfrmEnviaProdLivroCD.CarregaParamsBanco;
+var TomEncryption1: TTomEncryption;
+begin
+    TomEncryption1 := TTomEncryption.Create(Self);
+    CarregaSenhasBancoOra('GRZPNL_BERLIN',TomEncryption1,sUsuario,sSenha,sBanco);
+end;
 
 end.

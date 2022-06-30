@@ -28,9 +28,6 @@ object frmRel_Numero_Sorte: TfrmRel_Numero_Sorte
   end
   object FDConnection1: TFDConnection
     Params.Strings = (
-      'Database=192.168.200.110:1522/GRZPROD'
-      'User_Name=nl'
-      'Password=nl'
       'DriverID=Ora')
     LoginPrompt = False
     Left = 42

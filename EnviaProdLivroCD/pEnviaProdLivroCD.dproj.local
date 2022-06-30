@@ -34,11 +34,15 @@
     <Transaction>2020/12/30 08:44:29.000.819,C:\Users\389448\Desktop\Mathes C\Projetos Delphi\EnviaProdLivroCD\uEnviaProLivroCD.pas=C:\Users\389448\Desktop\Mathes C\Projetos Delphi\EnviaProdLivroCD\uEstoqueCd.pas</Transaction>
     <Transaction>2020/12/30 08:44:29.000.819,C:\Users\389448\Desktop\Mathes C\Projetos Delphi\EnviaProdLivroCD\uEnviaProLivroCD.dfm=C:\Users\389448\Desktop\Mathes C\Projetos Delphi\EnviaProdLivroCD\uEstoqueCd.dfm</Transaction>
     <Transaction>2020/12/30 08:44:38.000.870,C:\Users\389448\Desktop\Mathes C\Projetos Delphi\EnviaProdLivroCD\pEnviaProdLivroCD.dproj=C:\Users\389448\Desktop\Mathes C\Projetos Delphi\EnviaProdLivroCD\pEnviaProdLivro.dproj</Transaction>
+    <Transaction>2022/06/30 10:59:46.000.031,=C:\Github\Relatorios\EnviaProdLivroCD\Encryp.pas</Transaction>
+    <Transaction>2022/06/30 10:59:46.000.055,=C:\Github\Relatorios\EnviaProdLivroCD\uCarregaSenha.pas</Transaction>
   </Transactions>
 	<ProjectSortOrder AutoSort="0" SortType="0">
     <File Path="uEnviaProLivroCD.pas"/>
     <File Path="uEnviaProLivroCD.dfm"/>
     <File Path="uFunc.pas"/>
     <File Path="ufuncoes.pas"/>
+    <File Path="Encryp.pas"/>
+    <File Path="uCarregaSenha.pas"/>
   </ProjectSortOrder>
 </BorlandProject>
