@@ -83,7 +83,7 @@ begin
 
          //Número da sorte usados   CRE
            qry.SQL.Clear;
-           qry.sql.Add(' select count(1) num_sorte_usado from grazz.ns_notas_certificados a, grazz.grz_lojas_seguro_numeracao t '+
+           qry.sql.Add(' select count(1) num_sorte_usado from nl.ns_notas_certificados a, nl.grz_lojas_seguro_numeracao t '+
                          ' where a.num_sorte = t.numero_da_sorte '+
                          ' and a.num_proposta_capital = t.num_apolice'+
                          ' and a.num_apolice = 0000075 ');
@@ -92,7 +92,7 @@ begin
 
           //Número da sorte disponivel   CRE
            FDQuery1.SQL.Clear;
-           FDQuery1.sql.Add(' select count(1) num_sorte_disponivel from grazz.grz_lojas_seguro_numeracao t');
+           FDQuery1.sql.Add(' select count(1) num_sorte_disponivel from nl.grz_lojas_seguro_numeracao t');
            FDQuery1.Active := true;
 
           sPerUsoCRE:= FormatFloat('0.00',((qry.FieldByName('num_sorte_usado').AsFloat * 100)/ FDQuery1.FieldByName('num_sorte_disponivel').AsFloat));
@@ -102,7 +102,7 @@ begin
 
          //Número da sorte usados  CPP
            FDQuery2.SQL.Clear;
-           FDQuery2.sql.Add(' select count(1) num_sorte_usado from grazz.ns_notas_certificados a, grazz.grz_lojas_seguro_numeracao_cpp t '+
+           FDQuery2.sql.Add(' select count(1) num_sorte_usado from nl.ns_notas_certificados a, nl.grz_lojas_seguro_numeracao_cpp t '+
                          ' where a.num_sorte = t.numero_da_sorte '+
                          ' and a.num_proposta_capital = t.num_apolice'+
                          ' and a.num_apolice = 77527 ');
