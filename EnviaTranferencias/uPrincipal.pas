@@ -92,12 +92,12 @@ begin
                         '  n.rde_item,         '+
                         '  s.des_fantasia as NomeLojaDes,'+
                         '  count(i.des_item)    '+
-                  '  from grz_lojas_ne_notas n,  '+
-                  '       grz_lojas_ne_notas_itens i,'+
-                  '       grz_lojas_tamanho_base b,  '+
-                  '       grz_lojas_tamanho_base c,  '+
-                  '       ps_pessoas p,              '+
-                  '       ps_pessoas s               '+
+                  '  from nl.grz_lojas_ne_notas n,  '+
+                  '       nl.grz_lojas_ne_notas_itens i,'+
+                  '       nl.grz_lojas_tamanho_base b,  '+
+                  '       nl.grz_lojas_tamanho_base c,  '+
+                  '       nl.ps_pessoas p,              '+
+                  '       nl.ps_pessoas s               '+
                   ' where n.cod_unidade = i.cod_unidade '+
                   '   and n.num_nota = i.num_nota       '+
                   '   and n.cod_filial = i.cod_filial    '+
