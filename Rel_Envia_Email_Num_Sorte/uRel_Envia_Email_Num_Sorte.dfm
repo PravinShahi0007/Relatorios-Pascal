@@ -52,7 +52,7 @@ object frmRel_Numero_Sorte: TfrmRel_Numero_Sorte
       '  and a.cod_unidade > 900 '
       '  and a.ano >= 2019 - 2 '
       '  and a.mes = 08'
-      '  and not exists (select 1 from grz_lojas_unificadas_cia t'
+      '  and not exists (select 1 from nl.grz_lojas_unificadas_cia t'
       '                   where a.cod_emp     = t.cod_emp_para'
       '                     and a.cod_unidade = t.cod_unidade_para)'
       'ORDER BY cod_emp, cod_unidade, ano, dta_movimento')

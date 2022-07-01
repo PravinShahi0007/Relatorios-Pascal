@@ -111,7 +111,7 @@ begin
 
           //Número da sorte disponivel  CPP
            FDQuery3.SQL.Clear;
-           FDQuery3.sql.Add(' select count(1) num_sorte_disponivel from grazz.grz_lojas_seguro_numeracao_cpp t');
+           FDQuery3.sql.Add(' select count(1) num_sorte_disponivel from nl.grz_lojas_seguro_numeracao_cpp t');
            FDQuery3.Active := true;
 
            sPerUsoCPP:= FormatFloat('0.00',((FDQuery2.FieldByName('num_sorte_usado').AsFloat * 100)/ FDQuery3.FieldByName('num_sorte_disponivel').AsFloat));
