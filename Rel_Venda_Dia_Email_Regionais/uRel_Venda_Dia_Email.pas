@@ -182,7 +182,7 @@ begin
      qryEmailRegional.SQL.Text :=  '';
      qryEmailRegional.Active := False;
      qryEmailRegional.SQL.Text := ' select cod_regiao,email_regional '+
-                                  ' from grz_email_regional '+
+                                  ' from nl.grz_email_regional '+
                                   ' where cod_regiao >= 8701 '+
                                   ' and cod_regiao <= 8725 '+
                                   ' order by email_regional';
@@ -229,7 +229,7 @@ begin
              // Check BOX para testar o envio, se estiver marcado, envia para o e-mail do caption...
              // Modifique conforme seu e-mail para teste...
              if (chbEMailTeste.Checked) then
-                sEmail := '390186@grazziotin.com.br'
+                sEmail := '388717@grazziotin.com.br'
              else
                  sEmail := qryEmailRegional.FieldByName('email_regional').AsString;
              sAssunto := iArqIni.ReadString('EMAIL FROM','Assunto','');
@@ -238,9 +238,9 @@ begin
              sPassword := iArqIni.ReadString('EMAIL FROM','Password','');
              sNome := iArqIni.ReadString('EMAIL FROM','Nome','');
              sCopia_oculta :=  iArqIni.ReadString('EMAIL FROM','copia_oculta','');
-             // ShowMessage(sEmailFrom);
-             // ShowMessage(sEmail);
-             // ShowMessage(sCopia_oculta);
+              //ShowMessage(sEmailFrom);
+              //ShowMessage(sEmail);
+              //ShowMessage(sCopia_oculta);
              iArqINI.Free;
           except
                 ShowMessage('Erro: Não carregou arquivo de configuração.'+chr(13)+
@@ -277,8 +277,14 @@ begin
                    AcbrMail1.SetTLS := True;
                    ACBrMail1.AddAttachment(sCaminhoArquivo+sNomeArquivo);
                    ACBrMail1.Send;
-                except
-                      bEnvio := False;
+                except on E: Exception do
+                begin
+                  bEnvio := False;
+                  //ShowMessage(E.Message);
+                end
+
+
+
                 end;
           until (bEnvio);
           pnlTentativas.Caption := '';

@@ -44,7 +44,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
       Width = 160
       Height = 30
       Align = alLeft
-      Caption = '390186@grazziotin.com.br'
+      Caption = '388717@grazziotin.com.br'
       TabOrder = 1
       Visible = False
     end
@@ -148,7 +148,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
       '  and a.cod_unidade > 900 '
       '  and a.ano >= 2019 - 2 '
       '  and a.mes = 08'
-      '  and not exists (select 1 from grz_lojas_unificadas_cia t'
+      '  and not exists (select 1 from nl.grz_lojas_unificadas_cia t'
       '                   where a.cod_emp     = t.cod_emp_para'
       '                     and a.cod_unidade = t.cod_unidade_para)'
       'ORDER BY cod_emp, cod_unidade, ano, dta_movimento')
@@ -172,7 +172,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     PrinterSetup.DocumentName = 'Report'
     PrinterSetup.Duplex = dpNone
     PrinterSetup.Orientation = poLandscape
-    PrinterSetup.PaperName = 'A4 210 x 297 mm'
+    PrinterSetup.PaperName = 'Custom'
     PrinterSetup.PrinterName = 'Default'
     PrinterSetup.SaveDeviceSettings = False
     PrinterSetup.mmMarginBottom = 6350
@@ -1676,7 +1676,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     Connection = fdcEmail
     SQL.Strings = (
       'select cod_regiao,email_regional '
-      'from grz_email_regional '
+      'from nl.grz_email_regional '
       'where cod_regiao >= 8701 '
       'and cod_regiao <= 8725 '
       'order by email_regional')
