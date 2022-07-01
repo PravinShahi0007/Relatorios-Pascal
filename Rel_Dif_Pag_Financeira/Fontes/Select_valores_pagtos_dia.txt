@@ -1,0 +1,156 @@
+SELECT cr.cod_emp
+,cr.cod_unidade
+,cr.cod_pessoa
+,cr.num_titulo
+,cr.cod_compl
+,cr.num_parcela
+,cr.vlr_cr
+,es.vlr_total
+FROM     (select esapro.cod_emp
+                   ,esapro.cod_unidade
+                   ,esapro.cod_pessoa
+                   ,esapro.num_titulo
+                   ,esapro.cod_compl
+                   ,esapro.num_parcela
+                   ,esapro.dta_apro
+                   ,sum(nvl(esapro.vlr_APRO,0)) vlr_apro
+                   ,sum(nvl(esapro.vlr_ATUAL,0)) vlr_ATUAL
+                   ,sum(nvl(esapro.vlr_total,0)) vlr_TOTAL
+                   ,sum(nvl(esapro.vlr_liquido,0)) vlr_apro_total
+             from es_0124_cr_cdc_apro esapro
+             where esapro.cod_emp      = 1
+               and esapro.cod_unidade  = 391
+                and esapro.dta_apro     = '05/08/2020'
+               and esapro.tip_apro     = 1
+               and esapro.cod_produto  = 'FINANCIAMENTO'
+             group by esapro.cod_emp
+                     ,esapro.cod_unidade
+                     ,esapro.cod_pessoa
+                     ,esapro.num_titulo
+                     ,esapro.cod_compl
+                     ,esapro.num_parcela
+                     ,esapro.dta_apro ) ES
+           ,(select tit.cod_emp
+                   ,tit.cod_unidade
+                   ,tit.cod_pessoa
+                   ,tit.num_titulo
+                   ,tit.cod_compl
+                   ,tit.num_parcela
+                   ,tit.dta_vencimento
+                   ,sum(nvl(tit.vlr_cdc,0)) vlr_cr
+                   ,sum(nvl(tit.vlr_cdc,0)) vlr_cr_total
+             from cr_titulos tit
+             where tit.cod_emp         = 1
+               and tit.cod_unidade     = 391
+               and tit.dta_vencimento  = '05/08/2020'
+               and tit.tip_titulo in (70)
+         and  exists (select 1 from es_0124_cr_cdc_apro es
+                       where tit.cod_emp = es.cod_emp
+                       and tit.cod_unidade = es.cod_unidade
+                       and tit.cod_pessoa = es.cod_pessoa
+                       and tit.num_titulo = es.num_titulo
+                       and tit.num_parcela = es.num_parcela
+                       and tit.cod_compl = es.cod_compl
+                       and es.tip_apro = 0 )
+             group by tit.cod_emp
+                     ,tit.cod_unidade
+                     ,tit.cod_pessoa
+                     ,tit.num_titulo
+                     ,tit.cod_compl
+                     ,tit.num_parcela
+                     ,tit.dta_vencimento ) CR
+where cr.cod_emp = es.cod_emp
+and cr.cod_unidade = es.cod_unidade
+and cr.cod_pessoa = es.cod_pessoa
+and cr.num_titulo = es.num_titulo
+and cr.cod_compl = es.cod_compl
+and cr.num_parcela = es.num_parcela
+order by 1,2,3,4,5,6
+/
+
+
+
+
+
+            select tit.cod_emp
+                   ,tit.cod_unidade
+                   ,tit.cod_pessoa
+                   ,tit.num_titulo
+                   ,tit.cod_compl
+                   ,tit.num_parcela
+                   ,tit.dta_vencimento
+                   ,tit.dta_emissao
+                   ,sum(nvl(tit.vlr_cdc,0)) vlr_cr
+                   ,sum(nvl(tit.vlr_cdc,0)) vlr_cr_total
+             from cr_titulos tit
+             where tit.cod_emp         = 1
+      and tit.dta_vencimento  = '08/10/2020'
+               and tit.tip_titulo in (70)
+         and not exists (select 1 from es_0124_cr_cdc_apro es
+                       where tit.cod_emp = es.cod_emp
+                       and tit.cod_unidade = es.cod_unidade
+                       and tit.cod_pessoa = es.cod_pessoa
+                       and tit.num_titulo = es.num_titulo
+                       and tit.cod_compl = es.cod_compl
+                       and tit.num_parcela = es.num_parcela
+                       and es.tip_apro = 1
+                       )
+         and exists (select 1 from es_0124_cr_cdc_apro es1
+                       where tit.cod_emp = es1.cod_emp
+                       and tit.cod_unidade = es1.cod_unidade
+                       and tit.cod_pessoa = es1.cod_pessoa
+                       and tit.num_titulo = es1.num_titulo
+                       and tit.cod_compl = es1.cod_compl
+                       and tit.num_parcela = es1.num_parcela
+                       and es1.tip_apro = 0
+                       )
+             group by tit.cod_emp
+                     ,tit.cod_unidade
+                     ,tit.cod_pessoa
+                     ,tit.num_titulo
+                     ,tit.cod_compl
+                     ,tit.num_parcela
+                     ,tit.dta_vencimento
+                     ,tit.dta_emissao
+/
+
+
+
+SELECT es.dta_apro
+,es.tip_apro
+,g.cod_nivel2
+,sum(es.vlr_APRO) vlr_apro
+,sum(es.vlr_ATUAL) vlr_ATUAL
+,sum(es.vlr_total) vlr_TOTAL
+,sum(es.vlr_liquido) vlr_liquido
+FROM     (select esapro.cod_emp
+                   ,esapro.cod_unidade
+                   ,esapro.cod_pessoa
+                   ,esapro.num_titulo
+                   ,esapro.cod_compl
+                   ,esapro.num_parcela
+                   ,esapro.dta_apro
+                   ,esapro.tip_apro
+                   ,sum(nvl(esapro.vlr_APRO,0)) vlr_apro
+                   ,sum(nvl(esapro.vlr_ATUAL,0)) vlr_ATUAL
+                   ,sum(nvl(esapro.vlr_total,0)) vlr_TOTAL
+                   ,sum(nvl(esapro.vlr_liquido,0)) vlr_liquido
+             from es_0124_cr_cdc_apro esapro
+             where esapro.dta_apro     = '08/10/2020'
+               and esapro.tip_apro     = 1
+               and esapro.cod_produto  = 'FINANCIAMENTO'
+             group by esapro.cod_emp
+                     ,esapro.cod_unidade
+                     ,esapro.cod_pessoa
+                     ,esapro.num_titulo
+                     ,esapro.cod_compl
+                     ,esapro.num_parcela
+                     ,esapro.dta_apro
+                     ,esapro.tip_apro ) ES
+,ge_unidades g
+where g.cod_unidade = es.cod_unidade
+group by es.dta_apro
+,es.tip_apro
+,g.cod_nivel2
+order by 1,2,3
+/

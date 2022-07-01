@@ -1,0 +1,969 @@
+unit uRel_Acertos_Caixa;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ComCtrls, Buttons, Mask, ExtCtrls, ppParameter,
+  ppCtrls, ppBands, ppClass, jpeg, ppPrnabl, ppVar, ppCache, ppProd,
+  ppReport, ppComm, ppRelatv, ppDB, ppDBPipe, DB, DBTables, ppViewr, Encryp,
+  ppStrtch, ppRegion, TXComp, TXRB, Xpman, ppModule, raCodMod, daDataModule;
+
+type
+  TfrmRel_Prod_CD = class(TForm)
+    Panel1: TPanel;
+    Database1: TDatabase;
+    StpRel_Campanha: TStoredProc;
+    Session1: TSession;
+    qryRel: TQuery;
+    DataSource1: TDataSource;
+    pprRelatorio: TppReport;
+    ppParameterList1: TppParameterList;
+    qryConsulta: TQuery;
+    ExtraOptions1: TExtraOptions;
+    ppDBPipeline1: TppDBPipeline;
+    ppCabecalho: TppHeaderBand;
+    ppLabel9: TppLabel;
+    ppLabel10: TppLabel;
+    pplblDescricao: TppLabel;
+    ppLabel26: TppLabel;
+    ppImage1: TppImage;
+    ppDetalhes: TppDetailBand;
+    ppFooterBand: TppFooterBand;
+    ppShape2: TppShape;
+    ppLabel14: TppLabel;
+    ppLabel18: TppLabel;
+    ppDBText1: TppDBText;
+    ppDBCod_unidade: TppDBText;
+    ppLabel4: TppLabel;
+    ppDBText3: TppDBText;
+    ppDBText14: TppDBText;
+    ppDBText15: TppDBText;
+    Panel10: TPanel;
+    btnOK: TBitBtn;
+    btnCancelar: TBitBtn;
+    Panel6: TPanel;
+    Label8: TLabel;
+    Panel7: TPanel;
+    Label9: TLabel;
+    Label10: TLabel;
+    edtDataFinal: TMaskEdit;
+    edtDataInicial: TMaskEdit;
+    Panel5: TPanel;
+    Label6: TLabel;
+    Label7: TLabel;
+    edtCodUnidadeFinal: TMaskEdit;
+    edtCodUnidadeInic: TMaskEdit;
+    Panel4: TPanel;
+    Label2: TLabel;
+    Panel3: TPanel;
+    pnlDisplay: TPanel;
+    Label11: TLabel;
+    Label12: TLabel;
+    Animate1: TAnimate;
+    Panel2: TPanel;
+    Edit1: TEdit;
+    Panel11: TPanel;
+    Label3: TLabel;
+    edtRede: TMaskEdit;
+    Panel12: TPanel;
+    Label5: TLabel;
+    Label1: TLabel;
+    MaskEdit1: TMaskEdit;
+    Label4: TLabel;
+    Label13: TLabel;
+    MaskEdit2: TMaskEdit;
+    Panel8: TPanel;
+    Label14: TLabel;
+    Panel9: TPanel;
+    cbbStatus: TComboBox;
+    ppDBText2: TppDBText;
+    ppLabel3: TppLabel;
+    ppDBText4: TppDBText;
+    ppLabel6: TppLabel;
+    ppLabel1: TppLabel;
+    ppDBText6: TppDBText;
+    ppLabel5: TppLabel;
+    ppLabel7: TppLabel;
+    ppDBText7: TppDBText;
+    ppLabel8: TppLabel;
+    ppDBText8: TppDBText;
+    ppLabel11: TppLabel;
+    ppLabel2: TppLabel;
+    ppLabel12: TppLabel;
+    ppDBText9: TppDBText;
+    ppGroup1: TppGroup;
+    ppGroupHeaderBand1: TppGroupHeaderBand;
+    ppGroupFooterBand1: TppGroupFooterBand;
+    Edit2: TEdit;
+    ppGroup2: TppGroup;
+    ppGroupHeaderBand2: TppGroupHeaderBand;
+    ppGroupFooterBand2: TppGroupFooterBand;
+    ppGroup3: TppGroup;
+    ppGroupHeaderBand3: TppGroupHeaderBand;
+    ppGroupFooterBand3: TppGroupFooterBand;
+    ppLine3: TppLine;
+    ppLabel25: TppLabel;
+    ppLabel29: TppLabel;
+    ppLabel30: TppLabel;
+    ppLabel31: TppLabel;
+    ppDBText10: TppDBText;
+    ppLabel32: TppLabel;
+    ppLabel33: TppLabel;
+    ppLabel34: TppLabel;
+
+    qryRelDES_USUARIO: TStringField;
+    qryRelCOD_UNIDADE: TFloatField;
+    qryRelDES_UNIDADE: TStringField;
+    qryRelCOD_REGIAO: TFloatField;
+    qryRelQTD_ENVIADOS: TFloatField;
+    qryRelPERC_ENVIADOS: TFloatField;
+    qryRelQTD_CONTATADOS: TFloatField;
+    qryRelPERC_CONTATADOS: TFloatField;
+    qryRelQTD_COM_COMPRAS: TFloatField;
+    qryRelPERC_COM_COMPRAS: TFloatField;
+    qryRelVLR_VENDA_PERIODO: TFloatField;
+    qryRelVLR_VENDA_CONTATADO: TFloatField;
+    qryRelVLR_MEDIO: TFloatField;
+    qryRelPERC_VENDA_CONTADO: TFloatField;
+    qryRelCOD_CAMPANHA: TFloatField;
+    qryRelDES_CAMPANHA: TStringField;
+    qryRelDIA_INICIO_CAM: TDateTimeField;
+    qryRelDIA_FIM_CAM: TDateTimeField;
+    qryRelORDENA: TFloatField;
+    ppLabel13: TppLabel;
+    ppLabel15: TppLabel;
+    ppLabel16: TppLabel;
+    ppLabel17: TppLabel;
+    ppLabel20: TppLabel;
+    daDataModule1: TdaDataModule;
+    raCodeModule1: TraCodeModule;
+    pdbtxtCOD_HIST_CB: TppDBText;    Function RetornaDataServidor : TDate;
+    Function RetiraPonto(OQue : string) : String;
+    procedure FormShow(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnCancelarClick(Sender: TObject);
+    procedure edtDataInicialExit(Sender: TObject);
+    procedure edtDataFinalExit(Sender: TObject);
+    procedure btnOKClick(Sender: TObject);
+    procedure pprRelatorioPreviewFormCreate(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure ppCabecalhoBeforePrint(Sender: TObject);
+    procedure CarregaParamsBanco;
+    procedure ppCabecalhoMesAnoBeforePrint(Sender: TObject);
+    procedure rdbtnTodasClick(Sender: TObject);
+    procedure ppCabecalhoCodUnidade_1BeforePrint(Sender: TObject);
+    procedure ppRodapeCodUnidade_1BeforePrint(Sender: TObject);
+    procedure edtRedeKeyPress(Sender: TObject; var Key: Char);
+    procedure MaskEdit1KeyPress(Sender: TObject; var Key: Char);
+    procedure MaskEdit2KeyPress(Sender: TObject; var Key: Char);
+    procedure edtCodUnidadeInicKeyPress(Sender: TObject; var Key: Char);
+    procedure edtCodUnidadeFinalKeyPress(Sender: TObject; var Key: Char);
+    procedure edtDataInicialKeyPress(Sender: TObject; var Key: Char);
+    procedure edtDataFinalKeyPress(Sender: TObject; var Key: Char);
+    procedure MaskEdit1Exit(Sender: TObject);
+    procedure edtRedeExit(Sender: TObject);
+    procedure MaskEdit2Exit(Sender: TObject);
+    procedure edtCodUnidadeInicExit(Sender: TObject);
+    procedure edtCodUnidadeFinalExit(Sender: TObject);
+    procedure ppDetalhesBeforePrint(Sender: TObject);
+    procedure ppGroupFooterBand1BeforePrint(Sender: TObject);
+    procedure ppGroupFooterBand2BeforePrint(Sender: TObject);
+    procedure ppGroupFooterBand3BeforePrint(Sender: TObject);
+
+  private
+    { Private declarations }
+  public
+    rSoma_Lanc_U, rSoma_NLanc_U, rSoma_Lanc_R, rSoma_NLanc_R,rSoma_Lanc_E, rSoma_NLanc_E : Real;
+    { Public declarations }
+  end;
+
+var
+  frmRel_Prod_CD: TfrmRel_Prod_CD;
+  sParametro, sSelecionaRelatorio, sMesRef, sAnoRef : string;
+  sUsuarioM : string;
+  dtServidor : tdate;
+  iauxi, iauxf : Integer;
+  iContHeader : Integer;
+  rSoma_Qtd_Colab, rSoma_Qtd_Horas_Trab, rSoma_Qtd_Nfe_Rec, rSoma_Qtd_Vol_Rec,
+  rSoma_Qtd_Pecas_Rec, rSoma_Qtd_Nfe_Env, rSoma_Qtd_Vol_Env, rSoma_Qtd_M3_Env,
+  rSoma_Qtd_Pecas_Env, rSoma_Qtd_Lotes_Env, rSoma_Qtd_Linhas_Env, rSoma_Qtd_Lojas_Env : Real;
+  sUsuario, sSenha, sBanco : String;
+  sUni_Ini, sUni_Fim, sTitulo_Rel, sAcumulador,sUsuario_Rel : String;
+
+implementation
+
+uses uFunc, uFuncoes, ppForms, uCarregaSenha;
+
+{$R *.dfm}
+
+Function TfrmRel_Prod_CD.RetornaDataServidor : TDate;
+begin
+   qryConsulta.Active := false;
+   qryConsulta.SQL.Clear;
+   qryConsulta.SQL.Add('select sysdate from dual');
+   try
+      qryConsulta.Active := True;
+      result := qryConsulta.fieldbyname('sysdate').AsDateTime;
+   except
+      result := Date;
+   end;
+   if qryConsulta.Active then
+      qryConsulta.Close;
+end;
+
+Function TfrmRel_Prod_CD.RetiraPonto(OQue : string) : String;
+var
+   i : integer;
+   aux : string;
+begin
+   aux := '';
+   for i := 1 to Length(OQue) do
+   begin
+      if OQue[i] <> '.' then
+      begin
+         aux := aux+OQue[i];
+      end;
+   end;
+   Result := aux;
+end;
+
+procedure TfrmRel_Prod_CD.FormShow(Sender: TObject);
+begin
+   qryConsulta.Active := False;
+   qryRel.Active := False;
+   Session1.Active := False;
+   Database1.Connected := False;
+
+   CarregaParamsBanco;
+
+   Database1.KeepConnection := False;
+   Database1.LoginPrompt := False;
+
+   Database1.Params.Values['SERVER NAME'] := sBanco;
+   Database1.Params.Values['USER NAME'] := sUsuario;
+   Database1.Params.Values['PASSWORD'] := sSenha;
+
+   try
+      Database1.Connected := True;
+      Session1.Active := True;
+      dtServidor := RetornaDataServidor;
+   except
+      Informacao('Erro!!!'+#13+'Não pode se conectar ao banco!!!','Aviso!!!');
+      frmRel_Prod_CD.Close;
+   end;
+   rdbtnTodasClick(Sender);
+   edtRede.SetFocus; //seta o foco inicial
+
+end;
+
+procedure TfrmRel_Prod_CD.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+   if qryRel.Active then
+      qryRel.Close;
+   if qryConsulta.Active then
+      qryConsulta.Close;
+
+   if Session1.Active then
+      Session1.Close;
+   if Database1.Connected then
+      Database1.Close;
+   Action := caFree;
+end;
+
+procedure TfrmRel_Prod_CD.btnCancelarClick(Sender: TObject);
+begin
+   Close;
+end;
+
+procedure TfrmRel_Prod_CD.edtDataInicialExit(Sender: TObject);
+begin
+   if AllTrim(edtDataInicial.Text) = '//' then
+      edtDataInicial.Text := FormatDateTime('dd/mm/yyyy', Date);
+
+     if (AllTrim(edtDataInicial.Text) = '//') then
+     begin
+          Informacao('Data Inicial não informado !!!','Aviso...');
+          edtDataInicial.SetFocus;
+          Abort;
+          Exit;
+     end;
+
+     if Length(AllTrim(edtDataInicial.Text)) < 10 then
+     begin
+          Informacao('Data Inicial não informado !!!','Aviso...');
+          edtDataInicial.SetFocus;
+          Abort;
+          Exit;
+     end;
+
+     if ValidaData(edtDataInicial.Text) then
+     begin
+          edtDataInicial.SetFocus;
+          Abort;
+          Exit;
+     end;
+
+     if (StrToDate(edtDataInicial.Text) > StrtoDate(FormatDateTime('dd/mm/yyyy',Date))) then
+     begin
+          Informacao('Data Inicial não pode ser maior que a Data Atual!!!','Aviso...');
+          edtDataInicial.SetFocus;
+          Abort;
+          Exit;
+     end;
+end;
+
+procedure TfrmRel_Prod_CD.edtDataFinalExit(Sender: TObject);
+begin
+   edtDataInicialExit(Sender);
+
+   if AllTrim(edtDataFinal.Text) = '//' then
+      edtDataFinal.Text := FormatDateTime('dd/mm/yyyy', Date);
+
+     if (AllTrim(edtDataInicial.Text) = '//') then
+     begin
+          Informacao('Data Final não informado !!!','Aviso...');
+          edtDataFinal.SetFocus;
+          Abort;
+          Exit;
+     end;
+
+     if Length(AllTrim(edtDataFinal.Text)) < 10 then
+     begin
+          Informacao('Data Final não informado !!!','Aviso...');
+          edtDataFinal.SetFocus;
+          Abort;
+          Exit;
+     end;
+
+     if ValidaData(edtDataFinal.Text) then
+     begin
+          edtDataFinal.SetFocus;
+          Abort;
+          Exit;
+     end;
+
+     if (StrToDate(edtDataFinal.Text) > StrtoDate(FormatDateTime('dd/mm/yyyy',Date))) then
+     begin
+          Informacao('Data Final não pode ser maior que a Data Atual!!!','Aviso...');
+          edtDataFinal.SetFocus;
+          Abort;
+          Exit;
+     end;
+     if (StrToDate(edtDataInicial.Text) > StrToDate(edtDataFinal.Text)) then
+     begin
+          Informacao('Data Inicial não pode ser maior que a Data Final!!!','Aviso...');
+          edtDataInicial.SetFocus;
+          Abort;
+          Exit;
+     end;
+
+end;
+
+procedure TfrmRel_Prod_CD.btnOKClick(Sender: TObject);
+var
+   Size               : Cardinal;
+   sAnd_Sql_Emp       : string;
+   sAnd_Sql_Status    : string;
+begin
+       //zera contadores
+      rSoma_Lanc_U  :=0;
+      rSoma_NLanc_U :=0;
+      rSoma_Lanc_R  :=0;
+      rSoma_NLanc_R :=0;
+      rSoma_Lanc_E  :=0;
+      rSoma_NLanc_E :=0;
+
+
+      if pnlDisplay.Visible then
+      exit;
+
+      edtDataInicialExit(Sender);
+      edtDataFinalExit(Sender);
+      sAnd_Sql_Emp :=' ';
+      sAnd_Sql_Status := ' ';
+
+     if(Trim(edtRede.Text) = '') then
+     begin
+         Informacao('Atenção a rede deve ser informada!!','Aviso');
+         edtRede.SetFocus;
+         Exit;
+         Abort;
+     end;
+
+     if(Trim(MaskEdit1.Text) = '') then
+     begin
+         Informacao('Atenção a unidade inicial deve ser informada!!','Aviso');
+         MaskEdit1.SetFocus;
+         Exit;
+         Abort;
+     end;
+
+     if(Trim(MaskEdit2.Text) = '') then
+     begin
+         Informacao('Atenção a unidade final deve ser informada!!','Aviso');
+         MaskEdit2.SetFocus;
+         Exit;
+         Abort;
+     end;
+
+     if(Trim(edtCodUnidadeInic.Text) = '') then
+     begin
+         Informacao('Atenção a conta CB inicial deve ser informada!!','Aviso');
+         edtCodUnidadeInic.SetFocus;
+         Exit;
+         Abort;
+     end;
+
+     if(Trim(edtCodUnidadeFinal.Text) = '') then
+     begin
+         Informacao('Atenção a conta CB final deve ser informada!!','Aviso');
+         edtCodUnidadeFinal.SetFocus;
+         Exit;
+         Abort;
+     end;
+
+     if(Trim(edtDataInicial.Text) = '') then
+     begin
+         Informacao('Atenção a data inicial deve ser informada!!','Aviso');
+         edtDataInicial.SetFocus;
+         Exit;
+         Abort;
+     end;
+
+     
+     if(Trim(edtDataFinal.Text) = '') then
+     begin
+         Informacao('Atenção a data final deve ser informada!!','Aviso');
+         edtDataFinal.SetFocus;
+         Exit;
+         Abort;
+     end;
+
+                             //     sAnd_Sql_Emp
+     if((Trim(edtRede.Text) <> '10') and (Trim(edtRede.Text) <> '30') and (Trim(edtRede.Text) <> '40') and (Trim(edtRede.Text) <> '50') and (Trim(edtRede.Text) <> '70') and (Trim(edtRede.Text) <> '99')) then
+     begin
+        Informacao('Atenção a unidade deve ser (10-Grz, 30-Prm, 40-Frg, 50-Tot, 70-LJU ou 99- Todas )','Aviso');
+        edtRede.SetFocus;
+        Exit;
+        Abort;
+     end;
+
+     if(Trim(edtRede.Text) = '99' ) then
+     begin
+        sAnd_Sql_Emp :=' ';
+     end else
+     begin
+        sAnd_Sql_Emp := ' and  a.cod_emp ='+edtRede.Text+'  ';
+     end;
+
+     if(cbbStatus.ItemIndex = 0)then
+     begin
+        sAnd_Sql_Status :='';
+
+     end;
+
+     if(cbbStatus.ItemIndex = 1)then
+     begin
+        sAnd_Sql_Status :=' and a.ind_status = 2';
+     end;
+
+     if(cbbStatus.ItemIndex = 2)then
+     begin
+        sAnd_Sql_Status :=' and a.ind_status = 1';
+     end;
+
+     if(cbbStatus.ItemIndex = 3)then
+     begin
+        sAnd_Sql_Status :=' and a.ind_status = 3';
+     end;
+
+
+
+   try
+ 
+      pnlDisplay.Visible := true;
+      Application.ProcessMessages;
+
+      qryConsulta.Active := false;
+      qryConsulta.SQL.Clear;
+
+
+      qryConsulta.SQL.Add('select a.cod_emp,a.cod_unidade,( select u.des_nome from ge_unidades u where u.cod_unidade =  a.cod_unidade) as des_unidade,  '+
+	                        '       a.dta_mvto,a.cod_oper_caixa, a.num_seq_lcto, a.cod_conta,(select t.des_conta from cb_contas t, cb_mascaras m where t.cod_conta = m.cod_conta  '+
+                          '       and m.cod_mascara = 201 and m.cod_completo = a.cod_conta) as des_conta,  '+
+                          '       a.cod_unidade_cb, a.vlr_lancamento vlr_lancamento, a.cod_hist_cb, a.des_lancamento,a.dta_sistema, a.ind_status, a.cod_usuario, a.dta_lancamento, a.descricao, '+
+                          '       ( select GE.cod_quebra from   GE_GRUPOS_UNIDADES GE where GE.cod_unidade = a.cod_unidade and GE.cod_grupo=''9''||a.cod_emp) as cod_regiao  '+
+                          '  from grz_cxs_mvto_acertos a  '+
+                          ' where  a.cod_unidade >='+MaskEdit1.Text+' and a.cod_unidade <='+MaskEdit2.Text+
+                          '   and a.cod_conta >='+edtCodUnidadeInic.Text+ ' and a.cod_conta <='+edtCodUnidadeFinal.Text+
+                         '   and a.dta_mvto >='''+edtDataInicial.Text+''''+' and a.dta_mvto <= '''+edtDataFinal.Text+''''+
+                           sAnd_Sql_Emp+
+                           sAnd_Sql_Status+
+                          ' ORDER BY a.cod_emp,cod_regiao,a.COD_UNIDADE ');
+
+
+      try
+       qryConsulta.Active := True;
+
+      except
+       Informacao('erro na consulta do relatório','Aviso');
+      end;
+ 
+
+      if qryConsulta.RecordCount <= 0 then
+      begin
+         Informacao('Não encontrou registros!!!','Aviso...');
+         edtDataInicial.SetFocus;
+         pnlDisplay.Visible := false;
+         frmRel_Prod_CD.Repaint;
+         Application.ProcessMessages;
+         exit;
+      end else
+      begin
+
+        pprRelatorio.Print
+
+      end;
+
+
+
+      //pnlbuttons.Enabled:= True;
+      pnlDisplay.Visible := False;
+      frmRel_Prod_CD.Repaint;
+      Application.ProcessMessages;
+   except
+      on e:exception do
+      begin
+         informacao('Erro!!! Não gerou relatório...'+chr(13)+
+                     e.ClassName + ' - '+e.Message,'Aviso...');
+         //pnlbuttons.Enabled:= True;
+         pnlDisplay.Visible := false;
+         frmRel_Prod_CD.Repaint;
+         Application.ProcessMessages;
+         exit;
+      end;
+   end;
+end;
+
+procedure TfrmRel_Prod_CD.pprRelatorioPreviewFormCreate(Sender: TObject);
+begin
+     pprRelatorio.PreviewForm.WindowState := wsMaximized;
+     TppViewer(pprRelatorio.PreviewForm.Viewer).ZoomPercentage := 100;
+     rSoma_Qtd_Colab:=0;      rSoma_Qtd_Horas_Trab:=0; rSoma_Qtd_Nfe_Rec:=0;
+     rSoma_Qtd_Vol_Rec:=0;    rSoma_Qtd_Pecas_Rec:=0;  rSoma_Qtd_Nfe_Env:=0;
+     rSoma_Qtd_Vol_Env:=0;    rSoma_Qtd_Pecas_Env:=0;  rSoma_Qtd_Lotes_Env:=0;
+     rSoma_Qtd_Linhas_Env:=0; rSoma_Qtd_Lojas_Env:=0;  rSoma_Qtd_M3_Env := 0;
+end;
+
+procedure TfrmRel_Prod_CD.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+     case Key of
+          VK_RETURN: Perform(WM_NEXTDLGCTL,0,0);
+//          VK_UP  : Perform(WM_NEXTDLGCTL,1,0);
+     end;
+end;
+
+procedure TfrmRel_Prod_CD.ppCabecalhoBeforePrint(Sender: TObject);
+var  sDescricao_rede : string;
+     sDes_Rede_cab   : string;
+begin
+
+   if(trim(edtRede.Text) ='99') then
+   begin
+      sDes_Rede_cab :='de Todas as Redes';
+   end
+   else
+   begin
+      if(Trim(edtRede.Text)='10') then
+      begin
+           sDes_Rede_cab :=' da Rede Grazziotin. ';
+      end;
+      if(Trim(edtRede.Text)='30') then
+      begin
+           sDes_Rede_cab :=' da Rede Pormenos. ';
+      end;
+      if(Trim(edtRede.Text)='40') then
+      begin
+           sDes_Rede_cab :=' da Rede Franco Giorgi. ';
+      end;
+      if(Trim(edtRede.Text)='50') then
+      begin
+           sDes_Rede_cab :=' da Rede Tottal. ';
+      end;
+
+   end;
+
+
+
+
+   pplblDescricao.Caption := 'Acertos do Período de '+edtDataInicial.Text+' até '+edtDataFinal.Text+' '+sDes_Rede_cab;
+end;
+
+procedure TfrmRel_Prod_CD.CarregaParamsBanco;
+var TomEncryption1: TTomEncryption;
+begin
+    TomEncryption1 := TTomEncryption.Create(Self);
+    CarregaSenhasBancoOra('GRZPNL',TomEncryption1,sUsuario,sSenha,sBanco);
+end;
+
+procedure TfrmRel_Prod_CD.ppCabecalhoMesAnoBeforePrint(Sender: TObject);
+begin
+   rSoma_Qtd_Colab:=0;      rSoma_Qtd_Horas_Trab:=0; rSoma_Qtd_Nfe_Rec:=0;
+   rSoma_Qtd_Vol_Rec:=0;    rSoma_Qtd_Pecas_Rec:=0;  rSoma_Qtd_Nfe_Env:=0;
+   rSoma_Qtd_Vol_Env:=0;    rSoma_Qtd_Pecas_Env:=0;  rSoma_Qtd_Lotes_Env:=0;
+   rSoma_Qtd_Linhas_Env:=0; rSoma_Qtd_Lojas_Env:=0;  rSoma_Qtd_M3_Env:=0;
+   iContHeader := 0;
+end;
+
+procedure TfrmRel_Prod_CD.rdbtnTodasClick(Sender: TObject);
+begin
+
+   
+   sTitulo_Rel := 'Listando Todas as Campanhas da Rede';
+end;
+
+
+
+
+
+
+
+
+
+procedure TfrmRel_Prod_CD.ppCabecalhoCodUnidade_1BeforePrint(
+  Sender: TObject);
+begin
+   rSoma_Qtd_Colab:=0;      rSoma_Qtd_Horas_Trab:=0; rSoma_Qtd_Nfe_Rec:=0;
+   rSoma_Qtd_Vol_Rec:=0;    rSoma_Qtd_Pecas_Rec:=0;  rSoma_Qtd_Nfe_Env:=0;
+   rSoma_Qtd_Vol_Env:=0;    rSoma_Qtd_Pecas_Env:=0;  rSoma_Qtd_Lotes_Env:=0;
+   rSoma_Qtd_Linhas_Env:=0; rSoma_Qtd_Lojas_Env:=0;  rSoma_Qtd_M3_Env:=0;
+   iContHeader:=0;
+end;
+
+procedure TfrmRel_Prod_CD.ppRodapeCodUnidade_1BeforePrint(Sender: TObject);
+begin
+
+   rSoma_Qtd_Colab:=0;      rSoma_Qtd_Horas_Trab:=0; rSoma_Qtd_Nfe_Rec:=0;
+   rSoma_Qtd_Vol_Rec:=0;    rSoma_Qtd_Pecas_Rec:=0;  rSoma_Qtd_Nfe_Env:=0;
+   rSoma_Qtd_Vol_Env:=0;    rSoma_Qtd_Pecas_Env:=0;  rSoma_Qtd_Lotes_Env:=0;
+   rSoma_Qtd_Linhas_Env:=0; rSoma_Qtd_Lojas_Env:=0;  rSoma_Qtd_M3_Env:=0;
+   iContHeader := 0;
+end;
+
+
+
+
+procedure TfrmRel_Prod_CD.edtRedeKeyPress(Sender: TObject; var Key: Char);
+var codigo :  boolean;
+begin
+     case key of
+        '0'..'9' : codigo := True;
+        Chr(13)  : codigo := true;  //enter
+        Chr(9)   : codigo := true; //tab
+        Chr(8)   : codigo := true; //backspace
+        Chr(27)  : codigo := true; //ESC
+     else
+         codigo := False;
+     end;
+     if Key = #13 then
+     begin
+      MaskEdit1.SetFocus;
+     end;
+
+     if codigo = False then
+        Abort;
+
+
+end;
+
+procedure TfrmRel_Prod_CD.MaskEdit1KeyPress(Sender: TObject;
+  var Key: Char);
+var codigo :  boolean;
+begin
+     case key of
+        '0'..'9' : codigo := True;
+        Chr(13)  : codigo := true;  //enter
+        Chr(9)   : codigo := true; //tab
+        Chr(8)   : codigo := true; //backspace
+        Chr(27)  : codigo := true; //ESC
+     else
+         codigo := False;
+     end;
+     if Key = #13 then
+     begin
+      MaskEdit2.SetFocus;
+     end;
+
+     if codigo = False then
+        Abort;
+
+
+end;
+
+procedure TfrmRel_Prod_CD.MaskEdit2KeyPress(Sender: TObject;
+  var Key: Char);
+var codigo :  boolean;
+begin
+     case key of
+        '0'..'9' : codigo := True;
+        Chr(13)  : codigo := true;  //enter
+        Chr(9)   : codigo := true; //tab
+        Chr(8)   : codigo := true; //backspace
+        Chr(27)  : codigo := true; //ESC
+     else
+         codigo := False;
+     end;
+     if Key = #13 then
+     begin
+      edtCodUnidadeInic.SetFocus;
+     end;
+
+     if codigo = False then
+        Abort;
+
+end;
+
+procedure TfrmRel_Prod_CD.edtCodUnidadeInicKeyPress(Sender: TObject;
+  var Key: Char);
+var codigo :  boolean;
+begin
+     case key of
+        '0'..'9' : codigo := True;
+        Chr(13)  : codigo := true;  //enter
+        Chr(9)   : codigo := true; //tab
+        Chr(8)   : codigo := true; //backspace
+        Chr(27)  : codigo := true; //ESC
+     else
+         codigo := False;
+     end;
+     if Key = #13 then
+     begin
+      edtCodUnidadeFinal.SetFocus;
+     end;
+
+     if codigo = False then
+        Abort;
+
+end;
+
+procedure TfrmRel_Prod_CD.edtCodUnidadeFinalKeyPress(Sender: TObject;
+  var Key: Char);
+var codigo :  boolean;
+begin
+     case key of
+        '0'..'9' : codigo := True;
+        Chr(13)  : codigo := true;  //enter
+        Chr(9)   : codigo := true; //tab
+        Chr(8)   : codigo := true; //backspace
+        Chr(27)  : codigo := true; //ESC
+     else
+         codigo := False;
+     end;
+     if Key = #13 then
+     begin
+      edtDataInicial.SetFocus;
+     end;
+
+     if codigo = False then
+        Abort;
+
+end;
+
+procedure TfrmRel_Prod_CD.edtDataInicialKeyPress(Sender: TObject;
+  var Key: Char);
+var codigo :  boolean;
+begin
+     case key of
+        '0'..'9' : codigo := True;
+        Chr(13)  : codigo := true;  //enter
+        Chr(9)   : codigo := true; //tab
+        Chr(8)   : codigo := true; //backspace
+        Chr(27)  : codigo := true; //ESC
+     else
+         codigo := False;
+     end;
+     if Key = #13 then
+     begin
+      edtDataFinal.SetFocus;
+     end;
+
+     if codigo = False then
+        Abort;
+
+end;
+
+procedure TfrmRel_Prod_CD.edtDataFinalKeyPress(Sender: TObject;
+  var Key: Char);
+var codigo :  boolean;
+begin
+     case key of
+        '0'..'9' : codigo := True;
+        Chr(13)  : codigo := true;  //enter
+        Chr(9)   : codigo := true; //tab
+        Chr(8)   : codigo := true; //backspace
+        Chr(27)  : codigo := true; //ESC
+     else
+         codigo := False;
+     end;
+     if Key = #13 then
+     begin
+      cbbStatus.SetFocus;
+     end;
+
+     if codigo = False then
+        Abort;
+
+end;
+
+procedure TfrmRel_Prod_CD.MaskEdit1Exit(Sender: TObject);
+begin
+
+       if(trim(MaskEdit1.Text) = '')then
+       begin
+           MaskEdit1.Text := '001';
+       end;
+
+
+end;
+
+procedure TfrmRel_Prod_CD.edtRedeExit(Sender: TObject);
+begin
+
+    if(trim(edtRede.Text) = '')then
+    begin
+        edtRede.Text :='99';
+    end;
+
+end;
+
+procedure TfrmRel_Prod_CD.MaskEdit2Exit(Sender: TObject);
+begin
+
+      if(trim(MaskEdit2.Text) = '')then
+       begin
+           MaskEdit2.Text := '999';
+       end;
+
+end;
+
+procedure TfrmRel_Prod_CD.edtCodUnidadeInicExit(Sender: TObject);
+begin
+       if(trim(edtCodUnidadeInic.Text) = '')then
+       begin
+           edtCodUnidadeInic.Text := '000001';
+       end;
+end;
+
+procedure TfrmRel_Prod_CD.edtCodUnidadeFinalExit(Sender: TObject);
+begin
+       if(trim(edtCodUnidadeFinal.Text) = '')then
+       begin
+           edtCodUnidadeFinal.Text := '999999';
+       end;
+end;
+
+procedure TfrmRel_Prod_CD.ppDetalhesBeforePrint(Sender: TObject);
+begin
+          //84884
+
+          if((ppDBText8.Text)='1')then
+          begin
+              ppLabel11.Caption :='NL';
+              ppLabel11.Font.Color := clBlack;
+              rSoma_NLanc_U := rSoma_NLanc_U+ StrToFloat  (Elimina_Caracteres (ppDBText5.Text,'.',','));
+              rSoma_NLanc_R := rSoma_NLanc_R+ StrToFloat  (Elimina_Caracteres (ppDBText5.Text,'.',','));
+              rSoma_NLanc_E := rSoma_NLanc_E+ StrToFloat  (Elimina_Caracteres (ppDBText5.Text,'.',','));
+          end;
+
+          if((ppDBText8.Text)='2')then
+          begin
+              ppLabel11.Caption :='L';
+              ppLabel11.Font.Color := clBlue;             
+              rSoma_Lanc_U := rSoma_Lanc_U+ StrToFloat  (Elimina_Caracteres (ppDBText5.Text,'.',','));
+              rSoma_Lanc_R := rSoma_Lanc_R+ StrToFloat  (Elimina_Caracteres (ppDBText5.Text,'.',','));
+              rSoma_Lanc_E := rSoma_Lanc_E+ StrToFloat  (Elimina_Caracteres (ppDBText5.Text,'.',','));
+          end;
+
+          if((ppDBText8.Text)='3')then
+          begin
+              ppLabel11.Caption :='L INV.';
+              ppLabel11.Font.Color := clRed;
+              rSoma_NLanc_U := rSoma_NLanc_U+ StrToFloat  (Elimina_Caracteres (ppDBText5.Text,'.',','));
+              rSoma_NLanc_R := rSoma_NLanc_R+ StrToFloat  (Elimina_Caracteres (ppDBText5.Text,'.',','));
+              rSoma_NLanc_E := rSoma_NLanc_E+ StrToFloat  (Elimina_Caracteres (ppDBText5.Text,'.',','));
+          end;
+
+
+             
+
+end;
+
+procedure TfrmRel_Prod_CD.ppGroupFooterBand1BeforePrint(Sender: TObject);
+
+begin
+
+        //ppLabel17.Caption := FloatToStr(rSoma_Lanc_U);
+        //ppLabel20.Caption := FloatToStr(rSoma_NLanc_U);
+        //zera novamente os contadores
+        rSoma_Lanc_U :=0;
+        rSoma_NLanc_U :=0;
+        //###.00
+     //   FormatFloat()
+end;
+
+procedure TfrmRel_Prod_CD.ppGroupFooterBand2BeforePrint(Sender: TObject);
+begin
+
+        //ppLabel24.Caption := FloatToStr(rSoma_Lanc_R);
+        //ppLabel28.Caption := FloatToStr(rSoma_NLanc_R);
+        //zera novamente os contadores
+        rSoma_Lanc_R :=0;
+        rSoma_NLanc_R :=0;
+end;
+
+procedure TfrmRel_Prod_CD.ppGroupFooterBand3BeforePrint(Sender: TObject);
+begin
+
+        ppLabel31.Caption := Elimina_Caracteres (  FormatFloat('###.00',rSoma_Lanc_E),',','.');
+        ppLabel33.Caption := Elimina_Caracteres (  FormatFloat('###.00',rSoma_NLanc_E),',','.');
+       
+        if(Trim(ppDBText10.Text)='10')then
+        begin
+            ppLabel34.Caption :='GRZ';
+        end;
+        if(Trim(ppDBText10.Text)='30')then
+        begin
+            ppLabel34.Caption :='PRM';
+        end;
+        if(Trim(ppDBText10.Text)='40')then
+        begin
+            ppLabel34.Caption :='FRG';
+        end;
+        if(Trim(ppDBText10.Text)='50')then
+        begin
+            ppLabel34.Caption :='TOT';
+        end;
+
+        if(ppLabel31.Text ='.00' )then
+        begin
+          ppLabel31.Caption :='0.00';
+        end;
+
+        if(ppLabel33.Text ='.00' )then
+        begin
+          ppLabel33.Caption :='0.00';
+        end;
+        rSoma_Lanc_E :=0;
+        rSoma_NLanc_E :=0;
+end;
+
+end.
+
+
+
+
+

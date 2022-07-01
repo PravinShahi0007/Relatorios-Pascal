@@ -1,0 +1,11 @@
+create table GRZ_REL_OPER_FINANC
+(
+  DES_USUARIO         VARCHAR2(50) NOT NULL
+ ,DES_REDE            VARCHAR2(20)
+ ,COD_UNIDADE         NUMBER(7)
+ ,DES_UNIDADE         VARCHAR2(50)
+ ,DTA_MOVIMENTO       DATE
+ ,VLR_NS              NUMBER(18,2)
+ ,VLR_CR              NUMBER(18,2)
+ ,VLR_CDC_APRO        NUMBER(18,2)
+);
