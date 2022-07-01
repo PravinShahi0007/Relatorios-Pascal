@@ -48,7 +48,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     Connection = FDConnection1
     SQL.Strings = (
       'select * '
-      'from vda_venda_ano  '
+      'from grazz.vda_venda_ano  '
       'where cod_unidade > 9000  '
       'and ano >= 2021 - 2  '
       'and mes = 10 '
@@ -62,7 +62,7 @@ object frmRel_Venda_dia_Email: TfrmRel_Venda_dia_Email
     Connection = FDConnection1
     SQL.Strings = (
       'select max(dta_movimento) dta_movimento'
-      '  from vda_venda_ano'
+      '  from grazz.vda_venda_ano'
       ' where dta_movimento <= trunc(sysdate)'
       '   and vlr_venda_diaria > 0')
     Left = 144
