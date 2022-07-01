@@ -1,0 +1,390 @@
+object frmGeraArquivo: TfrmGeraArquivo
+  Left = 388
+  Top = 235
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  Caption = 'Etiquetas Fornecedores   V2.2'
+  ClientHeight = 417
+  ClientWidth = 803
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  Icon.Data = {
+    0000010001002020100000000000E80200001600000028000000200000004000
+    0000010004000000000080020000000000000000000000000000000000000000
+    0000000080000080000000808000800000008000800080800000C0C0C0008080
+    80000000FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF000000
+    0000000000000000000000000000000000000000000000000000000000000099
+    9999900009999999999999999900009999999900099999999999999999000009
+    9999990009999999999999999900000999999900099999999999999999000009
+    9999999009999999999999999900000099999990009999900000000000000000
+    9999999900999999000000000000000009999999000999990000000000000000
+    0999999900099999900000000000000000999999900999999000000000000000
+    0099999990009999990000000000000000999999900099999900000000000000
+    0009999999000999990000000000000000099999990009999990000000000000
+    0009999999000999999000000000000000009999999000999999000000000000
+    0000999999900099999900000000000000009999999000999999900000000000
+    0000999999900009999990000000000000000999999900099999900000000000
+    0000099999990009999999000000000000000999999900009999990000000000
+    0000009999999000999999000000009999999999999990009999999000000099
+    9999999999999900099999900000009999999999999999000999999900000099
+    9999999999999990009999990000009999999999999999900099999990000000
+    000000000000000000000000000000000000000000000000000000000000FFFF
+    FFFFFFFFFFFFC0780003C0380003E0380003E0380003E0180003F01C1FFFF00C
+    0FFFF80E0FFFF80E07FFFC0607FFFC0703FFFC0703FFFE0383FFFE0381FFFE03
+    81FFFF01C0FFFF01C0FFFF01C07FFF01E07FFF80E07FFF80E03FFF80F03FFFC0
+    703FC000701FC000381FC000380FC0001C0FC0001C07FFFFFFFFFFFFFFFF}
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 803
+    Height = 178
+    Align = alTop
+    TabOrder = 0
+    object Label1: TLabel
+      Left = 156
+      Top = 9
+      Width = 40
+      Height = 13
+      Caption = 'Unidade'
+    end
+    object Label2: TLabel
+      Left = 70
+      Top = 58
+      Width = 125
+      Height = 13
+      Caption = 'Ordem de Compra N'#250'mero'
+    end
+    object Label3: TLabel
+      Left = 69
+      Top = 86
+      Width = 54
+      Height = 13
+      Caption = 'Fornecedor'
+    end
+    object Label4: TLabel
+      Left = 132
+      Top = 113
+      Width = 65
+      Height = 13
+      Caption = 'Data Emiss'#227'o'
+    end
+    object Label5: TLabel
+      Left = 161
+      Top = 136
+      Width = 36
+      Height = 13
+      Caption = 'Arquivo'
+    end
+    object Label6: TLabel
+      Left = 377
+      Top = 3
+      Width = 166
+      Height = 13
+      Caption = 'Caminho para gera'#231#227'o do arquivo :'
+    end
+    object Label7: TLabel
+      Left = 155
+      Top = 31
+      Width = 41
+      Height = 13
+      Caption = 'Mascara'
+    end
+    object edtCod_unidade: TEdit
+      Left = 200
+      Top = 4
+      Width = 70
+      Height = 21
+      MaxLength = 7
+      TabOrder = 0
+      OnKeyPress = edtCod_unidadeKeyPress
+    end
+    object edtNum_Ordem: TEdit
+      Left = 200
+      Top = 53
+      Width = 70
+      Height = 21
+      MaxLength = 6
+      TabOrder = 2
+      OnExit = edtNum_OrdemExit
+      OnKeyPress = edtCod_unidadeKeyPress
+    end
+    object edtCod_Fornecedor: TEdit
+      Left = 129
+      Top = 81
+      Width = 70
+      Height = 21
+      TabStop = False
+      Color = clMenu
+      Enabled = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 5
+    end
+    object edtDta_emissao: TEdit
+      Left = 200
+      Top = 108
+      Width = 94
+      Height = 21
+      Color = clMenu
+      Enabled = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 6
+    end
+    object Edit2: TEdit
+      Left = 295
+      Top = 4
+      Width = 33
+      Height = 21
+      TabStop = False
+      TabOrder = 10
+      Visible = False
+    end
+    object edtArquivo: TEdit
+      Left = 200
+      Top = 133
+      Width = 137
+      Height = 21
+      CharCase = ecLowerCase
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      MaxLength = 15
+      ParentFont = False
+      TabOrder = 4
+      OnKeyPress = edtArquivoKeyPress
+    end
+    object Panel3: TPanel
+      Left = 1
+      Top = 149
+      Width = 801
+      Height = 28
+      Align = alBottom
+      BevelOuter = bvNone
+      TabOrder = 9
+      object lblMensagem: TLabel
+        Left = 0
+        Top = 15
+        Width = 801
+        Height = 13
+        Align = alBottom
+        Alignment = taCenter
+        Caption = 'Aguarde........Gerando dados para o arquivo texto.........'
+        Color = clBtnFace
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clRed
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentColor = False
+        ParentFont = False
+        Visible = False
+        ExplicitWidth = 261
+      end
+    end
+    object dirSaida: TDirectoryListBox
+      Left = 375
+      Top = 39
+      Width = 297
+      Height = 69
+      TabOrder = 8
+      OnChange = dirSaidaChange
+      OnEnter = dirSaidaEnter
+      OnExit = dirSaidaExit
+    end
+    object driveSaida: TDriveComboBox
+      Left = 375
+      Top = 20
+      Width = 297
+      Height = 19
+      DirList = dirSaida
+      TabOrder = 7
+      OnChange = driveSaidaChange
+      OnEnter = driveSaidaEnter
+      OnExit = driveSaidaExit
+    end
+    object cbxDes_fornecedor: TComboBox
+      Left = 200
+      Top = 81
+      Width = 160
+      Height = 21
+      TabOrder = 3
+      OnChange = cbxDes_fornecedorChange
+      OnEnter = cbxDes_fornecedorEnter
+      OnExit = cbxDes_fornecedorExit
+      OnKeyDown = cbxDes_fornecedorKeyDown
+    end
+    object edtCodMascara: TEdit
+      Left = 200
+      Top = 27
+      Width = 70
+      Height = 21
+      MaxLength = 7
+      TabOrder = 1
+      OnKeyPress = edtCod_unidadeKeyPress
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 178
+    Width = 803
+    Height = 239
+    Align = alClient
+    TabOrder = 1
+    object grdGeral: TDBGrid
+      Left = 1
+      Top = 1
+      Width = 801
+      Height = 237
+      Align = alClient
+      DataSource = dtsManutencao
+      TabOrder = 0
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'MS Sans Serif'
+      TitleFont.Style = []
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'DES_REDE'
+          Title.Caption = 'Rede'
+          Width = 79
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'NUM_PEDIDO'
+          Title.Caption = 'Pedido'
+          Width = 44
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'COD_PRODUTO'
+          Title.Caption = 'Produto'
+          Width = 68
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'DES_PRODUTO'
+          Title.Caption = 'Descri'#231#227'o'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'VLR_PRODUTO'
+          Title.Caption = 'Valor'
+          Width = 46
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'QTD_ETIQUETA'
+          Title.Caption = 'Qtd'
+          Width = 30
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'VLR_TAMANHO'
+          Title.Caption = 'Tamanho'
+          Width = 57
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'TIP_ETIQUETA'
+          Title.Caption = 'Tipo'
+          Width = 35
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'DES_MARCA'
+          Title.Caption = 'Marca'
+          Width = 94
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'DES_ENDERECO_LOJA'
+          Title.Caption = 'Endere'#231'o Loja'
+          Width = 107
+          Visible = True
+        end>
+    end
+  end
+  object btnFornecedor: TBitBtn
+    Left = 392
+    Top = 112
+    Width = 82
+    Height = 25
+    Caption = '&Fornecedor OK'
+    Enabled = False
+    TabOrder = 2
+    OnClick = btnFornecedorClick
+  end
+  object btnGerar: TBitBtn
+    Left = 480
+    Top = 112
+    Width = 82
+    Height = 25
+    Caption = '&Gerar'
+    TabOrder = 3
+    OnClick = btnGerarClick
+  end
+  object btnFechar: TBitBtn
+    Left = 568
+    Top = 112
+    Width = 82
+    Height = 25
+    Caption = '&Fechar'
+    TabOrder = 4
+    OnClick = btnFecharClick
+  end
+  object dtsManutencao: TDataSource
+    Left = 84
+    Top = 328
+  end
+  object qryGeral: TFDQuery
+    Connection = Database1
+    Left = 248
+    Top = 338
+  end
+  object Database1: TFDConnection
+    Params.Strings = (
+      'DriverID=ora')
+    Left = 144
+    Top = 208
+  end
+  object spGeracao: TFDStoredProc
+    Connection = Database1
+    Left = 368
+    Top = 314
+  end
+end

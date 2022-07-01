@@ -1,0 +1,15 @@
+program Ordens_Fornec;
+
+uses
+  Forms,
+  uGeraArquivo in 'uGeraArquivo.pas' {frmGeraArquivo},
+  uFuncoes in 'G:\Estoque\ordens_fornec\Fontes\Ufuncoes.pas';
+
+{$R *.RES}
+
+begin
+  Application.Initialize;
+  Application.Title := 'etiquetas_fornecedores';
+  Application.CreateForm(TfrmGeraArquivo, frmGeraArquivo);
+  Application.Run;
+end.
