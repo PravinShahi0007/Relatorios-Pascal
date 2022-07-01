@@ -463,7 +463,7 @@ const
                   '       vlr_pgto_pix_loja, '+
                   '       QTD_PGTO_AUTOATEND,'+
                   '       VLR_PGTO_AUTOATEND '+
-                  ' from grzw_rel_pgtos_appxloja '+
+                  ' from nl.grzw_rel_pgtos_appxloja '+
                   'where (dta_mes between to_date(:inicial,''dd/mm/yyyy'') and to_date(:final,''dd/mm/yyyy'')) '+
                   'order by dta_mes';
      sSQLTotaisPagamentos = 'select sum(qtd_tot_cli_app) as qtd_tot_cli_app,'+
@@ -508,7 +508,7 @@ const
                   '       sum(vlr_pgto_pix_loja) as vlr_pgto_pix_loja, '+
                   '       sum(QTD_PGTO_AUTOATEND) as QTD_PGTO_AUTOATEND,'+
                   '       sum(VLR_PGTO_AUTOATEND) as VLR_PGTO_AUTOATEND '+
-                  'from grzw_rel_pgtos_appxloja '+
+                  'from nl.grzw_rel_pgtos_appxloja '+
                   'where (dta_mes between to_date(:inicial,''dd/mm/yyyy'') and to_date(:final,''dd/mm/yyyy''))';
 
 var
@@ -599,7 +599,7 @@ begin
      qryGeralDados.Active := False;
      qryGeralDados.SQL.Clear;
      qryGeralDados.SQL.Add(
-              'select * from grzw_rel_pgtos_appxloja where (dta_mes = :dta_mes)');
+              'select * from nl.grzw_rel_pgtos_appxloja where (dta_mes = :dta_mes)');
      qryGeralDados.Params.ParamByName('dta_mes').AsDate := StrToDate(edtInicio.Text);
      qryGeralDados.Active := True;
      // Existe registro....
@@ -613,7 +613,7 @@ begin
           qryGeralDados.Active := False;
           qryGeralDados.SQL.Clear;
           qryGeralDados.SQL.Add(
-                   'delete from grzw_rel_pgtos_appxloja where (dta_mes = :dta_mes)');
+                   'delete from nl.grzw_rel_pgtos_appxloja where (dta_mes = :dta_mes)');
           qryGeralDados.Params.ParamByName('dta_mes').AsDate := StrToDate(edtInicio.Text);
           qryGeralDados.ExecSQL;
           trsOracle.CommitRetaining;
@@ -748,7 +748,7 @@ begin
            lblMensagem.Update;
            Delay(400);
        end
-     else
+    else
        exit;
 
 end;

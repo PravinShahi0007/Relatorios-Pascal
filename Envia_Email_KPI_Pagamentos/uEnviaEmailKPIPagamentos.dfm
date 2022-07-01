@@ -266,7 +266,7 @@ object frmPrincipal: TfrmPrincipal
       '       vlr_pgto_credito_loja,'
       '       qtd_pgto_pix_loja,'
       '       vlr_pgto_pix_loja '
-      'from grzw_rel_pgtos_appxloja '
+      'from nl.grzw_rel_pgtos_appxloja '
       
         'where (dta_mes between to_date(:inicial,'#39'dd/mm/yyyy'#39') and to_dat' +
         'e(:final,'#39'dd/mm/yyyy'#39')) '
@@ -277,9 +277,7 @@ object frmPrincipal: TfrmPrincipal
     ParamData = <
       item
         Name = 'INICIAL'
-        DataType = ftDate
         ParamType = ptInput
-        Value = 43831d
       end
       item
         Name = 'FINAL'
@@ -335,7 +333,7 @@ object frmPrincipal: TfrmPrincipal
       '       sum(vlr_pgto_credito_loja) as vlr_pgto_credito_loja,'
       '       sum(qtd_pgto_pix_loja) as qtd_pgto_pix_loja,'
       '       sum(vlr_pgto_pix_loja) as vlr_pgto_pix_loja'
-      'from grzw_rel_pgtos_appxloja '
+      'from nl.grzw_rel_pgtos_appxloja '
       
         'where (dta_mes between to_date(:inicial,'#39'dd/mm/yyyy'#39') and to_dat' +
         'e(:final,'#39'dd/mm/yyyy'#39'))'
