@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2021/11/10 08:05:20.000.602,=C:\Users\389947\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2021/12/07 16:16:52.000.754,=C:\Users\389947\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2021/12/07 16:19:42.000.815,C:\Rel_Prod_Desc_Email\uRel_Prod_Email.pas=C:\Users\389947\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2021/12/07 16:19:42.000.815,C:\Rel_Prod_Desc_Email\uRel_Prod_Email.dfm=C:\Users\389947\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2021/12/07 16:20:11.000.634,C:\Rel_Prod_Desc_Email\pRel_Prod_Email.dproj=C:\Users\389947\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2021/12/09 11:03:02.000.433,=C:\Rel_Prod_Desc_Email\ufuncoes.pas</Transaction>
+    <Transaction>2021/12/14 10:46:06.000.837,=C:\Henrique\Rel_Prod_Desc_Email\Unit1.pas</Transaction>
+    <Transaction>2022/07/04 08:54:06.012,=C:\Henrique\Rel_Prod_Desc_Email\Encryp.pas</Transaction>
+    <Transaction>2022/07/04 08:54:06.063,=C:\Henrique\Rel_Prod_Desc_Email\uCarregaSenha.pas</Transaction>
+  </Transactions>
+</BorlandProject>

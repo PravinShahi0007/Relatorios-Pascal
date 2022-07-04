@@ -1,0 +1,17 @@
+program pRel_Prod_Email;
+
+uses
+  Vcl.Forms,
+  uRel_Prod_Email in 'uRel_Prod_Email.pas' {frmRel_Prod_Desc_Email},
+  ufuncoes in 'ufuncoes.pas',
+  Encryp in 'Encryp.pas',
+  uCarregaSenha in 'uCarregaSenha.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TfrmRel_Prod_Desc_Email, frmRel_Prod_Desc_Email);
+  Application.Run;
+end.
