@@ -26,7 +26,6 @@ object frmPrincipal: TfrmPrincipal
     Align = alClient
     BevelInner = bvLowered
     TabOrder = 0
-    ExplicitHeight = 168
     object lblMensagem: TLabel
       Left = 2
       Top = 82
@@ -92,9 +91,6 @@ object frmPrincipal: TfrmPrincipal
       Align = alClient
       BevelInner = bvLowered
       TabOrder = 2
-      ExplicitLeft = 4
-      ExplicitTop = 88
-      ExplicitHeight = 71
       object btnSair: TBitBtn
         Left = 215
         Top = 2
@@ -157,7 +153,6 @@ object frmPrincipal: TfrmPrincipal
         ParentFont = False
         TabOrder = 0
         OnClick = btnSairClick
-        ExplicitHeight = 33
       end
     end
   end
@@ -173,7 +168,6 @@ object frmPrincipal: TfrmPrincipal
       'Password=nl'
       'MetaDefSchema=system'
       'DriverID=Ora')
-    Connected = True
     LoginPrompt = False
     Transaction = trsOracle
     Left = 160

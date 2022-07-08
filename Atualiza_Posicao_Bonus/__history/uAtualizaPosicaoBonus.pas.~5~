@@ -1,0 +1,126 @@
+{-------------------------------------------------------------------------------
+ Programa..: uAtualizaPosicaoBonus
+ Empresa...: Grazziotin S/A
+ Finalidade: Atuzlizar valores de bônus na loja, aniversário e APP Clientes.
+             É disparado no primeiro dia do mês a atualiza a base de dados com
+             a ultima data do mês anterior.
+
+ Autor   Data     Operação  Descrição
+ Antônio ABR/2021 Criação
+-------------------------------------------------------------------------------}
+unit uAtualizaPosicaoBonus;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Mask,
+  Vcl.Samples.Gauges, Vcl.ExtCtrls, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
+  FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.Oracle,
+  FireDAC.Phys.OracleDef, FireDAC.VCLUI.Wait, FireDAC.Stan.Param, FireDAC.DatS,
+  FireDAC.DApt.Intf, FireDAC.DApt, Vcl.Menus, Data.DB, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client, ACBrBase, ACBrMail, Vcl.Buttons, IniFiles,
+  FireDAC.Comp.UI, System.DateUtils, Encryp, uCarregaSenha;
+
+type
+  TfrmPrincipal = class(TForm)
+    pnlFundo: TPanel;
+    lblMensagem: TLabel;
+    pnlCabecalho: TPanel;
+    grpData: TGroupBox;
+    lblInicio: TLabel;
+    edtInicio: TMaskEdit;
+    trsOracle: TFDTransaction;
+    fdcOracle: TFDConnection;
+    pnlRodape: TPanel;
+    btnSair: TBitBtn;
+    fspGRZ_Posicao_Bonus_SP: TFDStoredProc;
+    procedure Atualiza_Valores(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure btnSairClick(Sender: TObject);
+    procedure CarregaParamsBanco;
+  private
+    { Private declarations }
+  public
+        { Public declarations }
+        sDataAtual, sDataInicio: String;
+        sUsuario, sBanco, sSenha : String;
+        tdDataMesAnterior, tdUltimoDiaMes: TDateTime;
+  end;
+
+var
+   frmPrincipal: TfrmPrincipal;
+
+implementation
+
+{$R *.dfm}
+
+uses Ufuncoes;
+
+procedure TfrmPrincipal.Atualiza_Valores(Sender: TObject);
+begin
+     if fdcOracle.InTransaction then
+        fdcOracle.Commit;
+     fdcOracle.StartTransaction;
+
+     lblMensagem.Caption := 'Executando PROCEDURE, atualizando valores...';
+     lblMensagem.Update;
+     Delay(200);
+
+     fspGRZ_Posicao_Bonus_SP.Active := False;
+     fspGRZ_Posicao_Bonus_SP.Params.ParamByName('pdatainicial').AsString := edtInicio.Text;
+     fspGRZ_Posicao_Bonus_SP.Execute();
+
+     lblMensagem.Caption := 'Valores atualizados....';
+     lblMensagem.Update;
+     Delay(200);
+end;
+
+procedure TfrmPrincipal.btnSairClick(Sender: TObject);
+begin
+    Application.Terminate;
+    Halt;
+end;
+
+procedure TfrmPrincipal.CarregaParamsBanco;
+var TomEncryption1: TTomEncryption;
+begin
+    TomEncryption1 := TTomEncryption.Create(Self);
+    CarregaSenhasBancoOra('GRZPNL_BERLIN',TomEncryption1,sUsuario,sSenha,sBanco);
+end;
+
+procedure TfrmPrincipal.FormActivate(Sender: TObject);
+begin
+     Atualiza_Valores(Sender);
+     Close;
+end;
+
+procedure TfrmPrincipal.FormCreate(Sender: TObject);
+begin
+     try
+        fdcOracle.Connected := True;
+     except
+           on E:EDatabaseError do
+           begin
+                Informacao('Falha ao conectar o banco....'+#13+
+                           'A aplicação vai fechar!',
+                           'Aviso...');
+               Application.Terminate;
+           end;
+     end;
+end;
+
+procedure TfrmPrincipal.FormShow(Sender: TObject);
+begin
+     tdDataMesAnterior := IncMonth(Date,-1);
+     tdUltimoDiaMes := EndOfTheMonth(tdDataMesAnterior);
+     sDataInicio := DateToStr(tdUltimoDiaMes);
+
+     edtInicio.Text := sDataInicio;
+end;
+
+end.
+

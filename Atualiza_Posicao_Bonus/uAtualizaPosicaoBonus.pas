@@ -21,7 +21,7 @@ uses
   FireDAC.Phys.OracleDef, FireDAC.VCLUI.Wait, FireDAC.Stan.Param, FireDAC.DatS,
   FireDAC.DApt.Intf, FireDAC.DApt, Vcl.Menus, Data.DB, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, ACBrBase, ACBrMail, Vcl.Buttons, IniFiles,
-  FireDAC.Comp.UI, System.DateUtils;
+  FireDAC.Comp.UI, System.DateUtils, Encryp, uCarregaSenha;
 
 type
   TfrmPrincipal = class(TForm)
@@ -41,11 +41,13 @@ type
     procedure FormShow(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure btnSairClick(Sender: TObject);
+    procedure CarregaParamsBanco;
   private
     { Private declarations }
   public
         { Public declarations }
         sDataAtual, sDataInicio: String;
+        sUsuario, sBanco, sSenha : String;
         tdDataMesAnterior, tdUltimoDiaMes: TDateTime;
   end;
 
@@ -83,6 +85,13 @@ begin
     Halt;
 end;
 
+procedure TfrmPrincipal.CarregaParamsBanco;
+var TomEncryption1: TTomEncryption;
+begin
+    TomEncryption1 := TTomEncryption.Create(Self);
+    CarregaSenhasBancoOra('GRZPNL_BERLIN',TomEncryption1,sUsuario,sSenha,sBanco);
+end;
+
 procedure TfrmPrincipal.FormActivate(Sender: TObject);
 begin
      Atualiza_Valores(Sender);
@@ -91,8 +100,12 @@ end;
 
 procedure TfrmPrincipal.FormCreate(Sender: TObject);
 begin
+   CarregaParamsBanco;
      try
-        fdcOracle.Connected := True;
+         fdcOracle.Params.Database := sBanco;
+         fdcOracle.Params.UserName := sUsuario;
+         fdcOracle.Params.Password := sSenha;
+         fdcOracle.Connected := True;
      except
            on E:EDatabaseError do
            begin

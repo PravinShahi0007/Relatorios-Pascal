@@ -11,7 +11,9 @@ program pAtualizaPosicaoBonus;
 uses
   Forms,
   Ufuncoes in 'Ufuncoes.pas',
-  uAtualizaPosicaoBonus in 'uAtualizaPosicaoBonus.pas' {frmPrincipal};
+  uAtualizaPosicaoBonus in 'uAtualizaPosicaoBonus.pas' {frmPrincipal},
+  Encryp in 'Encryp.pas',
+  uCarregaSenha in 'uCarregaSenha.pas';
 
 {$R *.res}
 
