@@ -1,0 +1,93 @@
+delete ai_ns_itens a
+ where a.cod_unidade = :cod_unidade
+   and a.num_nota = :num_nota
+   and exists (select 1
+          from ai_ns_notas b
+         where b.cod_unidade = a.cod_unidade
+           and b.num_nota = a.num_nota
+           and b.cod_serie = :num_serie
+           and b.dta_emissao = :dta_emissao)
+
+delete ai_ns_notas_icms a
+ where a.cod_unidade = :cod_unidade
+   and a.num_nota = :num_nota
+   and exists (select 1
+          from ai_ns_notas b
+         where b.cod_unidade = a.cod_unidade
+           and b.num_nota = a.num_nota
+           and b.cod_serie = :num_serie
+           and b.dta_emissao = :dta_emissao)
+
+delete ai_ns_notas_operacoes a
+ where a.cod_unidade = :cod_unidade
+   and a.num_nota = :num_nota
+   and exists (select 1
+          from ai_ns_notas b
+         where b.cod_unidade = a.cod_unidade
+           and b.num_nota = a.num_nota
+           and b.cod_serie = :num_serie
+           and b.dta_emissao = :dta_emissao)
+
+delete ai_ce_diarios a
+ where a.cod_unidade = :cod_unidade
+   and a.num_nota = :num_nota
+   and exists (select 1
+          from ai_ns_notas b
+         where b.cod_unidade = a.cod_unidade
+           and b.num_nota = a.num_nota
+           and b.cod_serie = :num_serie
+           and b.dta_emissao = :dta_emissao)
+
+delete ai_ns_notas_parcelas a
+ where a.cod_unidade = :cod_unidade
+   and a.num_nota = :num_nota
+   and exists (select 1
+          from ai_ns_notas b
+         where b.cod_unidade = a.cod_unidade
+           and b.num_nota = a.num_nota
+           and b.cod_serie = :num_serie
+           and b.dta_emissao = :dta_emissao)
+
+delete ai_ns_notas_colunas a
+ where a.cod_unidade = :cod_unidade
+   and a.num_nota = :num_nota
+   and exists (select 1
+          from ai_ns_notas b
+         where b.cod_unidade = a.cod_unidade
+           and b.num_nota = a.num_nota
+           and b.cod_serie = :num_serie
+           and b.dta_emissao = :dta_emissao)
+
+delete ai_ns_notas_observacoes a
+ where a.cod_unidade = :cod_unidade
+   and a.num_nota = :num_nota
+   and exists (select 1
+          from ai_ns_notas b
+         where b.cod_unidade = a.cod_unidade
+           and b.num_nota = a.num_nota
+           and b.cod_serie = :num_serie
+           and b.dta_emissao = :dta_emissao)
+
+delete ai_ns_notas a
+ where a.cod_unidade = :cod_unidade
+   and a.num_nota = :num_nota
+   and a.cod_serie = :num_serie
+   and a.dta_emissao = :dta_emissao
+
+delete ai_cr_historicos a
+ where a.cod_unidade = :cod_unidade
+   and a.num_nota = :num_nota
+   and a.cod_serie = :num_serie
+   and a.dta_contabil = :dta_emissao
+
+delete ai_cr_titulos a
+ where a.cod_unidade = :cod_unidade
+   and a.num_nota = :num_nota
+   and a.cod_serie = :num_serie
+   and a.dta_emissao = :dta_emissao
+
+delete grz_lojas_cupons_controle a
+ where a.cod_unidade = :cod_unidade
+   and a.num_cupom = :num_nota
+   and a.num_equipamento = substr(:num_serie, 2, 2)
+   and a.dta_lancamento = :dta_emissao;

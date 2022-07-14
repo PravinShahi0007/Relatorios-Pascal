@@ -1,0 +1,14 @@
+program pDelete_ns_notas;
+
+uses
+  Forms,
+  uDelete_ns_notas in 'uDelete_ns_notas.pas' {Form1};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.Title := 'Deleta Cupons';
+  Application.CreateForm(TForm1, Form1);
+  Application.Run;
+end.

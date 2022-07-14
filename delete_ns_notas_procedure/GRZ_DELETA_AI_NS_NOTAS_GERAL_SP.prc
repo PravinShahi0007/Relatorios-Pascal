@@ -1,0 +1,208 @@
+CREATE OR REPLACE PROCEDURE GRZ_DELETA_AI_NOTAS_SP(PI_OPCAO     IN VARCHAR2,
+                                                   PO_RESULTADO OUT VARCHAR2) IS
+
+BEGIN
+
+  DECLARE
+    wCod_Unidade    number;
+    wNum_Nota_Atual number;
+    wSerie          varchar2(03);
+    wDta_Emissao    date;
+    wSaida          varchar2(128);
+    wCanc           number;
+    wEquip          number;
+    wi              number;
+    wf              number;
+
+  BEGIN
+    PO_RESULTADO    := 'Deletados:' || CHR(10);
+    wi              := INSTR(pi_opcao, '#', 1, 1);
+    wCod_Unidade    := TO_NUMBER(SUBSTR(pi_opcao, 1, (wi - 1)));
+    wf              := INSTR(pi_opcao, '#', 1, 2);
+    wNum_Nota_Atual := TO_NUMBER(SUBSTR(pi_opcao, (wi + 1), (wf - wi - 1)));
+    wi              := wf;
+    wf              := INSTR(pi_opcao, '#', 1, 3);
+    wSerie          := SUBSTR(pi_opcao, (wi + 1), (wf - wi - 1));
+    wi              := wf;
+    wf              := INSTR(pi_opcao, '#', 1, 4);
+    wDta_Emissao    := TO_DATE(SUBSTR(pi_opcao, (wi + 1), (wf - wi - 1)),
+                               'dd/mm/yyyy');
+    wi              := wf;
+    wf              := INSTR(pi_opcao, '#', 1, 5);
+    wCanc           := TO_NUMBER(SUBSTR(pi_opcao, (wi + 1), (wf - wi - 1)));
+    wi              := wf;
+    wf              := INSTR(pi_opcao, '#', 1, 6);
+    wEquip          := TO_NUMBER(SUBSTR(pi_opcao, (wi + 1), (wf - wi - 1)));
+
+    BEGIN
+      IF wCanc = 1 then
+        update grz_lojas_cupom_itens a
+           set a.ind_cancelado = 0, a.ind_cancelado_item = 0
+         where cod_unidade = wCod_Unidade
+           and num_cupom = wNum_Nota_Atual
+           and num_equipamento = wEquip
+           and dta_lancamento = wDta_Emissao;
+
+        update grz_lojas_cupons a
+           set a.ind_cancelado = 0
+         where cod_unidade = wCod_Unidade
+           and num_cupom = wNum_Nota_Atual
+           and num_equipamento = wEquip
+           and dta_lancamento = wDta_Emissao;
+      END IF;
+
+      delete ai_ns_itens a
+       where a.cod_unidade = wCod_Unidade
+         and a.num_nota = wNum_Nota_Atual
+         and exists (select 1
+                from ai_ns_notas b
+               where b.cod_unidade = a.cod_unidade
+                 and b.num_nota = a.num_nota
+                 and b.cod_serie = wSerie
+                 and b.dta_emissao = wDta_Emissao)
+      RETURNING count(a.num_nota) INTO wSaida;
+      po_resultado := po_resultado || wSaida || ' em ai_ns_itens' ||
+                      CHR(10);
+
+      delete ai_ns_notas_icms a
+       where a.cod_unidade = wCod_Unidade
+         and a.num_nota = wNum_Nota_Atual
+		     and a.cod_serie = wSerie
+        -- and exists (select 1
+        --        from ai_ns_notas b
+        --       where b.cod_unidade = a.cod_unidade
+        --         and b.num_nota = a.num_nota
+         --        and b.cod_serie = wSerie
+        --         and b.dta_emissao = wDta_Emissao)
+      RETURNING count(a.num_nota) INTO wSaida;
+      po_resultado := po_resultado || wSaida || ' em ai_ns_notas_icms' ||
+                      CHR(10);
+
+      delete ai_ns_notas_operacoes a
+       where a.cod_unidade = wCod_Unidade
+         and a.num_nota = wNum_Nota_Atual
+          and a.cod_serie = wSerie
+        -- and exists (select 1
+         --        from ai_ns_notas b
+          --      where b.cod_unidade = a.cod_unidade
+           --       and b.num_nota = a.num_nota
+            --      and b.cod_serie = wSerie
+             --     and b.dta_emissao = wDta_Emissao)
+      RETURNING count(a.num_nota) INTO wSaida;
+      po_resultado := po_resultado || wSaida || ' em ai_ns_notas_oper.' ||
+                      CHR(10);
+
+      delete ai_ce_diarios a
+       where a.cod_unidade = wCod_Unidade
+         and a.num_nota = wNum_Nota_Atual
+          and a.cod_serie = wSerie
+         --and exists (select 1
+         --       from ai_ns_notas b
+         --      where b.cod_unidade = a.cod_unidade
+         --        and b.num_nota = a.num_nota
+         --        and b.cod_serie = wSerie
+         --        and b.dta_emissao = wDta_Emissao)
+      RETURNING count(a.num_nota) INTO wSaida;
+      po_resultado := po_resultado || wSaida || ' em ai_ce_diarios' ||
+                      CHR(10);
+
+      delete ai_ns_notas_parcelas a
+       where a.cod_unidade = wCod_Unidade
+         and a.num_nota = wNum_Nota_Atual
+          and a.cod_serie = wSerie
+        --- and exists (select 1
+         --       from ai_ns_notas b
+         --      where b.cod_unidade = a.cod_unidade
+        --         and b.num_nota = a.num_nota
+        --         and b.cod_serie = wSerie
+       --          and b.dta_emissao = wDta_Emissao)
+      RETURNING count(a.num_nota) INTO wSaida;
+      po_resultado := po_resultado || wSaida || ' em ai_ns_notas_parcelas' ||
+                      CHR(10);
+
+      delete ai_ns_notas_colunas a
+       where a.cod_unidade = wCod_Unidade
+         and a.num_nota = wNum_Nota_Atual
+		 and a.cod_serie = wSerie
+         --and exists (select 1
+         --       from ai_ns_notas b
+         --      where b.cod_unidade = a.cod_unidade
+         --        and b.num_nota = a.num_nota
+         --        and b.cod_serie = wSerie
+        --         and b.dta_emissao = wDta_Emissao)
+      RETURNING count(a.num_nota) INTO wSaida;
+      po_resultado := po_resultado || wSaida || ' em ai_ns_notas_colunas' ||
+                      CHR(10);
+
+      delete ai_ns_notas_observacoes a
+       where a.cod_unidade = wCod_Unidade
+         and a.num_nota = wNum_Nota_Atual
+            and a.cod_serie = wSerie
+    --     and exists (select 1
+    --            from ai_ns_notas b
+     --           where b.cod_unidade = a.cod_unidade
+      --            and b.num_nota = a.num_nota
+       --           and b.cod_serie = wSerie
+        --          and b.dta_emissao = wDta_Emissao)
+      RETURNING count(a.num_nota) INTO wSaida;
+      po_resultado := po_resultado || wSaida ||
+                      ' em ai_ns_notas_obs.' || CHR(10);
+
+      delete ai_ns_notas a
+       where a.cod_unidade = wCod_Unidade
+         and a.num_nota = wNum_Nota_Atual
+         and a.cod_serie = wSerie
+         and num_equipamento = wEquip
+         and a.dta_emissao = wDta_Emissao
+      RETURNING count(a.num_nota) INTO wSaida;
+      po_resultado := po_resultado || wSaida || ' em ai_ns_notas' ||
+                      CHR(10);
+
+      delete ai_cr_historicos a
+       where a.cod_unidade = wCod_Unidade
+         and a.num_nota = wNum_Nota_Atual
+         and a.cod_serie = wSerie
+         and a.dta_contabil = wDta_Emissao
+      RETURNING count(a.num_nota) INTO wSaida;
+      po_resultado := po_resultado || wSaida || ' em ai_cr_hist.' ||
+                      CHR(10);
+
+      delete ai_cr_titulos a
+       where a.cod_unidade = wCod_Unidade
+         and a.num_nota = wNum_Nota_Atual
+         and a.cod_serie = wSerie
+         and a.dta_emissao = wDta_Emissao
+      RETURNING count(a.num_nota) INTO wSaida;
+      po_resultado := po_resultado || wSaida || ' em ai_cr_titulos' ||
+                      CHR(10);
+
+delete ai_ns_notas_certificados a
+ where a.cod_unidade=wCod_Unidade
+   and a.num_nota=wNum_Nota_Atual
+   and a.cod_serie = wSerie
+ --  and exists (select 1 from ai_ns_notas b
+ --      where b.cod_unidade=a.cod_unidade
+ --        and b.num_nota=a.num_nota
+ --        and b.cod_serie=wSerie
+ --        and b.dta_emissao=wDta_Emissao)
+RETURNING count(a.num_nota) INTO wSaida;
+      po_resultado := po_resultado || wSaida || ' em ai_ns_notas_certificados' ||
+                      CHR(10);
+
+      delete grz_lojas_cupons_controle a
+       where a.cod_unidade = wCod_Unidade
+         and a.num_cupom = wNum_Nota_Atual
+         and a.num_equipamento = wEquip
+         and a.dta_lancamento = wDta_Emissao
+      RETURNING count(a.num_cupom) INTO wSaida;
+      po_resultado := po_resultado || wSaida || ' em grz_lojas_cupons_contr.';
+
+
+    EXCEPTION
+      WHEN others THEN
+        po_resultado := 'Erro ao deletar os registros!';
+        rollback;
+    END;
+    COMMIT;
+  END;
+END GRZ_DELETA_AI_NOTAS_SP;

@@ -1,0 +1,164 @@
+unit uDelete_ns_notas;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ppParameter, ppBands, ppCtrls, jpeg, ppVar, ppPrnabl, ppClass,
+  ppCache, ppProd, ppReport, ppDB, ppComm, ppRelatv, ppDBPipe, DB,
+  DBTables, StdCtrls, Mask, Buttons, ExtCtrls, uFuncoes;
+
+type
+  TForm1 = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Label3: TLabel;
+    Label4: TLabel;
+    btnGerar: TBitBtn;
+    btnFechar: TBitBtn;
+    edtCodUni: TMaskEdit;
+    Edit9: TEdit;
+    Edit10: TEdit;
+    edtNota: TMaskEdit;
+    Database1: TDatabase;
+    Session1: TSession;
+    Edit2: TEdit;
+    edtDtaEmissao: TMaskEdit;
+    spRetorno: TStoredProc;
+    dtsGeral: TDataSource;
+    qryGeral: TQuery;
+    chkCanc: TCheckBox;
+    Edit1: TEdit;
+    edtNumEquip: TMaskEdit;
+    procedure btnGerarClick(Sender: TObject);
+    procedure btnFecharClick(Sender: TObject);
+    procedure edtDtaEmissaoExit(Sender: TObject);
+    procedure edtCodUniKeyPress(Sender: TObject; var Key: Char);
+    procedure edtNotaKeyPress(Sender: TObject; var Key: Char);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+  sParametros, sData, sNota, sCodUni, sDtaEmissao, sSerie, sCanc : String;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.btnGerarClick(Sender: TObject);
+begin
+     if (AllTrim(edtCodUni.Text) = '') or (AllTrim(edtNota.Text) = '')
+         or (AllTrim(edtDtaEmissao.Text) = '//') or (AllTrim(edtNumEquip.Text) = '') then
+     begin
+        Informacao('Preencha todos os campos!','Aviso!');
+        Abort;
+        Exit;
+     end;
+
+     if (chkCanc.Checked) = True then
+        sCanc := '1'
+     else
+        sCanc := '0';
+
+     sNota := AllTrim(edtNota.Text);
+     sCodUni := AllTrim(edtCodUni.Text);
+     sDtaEmissao := AllTrim(edtDtaEmissao.Text);
+
+     if not Database1.Connected then
+        Database1.Connected := True;
+
+     qryGeral.ParamByName('num_nota').AsString := sNota;
+     qryGeral.ParamByName('cod_unidade').AsString := sCodUni;
+     qryGeral.ParamByName('dta_emissao').AsString := sDtaEmissao;
+
+     if not(qryGeral.Active) then
+        qryGeral.Active := True;
+
+     sSerie := qryGeral.FieldByName('cod_serie').AsString;
+
+     if (qryGeral.IsEmpty) then
+     begin
+        Informacao('Cupom não encontrado!','Aviso');
+        qryGeral.Active := False;
+        Abort;
+        Exit;
+     end;
+
+     if not Pergunta('Tem certeza que deseja deletar os registros?','Atenção!') then
+     begin
+        qryGeral.Active := False;
+        Abort;
+        Exit;
+     end;
+
+     spRetorno.Prepare;
+     sParametros := ''+Trim(edtCodUni.Text)+'#'+Trim(edtNota.Text)+'#'+Trim(sSerie)+'#'+sData+'#'+sCanc+'#'+Trim(edtNumEquip.Text)+'#';
+     //showmessage(sParametros);
+
+     spRetorno.Params[0].Value := sParametros;
+
+     spRetorno.ExecProc;
+
+     Informacao(spRetorno.Params[1].Text,'Informação');
+
+     spRetorno.Close;
+
+     qryGeral.Active := False;
+end;
+
+procedure TForm1.btnFecharClick(Sender: TObject);
+begin
+    Close;
+end;
+
+procedure TForm1.edtDtaEmissaoExit(Sender: TObject);
+begin
+     if (AllTrim(edtDtaEmissao.Text) = '//') then
+     begin
+          Abort;
+          Exit;
+     end;
+
+     sData := edtDtaEmissao.Text;
+
+     if ValidaData(sData) then
+     begin
+          edtDtaEmissao.SetFocus;
+          Abort;
+          Exit;
+     end;
+
+     sData := DateToStr(StrToDate(sData));
+end;
+
+procedure TForm1.edtCodUniKeyPress(Sender: TObject; var Key: Char);
+begin
+  if not (Key in [#8, '0'..'9']) then
+  begin
+    Key := #0;
+  end;
+end;
+
+procedure TForm1.edtNotaKeyPress(Sender: TObject; var Key: Char);
+begin
+  if not (Key in [#8, '0'..'9']) then
+  begin
+    Key := #0;
+  end;
+end;
+
+procedure TForm1.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+    case Key of
+          VK_RETURN, VK_DOWN: Perform(WM_NEXTDLGCTL,0,0);
+    end;
+end;
+
+end.
