@@ -92,6 +92,12 @@ begin
      if cbTipoNota.ItemIndex = 1 then
      begin
           qryGeral.active := False;
+
+          qryGeral.active := False;
+          qryGeral.sql.Text := ' delete from grz_lojas_ne_controle where cod_unidade =   '+sCodUni+ ' and num_nota = ' + sNota;
+          qryGeral.ExecSQL;
+          qryGeral.Connection.Commit;
+          qryGeral.active := False;
           qryGeral.sql.Text := ' SELECT cod_unidade, num_nota, cod_serie, cod_serie as  num_equipamento   '+
                                ' from nl.ai_ne_notas                        '+
                                ' where num_nota = :num_nota                '+
