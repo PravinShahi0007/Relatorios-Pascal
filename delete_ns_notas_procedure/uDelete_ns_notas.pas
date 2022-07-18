@@ -88,6 +88,28 @@ begin
      if not Database1.Connected then
         Database1.Connected := True;
 
+
+     if cbTipoNota.ItemIndex = 1 then
+     begin
+          qryGeral.active := False;
+          qryGeral.sql.Text := ' SELECT cod_unidade, num_nota, cod_serie, cod_serie as  num_equipamento   '+
+                               ' from nl.ai_ne_notas                        '+
+                               ' where num_nota = :num_nota                '+
+                               ' and cod_unidade = :cod_unidade          '+
+                               ' and dta_emissao = :dta_emissao       ';
+
+     end;
+
+     if cbTipoNota.ItemIndex = 2 then
+     begin
+          qryGeral.active := False;
+          qryGeral.sql.Text := ' SELECT cod_unidade, num_nota, cod_serie, num_equipamento   '+
+                               ' from nl.ai_ns_notas                        '+
+                               ' where num_nota = :num_nota                '+
+                               ' and cod_unidade = :cod_unidade          '+
+                               ' and dta_emissao = :dta_emissao       ';
+     end;
+
      qryGeral.ParamByName('num_nota').AsString := sNota;
      qryGeral.ParamByName('cod_unidade').AsString := sCodUni;
      qryGeral.ParamByName('dta_emissao').AsString := sDtaEmissao;

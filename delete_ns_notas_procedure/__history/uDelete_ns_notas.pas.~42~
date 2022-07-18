@@ -3,15 +3,15 @@ unit uDelete_ns_notas;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ppParameter, ppBands, ppCtrls, jpeg, ppVar, ppPrnabl, ppClass,
-  ppCache, ppProd, ppReport, ppDB, ppComm, ppRelatv, ppDBPipe, DB,
-  DBTables, StdCtrls, Mask, Buttons, ExtCtrls, uFuncoes, FireDAC.Stan.Intf,
-  FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf,
-  FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys,
-  FireDAC.Phys.Oracle, FireDAC.Phys.OracleDef, FireDAC.VCLUI.Wait,
-  FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
-  FireDAC.Comp.Client, FireDAC.Comp.DataSet;
+    Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+    Dialogs, ppParameter, ppBands, ppCtrls, jpeg, ppVar, ppPrnabl, ppClass,
+    ppCache, ppProd, ppReport, ppDB, ppComm, ppRelatv, ppDBPipe, DB,
+    DBTables, StdCtrls, Mask, Buttons, ExtCtrls, uFuncoes, FireDAC.Stan.Intf,
+    FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf,
+    FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys,
+    FireDAC.Phys.Oracle, FireDAC.Phys.OracleDef, FireDAC.VCLUI.Wait,
+    FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
+    FireDAC.Comp.Client, FireDAC.Comp.DataSet;
 
 type
   TForm1 = class(TForm)
@@ -48,6 +48,7 @@ type
     procedure edtNotaExit(Sender: TObject);
     procedure cbTipoNotaKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure CarregaParamsBanco;
   private
          { Private declarations }
   public
@@ -56,11 +57,14 @@ type
 
 var
    Form1: TForm1;
-   sParametros, sData, sNota, sCodUni, sDtaEmissao, sSerie, sCanc, sEquipamento : String;
+   sParametros, sData, sNota, sCodUni, sDtaEmissao, sSerie, sCanc, sEquipamento,
+   sUsuario, sSenha, sBanco : String;
 
 implementation
 
 {$R *.dfm}
+
+uses Encryp, uCarregaSenha;
 
 procedure TForm1.btnGerarClick(Sender: TObject);
 begin
@@ -83,6 +87,23 @@ begin
 
      if not Database1.Connected then
         Database1.Connected := True;
+
+
+     if cbTipoNota.ItemIndex = 1 then
+     begin
+          qryGeral.active := False;
+          qryGeral.sql.Text := ' SELECT cod_unidade, num_nota, cod_serie, num_equipamento   '+
+                               ' from nl.ai_ns_notas                        '+
+                               ' where num_nota = :num_nota                '+
+                               ' and cod_unidade = :cod_unidade          '+
+                               ' and dta_emissao = :dta_emissao       ';
+
+     end;
+
+     if cbTipoNota.ItemIndex = 1 then
+     begin
+
+     end;
 
      qryGeral.ParamByName('num_nota').AsString := sNota;
      qryGeral.ParamByName('cod_unidade').AsString := sCodUni;
@@ -145,7 +166,7 @@ begin
      else
          if cbTipoNota.ItemIndex = 1 then
          begin
-              spRetorno.StoredProcName := 'NL.GRZ_DELETA_NOTAS_ENTRADA_SPW';
+              spRetorno.StoredProcName := 'NL.GRZ_DELETA_NOTAS_ENTRADA_SP';
               edtNota.SetFocus;
          end
          else
@@ -256,7 +277,31 @@ end;
 
 procedure TForm1.FormShow(Sender: TObject);
 begin
+     qryGeral.Active := False;
+     Database1.Connected := False;
+
+     CarregaParamsBanco;
+     Database1.LoginPrompt := False;
+
+     Database1.Params.Values['SERVER NAME'] := sBanco;
+     Database1.Params.Values['USER NAME'] := sUsuario;
+     Database1.Params.Values['PASSWORD'] := sSenha;
+
+     try
+        Database1.Connected := True;
+     except
+           Informacao('Erro!!!'+#13+'Não pode se conectar ao banco!!!','Aviso!!!');
+           Form1.Close;
+     end;
+
      edtCodUni.SetFocus;
+end;
+
+procedure TForm1.CarregaParamsBanco;
+var TomEncryption1: TTomEncryption;
+begin
+     TomEncryption1 := TTomEncryption.Create(Self);
+     CarregaSenhasBancoOra('GRZPNL_BERLIN',TomEncryption1,sUsuario,sSenha,sBanco);
 end;
 
 end.
