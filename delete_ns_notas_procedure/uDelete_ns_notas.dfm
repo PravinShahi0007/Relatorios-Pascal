@@ -276,7 +276,6 @@ object Form1: TForm1
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = [fsBold]
-    ItemIndex = 0
     ParentFont = False
     TabOrder = 0
     Text = 'Nota'

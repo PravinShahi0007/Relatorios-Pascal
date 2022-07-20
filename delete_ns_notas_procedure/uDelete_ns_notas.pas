@@ -102,7 +102,7 @@ begin
                                ' from nl.ai_ne_notas                        '+
                                ' where num_nota = :num_nota                '+
                                ' and cod_unidade = :cod_unidade          '+
-                               ' and dta_emissao = :dta_emissao       ';
+                               ' and trunc(dta_emissao) = :dta_emissao       ';
 
      end;
 
@@ -113,7 +113,7 @@ begin
                                ' from nl.ai_ns_notas                        '+
                                ' where num_nota = :num_nota                '+
                                ' and cod_unidade = :cod_unidade          '+
-                               ' and dta_emissao = :dta_emissao       ';
+                               ' and trunc(dta_emissao) = :dta_emissao       ';
      end;
 
      qryGeral.ParamByName('num_nota').AsString := sNota;

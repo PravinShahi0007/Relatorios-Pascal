@@ -3,15 +3,15 @@ unit uDelete_ns_notas;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ppParameter, ppBands, ppCtrls, jpeg, ppVar, ppPrnabl, ppClass,
-  ppCache, ppProd, ppReport, ppDB, ppComm, ppRelatv, ppDBPipe, DB,
-  DBTables, StdCtrls, Mask, Buttons, ExtCtrls, uFuncoes, FireDAC.Stan.Intf,
-  FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf,
-  FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys,
-  FireDAC.Phys.Oracle, FireDAC.Phys.OracleDef, FireDAC.VCLUI.Wait,
-  FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
-  FireDAC.Comp.Client, FireDAC.Comp.DataSet;
+    Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+    Dialogs, ppParameter, ppBands, ppCtrls, jpeg, ppVar, ppPrnabl, ppClass,
+    ppCache, ppProd, ppReport, ppDB, ppComm, ppRelatv, ppDBPipe, DB,
+    DBTables, StdCtrls, Mask, Buttons, ExtCtrls, uFuncoes, FireDAC.Stan.Intf,
+    FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf,
+    FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys,
+    FireDAC.Phys.Oracle, FireDAC.Phys.OracleDef, FireDAC.VCLUI.Wait,
+    FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
+    FireDAC.Comp.Client, FireDAC.Comp.DataSet;
 
 type
   TForm1 = class(TForm)
@@ -88,6 +88,34 @@ begin
      if not Database1.Connected then
         Database1.Connected := True;
 
+
+     if cbTipoNota.ItemIndex = 1 then
+     begin
+          qryGeral.active := False;
+
+          qryGeral.active := False;
+          qryGeral.sql.Text := ' delete from grz_lojas_ne_controle where cod_unidade =   '+sCodUni+ ' and num_nota = ' + sNota;
+          qryGeral.ExecSQL;
+          qryGeral.Connection.Commit;
+          qryGeral.active := False;
+          qryGeral.sql.Text := ' SELECT cod_unidade, num_nota, cod_serie, cod_serie as  num_equipamento   '+
+                               ' from nl.ai_ne_notas                        '+
+                               ' where num_nota = :num_nota                '+
+                               ' and cod_unidade = :cod_unidade          '+
+                               ' and dta_emissao = :dta_emissao       ';
+
+     end;
+
+     if cbTipoNota.ItemIndex = 2 then
+     begin
+          qryGeral.active := False;
+          qryGeral.sql.Text := ' SELECT cod_unidade, num_nota, cod_serie, num_equipamento   '+
+                               ' from nl.ai_ns_notas                        '+
+                               ' where num_nota = :num_nota                '+
+                               ' and cod_unidade = :cod_unidade          '+
+                               ' and trunc(dta_emissao) = :dta_emissao       ';
+     end;
+
      qryGeral.ParamByName('num_nota').AsString := sNota;
      qryGeral.ParamByName('cod_unidade').AsString := sCodUni;
      qryGeral.ParamByName('dta_emissao').AsString := sDtaEmissao;
@@ -149,13 +177,13 @@ begin
      else
          if cbTipoNota.ItemIndex = 1 then
          begin
-              spRetorno.StoredProcName := 'NL.GRZ_DELETA_NOTAS_ENTRADA_SPW';
+              spRetorno.StoredProcName := 'NL.GRZ_DELETA_NOTAS_ENTRADA_SP';
               edtNota.SetFocus;
          end
          else
              if cbTipoNota.ItemIndex = 2 then
              begin
-                  spRetorno.StoredProcName := 'NL.GRZ_DELETA_AI_NOTAS_SPW';
+                  spRetorno.StoredProcName := 'NL.GRZ_DELETA_AI_NOTAS_SP';
                   edtNota.SetFocus;
              end;
 end;
