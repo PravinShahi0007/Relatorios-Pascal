@@ -156,6 +156,19 @@ BEGIN
             RETURNING count(a.num_nota) INTO wSaida;
             po_resultado := po_resultado || wSaida ||
                             ' em ai_ns_notas_obs.' || CHR(10);
+            
+            DELETE nl.ai_ns_notas_transportes a
+             WHERE a.cod_unidade = wCod_Unidade
+               AND a.num_nota = wNum_Nota_Atual
+               AND EXISTS (SELECT 1
+                             FROM nl.ai_ns_notas b
+                            WHERE b.cod_unidade = a.cod_unidade
+                              AND b.num_nota = a.num_nota
+                              AND b.cod_serie = wSerie
+                              AND b.dta_emissao = wDta_Emissao)
+            RETURNING count(a.num_nota) INTO wSaida;
+            po_resultado := po_resultado || wSaida || ' em ai_ns_notas_transportes' ||
+                            CHR(10);
 
             DELETE nl.ai_ns_notas a
              WHERE a.cod_unidade = wCod_Unidade
